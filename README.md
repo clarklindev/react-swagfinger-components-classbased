@@ -1,3 +1,40 @@
+## TEST
+
+Create a simple phone book web application which allows the user to store a person’s detailsCreate a simple phone book web application which allows the user to store a person’s details and at least a contact number. The app should allow you to:
+
+- Add a new contact
+- Edit or remove a contact
+- View the contents of a phone book & contact
+
+### Pick at least one of the following features to implement:
+
+- Search contacts
+- Persist your contacts client side on a page refresh
+- Add the ability to manage multiple phone books
+  Notes
+- Please try to structure your directories and files in a way that you would structure a
+  production ready project
+- Feel free to use a publicly available template project as a starting point (e.g.
+  create-react-app)
+- Add a new contact
+- Edit or remove a contact
+- View the contents of a phone book & contact
+
+### Pick at least one of the following features to implement:
+
+- Search contacts
+- Persist your contacts client side on a page refresh
+- Add the ability to manage multiple phone books
+
+### Notes
+
+- Please try to structure your directories and files in a way that you would structure a
+  production ready project
+- Feel free to use a publicly available template project as a starting point (e.g.
+  create-react-app)
+
+---
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
