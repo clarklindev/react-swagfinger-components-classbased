@@ -4,4 +4,9 @@
 		margin: 0;
 		padding: 0;
 	}
+	.Li {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
 }

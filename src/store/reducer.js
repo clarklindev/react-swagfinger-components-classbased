@@ -16,6 +16,22 @@ const reducer = (state = initialState, action) => {
 				...state,
 				phoneBook: [...state.phoneBook, newContact]
 			};
+
+		case actionTypes.UPDATE_CONTACT:
+			let updateitemIndex = state.phoneBook.findIndex(
+				contact => contact.id === action.contactData.id
+			);
+			let updateitem = { ...state.phoneBook[updateitemIndex] };
+			updateitem.name = action.contactData.name;
+			updateitem.contact = action.contactData.contact;
+
+			let contacts = [...state.phoneBook];
+			contacts[updateitemIndex] = updateitem;
+
+			return {
+				...state,
+				phoneBook: contacts
+			};
 		case actionTypes.REMOVE_CONTACT:
 			return {
 				...state,
