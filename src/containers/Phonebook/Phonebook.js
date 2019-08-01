@@ -5,19 +5,8 @@ import AddContact from '../../components/AddContact/AddContact';
 import Contact from '../../components/Contact/Contact';
 import classes from './Phonebook.module.scss';
 import Utils from '../../Utils';
-import EditContact from '../../components/Contact/EditContact';
 
 class Phonebook extends Component {
-	state = {
-		editmode: false
-	};
-
-	toggleEditingHandler = () => {
-		this.setState(state => {
-			return { editmode: !state.editmode };
-		});
-	};
-
 	render() {
 		const className = Utils.getClassNameString([
 			classes.Phonebook,
@@ -37,21 +26,13 @@ class Phonebook extends Component {
 							console.log(phonebookEntry);
 							return (
 								<li className={classes.Li} key={phonebookEntry.id}>
-									{!this.state.editmode ? (
-										<Contact
-											name={phonebookEntry.name}
-											contact={phonebookEntry.contact}
-											toggleEditMode={this.toggleEditingHandler}
-										/>
-									) : (
-										<EditContact
-											id={phonebookEntry.id}
-											name={phonebookEntry.name}
-											contact={phonebookEntry.contact}
-											onUpdated={this.props.onContactUpdated}
-											toggleEditMode={this.toggleEditingHandler}
-										/>
-									)}
+									<Contact
+										id={phonebookEntry.id}
+										name={phonebookEntry.name}
+										contact={phonebookEntry.contact}
+										onUpdated={this.props.onContactUpdated}
+										toggleEditMode={this.toggleEditingHandler}
+									/>
 
 									<button
 										onClick={() =>
