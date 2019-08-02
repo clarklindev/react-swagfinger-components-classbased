@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as actionTypes from '../../store/actions';
+import * as actionTypes from '../../store/actions/actionsTypes';
 import AddContact from '../../components/AddContact/AddContact';
 import Contact from '../../components/Contact/Contact';
 import classes from './Phonebook.module.scss';

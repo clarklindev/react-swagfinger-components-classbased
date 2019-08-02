@@ -1,4 +1,4 @@
-import * as actionTypes from './actions';
+import * as actionTypes from '../actions/actionsTypes';
 
 const initialState = {
 	phoneBook: []
@@ -6,6 +6,7 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
 	switch (action.type) {
+		//add
 		case actionTypes.ADD_CONTACT:
 			const newContact = {
 				id: action.contactData.id,
@@ -16,7 +17,7 @@ const reducer = (state = initialState, action) => {
 				...state,
 				phoneBook: [...state.phoneBook, newContact]
 			};
-
+		//update
 		case actionTypes.UPDATE_CONTACT:
 			let updateitemIndex = state.phoneBook.findIndex(
 				contact => contact.id === action.contactData.id
@@ -32,6 +33,7 @@ const reducer = (state = initialState, action) => {
 				...state,
 				phoneBook: contacts
 			};
+		//remove
 		case actionTypes.REMOVE_CONTACT:
 			return {
 				...state,
