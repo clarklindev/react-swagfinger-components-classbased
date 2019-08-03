@@ -1,6 +1,6 @@
 // reducer
 import * as actionTypes from '../actions/actionsTypes';
-
+import { updateObject } from '../utility';
 const initialState = {
 	phoneBook: []
 };
@@ -14,10 +14,10 @@ const reducer = (state = initialState, action) => {
 				name: action.contactData.name,
 				contact: action.contactData.contact
 			};
-			return {
-				...state,
+			return updateObject(state, {
 				phoneBook: [...state.phoneBook, newContact]
-			};
+			});
+
 		//update
 		case actionTypes.UPDATE_CONTACT:
 			let updateitemIndex = state.phoneBook.findIndex(
@@ -30,18 +30,14 @@ const reducer = (state = initialState, action) => {
 			let contacts = [...state.phoneBook];
 			contacts[updateitemIndex] = updateitem;
 
-			return {
-				...state,
-				phoneBook: contacts
-			};
+			return updateObject(state, { phoneBook: contacts });
+
 		//remove
 		case actionTypes.REMOVE_CONTACT:
-			return {
-				...state,
-				phoneBook: state.phoneBook.filter(
-					contact => contact.id !== action.contactData.id
-				)
-			};
+			const updatedArray = state.phoneBook.filter(
+				contact => contact.id !== action.contactData.id
+			);
+			return updateObject(state, { phoneBook: updatedArray });
 
 		default:
 			return state;
