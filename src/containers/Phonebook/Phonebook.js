@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as actionTypes from '../../store/actions/actionsTypes';
+import * as actionCreators from '../../store/actions/index';
 import AddContact from '../../components/AddContact/AddContact';
 import Contact from '../../components/Contact/Contact';
 import classes from './Phonebook.module.scss';
@@ -57,24 +57,17 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
 	return {
-		onContactAdded: ({ id, name, contact }, reset) => {
-			dispatch({
-				type: actionTypes.ADD_CONTACT,
-				contactData: { id: id, name: name, contact: contact }
-			});
+		onContactAdded: (contact, reset) => {
+			dispatch(actionCreators.storeContact(contact));
 			reset();
 		},
 
-		onContactUpdated: ({ id, name, contact }, toggleEditMode) => {
-			dispatch({
-				type: actionTypes.UPDATE_CONTACT,
-				contactData: { id: id, name: name, contact: contact }
-			});
+		onContactUpdated: (contact, toggleEditMode) => {
+			dispatch(actionCreators.updateContact(contact));
 			toggleEditMode();
 		},
 
-		onContactRemoved: id =>
-			dispatch({ type: actionTypes.REMOVE_CONTACT, contactId: id })
+		onContactRemoved: id => dispatch(actionCreators.removeContact(id))
 	};
 };
 

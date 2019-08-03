@@ -1,3 +1,4 @@
+// reducer
 import * as actionTypes from '../actions/actionsTypes';
 
 const initialState = {
@@ -38,7 +39,7 @@ const reducer = (state = initialState, action) => {
 			return {
 				...state,
 				phoneBook: state.phoneBook.filter(
-					contact => contact.id !== action.contactId
+					contact => contact.id !== action.contactData.id
 				)
 			};
 
