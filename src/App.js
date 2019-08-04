@@ -17,10 +17,9 @@ class App extends Component {
 		const logger = store => {
 			return next => {
 				return action => {
-					console.log('[Middleware] Dispatching', action);
-					const result = next(action);
-					console.log('[Middleware] next state', store.getState());
-					return result;
+					console.log('[Middleware] Dispatching action: ', action);
+					console.log('[Middleware] state: ', store.getState());
+					return next(action);
 				};
 			};
 		};
