@@ -1,6 +1,6 @@
 export {
-	storeContact,
-	removeContact,
-	updateContact,
+	processAddContact,
+	processRemoveContact,
+	processUpdateContact,
 	fetchContacts
 } from './contact';

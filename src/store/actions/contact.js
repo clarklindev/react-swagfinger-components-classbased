@@ -9,7 +9,8 @@ export const addContact = contact => {
 	};
 };
 
-export const storeContact = contact => {
+//async
+export const processAddContact = contact => {
 	return dispatch => {
 		axios
 			.post('/contacts.json', contact)
@@ -31,12 +32,33 @@ export const removeContact = id => {
 	return { type: actionTypes.REMOVE_CONTACT, contactData: { id: id } };
 };
 
+//async
+export const processRemoveContact = id => {
+	return dispatch => {
+		axios.delete(`/contacts/${id}.json`).then(response => {
+			console.log(response);
+			dispatch(removeContact(id));
+		});
+	};
+};
+
 export const updateContact = ({ id, name, contact }) => {
 	return {
 		type: actionTypes.UPDATE_CONTACT,
 		contactData: { id: id, name: name, contact: contact }
 	};
 };
+//async
+export const processUpdateContact = contact => {
+	return dispatch => {
+		axios.put(`/contacts/${contact.id}.json`, contact).then(response => {
+			console.log(response);
+			dispatch(updateContact(contact));
+		});
+	};
+};
+
+//fetching contacts
 
 export const fetchContactsStart = () => {
 	return {

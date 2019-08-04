@@ -61,14 +61,14 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
 	return {
 		onContactAdded: (contact, reset) => {
-			dispatch(actions.storeContact(contact));
+			dispatch(actions.processAddContact(contact));
 			reset();
 		},
 
-		onContactRemoved: id => dispatch(actions.removeContact(id)),
+		onContactRemoved: id => dispatch(actions.processRemoveContact(id)),
 
 		onContactUpdated: (contact, toggleEditMode) => {
-			dispatch(actions.updateContact(contact));
+			dispatch(actions.processUpdateContact(contact));
 			toggleEditMode();
 		},
 
