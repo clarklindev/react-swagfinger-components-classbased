@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as actionCreators from '../../store/actions/index';
+import * as actions from '../../store/actions/index';
 import AddContact from '../../components/AddContact/AddContact';
 import Contact from '../../components/Contact/Contact';
 import classes from './Phonebook.module.scss';
 import Utils from '../../Utils';
 
 class Phonebook extends Component {
+	componentDidMount() {
+		this.props.onFetchContacts();
+	}
+
 	render() {
 		const className = Utils.getClassNameString([
 			classes.Phonebook,
@@ -58,16 +62,20 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
 	return {
 		onContactAdded: (contact, reset) => {
-			dispatch(actionCreators.storeContact(contact));
+			dispatch(actions.storeContact(contact));
 			reset();
 		},
 
 		onContactUpdated: (contact, toggleEditMode) => {
-			dispatch(actionCreators.updateContact(contact));
+			dispatch(actions.updateContact(contact));
 			toggleEditMode();
 		},
 
-		onContactRemoved: id => dispatch(actionCreators.removeContact(id))
+		onContactRemoved: id => dispatch(actions.removeContact(id)),
+
+		onFetchContacts: () => {
+			dispatch(actions.fetchContacts());
+		}
 	};
 };
 

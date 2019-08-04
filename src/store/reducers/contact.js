@@ -2,7 +2,8 @@
 import * as actionTypes from '../actions/actionsTypes';
 import { updateObject } from '../utility';
 const initialState = {
-	phoneBook: []
+	phoneBook: [],
+	loading: false
 };
 const addContact = (state, action) => {
 	const newContact = {
@@ -41,14 +42,34 @@ const reducer = (state = initialState, action) => {
 		//add
 		case actionTypes.ADD_CONTACT:
 			addContact(state, action);
-
+			break;
 		//update
 		case actionTypes.UPDATE_CONTACT:
 			updateContact(state, action);
-
+			break;
 		//remove
 		case actionTypes.REMOVE_CONTACT:
 			removeContact(state, action);
+			break;
+		//start
+		case actionTypes.FETCH_CONTACTS_START:
+			return {
+				...state,
+				loading: true
+			};
+
+		case actionTypes.FETCH_CONTACTS_FAIL:
+			return {
+				...state,
+				loading: false
+			};
+
+		case actionTypes.FETCH_CONTACTS_SUCCESS:
+			return {
+				...state,
+				contacts: action.contacts,
+				loading: false
+			};
 
 		default:
 			return state;

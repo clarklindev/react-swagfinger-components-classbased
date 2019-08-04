@@ -1,1 +1,6 @@
-export { storeContact, removeContact, updateContact } from './contact';
+export {
+	storeContact,
+	removeContact,
+	updateContact,
+	fetchContacts
+} from './contact';
