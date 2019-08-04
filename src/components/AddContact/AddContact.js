@@ -50,8 +50,6 @@ class AddContact extends Component {
 						) {
 							return this.props.contactAdded(
 								{
-									id: `${this.state.name}${this.state.contact}${Math.random() *
-										100}${new Date()}`,
 									name: this.state.name,
 									contact: this.state.contact
 								},

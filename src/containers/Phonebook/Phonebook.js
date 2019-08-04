@@ -26,8 +26,8 @@ class Phonebook extends Component {
 
 				<div>
 					<ul className={classes.Ul}>
-						{this.props.phoneBook.map(phonebookEntry => {
-							console.log(phonebookEntry);
+						{console.log('here!!!: ', this.props.storedPhonebook)}
+						{this.props.storedPhonebook.map(phonebookEntry => {
 							return (
 								<li className={classes.Li} key={phonebookEntry.id}>
 									<Contact
@@ -35,7 +35,6 @@ class Phonebook extends Component {
 										name={phonebookEntry.name}
 										contact={phonebookEntry.contact}
 										onUpdated={this.props.onContactUpdated}
-										toggleEditMode={this.toggleEditingHandler}
 									/>
 
 									<button
@@ -56,7 +55,7 @@ class Phonebook extends Component {
 }
 
 const mapStateToProps = state => {
-	return { phoneBook: state.phoneBook };
+	return { storedPhonebook: state.phoneBook };
 };
 
 const mapDispatchToProps = dispatch => {
@@ -66,12 +65,12 @@ const mapDispatchToProps = dispatch => {
 			reset();
 		},
 
+		onContactRemoved: id => dispatch(actions.removeContact(id)),
+
 		onContactUpdated: (contact, toggleEditMode) => {
 			dispatch(actions.updateContact(contact));
 			toggleEditMode();
 		},
-
-		onContactRemoved: id => dispatch(actions.removeContact(id)),
 
 		onFetchContacts: () => {
 			dispatch(actions.fetchContacts());

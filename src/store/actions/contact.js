@@ -2,19 +2,28 @@
 import * as actionTypes from './actionsTypes';
 import axios from '../../axios-contacts';
 
-export const addContact = ({ id, name, contact }) => {
+export const addContact = contact => {
 	return {
 		type: actionTypes.ADD_CONTACT,
-		contactData: { id: id, name: name, contact: contact }
+		contactData: contact
 	};
 };
 
 export const storeContact = contact => {
 	return dispatch => {
-		//can delay action here...
-		//setTImeout(()=>{
-		dispatch(addContact(contact));
-		//},2000);
+		axios
+			.post('/contacts.json', contact)
+			.then(response => {
+				console.log('response.data: ', response.data);
+				dispatch(
+					addContact({
+						contact: contact.contact,
+						name: contact.name,
+						id: response.data.name
+					})
+				);
+			})
+			.catch(err => {});
 	};
 };
 
@@ -59,6 +68,7 @@ export const fetchContacts = () => {
 				for (let key in res.data) {
 					fetchedContacts.push({ ...res.data[key], id: key });
 				}
+				console.log('fetched contacts: ', fetchedContacts);
 				dispatch(fetchContactsSuccess(fetchedContacts));
 			})
 			.catch(err => {

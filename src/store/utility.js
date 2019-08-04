@@ -1,3 +1,5 @@
 export const updateObject = (oldObject, updatedValues) => {
-	return { ...oldObject, ...updatedValues };
+	let newObject = { ...oldObject, ...updatedValues };
+	console.log('after update: ', newObject);
+	return newObject;
 };

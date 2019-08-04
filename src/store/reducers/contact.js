@@ -6,13 +6,8 @@ const initialState = {
 	loading: false
 };
 const addContact = (state, action) => {
-	const newContact = {
-		id: action.contactData.id,
-		name: action.contactData.name,
-		contact: action.contactData.contact
-	};
 	return updateObject(state, {
-		phoneBook: [...state.phoneBook, newContact]
+		phoneBook: state.phoneBook.concat(action.contactData)
 	});
 };
 
@@ -26,7 +21,8 @@ const updateContact = (state, action) => {
 
 	let contacts = [...state.phoneBook];
 	contacts[updateitemIndex] = updateitem;
-
+	console.log('contacts: ', contacts);
+	console.log('state before update: ', state);
 	return updateObject(state, { phoneBook: contacts });
 };
 
@@ -34,6 +30,8 @@ const removeContact = (state, action) => {
 	const updatedArray = state.phoneBook.filter(
 		contact => contact.id !== action.contactData.id
 	);
+	console.log('removeCONTACT updated array: ', updatedArray);
+	console.log('state before remove: ', state);
 	return updateObject(state, { phoneBook: updatedArray });
 };
 
@@ -41,16 +39,14 @@ const reducer = (state = initialState, action) => {
 	switch (action.type) {
 		//add
 		case actionTypes.ADD_CONTACT:
-			addContact(state, action);
-			break;
+			return addContact(state, action);
 		//update
 		case actionTypes.UPDATE_CONTACT:
-			updateContact(state, action);
-			break;
+			return updateContact(state, action);
 		//remove
 		case actionTypes.REMOVE_CONTACT:
-			removeContact(state, action);
-			break;
+			return removeContact(state, action);
+
 		//start
 		case actionTypes.FETCH_CONTACTS_START:
 			return {
@@ -67,10 +63,9 @@ const reducer = (state = initialState, action) => {
 		case actionTypes.FETCH_CONTACTS_SUCCESS:
 			return {
 				...state,
-				contacts: action.contacts,
+				phoneBook: action.contacts,
 				loading: false
 			};
-
 		default:
 			return state;
 	}
