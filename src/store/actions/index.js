@@ -4,3 +4,5 @@ export {
 	processUpdateContact,
 	fetchContacts
 } from './contact';
+
+export { auth } from './auth';
