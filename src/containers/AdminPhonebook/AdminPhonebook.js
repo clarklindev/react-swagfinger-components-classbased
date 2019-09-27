@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as actions from '../../store/actions/index';
 import Contact from '../../components/Contact/Contact';
-import ContactAdmin from '../../components/Contact/ContactAdmin';
 
 import classes from './AdminPhonebook.module.scss';
 import Utils from '../../Utils';
@@ -28,19 +27,10 @@ class AdminPhonebook extends Component {
 
         <Link
           to={{
-            pathname: this.props.match.url + '/addcontact'
+            pathname: '/addcontact'
           }}>
           Add Contact
         </Link>
-        <Route
-          path={this.props.match.url + '/addcontact'}
-          render={props => (
-            <ContactAdmin
-              {...props}
-              onContactAdded={this.props.onContactAdded}
-            />
-          )}
-        />
 
         <div>
           <ul className={classes.Ul}>
