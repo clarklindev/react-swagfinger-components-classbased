@@ -1,8 +1,8 @@
 export {
-	processAddContact,
-	processRemoveContact,
-	processUpdateContact,
-	fetchContacts
+  processAddContact,
+  processRemoveContact,
+  processUpdateContact,
+  fetchContacts
 } from './contact';
 
 export { auth } from './auth';
