@@ -5,14 +5,20 @@ import Utils from '../../Utils';
 class AddContact extends Component {
   state = {
     name: '',
+    lastname: '',
     contact: ''
   };
+
   reset = () => {
-    this.setState({ name: '', contact: '' });
+    this.setState({ name: '', lastname: '', contact: '' });
   };
 
   nameChangeHandler = event => {
     this.setState({ name: event.target.value });
+  };
+
+  lastnameChangeHandler = event => {
+    this.setState({ lastname: event.target.value });
   };
 
   contactChangeHandler = event => {
@@ -36,6 +42,12 @@ class AddContact extends Component {
         />
         <input
           type="text"
+          placeholder="lastname"
+          onChange={this.lastnameChangeHandler}
+          value={this.state.lastname}
+        />
+        <input
+          type="text"
           placeholder="contact"
           onChange={this.contactChangeHandler}
           value={this.state.contact}
@@ -46,11 +58,13 @@ class AddContact extends Component {
             //validate
             if (
               this.state.name.trim() !== '' &&
+              this.state.lastname.trim() !== '' &&
               this.state.contact.trim() !== ''
             ) {
               return this.props.contactAdded(
                 {
                   name: this.state.name,
+                  lastname: this.state.lastname,
                   contact: this.state.contact
                 },
                 this.reset

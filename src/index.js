@@ -15,29 +15,29 @@ import * as serviceWorker from './serviceWorker';
 import reducer from './store/reducers/contact';
 
 const logger = store => {
-	return next => {
-		return action => {
-			console.log('[Middleware] Dispatching action: ', action);
-			console.log('[Middleware] state: ', store.getState());
-			return next(action);
-		};
-	};
+  return next => {
+    return action => {
+      console.log('[Middleware] Dispatching action: ', action);
+      console.log('[Middleware] state: ', store.getState());
+      return next(action);
+    };
+  };
 };
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(
-	reducer,
-	/* preloadedState, */ composeEnhancers(applyMiddleware(logger, thunk))
+  reducer,
+  /* preloadedState, */ composeEnhancers(applyMiddleware(logger, thunk))
 );
 
 ReactDOM.render(
-	<Provider store={store}>
-		<BrowserRouter>
-			<App />
-		</BrowserRouter>
-	</Provider>,
-	document.getElementById('root')
+  <Provider store={store}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </Provider>,
+  document.getElementById('root')
 );
 
 // If you want your app to work offline and load faster, you can change

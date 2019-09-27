@@ -18,8 +18,9 @@ export const processAddContact = contact => {
         console.log('response.data: ', response.data);
         dispatch(
           addContact({
-            contact: contact.contact,
             name: contact.name,
+            lastname: contact.lastname,
+            contact: contact.contact,
             id: response.data.name
           })
         );
@@ -42,10 +43,10 @@ export const processRemoveContact = id => {
   };
 };
 
-export const updateContact = ({ id, name, contact }) => {
+export const updateContact = ({ id, name, lastname, contact }) => {
   return {
     type: actionTypes.UPDATE_CONTACT,
-    contactData: { id: id, name: name, contact: contact }
+    contactData: { id: id, name: name, lastname: lastname, contact: contact }
   };
 };
 //async

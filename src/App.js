@@ -16,7 +16,7 @@ class App extends Component {
             <Route path="/phonebook" component={Phonebook} />
             <Route path="/phonebookadmin" component={AdminPhonebook} />
             <Route path="/auth" component={Auth} />
-            <Route path="/" component={Auth} />
+            <Route path="/" exact component={Auth} />
           </Switch>
         </div>
       </Layout>

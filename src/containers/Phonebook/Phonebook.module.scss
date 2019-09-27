@@ -1,12 +1,12 @@
 .Phonebook {
-	.Ul {
-		list-style-type: none;
-		margin: 0;
-		padding: 0;
-	}
-	.Li {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-	}
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  li {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
 }

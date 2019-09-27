@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
+import { Route } from 'react-router-dom';
+
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import * as actions from '../../store/actions/index';
-import AddContact from '../../components/AddContact/AddContact';
 import Contact from '../../components/Contact/Contact';
+import ContactAdmin from '../../components/Contact/ContactAdmin';
+
 import classes from './AdminPhonebook.module.scss';
 import Utils from '../../Utils';
 
@@ -22,7 +26,21 @@ class AdminPhonebook extends Component {
       <div className={className}>
         <h1>Phonebook Admin</h1>
 
-        <AddContact contactAdded={this.props.onContactAdded} />
+        <Link
+          to={{
+            pathname: this.props.match.url + '/addcontact'
+          }}>
+          Add Contact
+        </Link>
+        <Route
+          path={this.props.match.url + '/addcontact'}
+          render={props => (
+            <ContactAdmin
+              {...props}
+              onContactAdded={this.props.onContactAdded}
+            />
+          )}
+        />
 
         <div>
           <ul className={classes.Ul}>
@@ -33,9 +51,12 @@ class AdminPhonebook extends Component {
                   <Contact
                     id={phonebookEntry.id}
                     name={phonebookEntry.name}
+                    lastname={phonebookEntry.lastname}
                     contact={phonebookEntry.contact}
                     onUpdated={this.props.onContactUpdated}
                   />
+
+                  <button>edit</button>
 
                   <button
                     onClick={() =>
@@ -66,9 +87,8 @@ const mapDispatchToProps = dispatch => {
 
     onContactRemoved: id => dispatch(actions.processRemoveContact(id)),
 
-    onContactUpdated: (contact, toggleEditMode) => {
+    onContactUpdated: contact => {
       dispatch(actions.processUpdateContact(contact));
-      toggleEditMode();
     },
 
     onFetchContacts: () => {
