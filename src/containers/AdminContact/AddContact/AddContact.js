@@ -143,7 +143,7 @@ class AddContact extends Component {
         })}
         <button onClick={this.contactnumberAddHandler}>add</button>
 
-        <label className={classes.Label}>Contact number</label>
+        <label className={classes.Label}>Email</label>
         {this.state.emails.map((each, index) => {
           console.log('index', index);
           return (
@@ -173,8 +173,7 @@ class AddContact extends Component {
             if (
               this.state.name.trim() !== '' &&
               this.state.lastname.trim() !== '' &&
-              this.state.contactnumbers.length &&
-              this.state.emails.length
+              (this.state.contactnumbers.length || this.state.emails.length)
             ) {
               return this.props.contactAdded(
                 {
