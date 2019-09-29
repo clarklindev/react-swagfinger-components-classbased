@@ -44,6 +44,7 @@ class AddContact extends Component {
           type="text"
           name="name"
           placeholder="name"
+          label="name"
           changed={this.nameChangeHandler}
           value={this.state.name}
         />
@@ -52,31 +53,35 @@ class AddContact extends Component {
           type="text"
           name="lastname"
           placeholder="lastname"
+          label="last name"
           changed={this.lastnameChangeHandler}
           value={this.state.lastname}
         />
-
         <div className={classes.InputGroup}>
           <Input
+            className={classes.Input}
             inputtype="input"
             type="text"
             name="contact"
             placeholder="contact"
+            label="contact"
             changed={this.contactChangeHandler}
             value={this.state.contact}
           />
-          <button>add</button>
+          <button className={classes.IconButton}>add</button>
         </div>
         <div className={classes.InputGroup}>
           <Input
+            className={classes.Input}
             inputtype="input"
             type="email"
             name="email"
             placeholder="email"
+            label="email"
             changed={this.emailChangeHandler}
             value={this.state.email}
           />
-          <button>add</button>
+          <button className={classes.IconButton}>add</button>
         </div>
         <button
           onClick={() => {

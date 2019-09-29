@@ -1,10 +1,18 @@
 import React from 'react';
 
 import classes from './Input.module.scss';
+import Utils from '../../../Utils';
 
 const input = props => {
   let inputElement = null;
+  let label = null;
   const inputClasses = [classes.InputElement];
+
+  const className = Utils.getClassNameString([
+    classes.Input,
+    'Input',
+    props.className
+  ]);
 
   if (props.invalid && props.shouldValidate && props.touched) {
     inputClasses.push(classes.Invalid);
@@ -59,9 +67,13 @@ const input = props => {
       );
   }
 
+  label = props.label ? (
+    <label className={classes.Label}>{props.label}</label>
+  ) : null;
+
   return (
-    <div className={classes.Input}>
-      <label className={classes.Label}>{props.label}</label>
+    <div className={className}>
+      {label}
       {inputElement}
     </div>
   );
