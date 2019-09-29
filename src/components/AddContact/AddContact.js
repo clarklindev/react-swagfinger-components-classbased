@@ -39,27 +39,30 @@ class AddContact extends Component {
 
     return (
       <div className={className}>
-        <Input
-          inputtype="input"
-          type="text"
-          name="name"
-          placeholder="name"
-          label="name"
-          changed={this.nameChangeHandler}
-          value={this.state.name}
-        />
-        <Input
-          inputtype="input"
-          type="text"
-          name="lastname"
-          placeholder="lastname"
-          label="last name"
-          changed={this.lastnameChangeHandler}
-          value={this.state.lastname}
-        />
-        <div className={classes.InputGroup}>
+        <div>
           <Input
-            className={classes.Input}
+            inputtype="input"
+            type="text"
+            name="name"
+            placeholder="name"
+            label="name"
+            changed={this.nameChangeHandler}
+            value={this.state.name}
+          />
+        </div>
+        <div>
+          <Input
+            inputtype="input"
+            type="text"
+            name="lastname"
+            placeholder="lastname"
+            label="last name"
+            changed={this.lastnameChangeHandler}
+            value={this.state.lastname}
+          />
+        </div>
+        <div>
+          <Input
             inputtype="input"
             type="text"
             name="contact"
@@ -68,11 +71,21 @@ class AddContact extends Component {
             changed={this.contactChangeHandler}
             value={this.state.contact}
           />
+
+          <Input
+            inputtype="input"
+            type="text"
+            name="contact"
+            placeholder="contact"
+            changed={this.contactChangeHandler}
+            value={this.state.contact}
+          />
+
           <button className={classes.IconButton}>add</button>
         </div>
-        <div className={classes.InputGroup}>
+
+        <div>
           <Input
-            className={classes.Input}
             inputtype="input"
             type="email"
             name="email"
@@ -81,8 +94,19 @@ class AddContact extends Component {
             changed={this.emailChangeHandler}
             value={this.state.email}
           />
+
+          <Input
+            inputtype="input"
+            type="email"
+            name="email"
+            placeholder="email"
+            changed={this.emailChangeHandler}
+            value={this.state.email}
+          />
+
           <button className={classes.IconButton}>add</button>
         </div>
+
         <button
           onClick={() => {
             //validate
