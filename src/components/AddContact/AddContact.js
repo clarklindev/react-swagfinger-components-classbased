@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classes from './AddContact.module.scss';
 import Utils from '../../Utils';
-
+import Input from '../../components/UI/Input/Input';
 class AddContact extends Component {
   state = {
     name: '',
@@ -39,33 +39,41 @@ class AddContact extends Component {
 
     return (
       <div className={className}>
-        <input
+        <Input
+          inputtype="input"
           type="text"
+          name="name"
           placeholder="name"
-          onChange={this.nameChangeHandler}
+          changed={this.nameChangeHandler}
           value={this.state.name}
         />
-        <input
+        <Input
+          inputtype="input"
           type="text"
+          name="lastname"
           placeholder="lastname"
-          onChange={this.lastnameChangeHandler}
+          changed={this.lastnameChangeHandler}
           value={this.state.lastname}
         />
 
-        <div class="input input-group">
-          <input
+        <div className={classes.InputGroup}>
+          <Input
+            inputtype="input"
             type="text"
+            name="contact"
             placeholder="contact"
-            onChange={this.contactChangeHandler}
+            changed={this.contactChangeHandler}
             value={this.state.contact}
           />
           <button>add</button>
         </div>
-        <div class="input input-group">
-          <input
+        <div className={classes.InputGroup}>
+          <Input
+            inputtype="input"
             type="email"
+            name="email"
             placeholder="email"
-            onChange={this.emailChangeHandler}
+            changed={this.emailChangeHandler}
             value={this.state.email}
           />
           <button>add</button>

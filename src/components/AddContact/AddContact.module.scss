@@ -7,4 +7,9 @@
   align-content: center;
   align-self: center;
   align-items: center;
+
+  .InputGroup {
+    display: flex;
+    flex-direction: row;
+  }
 }
