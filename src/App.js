@@ -9,7 +9,7 @@ import Layout from './hoc/Layout/Layout';
 import Phonebook from './components/Phonebook/Phonebook';
 import AdminPhonebook from './containers/AdminPhonebook/AdminPhonebook';
 import Auth from './containers/Auth/Auth';
-import ContactAdmin from './components/Contact/ContactAdmin';
+import ContactAdmin from './components/Phonebook/Contact/ContactAdmin';
 
 class App extends Component {
   componentDidMount() {

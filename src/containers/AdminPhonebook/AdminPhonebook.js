@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as actions from '../../store/actions/index';
-import Contact from '../../components/Contact/Contact';
+import Contact from '../../components/Phonebook/Contact/Contact';
 
 import classes from './AdminPhonebook.module.scss';
 import Utils from '../../Utils';

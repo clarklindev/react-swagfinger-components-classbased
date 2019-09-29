@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import AddContact from '../../components/AddContact/AddContact';
+import AddContact from '../../../containers/AddContact/AddContact';
 
 class ContactAdmin extends Component {
   render() {

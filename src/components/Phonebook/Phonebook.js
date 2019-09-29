@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Contact from '../Contact/Contact';
+import Contact from './Contact/Contact';
 import classes from './Phonebook.module.scss';
 import Utils from '../../Utils';
 import { Link } from 'react-router-dom';
