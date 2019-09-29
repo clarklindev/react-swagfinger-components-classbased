@@ -6,11 +6,12 @@ class AddContact extends Component {
   state = {
     name: '',
     lastname: '',
-    contact: ''
+    contact: '',
+    email: ''
   };
 
   reset = () => {
-    this.setState({ name: '', lastname: '', contact: '' });
+    this.setState({ name: '', lastname: '', contact: '', email: '' });
   };
 
   nameChangeHandler = event => {
@@ -23,6 +24,10 @@ class AddContact extends Component {
 
   contactChangeHandler = event => {
     this.setState({ contact: event.target.value });
+  };
+
+  emailChangeHandler = event => {
+    this.setState({ email: event.target.value });
   };
 
   render() {
@@ -46,32 +51,46 @@ class AddContact extends Component {
           onChange={this.lastnameChangeHandler}
           value={this.state.lastname}
         />
-        <input
-          type="text"
-          placeholder="contact"
-          onChange={this.contactChangeHandler}
-          value={this.state.contact}
-        />
 
+        <div class="input input-group">
+          <input
+            type="text"
+            placeholder="contact"
+            onChange={this.contactChangeHandler}
+            value={this.state.contact}
+          />
+          <button>add</button>
+        </div>
+        <div class="input input-group">
+          <input
+            type="email"
+            placeholder="email"
+            onChange={this.emailChangeHandler}
+            value={this.state.email}
+          />
+          <button>add</button>
+        </div>
         <button
           onClick={() => {
             //validate
             if (
               this.state.name.trim() !== '' &&
               this.state.lastname.trim() !== '' &&
-              this.state.contact.trim() !== ''
+              this.state.contact.trim() !== '' &&
+              this.state.email.trime() !== ''
             ) {
               return this.props.contactAdded(
                 {
                   name: this.state.name,
                   lastname: this.state.lastname,
-                  contact: this.state.contact
+                  contact: this.state.contact,
+                  email: this.state.email
                 },
                 this.reset
               );
             }
           }}>
-          Add contact
+          save
         </button>
       </div>
     );

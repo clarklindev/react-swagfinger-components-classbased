@@ -5,10 +5,8 @@ class Contact extends Component {
   state = {
     id: this.props.id,
     name: this.props.name,
-    lastname: this.props.lastname,
-    contact: this.props.contact
+    lastname: this.props.lastname
   };
-  contactChangeHandler;
 
   render() {
     let className = Utils.getClassNameString([
@@ -22,7 +20,6 @@ class Contact extends Component {
         <div className={className}>
           <h3>{this.props.name}</h3>
           <p>{this.props.lastname}</p>
-          <p>{this.props.contact}</p>
         </div>
       </React.Fragment>
     );

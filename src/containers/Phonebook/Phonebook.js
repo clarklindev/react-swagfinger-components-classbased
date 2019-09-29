@@ -4,6 +4,7 @@ import * as actions from '../../store/actions/index';
 import Contact from '../../components/Contact/Contact';
 import classes from './Phonebook.module.scss';
 import Utils from '../../Utils';
+import { Link } from 'react-router-dom';
 
 class Phonebook extends Component {
   componentDidMount() {
@@ -28,13 +29,13 @@ class Phonebook extends Component {
             {this.props.storedPhonebook.map(phonebookEntry => {
               return (
                 <li key={phonebookEntry.id}>
-                  <Contact
-                    id={phonebookEntry.id}
-                    name={phonebookEntry.name}
-                    lastname={phonebookEntry.lastname}
-                    contact={phonebookEntry.contact}
-                    onUpdated={this.props.onContactUpdated}
-                  />
+                  <Link to="">
+                    <Contact
+                      id={phonebookEntry.id}
+                      name={phonebookEntry.name}
+                      lastname={phonebookEntry.lastname}
+                    />
+                  </Link>
                 </li>
               );
             })}
