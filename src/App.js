@@ -6,21 +6,33 @@ import './App.scss';
 import * as actions from './store/actions/index';
 import { connect } from 'react-redux';
 import Layout from './hoc/Layout/Layout';
-import Phonebook from './containers/Phonebook/Phonebook';
+import Phonebook from './components/Phonebook/Phonebook';
 import AdminPhonebook from './containers/AdminPhonebook/AdminPhonebook';
 import Auth from './containers/Auth/Auth';
 import ContactAdmin from './components/Contact/ContactAdmin';
 
 class App extends Component {
+  componentDidMount() {
+    this.props.onFetchContacts();
+  }
+
   render() {
     return (
       <Layout>
         <div className="App">
           <Switch>
-            <Route path="/phonebook" component={Phonebook} />
+            <Route
+              path="/phonebook"
+              render={props => (
+                <Phonebook
+                  {...props}
+                  storedPhonebook={this.props.storedPhonebook}
+                />
+              )}
+            />
             <Route path="/phonebookadmin" component={AdminPhonebook} />
             <Route
-              path={'/addcontact'}
+              path="/addcontact"
               render={props => (
                 <ContactAdmin
                   {...props}
@@ -46,6 +58,10 @@ const mapDispatchToProps = dispatch => {
     onContactAdded: (contact, reset) => {
       dispatch(actions.processAddContact(contact));
       reset();
+    },
+
+    onFetchContacts: () => {
+      dispatch(actions.fetchContacts());
     }
   };
 };
