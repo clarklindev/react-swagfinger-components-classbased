@@ -23,7 +23,11 @@ class Phonebook extends Component {
             {this.props.storedPhonebook.map(phonebookEntry => {
               return (
                 <li key={phonebookEntry.id}>
-                  <Link to="">
+                  <Link
+                    to={{
+                      pathname: '/viewcontact',
+                      search: `?id=${phonebookEntry.id}`
+                    }}>
                     <Contact
                       id={phonebookEntry.id}
                       name={phonebookEntry.name}

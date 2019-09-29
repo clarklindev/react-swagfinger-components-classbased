@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import AddContact from '../../../containers/AddContact/AddContact';
+import AddContact from './AddContact/AddContact';
 
-class ContactAdmin extends Component {
+class AdminContact extends Component {
   render() {
     return (
       <React.Fragment>
@@ -12,4 +12,4 @@ class ContactAdmin extends Component {
   }
 }
 
-export default ContactAdmin;
+export default AdminContact;

@@ -8,6 +8,13 @@
   align-self: center;
   align-items: center;
 
+  .Label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+    text-align: left;
+  }
+
   .IconButton {
     display: inline-block;
     border: none;
@@ -22,5 +29,10 @@
     text-align: center;
     -webkit-appearance: none;
     -moz-appearance: none;
+  }
+
+  .ContactGroup {
+    display: flex;
+    flex-direction: row;
   }
 }

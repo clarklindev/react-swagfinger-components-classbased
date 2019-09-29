@@ -6,10 +6,11 @@ import './App.scss';
 import * as actions from './store/actions/index';
 import { connect } from 'react-redux';
 import Layout from './hoc/Layout/Layout';
-import Phonebook from './components/Phonebook/Phonebook';
-import AdminPhonebook from './containers/AdminPhonebook/AdminPhonebook';
 import Auth from './containers/Auth/Auth';
-import ContactAdmin from './components/Phonebook/Contact/ContactAdmin';
+import AdminPhonebook from './containers/AdminPhonebook/AdminPhonebook';
+import Phonebook from './components/Phonebook/Phonebook';
+import AdminContact from './containers/AdminContact/AdminContact';
+import ViewContact from './components/Phonebook/Contact/ViewContact';
 
 class App extends Component {
   componentDidMount() {
@@ -30,11 +31,16 @@ class App extends Component {
                 />
               )}
             />
+            <Route
+              path="/viewcontact"
+              render={props => <ViewContact {...props} />}
+            />
+
             <Route path="/phonebookadmin" component={AdminPhonebook} />
             <Route
               path="/addcontact"
               render={props => (
-                <ContactAdmin
+                <AdminContact
                   {...props}
                   onContactAdded={this.props.onContactAdded}
                 />
