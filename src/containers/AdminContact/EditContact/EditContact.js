@@ -175,7 +175,7 @@ class EditContact extends Component {
                   contactnumbers: this.state.contactnumbers,
                   emails: this.state.emails
                 },
-                this.reset
+                () => console.log('helloworld')
               );
             }
           }}>
