@@ -76,8 +76,9 @@ const mapDispatchToProps = dispatch => {
       reset();
     },
 
-    onContactUpdated: contact => {
+    onContactUpdated: (contact, reset) => {
       dispatch(actions.processUpdateContact(contact));
+      reset();
     },
 
     onFetchContacts: () => {
