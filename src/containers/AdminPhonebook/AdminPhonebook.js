@@ -17,7 +17,8 @@ class AdminPhonebook extends Component {
     console.log('clicked id: ', id);
     //navigate programatically
     this.props.history.push({
-      pathname: '/editcontact/' + id
+      pathname: `/editcontact`,
+      search: `?id=${id}`
     });
   };
 

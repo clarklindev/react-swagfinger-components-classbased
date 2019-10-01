@@ -49,7 +49,12 @@ class App extends Component {
             />
             <Route
               path="/editcontact"
-              render={props => <EditContact {...props} />}
+              render={props => (
+                <EditContact
+                  {...props}
+                  onContactUpdated={this.props.onContactUpdated}
+                />
+              )}
             />
             <Route path="/auth" component={Auth} />
             <Route path="/" exact component={Auth} />
@@ -69,6 +74,10 @@ const mapDispatchToProps = dispatch => {
     onContactAdded: (contact, reset) => {
       dispatch(actions.processAddContact(contact));
       reset();
+    },
+
+    onContactUpdated: contact => {
+      dispatch(actions.processUpdateContact(contact));
     },
 
     onFetchContacts: () => {
