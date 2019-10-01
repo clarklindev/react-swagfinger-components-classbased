@@ -108,7 +108,6 @@ class AddContact extends Component {
           changed={this.nameChangeHandler}
           value={this.state.name}
         />
-
         <Input
           inputtype="input"
           type="text"
@@ -118,8 +117,10 @@ class AddContact extends Component {
           changed={this.lastnameChangeHandler}
           value={this.state.lastname}
         />
-
-        <label className={classes.Label}>Contact number</label>
+        <div className={classes.LabelButtonGroup}>
+          <label className={classes.Label}>Contact number</label>
+          <button onClick={this.contactnumberAddHandler}>add</button>
+        </div>
         {this.state.contactnumbers.map((contactnumber, index) => {
           console.log('index', index);
           return (
@@ -141,9 +142,10 @@ class AddContact extends Component {
             </div>
           );
         })}
-        <button onClick={this.contactnumberAddHandler}>add</button>
-
-        <label className={classes.Label}>Email</label>
+        <div className={classes.LabelButtonGroup}>
+          <label className={classes.Label}>Email</label>
+          <button onClick={this.emailAddHandler}>add</button>
+        </div>
         {this.state.emails.map((each, index) => {
           console.log('index', index);
           return (
@@ -165,8 +167,6 @@ class AddContact extends Component {
             </div>
           );
         })}
-        <button onClick={this.emailAddHandler}>add</button>
-
         <button
           onClick={() => {
             //validate
