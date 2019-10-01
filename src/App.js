@@ -11,6 +11,7 @@ import AdminPhonebook from './containers/AdminPhonebook/AdminPhonebook';
 import Phonebook from './components/Phonebook/Phonebook';
 import AdminContact from './containers/AdminContact/AdminContact';
 import ViewContact from './components/Phonebook/Contact/ViewContact';
+import EditContact from './containers/AdminContact/EditContact/EditContact';
 
 class App extends Component {
   componentDidMount() {
@@ -45,6 +46,10 @@ class App extends Component {
                   onContactAdded={this.props.onContactAdded}
                 />
               )}
+            />
+            <Route
+              path="/editcontact"
+              render={props => <EditContact {...props} />}
             />
             <Route path="/auth" component={Auth} />
             <Route path="/" exact component={Auth} />

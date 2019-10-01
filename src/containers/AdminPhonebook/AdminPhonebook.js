@@ -13,6 +13,14 @@ class AdminPhonebook extends Component {
     this.props.onFetchContacts();
   }
 
+  editContactHandler = id => {
+    console.log('clicked id: ', id);
+    //navigate programatically
+    this.props.history.push({
+      pathname: '/editcontact/' + id
+    });
+  };
+
   render() {
     const className = Utils.getClassNameString([
       classes.AdminPhonebook,
@@ -45,12 +53,19 @@ class AdminPhonebook extends Component {
                     onUpdated={this.props.onContactUpdated}
                   />
 
-                  <button>edit</button>
+                  <button
+                    onClick={this.editContactHandler.bind(
+                      this,
+                      phonebookEntry.id
+                    )}>
+                    edit
+                  </button>
 
                   <button
-                    onClick={() =>
-                      this.props.onContactRemoved(phonebookEntry.id)
-                    }>
+                    onClick={this.props.onContactRemoved.bind(
+                      this,
+                      phonebookEntry.id
+                    )}>
                     Delete
                   </button>
                 </li>
