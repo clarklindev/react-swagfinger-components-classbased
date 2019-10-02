@@ -2,20 +2,30 @@ import React, { Component } from 'react';
 import classes from './Contact.module.scss';
 import Utils from '../../../Utils';
 class Contact extends Component {
-  render() {
-    let className = Utils.getClassNameString([
+  constructor(props) {
+    super(props);
+
+    this.className = Utils.getClassNameString([
       classes.Contact,
       Contact.name,
       this.props.className
     ]);
 
+    this.displayTextRef = React.createRef();
+  }
+
+  componentDidMount() {
+    this.displayTextRef.current.innerHTML = this.props.displayText;
+  }
+
+  componentDidUpdate() {
+    this.displayTextRef.current.innerHTML = this.props.displayText;
+  }
+  render() {
     return (
-      <React.Fragment>
-        <div className={className}>
-          <h3>{this.props.name}</h3>
-          <p>{this.props.lastname}</p>
-        </div>
-      </React.Fragment>
+      <div className={this.className}>
+        <p ref={this.displayTextRef}></p>
+      </div>
     );
   }
 }
