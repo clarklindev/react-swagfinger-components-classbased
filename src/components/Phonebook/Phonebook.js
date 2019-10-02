@@ -32,30 +32,34 @@ class Phonebook extends Component {
   };
 
   render() {
-    let filtered = this.props.storedPhonebook.map(phonebookEntry => {
-      console.log('length: ', this.state.filterText.length);
-      let regex = new RegExp(this.state.filterText, 'gi');
+    let filtered = this.props.storedPhonebook
+      .filter(item => {
+        let combinedString = `${item.name} ${item.lastname}`;
+        return combinedString.includes(this.state.filterText);
+      })
+      .map(phonebookEntry => {
+        let regex = new RegExp(this.state.filterText, 'gi');
 
-      let entry =
-        this.state.filterText.length > 0
-          ? this.output(
-              `${phonebookEntry.name} ${phonebookEntry.lastname}`,
-              regex
-            )
-          : `${phonebookEntry.name} ${phonebookEntry.lastname}`;
+        let entry =
+          this.state.filterText.length > 0
+            ? this.output(
+                `${phonebookEntry.name} ${phonebookEntry.lastname}`,
+                regex
+              )
+            : `${phonebookEntry.name} ${phonebookEntry.lastname}`;
 
-      return (
-        <li key={phonebookEntry.id}>
-          <Link
-            to={{
-              pathname: '/viewcontact',
-              search: `?id=${phonebookEntry.id}`
-            }}>
-            <Contact id={phonebookEntry.id} displayText={entry} />
-          </Link>
-        </li>
-      );
-    });
+        return (
+          <li key={phonebookEntry.id}>
+            <Link
+              to={{
+                pathname: '/viewcontact',
+                search: `?id=${phonebookEntry.id}`
+              }}>
+              <Contact id={phonebookEntry.id} displayText={entry} />
+            </Link>
+          </li>
+        );
+      });
 
     return (
       <div className={this.className}>

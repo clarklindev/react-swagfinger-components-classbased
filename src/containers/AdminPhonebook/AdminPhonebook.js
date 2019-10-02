@@ -48,9 +48,7 @@ class AdminPhonebook extends Component {
                 <li className={classes.Li} key={phonebookEntry.id}>
                   <Contact
                     id={phonebookEntry.id}
-                    name={phonebookEntry.name}
-                    lastname={phonebookEntry.lastname}
-                    contact={phonebookEntry.contact}
+                    displayText={`${phonebookEntry.name} ${phonebookEntry.lastname}`}
                     onUpdated={this.props.onContactUpdated}
                   />
 
