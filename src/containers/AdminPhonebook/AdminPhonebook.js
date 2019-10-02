@@ -7,8 +7,24 @@ import Contact from '../../components/Phonebook/Contact/Contact';
 
 import classes from './AdminPhonebook.module.scss';
 import Utils from '../../Utils';
+import SearchFilter from '../../containers/SearchFilter/SearchFilter';
 
 class AdminPhonebook extends Component {
+  state = {
+    filterText: ''
+  };
+
+  searchChangedHandler = event => {
+    //match string
+    console.log('input:', event.target.value);
+    this.setState({ filterText: event.target.value });
+  };
+
+  //highlighting - matching regular expression (useful for search matching)
+  output = (str, regex) => {
+    return str.replace(regex, str => `<span>${str}</span>`);
+  };
+
   componentDidMount() {
     this.props.onFetchContacts();
   }
@@ -23,6 +39,45 @@ class AdminPhonebook extends Component {
   };
 
   render() {
+    let filtered = this.props.storedPhonebook
+      .filter(item => {
+        let combinedString = `${item.name} ${item.lastname}`;
+        return combinedString.includes(this.state.filterText);
+      })
+      .map(phonebookEntry => {
+        let regex = new RegExp(this.state.filterText, 'gi');
+
+        let entry =
+          this.state.filterText.length > 0
+            ? this.output(
+                `${phonebookEntry.name} ${phonebookEntry.lastname}`,
+                regex
+              )
+            : `${phonebookEntry.name} ${phonebookEntry.lastname}`;
+
+        return (
+          <li className={classes.Li} key={phonebookEntry.id}>
+            <Contact
+              id={phonebookEntry.id}
+              displayText={entry}
+              onUpdated={this.props.onContactUpdated}
+            />
+
+            <button
+              onClick={this.editContactHandler.bind(this, phonebookEntry.id)}>
+              edit
+            </button>
+
+            <button
+              onClick={this.props.onContactRemoved.bind(
+                this,
+                phonebookEntry.id
+              )}>
+              Delete
+            </button>
+          </li>
+        );
+      });
     const className = Utils.getClassNameString([
       classes.AdminPhonebook,
       AdminPhonebook.name,
@@ -32,6 +87,7 @@ class AdminPhonebook extends Component {
     return (
       <div className={className}>
         <h1>Phonebook Admin</h1>
+        <SearchFilter changed={this.searchChangedHandler} />
 
         <Link
           to={{
@@ -43,33 +99,7 @@ class AdminPhonebook extends Component {
         <div>
           <ul className={classes.Ul}>
             {console.log('here!!!: ', this.props.storedPhonebook)}
-            {this.props.storedPhonebook.map(phonebookEntry => {
-              return (
-                <li className={classes.Li} key={phonebookEntry.id}>
-                  <Contact
-                    id={phonebookEntry.id}
-                    displayText={`${phonebookEntry.name} ${phonebookEntry.lastname}`}
-                    onUpdated={this.props.onContactUpdated}
-                  />
-
-                  <button
-                    onClick={this.editContactHandler.bind(
-                      this,
-                      phonebookEntry.id
-                    )}>
-                    edit
-                  </button>
-
-                  <button
-                    onClick={this.props.onContactRemoved.bind(
-                      this,
-                      phonebookEntry.id
-                    )}>
-                    Delete
-                  </button>
-                </li>
-              );
-            })}
+            {filtered}
           </ul>
         </div>
       </div>

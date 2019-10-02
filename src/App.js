@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 //js
 
 import './App.scss';
@@ -57,7 +57,8 @@ class App extends Component {
               )}
             />
             <Route path="/auth" component={Auth} />
-            <Route path="/" exact component={Auth} />
+            <Redirect from="/" to="/phonebook" />
+            {/* <Route path="/" exact component={Auth} /> */}
           </Switch>
         </div>
       </Layout>
