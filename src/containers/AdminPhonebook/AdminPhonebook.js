@@ -9,6 +9,7 @@ import classes from './AdminPhonebook.module.scss';
 import Utils from '../../Utils';
 import SearchFilter from '../../containers/SearchFilter/SearchFilter';
 import SectionHeader from '../../components/UI/Headers/SectionHeader';
+
 class AdminPhonebook extends Component {
   state = {
     filterText: ''
@@ -100,17 +101,6 @@ class AdminPhonebook extends Component {
             </div>
             <div class="row">
               <div class="col">
-                <Link
-                  to={{
-                    pathname: '/addcontact'
-                  }}
-                  style={{ textDecoration: 'underline', color: 'black' }}>
-                  Add Contact
-                </Link>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
                 <SearchFilter changed={this.searchChangedHandler} />
               </div>
             </div>
@@ -118,8 +108,22 @@ class AdminPhonebook extends Component {
               <div class="col">
                 <div className={classes.Labeledgroup}>
                   <label>Contacts</label>
-                  <ul>{filtered}</ul>
+                  <Link
+                    to={{
+                      pathname: '/addcontact'
+                    }}
+                    style={{
+                      textDecoration: 'none',
+                      color: 'black'
+                    }}>
+                    <button>add contact</button>
+                  </Link>
                 </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <ul>{filtered}</ul>
               </div>
             </div>
           </div>
