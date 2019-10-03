@@ -42,7 +42,9 @@ class AdminPhonebook extends Component {
     let filtered = this.props.storedPhonebook
       .filter(item => {
         let combinedString = `${item.name} ${item.lastname}`; //same as html presentation
-        return combinedString.toLowerCase().includes(this.state.filterText); //match filterText
+        return combinedString
+          .toLowerCase()
+          .includes(this.state.filterText.toLowerCase()); //match filterText
       })
       //all that match..return an <li> element
       .map(phonebookEntry => {

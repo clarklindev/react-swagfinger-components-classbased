@@ -39,7 +39,7 @@ class Phonebook extends Component {
         let combinedString = `${item.name} ${item.lastname}`;
         return combinedString
           .toLocaleLowerCase()
-          .includes(this.state.filterText);
+          .includes(this.state.filterText.toLowerCase());
       })
       .map(phonebookEntry => {
         let regex = new RegExp(this.state.filterText, 'gi');
