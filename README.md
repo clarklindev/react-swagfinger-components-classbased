@@ -1,5 +1,3 @@
-# Realm Digital Interview Assessment - Address Book
-
 Implement a web application where a user can manage an address book
 
 ## Requirements
