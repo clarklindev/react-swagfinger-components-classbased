@@ -1,3 +1,13 @@
+# Assigment
+
+My tech stack for this project:
+* React
+* Redux
+* Firebase (Create/Read/Update/Delete)
+* HTML
+* SCSS
+* javascript
+
 Implement a web application where a user can manage an address book
 
 ## Requirements
