@@ -1,5 +1,10 @@
 :root {
   --maxwidth: 500px;
+  --inputheight: 50px;
+}
+
+input {
+  height: var(--inputheight);
 }
 
 button {
@@ -7,7 +12,7 @@ button {
   background-color: white;
   padding: 0px 10px;
   border-radius: 5px;
-  height: 35px;
+  height: var(--inputheight);
   cursor: pointer;
   &:focus {
     outline: 0;
