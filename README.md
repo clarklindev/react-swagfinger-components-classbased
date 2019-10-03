@@ -10,7 +10,7 @@ My tech stack for this project:
 * Firebase Backend (Create/Read/Update/Delete)
 * HTML
 * SCSS
-* javascript
+* javascript / RegularExpressions
 
 ## Assignment walkthrough
 * 2 there is 2 tabs Phonebook/Phonebook Admin
