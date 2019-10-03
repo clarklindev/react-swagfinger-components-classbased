@@ -12,9 +12,18 @@ My tech stack for this project:
 * SCSS
 * javascript
 
-Implement a web application where a user can manage an address book
+## Assignment walkthrough
+* 2 there is 2 tabs Phonebook/Phonebook Admin
+* I wanted to implement Authentication, the idea is that only after being authenticated, the user will be able to update/add/delete phonebook entries otherwise the link is unavailable.
+* There is still space for improvement namely more navigation buttons between pages
+* I would also like to redirect a user back to the Phonebook page after successfully adding a new contact person.
+* Join contact number and email address as one input and let user select email/contact via dropdown
+* Input Validation
+* In edit mode, you should be able to add/remove contacts and emails too (share same code as Add Person)
+* More optimized code (edit contact / add contact could possibly be merged to the same codebase)
 
-## Requirements
+## Assignment Requirements
+Implement a web application where a user can manage an address book
 
 * A user must be able to see a list of their contacts
 * A user must be able to search their contacts
