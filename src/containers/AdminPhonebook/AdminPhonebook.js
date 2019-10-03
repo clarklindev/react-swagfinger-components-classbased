@@ -91,7 +91,7 @@ class AdminPhonebook extends Component {
 
     return (
       <div className={className}>
-        <div className="container-fluid">
+        <div className="container">
           <div className={[classes.Wrapper, 'container'].join(' ')}>
             <div class="row">
               <div class="col">

@@ -101,7 +101,7 @@ class AdminContact extends Component {
   render() {
     return (
       <div className={this.className}>
-        <div className="container-fluid">
+        <div className="container">
           <div className={[classes.Wrapper, 'container'].join(' ')}>
             <div className="row">
               <div className="col">

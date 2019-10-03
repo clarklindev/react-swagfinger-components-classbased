@@ -152,7 +152,7 @@ class EditContact extends Component {
     }
     return (
       <div className={this.className}>
-        <div className="container-fluid">
+        <div className="container">
           <div className={[classes.Wrapper, 'container'].join(' ')}>
             <div class="row">
               <div class="col">
