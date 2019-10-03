@@ -37,7 +37,9 @@ class Phonebook extends Component {
     let filtered = this.props.storedPhonebook
       .filter(item => {
         let combinedString = `${item.name} ${item.lastname}`;
-        return combinedString.includes(this.state.filterText);
+        return combinedString
+          .toLocaleLowerCase()
+          .includes(this.state.filterText);
       })
       .map(phonebookEntry => {
         let regex = new RegExp(this.state.filterText, 'gi');
