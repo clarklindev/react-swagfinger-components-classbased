@@ -20,11 +20,6 @@ Implement a web application where a user can manage an address book
 
 * Login/logout is not required
 
-## How to send this to us
-
-* Send a link to your public Git repository (GitHub, BitBucket, GitLab, etc) to jobs@realmdigital.co.za
-* Do not email a zip file containing your code.
-
 ---
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
