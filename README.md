@@ -1,47 +1,54 @@
 # Assigment
 
 ## Preview
+
 http://bit.ly/2VbYehG
 
 ## Tech Stack
+
 My tech stack for this project:
-* React / ReactCLI
-* Redux
-* Firebase Backend (Create/Read/Update/Delete)
-* HTML
-* SCSS
-* javascript / RegularExpressions
+
+- React / ReactCLI
+- Redux
+- Firebase Backend (Create/Read/Update/Delete)
+- HTML
+- SCSS
+- javascript / RegularExpressions
 
 ## Assignment walkthrough
-* 2 there is 2 tabs Phonebook/Phonebook Admin
-* I wanted to implement Authentication, the idea is that only after being authenticated, the user will be able to update/add/delete phonebook entries otherwise the link is unavailable.
-* There is still space for improvement namely more navigation buttons between pages
-* I would also like to redirect a user back to the Phonebook page after successfully adding a new contact person.
-* Join contact number and email address as one input and let user select email/contact via dropdown
-* Input Validation
-* In edit mode, you should be able to add/remove contacts and emails too (share same code as Add Person)
-* More optimized code (edit contact / add contact could possibly be merged to the same codebase)
+
+- There is 2 tabs Phonebook/Phonebook Admin
+- After updating an entry, you can view the update on the Phonebook
+- I wanted to implement Authentication, the idea is that only after being authenticated, the user will be able to update/add/delete phonebook entries otherwise the link is unavailable.
+- There is still space for improvement namely more navigation buttons between pages
+- Call to action buttons
+- I would also like to redirect a user back to the Phonebook page after successfully adding a new contact person.
+- Join contact number and email address as one input and let user select email/contact via dropdown
+- Input Validation
+- In edit mode, you should be able to add/remove contacts and emails too (share same code as Add Person)
+- More optimized code (edit contact / add contact could possibly be merged to the same codebase)
 
 ## Assignment Requirements
+
 Implement a web application where a user can manage an address book
 
-* A user must be able to see a list of their contacts
-* A user must be able to search their contacts
-* A user must be able to create a new contact
-* A user must be able to update an existing contact
-* A user must be able to delete a contact
-* A contact consists of a first name and a last name
-* A contact can have unlimited contact numbers and email addresses
+- A user must be able to see a list of their contacts
+- A user must be able to search their contacts
+- A user must be able to create a new contact
+- A user must be able to update an existing contact
+- A user must be able to delete a contact
+- A contact consists of a first name and a last name
+- A contact can have unlimited contact numbers and email addresses
 
 ## Technologies
 
-* Use any database/datastore
-* Use any backend technology/framework that is appropriate for the position you are applying for
-* Use any UI technology/framework that is appropriate for the position you are applying for
+- Use any database/datastore
+- Use any backend technology/framework that is appropriate for the position you are applying for
+- Use any UI technology/framework that is appropriate for the position you are applying for
 
 ## Assumptions
 
-* Login/logout is not required
+- Login/logout is not required
 
 ---
 
