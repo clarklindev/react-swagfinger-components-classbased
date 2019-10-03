@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import classes from './EditContact.module.scss';
-import Utils from '../../../Utils';
-import axios from '../../../axios-contacts';
-
-import Input from '../../../components/UI/Input/Input';
+import Utils from '../../Utils';
+import axios from '../../axios-contacts';
+import SectionHeader from '../../components/UI/Headers/SectionHeader';
+import Input from '../../components/UI/Input/Input';
 
 class EditContact extends Component {
   constructor(props) {
@@ -92,7 +92,6 @@ class EditContact extends Component {
             type="text"
             name="contactnumber"
             placeholder="contact number"
-            label="contact number"
             key={index}
             value={this.state['contactnumbers'][index].number}
             changed={this.contactnumberChangeHandler(index)}
@@ -106,7 +105,6 @@ class EditContact extends Component {
             type="text"
             name="email"
             placeholder="email"
-            label="email"
             key={index}
             value={this.state['emails'][index].email}
             changed={this.emailChangeHandler(index)}
@@ -117,38 +115,36 @@ class EditContact extends Component {
       contact = (
         <React.Fragment>
           <div className={classes.LabelButtonGroup}>
-            <h3>Name</h3>
             <Input
               inputtype="input"
               type="text"
               name="name"
               placeholder="name"
-              label="name"
+              label="Name"
               value={this.state['name']}
               changed={this.nameChangeHandler}
             />
           </div>
 
           <div className={classes.LabelButtonGroup}>
-            <h3>last name</h3>
             <Input
               inputtype="input"
               type="text"
               name="last name"
               placeholder="last name"
-              label="last name"
+              label="Last name"
               value={this.state['lastname']}
               changed={this.lastnameChangeHandler}
             />
           </div>
 
           <div className={classes.LabelButtonGroup}>
-            <h3>contacts</h3>
+            <label>Contact number</label>
             <ul>{contactnumbers}</ul>
           </div>
 
           <div className={classes.LabelButtonGroup}>
-            <h3>emails</h3>
+            <label>Email</label>
             <ul>{emails}</ul>
           </div>
         </React.Fragment>
@@ -156,31 +152,45 @@ class EditContact extends Component {
     }
     return (
       <div className={this.className}>
-        <h2>Edit contact</h2>
-        <div>{contact}</div>
-
-        <button
-          onClick={() => {
-            //validate
-            if (
-              this.state.name.trim() !== '' &&
-              this.state.lastname.trim() !== '' &&
-              (this.state.contactnumbers.length || this.state.emails.length)
-            ) {
-              return this.props.onContactUpdated(
-                {
-                  id: this.state.id,
-                  name: this.state.name,
-                  lastname: this.state.lastname,
-                  contactnumbers: this.state.contactnumbers,
-                  emails: this.state.emails
-                },
-                () => console.log('helloworld')
-              );
-            }
-          }}>
-          save
-        </button>
+        <div className="container-fluid">
+          <div className={[classes.Wrapper, 'container'].join(' ')}>
+            <div class="row">
+              <div class="col">
+                <SectionHeader>Edit Contact</SectionHeader>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">{contact}</div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <button
+                  onClick={() => {
+                    //validate (super simple...)
+                    if (
+                      this.state.name.trim() !== '' &&
+                      this.state.lastname.trim() !== '' &&
+                      (this.state.contactnumbers.length ||
+                        this.state.emails.length)
+                    ) {
+                      return this.props.onContactUpdated(
+                        {
+                          id: this.state.id,
+                          name: this.state.name,
+                          lastname: this.state.lastname,
+                          contactnumbers: this.state.contactnumbers,
+                          emails: this.state.emails
+                        },
+                        () => console.log('helloworld')
+                      );
+                    }
+                  }}>
+                  save
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

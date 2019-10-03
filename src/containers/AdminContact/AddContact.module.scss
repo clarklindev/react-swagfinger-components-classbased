@@ -1,12 +1,9 @@
-.AddContact {
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  width: 400px;
-  justify-content: center;
-  align-content: center;
-  align-self: center;
-  align-items: center;
+.AdminContact {
+  .Wrapper {
+    box-sizing: border-box;
+    max-width: var(--maxwidth);
+    margin: 0 auto;
+  }
 
   .Label {
     font-weight: bold;
@@ -31,12 +28,23 @@
     -moz-appearance: none;
   }
 
+  .AddButton {
+    margin-bottom: 15px;
+  }
+  .RemoveButton {
+    margin-left: 10px;
+  }
   .ContactGroup {
     display: flex;
     flex-direction: row;
   }
 
-  .LabelButtonGroup {
+  .Labeledgroup {
     display: flex;
+    flex-direction: column;
+    label {
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
   }
 }

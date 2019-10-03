@@ -1,0 +1,28 @@
+.EditContact {
+  .Wrapper {
+    box-sizing: border-box;
+    max-width: var(--maxwidth);
+    margin: 0 auto;
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+
+  .LabelButtonGroup {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    justify-items: flex-start;
+    justify-self: flex-start;
+    label {
+      font-weight: bold;
+      margin-bottom: 8px;
+      text-align: left;
+    }
+  }
+}

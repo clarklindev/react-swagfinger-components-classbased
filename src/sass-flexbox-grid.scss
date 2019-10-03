@@ -1,0 +1,174 @@
+$units: 'px';
+
+$gutter: 20px;
+
+$totalcolumns: 12;
+
+$breakpoints: (
+  'xs': 0,
+  'sm': 577,
+  'md': 768,
+  'lg': 992,
+  'xl': 1200,
+  'xxl': 1600
+); //ie. <576, 577-767, 768-991, 992-1199, 1200-1599, > 1600 (these are points where the grid will break and move to next media query)
+
+$flex-direction: ('row', 'row-reverse', 'column', 'column-reverse');
+
+$justify-content: (
+  'flex-start',
+  'flex-end',
+  'center',
+  'space-between',
+  'space-around',
+  'space-evenly'
+);
+
+$align-items: ('stretch', 'flex-start', 'flex-end', 'center', 'baseline');
+$align-self: (
+  'stretch',
+  'flex-start',
+  'flex-end',
+  'center',
+  'baseline',
+  'auto'
+);
+$align-content: (
+  'flex-start',
+  'flex-end',
+  'center',
+  'space-between',
+  'space-around',
+  'stretch'
+);
+
+.container {
+  padding: $gutter / 2;
+}
+
+// for nested containers with class container-fluid
+.row .container-fluid {
+  margin-top: -$gutter/2;
+  margin-bottom: -$gutter/2;
+  margin-left: -$gutter/2;
+  margin-right: -$gutter/2;
+  .row {
+    margin: 0;
+  }
+}
+
+.container-fluid {
+  margin-left: -$gutter;
+  margin-right: -$gutter;
+  .row {
+    margin: 0;
+  }
+}
+
+.row {
+  box-sizing: border-box;
+  display: flex;
+  flex: 0 1 auto;
+  flex-direction: row;
+  flex-wrap: wrap;
+  //compensate for children's gutter
+  margin: -$gutter/2;
+  align-self: stretch;
+  align-content: stretch;
+  align-items: stretch;
+  // Overrides flexbox's default behavior of making all children equal height
+  // align-items: flex-start; // If this was not in place it would require two classes to make a row full of unequal height columns aligned top, middle, bottom
+}
+
+//if class starts with 'col'
+[class*='col'] {
+  box-sizing: border-box;
+  flex-grow: 1;
+  flex-basis: 1;
+  max-width: 100%;
+  width: 100%;
+  height: inherit;
+  padding: $gutter / 2;
+}
+
+//col height is height of content, default is same heights
+.col-height-content {
+  height: 100% !important;
+}
+
+//--------------------------------------------------------
+//create the row col- and col-offset classes
+@each $prop, $val in $breakpoints {
+  @media #{'(min-width: #{$val}#{$units})'} {
+    //1 to totalcolumns
+    .row {
+      flex-direction: row;
+    }
+
+    @for $i from 1 through $totalcolumns {
+      .col-#{$prop}-#{$i} {
+        width: auto;
+        box-sizing: border-box;
+        flex-shrink: 0;
+        flex-grow: 1;
+        flex-basis: 100% / $totalcolumns * $i;
+        max-width: 100% / $totalcolumns * $i;
+        padding: $gutter / 2;
+      }
+      //auto widths
+      .col-#{$prop}-auto-width {
+        width: auto !important;
+      }
+    }
+
+    // allows reseting-offset
+    @for $i from 0 through $totalcolumns {
+      .col-#{$prop}-offset-#{$i} {
+        @if (i == 0) {
+          //cant divide by zero check
+          margin-left: 0;
+        } @else {
+          margin-left: 100% / $totalcolumns * $i;
+          padding: $gutter/2;
+        }
+      }
+    }
+  }
+}
+
+//--------------------------------------------------------
+// alignment classes
+//flex-direction
+@each $prop in $flex-direction {
+  .flex-direction-#{$prop} {
+    flex-direction: #{$prop};
+  }
+}
+
+//justify-content
+@each $prop in $justify-content {
+  .justify-content-#{$prop} {
+    justify-content: #{$prop};
+  }
+}
+
+//align-items
+@each $prop in $align-items {
+  .align-items-#{$prop} {
+    align-items: #{$prop};
+  }
+}
+
+//align-self
+@each $prop in $align-self {
+  .align-self-#{$prop} {
+    align-items: #{$prop};
+  }
+}
+
+//align-content
+@each $prop in $align-content {
+  .align-content-#{$prop} {
+    align-content: #{$prop};
+  }
+}

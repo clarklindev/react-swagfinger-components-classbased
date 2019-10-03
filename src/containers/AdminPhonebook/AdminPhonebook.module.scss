@@ -1,12 +1,36 @@
 .AdminPhonebook {
-  .Ul {
+  .Wrapper {
+    box-sizing: border-box;
+    max-width: var(--maxwidth);
+    margin: 0 auto;
+  }
+  button {
+    margin-left: 5px;
+  }
+
+  ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
   }
-  .Li {
+  li {
+    padding: 15px;
+    background-color: white;
+    border: 1px solid #e6e6e6;
+    border-radius: 5px;
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .Labeledgroup {
+    display: flex;
+    flex-direction: column;
+    label {
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
   }
 }

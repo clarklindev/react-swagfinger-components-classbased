@@ -28,7 +28,8 @@ class Phonebook extends Component {
   };
 
   //highlighting - matching regular expression (useful for search matching)
-  output = (str, regex) => {
+  //wraps <span> around reg expression matched string
+  regMatch = (str, regex) => {
     return str.replace(regex, str => `<span>${str}</span>`);
   };
 
@@ -41,17 +42,19 @@ class Phonebook extends Component {
       .map(phonebookEntry => {
         let regex = new RegExp(this.state.filterText, 'gi');
 
+        // if filterText is not empty
         let entry =
           this.state.filterText.length > 0
-            ? this.output(
+            ? this.regMatch(
                 `${phonebookEntry.name} ${phonebookEntry.lastname}`,
                 regex
               )
-            : `${phonebookEntry.name} ${phonebookEntry.lastname}`;
+            : `${phonebookEntry.name} ${phonebookEntry.lastname}`; //else just show normal name+lastname string
 
         return (
           <li key={phonebookEntry.id}>
             <Link
+              style={{ textDecoration: 'none', color: 'black' }}
               to={{
                 pathname: '/viewcontact',
                 search: `?id=${phonebookEntry.id}`
@@ -64,11 +67,27 @@ class Phonebook extends Component {
 
     return (
       <div className={this.className}>
-        <SectionHeader>Phonebook</SectionHeader>
-        <SearchFilter changed={this.searchChangedHandler} />
-
-        <div>
-          <ul>{filtered}</ul>
+        <div className="container-fluid">
+          <div className={[classes.Wrapper, 'container'].join(' ')}>
+            <div className="row">
+              <div className="col">
+                <SectionHeader>Phonebook</SectionHeader>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col">
+                <SearchFilter changed={this.searchChangedHandler} />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col">
+                <div className={classes.Labeledgroup}>
+                  <label>Contacts</label>
+                  <ul>{filtered}</ul>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );

@@ -21,7 +21,7 @@ class AdminPhonebook extends Component {
   };
 
   //highlighting - matching regular expression (useful for search matching)
-  output = (str, regex) => {
+  regMatch = (str, regex) => {
     return str.replace(regex, str => `<span>${str}</span>`);
   };
 
@@ -41,40 +41,43 @@ class AdminPhonebook extends Component {
   render() {
     let filtered = this.props.storedPhonebook
       .filter(item => {
-        let combinedString = `${item.name} ${item.lastname}`;
-        return combinedString.includes(this.state.filterText);
+        let combinedString = `${item.name} ${item.lastname}`; //same as html presentation
+        return combinedString.includes(this.state.filterText); //match filterText
       })
+      //all that match..return an <li> element
       .map(phonebookEntry => {
-        let regex = new RegExp(this.state.filterText, 'gi');
+        let regex = new RegExp(this.state.filterText, 'gi'); //global and case-insensitive
 
         let entry =
           this.state.filterText.length > 0
-            ? this.output(
+            ? this.regMatch(
                 `${phonebookEntry.name} ${phonebookEntry.lastname}`,
                 regex
               )
             : `${phonebookEntry.name} ${phonebookEntry.lastname}`;
 
         return (
-          <li className={classes.Li} key={phonebookEntry.id}>
+          <li key={phonebookEntry.id}>
             <Contact
               id={phonebookEntry.id}
               displayText={entry}
               onUpdated={this.props.onContactUpdated}
             />
 
-            <button
-              onClick={this.editContactHandler.bind(this, phonebookEntry.id)}>
-              edit
-            </button>
+            <div className={classes.ContactButtons}>
+              <button
+                onClick={this.editContactHandler.bind(this, phonebookEntry.id)}>
+                Edit
+              </button>
 
-            <button
-              onClick={this.props.onContactRemoved.bind(
-                this,
-                phonebookEntry.id
-              )}>
-              Delete
-            </button>
+              <button
+                onClick={this.props.onContactRemoved.bind(
+                  this,
+                  phonebookEntry.id
+                )}>
+                Delete
+              </button>
+            </div>
           </li>
         );
       });
@@ -86,19 +89,38 @@ class AdminPhonebook extends Component {
 
     return (
       <div className={className}>
-        <SectionHeader>Phonebook Admin</SectionHeader>
-
-        <Link
-          to={{
-            pathname: '/addcontact'
-          }}>
-          Add Contact
-        </Link>
-
-        <SearchFilter changed={this.searchChangedHandler} />
-
-        <div>
-          <ul className={classes.Ul}>{filtered}</ul>
+        <div className="container-fluid">
+          <div className={[classes.Wrapper, 'container'].join(' ')}>
+            <div class="row">
+              <div class="col">
+                <SectionHeader>Phonebook Admin</SectionHeader>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <Link
+                  to={{
+                    pathname: '/addcontact'
+                  }}
+                  style={{ textDecoration: 'underline', color: 'black' }}>
+                  Add Contact
+                </Link>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <SearchFilter changed={this.searchChangedHandler} />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div className={classes.Labeledgroup}>
+                  <label>Contacts</label>
+                  <ul>{filtered}</ul>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );

@@ -44,22 +44,22 @@ class ViewContact extends Component {
 
       contact = (
         <React.Fragment>
-          <div className={classes.LabelButtonGroup}>
-            <h3>Name</h3>
+          <div className={classes.LabelGroup}>
+            <label>Name</label>
             <p>{this.state.loadedContact['name']}</p>
           </div>
-          <div className={classes.LabelButtonGroup}>
-            <h3>last name</h3>
+          <div className={classes.LabelGroup}>
+            <label>Last name</label>
             <p>{this.state.loadedContact['lastname']}</p>
           </div>
 
-          <div className={classes.LabelButtonGroup}>
-            <h3>contacts</h3>
+          <div className={classes.LabelGroup}>
+            <label>Contact number</label>
             <ul>{contactnumbers}</ul>
           </div>
 
-          <div className={classes.LabelButtonGroup}>
-            <h3>emails</h3>
+          <div className={classes.LabelGroup}>
+            <label>Email</label>
             <ul>{emails}</ul>
           </div>
         </React.Fragment>
@@ -68,8 +68,18 @@ class ViewContact extends Component {
 
     return (
       <div className={this.className}>
-        <SectionHeader>View Contact</SectionHeader>
-        <div>{contact}</div>
+        <div className="container-fluid">
+          <div className={[classes.Wrapper, 'container'].join(' ')}>
+            <div class="row">
+              <div class="col">
+                <SectionHeader>View Contact</SectionHeader>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">{contact}</div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

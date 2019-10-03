@@ -3,15 +3,16 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 //js
 
 import './App.scss';
+import './sass-flexbox-grid.scss';
 import * as actions from './store/actions/index';
 import { connect } from 'react-redux';
 import Layout from './hoc/Layout/Layout';
 import Auth from './containers/Auth/Auth';
 import AdminPhonebook from './containers/AdminPhonebook/AdminPhonebook';
 import Phonebook from './components/Phonebook/Phonebook';
-import AdminContact from './containers/AdminContact/AdminContact';
+import AdminContact from './containers/AdminContact/AddContact';
 import ViewContact from './components/Phonebook/Contact/ViewContact';
-import EditContact from './containers/AdminContact/EditContact/EditContact';
+import EditContact from './containers/AdminContact/EditContact';
 
 class App extends Component {
   componentDidMount() {

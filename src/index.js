@@ -8,7 +8,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 //app
 import App from './App';
-import './index.css';
+import './index.scss';
 import * as serviceWorker from './serviceWorker';
 
 //redux

@@ -1,5 +1,31 @@
 .ViewContact {
-  .LabelButtonGroup {
+  .Wrapper {
+    box-sizing: border-box;
+    max-width: var(--maxwidth);
+    margin: 0 auto;
+  }
+  .LabelGroup {
     display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+
+    label {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+  }
+  p {
+    margin: 0;
+    padding: 0;
+  }
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  li {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
   }
 }
