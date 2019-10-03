@@ -1,28 +1,31 @@
-## TEST
+# Realm Digital Interview Assessment - Address Book
 
-### Create a simple phone book web application which allows the user to store a person’s details
+Implement a web application where a user can manage an address book
 
-Create a simple phone book web application which allows the user to store a person’s details and at least a contact number. The app should allow you to:
+## Requirements
 
-- Add a new contact
-- Edit or remove a contact
-- View the contents of a phone book & contact
+* A user must be able to see a list of their contacts
+* A user must be able to search their contacts
+* A user must be able to create a new contact
+* A user must be able to update an existing contact
+* A user must be able to delete a contact
+* A contact consists of a first name and a last name
+* A contact can have unlimited contact numbers and email addresses
 
-### Pick at least one of the following features to implement:
+## Technologies
 
-- Search contacts
-- Persist your contacts client side on a page refresh
-- Add the ability to manage multiple phone books
+* Use any database/datastore
+* Use any backend technology/framework that is appropriate for the position you are applying for
+* Use any UI technology/framework that is appropriate for the position you are applying for
 
-#### Notes
+## Assumptions
 
-- Please try to structure your directories and files in a way that you would structure a
-  production ready project
-- Feel free to use a publicly available template project as a starting point (e.g.
-  create-react-app)
-- Add a new contact
-- Edit or remove a contact
-- View the contents of a phone book & contact
+* Login/logout is not required
+
+## How to send this to us
+
+* Send a link to your public Git repository (GitHub, BitBucket, GitLab, etc) to jobs@realmdigital.co.za
+* Do not email a zip file containing your code.
 
 ---
 
