@@ -1,9 +1,9 @@
 # Assigment
 
 My tech stack for this project:
-* React
+* React / ReactCLI
 * Redux
-* Firebase (Create/Read/Update/Delete)
+* Firebase Backend (Create/Read/Update/Delete)
 * HTML
 * SCSS
 * javascript
