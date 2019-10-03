@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import AddContact from './AddContact/AddContact';
+import SectionHeader from '../../components/UI/Headers/SectionHeader';
 
 class AdminContact extends Component {
   render() {
     return (
       <React.Fragment>
-        <h1>Add Contact</h1>
+        <SectionHeader>Add Contact</SectionHeader>
         <AddContact contactAdded={this.props.onContactAdded}></AddContact>
       </React.Fragment>
     );

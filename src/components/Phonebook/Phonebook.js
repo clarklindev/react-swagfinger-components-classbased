@@ -4,6 +4,7 @@ import classes from './Phonebook.module.scss';
 import Utils from '../../Utils';
 import { Link } from 'react-router-dom';
 import SearchFilter from '../../containers/SearchFilter/SearchFilter';
+import SectionHeader from '../UI/Headers/SectionHeader';
 
 class Phonebook extends Component {
   constructor(props) {
@@ -63,8 +64,7 @@ class Phonebook extends Component {
 
     return (
       <div className={this.className}>
-        <h1>Phonebook</h1>
-
+        <SectionHeader>Phonebook</SectionHeader>
         <SearchFilter changed={this.searchChangedHandler} />
 
         <div>

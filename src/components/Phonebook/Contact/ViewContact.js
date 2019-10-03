@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import classes from './ViewContact.module.scss';
 import Utils from '../../../Utils';
 import axios from '../../../axios-contacts';
+import SectionHeader from '../../UI/Headers/SectionHeader';
 
 class ViewContact extends Component {
   constructor(props) {
@@ -67,7 +68,7 @@ class ViewContact extends Component {
 
     return (
       <div className={this.className}>
-        <h1>View Contact</h1>
+        <SectionHeader>View Contact</SectionHeader>
         <div>{contact}</div>
       </div>
     );

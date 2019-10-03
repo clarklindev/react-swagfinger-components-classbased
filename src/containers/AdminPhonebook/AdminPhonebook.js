@@ -8,7 +8,7 @@ import Contact from '../../components/Phonebook/Contact/Contact';
 import classes from './AdminPhonebook.module.scss';
 import Utils from '../../Utils';
 import SearchFilter from '../../containers/SearchFilter/SearchFilter';
-
+import SectionHeader from '../../components/UI/Headers/SectionHeader';
 class AdminPhonebook extends Component {
   state = {
     filterText: ''
@@ -86,8 +86,7 @@ class AdminPhonebook extends Component {
 
     return (
       <div className={className}>
-        <h1>Phonebook Admin</h1>
-        <SearchFilter changed={this.searchChangedHandler} />
+        <SectionHeader>Phonebook Admin</SectionHeader>
 
         <Link
           to={{
@@ -96,11 +95,10 @@ class AdminPhonebook extends Component {
           Add Contact
         </Link>
 
+        <SearchFilter changed={this.searchChangedHandler} />
+
         <div>
-          <ul className={classes.Ul}>
-            {console.log('here!!!: ', this.props.storedPhonebook)}
-            {filtered}
-          </ul>
+          <ul className={classes.Ul}>{filtered}</ul>
         </div>
       </div>
     );
