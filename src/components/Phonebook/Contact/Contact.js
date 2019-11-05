@@ -12,20 +12,24 @@ class Contact extends Component {
     ]);
 
     this.displayTextRef = React.createRef();
+    this.extraTextRef = React.createRef();
   }
 
   componentDidMount() {
     this.displayTextRef.current.innerHTML = this.props.displayText;
+    this.extraTextRef.current.innerHTML = this.props.extraText;
   }
 
   componentDidUpdate() {
     this.displayTextRef.current.innerHTML = this.props.displayText;
+    this.extraTextRef.current.innerHTML = this.props.extraText;
   }
   render() {
     return (
       <div className={this.className}>
         <div className={classes.Labeledgroup}>
           <p ref={this.displayTextRef}></p>
+          <p ref={this.extraTextRef}></p>
         </div>
       </div>
     );

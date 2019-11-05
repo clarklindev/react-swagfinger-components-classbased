@@ -35,46 +35,72 @@ class Phonebook extends Component {
   };
 
   render() {
+    let cleanedUpSearchText = this.state.filterText
+      .replace(/\\/gi, '') //replace \ with empty
+      .replace(/\./gi, '\\.'); //replace . with \.
+
+    let regex = new RegExp(cleanedUpSearchText, 'gi');
+
     let filtered = this.props.storedPhonebook
       .filter(({ name, lastname, contactnumbers, emails }) => {
-        let combinedString = `${name} ${lastname}`;
+        let combinedString = `${name} ${lastname}`
+          .toLowerCase()
+          .includes(this.state.filterText.toLowerCase());
+
         let contactnumberString = contactnumbers.find(each => {
           return each.number.includes(this.state.filterText.toLowerCase());
         });
+
         let emailsString = emails.find(each => {
           return each.email.includes(this.state.filterText.toLowerCase());
         });
-        console.log('contactnumberString: ', contactnumberString);
-        console.log('emailsString: ', emailsString);
 
         return (
-          combinedString
-            .toLowerCase()
-            .includes(this.state.filterText.toLowerCase()) ||
+          combinedString === true ||
           contactnumberString !== undefined ||
           emailsString !== undefined
         );
       })
-      .map(phonebookEntry => {
-        let regex = new RegExp(this.state.filterText, 'gi');
+      .map(({ id, name, lastname, contactnumbers, emails }) => {
+        // at this stage every phonebookEntry contains a match from filterText
 
-        // if filterText is not empty
+        let contactnumberString = contactnumbers.find(each => {
+          return each.number.includes(this.state.filterText.toLowerCase());
+        });
+
+        let emailsString = emails.find(each => {
+          return each.email.includes(this.state.filterText.toLowerCase());
+        });
+        console.log('contact numbers: ', contactnumberString);
+        console.log('email numbers: ', emailsString);
         let entry =
           this.state.filterText.length > 0
-            ? this.regMatch(
-                `${phonebookEntry.name} ${phonebookEntry.lastname}`,
-                regex
-              )
-            : `${phonebookEntry.name} ${phonebookEntry.lastname}`; //else just show normal name+lastname string
+            ? this.regMatch(`${name} ${lastname}`, regex)
+            : `${name} ${lastname}`; //else just show normal name+lastname string
 
+        let extra = null;
+        let matchedNumber = null;
+        if (
+          contactnumberString !== undefined &&
+          this.state.filterText.length > 0
+        ) {
+          matchedNumber = this.regMatch(contactnumberString.number, regex);
+          extra = matchedNumber;
+        }
+
+        let matchedEmail = null;
+        if (emailsString !== undefined && this.state.filterText.length > 0) {
+          matchedEmail = this.regMatch(emailsString.email, regex);
+          extra = matchedEmail;
+        }
         return (
-          <li key={phonebookEntry.id}>
+          <li key={`${id}`}>
             <Link
               to={{
                 pathname: '/viewcontact',
-                search: `?id=${phonebookEntry.id}`
+                search: `?id=${id}`
               }}>
-              <Contact id={phonebookEntry.id} displayText={entry} />
+              <Contact id={`${id}`} displayText={entry} extraText={extra} />
             </Link>
           </li>
         );
