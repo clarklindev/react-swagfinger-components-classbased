@@ -1,4 +1,13 @@
 import React, { Component } from 'react';
+
+// font awesome
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import {
+  faEdit,
+  faTrashAlt as farFaTrashAlt
+} from '@fortawesome/free-regular-svg-icons';
+
 import { Route, Switch, Redirect } from 'react-router-dom';
 //js
 
@@ -13,6 +22,9 @@ import Phonebook from './components/Phonebook/Phonebook';
 import AdminContact from './containers/AdminContact/AddContact';
 import ViewContact from './components/Phonebook/Contact/ViewContact';
 import EditContact from './containers/AdminContact/EditContact';
+
+//add to fontawesome lib
+library.add(faEdit, farFaTrashAlt, faPlus);
 
 class App extends Component {
   componentDidMount() {

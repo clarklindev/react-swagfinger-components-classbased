@@ -9,6 +9,7 @@ import classes from './AdminPhonebook.module.scss';
 import Utils from '../../Utils';
 import SearchFilter from '../../containers/SearchFilter/SearchFilter';
 import SectionHeader from '../../components/UI/Headers/SectionHeader';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class AdminPhonebook extends Component {
   state = {
@@ -69,16 +70,18 @@ class AdminPhonebook extends Component {
 
             <div className={classes.ContactButtons}>
               <button
+                title="Edit"
                 onClick={this.editContactHandler.bind(this, phonebookEntry.id)}>
-                Edit
+                <FontAwesomeIcon icon={['far', 'edit']} />
               </button>
 
               <button
+                title="Delete"
                 onClick={this.props.onContactRemoved.bind(
                   this,
                   phonebookEntry.id
                 )}>
-                Delete
+                <FontAwesomeIcon icon={['far', 'trash-alt']} />
               </button>
             </div>
           </li>
@@ -116,7 +119,9 @@ class AdminPhonebook extends Component {
                       textDecoration: 'none',
                       color: 'black'
                     }}>
-                    <button>add contact</button>
+                    <button title="Add">
+                      <FontAwesomeIcon icon={['fas', 'plus']} /> Add Contact
+                    </button>
                   </Link>
                 </div>
               </div>

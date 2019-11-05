@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import SectionHeader from '../../components/UI/Headers/SectionHeader';
 import classes from './AddContact.module.scss';
 import Utils from '../../Utils';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Input from '../../components/UI/Input/Input';
 
@@ -138,14 +139,13 @@ class AdminContact extends Component {
 
             <div className="row">
               <div className="col">
-                <div className={classes.Labeledgroup}>
-                  <label className={classes.Label}>Contact number</label>
-                  <button
-                    className={classes.AddButton}
-                    onClick={this.contactnumberAddHandler}>
-                    add
-                  </button>
-                </div>
+                <label className={classes.Label}>Contact number</label>
+                <button
+                  title="Add"
+                  className={classes.AddButton}
+                  onClick={this.contactnumberAddHandler}>
+                  <FontAwesomeIcon icon={['fas', 'plus']} /> Add Number
+                </button>
                 {this.state.contactnumbers.map((contactnumber, index) => {
                   console.log('index', index);
                   return (
@@ -159,10 +159,11 @@ class AdminContact extends Component {
                         value={contactnumber.number}
                       />
                       <button
+                        title="Delete"
                         type="button"
                         className={classes.RemoveButton}
                         onClick={this.contactnumberRemoveHandler(index)}>
-                        -
+                        <FontAwesomeIcon icon={['far', 'trash-alt']} />
                       </button>
                     </div>
                   );
@@ -172,14 +173,13 @@ class AdminContact extends Component {
 
             <div className="row">
               <div class="col">
-                <div className={classes.Labeledgroup}>
-                  <label className={classes.Label}>Email</label>
-                  <button
-                    className={classes.AddButton}
-                    onClick={this.emailAddHandler}>
-                    add
-                  </button>
-                </div>
+                <label className={classes.Label}>Email</label>
+                <button
+                  title="Add"
+                  className={classes.AddButton}
+                  onClick={this.emailAddHandler}>
+                  <FontAwesomeIcon icon={['fas', 'plus']} /> Add Email
+                </button>
                 {this.state.emails.map((each, index) => {
                   console.log('index', index);
                   return (
@@ -193,10 +193,11 @@ class AdminContact extends Component {
                         value={each.email}
                       />
                       <button
+                        title="Delete"
                         type="button"
                         className={classes.RemoveButton}
                         onClick={this.emailRemoveHandler(index)}>
-                        -
+                        <FontAwesomeIcon icon={['far', 'trash-alt']} />
                       </button>
                     </div>
                   );
