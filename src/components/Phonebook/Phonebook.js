@@ -36,11 +36,24 @@ class Phonebook extends Component {
 
   render() {
     let filtered = this.props.storedPhonebook
-      .filter(({ name, lastname }) => {
+      .filter(({ name, lastname, contactnumbers, emails }) => {
         let combinedString = `${name} ${lastname}`;
-        return combinedString
-          .toLowerCase()
-          .includes(this.state.filterText.toLowerCase());
+        let contactnumberString = contactnumbers.find(each => {
+          return each.number.includes(this.state.filterText.toLowerCase());
+        });
+        let emailsString = emails.find(each => {
+          return each.email.includes(this.state.filterText.toLowerCase());
+        });
+        console.log('contactnumberString: ', contactnumberString);
+        console.log('emailsString: ', emailsString);
+
+        return (
+          combinedString
+            .toLowerCase()
+            .includes(this.state.filterText.toLowerCase()) ||
+          contactnumberString !== undefined ||
+          emailsString !== undefined
+        );
       })
       .map(phonebookEntry => {
         let regex = new RegExp(this.state.filterText, 'gi');
