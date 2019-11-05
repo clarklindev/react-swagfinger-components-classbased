@@ -24,6 +24,7 @@ class App extends Component {
       <Layout>
         <div className="App">
           <Switch>
+            {/* default route */}
             <Route
               path="/phonebook"
               render={props => (
@@ -33,12 +34,14 @@ class App extends Component {
                 />
               )}
             />
+
             <Route
               path="/viewcontact"
               render={props => <ViewContact {...props} />}
             />
 
             <Route path="/phonebookadmin" component={AdminPhonebook} />
+
             <Route
               path="/addcontact"
               render={props => (
@@ -48,6 +51,7 @@ class App extends Component {
                 />
               )}
             />
+
             <Route
               path="/editcontact"
               render={props => (
@@ -58,6 +62,7 @@ class App extends Component {
               )}
             />
             <Route path="/auth" component={Auth} />
+
             <Redirect from="/" to="/phonebook" />
             {/* <Route path="/" exact component={Auth} /> */}
           </Switch>
