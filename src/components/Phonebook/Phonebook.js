@@ -5,6 +5,7 @@ import Utils from '../../Utils';
 import { Link } from 'react-router-dom';
 import SearchFilter from '../../containers/SearchFilter/SearchFilter';
 import SectionHeader from '../UI/Headers/SectionHeader';
+import PropTypes from 'prop-types';
 
 class Phonebook extends Component {
   constructor(props) {
@@ -35,10 +36,10 @@ class Phonebook extends Component {
 
   render() {
     let filtered = this.props.storedPhonebook
-      .filter(item => {
-        let combinedString = `${item.name} ${item.lastname}`;
+      .filter(({ name, lastname }) => {
+        let combinedString = `${name} ${lastname}`;
         return combinedString
-          .toLocaleLowerCase()
+          .toLowerCase()
           .includes(this.state.filterText.toLowerCase());
       })
       .map(phonebookEntry => {
@@ -56,7 +57,6 @@ class Phonebook extends Component {
         return (
           <li key={phonebookEntry.id}>
             <Link
-              style={{ textDecoration: 'none', color: 'black' }}
               to={{
                 pathname: '/viewcontact',
                 search: `?id=${phonebookEntry.id}`
@@ -95,5 +95,9 @@ class Phonebook extends Component {
     );
   }
 }
+
+Phonebook.propTypes = {
+  storedPhonebook: PropTypes.array
+};
 
 export default Phonebook;
