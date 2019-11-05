@@ -70,13 +70,13 @@ class ViewContact extends Component {
       <div className={this.className}>
         <div className="container">
           <div className={[classes.Wrapper, 'container'].join(' ')}>
-            <div class="row">
-              <div class="col">
+            <div className="row">
+              <div className="col">
                 <SectionHeader>View Contact</SectionHeader>
               </div>
             </div>
-            <div class="row">
-              <div class="col">{contact}</div>
+            <div className="row">
+              <div className="col">{contact}</div>
             </div>
           </div>
         </div>

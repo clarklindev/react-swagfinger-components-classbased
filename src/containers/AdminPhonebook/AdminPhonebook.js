@@ -94,18 +94,18 @@ class AdminPhonebook extends Component {
       <div className={className}>
         <div className="container">
           <div className={[classes.Wrapper, 'container'].join(' ')}>
-            <div class="row">
-              <div class="col">
+            <div className="row">
+              <div className="col">
                 <SectionHeader>Phonebook Admin</SectionHeader>
               </div>
             </div>
-            <div class="row">
-              <div class="col">
+            <div className="row">
+              <div className="col">
                 <SearchFilter changed={this.searchChangedHandler} />
               </div>
             </div>
-            <div class="row">
-              <div class="col">
+            <div className="row">
+              <div className="col">
                 <div className={classes.Labeledgroup}>
                   <label>Contacts</label>
                   <Link
@@ -121,8 +121,8 @@ class AdminPhonebook extends Component {
                 </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col">
+            <div className="row">
+              <div className="col">
                 <ul>{filtered}</ul>
               </div>
             </div>
