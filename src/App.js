@@ -16,12 +16,14 @@ import './sass-flexbox-grid.scss';
 import * as actions from './store/actions/index';
 import { connect } from 'react-redux';
 import Layout from './hoc/Layout/Layout';
-import Auth from './containers/Auth/Auth';
-import AdminPhonebook from './containers/AdminPhonebook/AdminPhonebook';
+//components
 import Phonebook from './components/Phonebook/Phonebook';
-import AdminContact from './containers/AdminContact/AddContact';
-import ViewContact from './components/Phonebook/Contact/ViewContact';
-import EditContact from './containers/AdminContact/EditContact';
+import ContactRead from './components/Phonebook/Contact/ContactRead';
+//containers
+import Auth from './containers/Auth/Auth';
+import PhonebookAdmin from './containers/PhonebookAdmin/PhonebookAdmin';
+import ContactCreate from './containers/ContactAdmin/ContactCreate';
+import ContactUpdate from './containers/ContactAdmin/ContactUpdate';
 
 //add to fontawesome lib
 library.add(faEdit, farFaTrashAlt, faPlus);
@@ -48,16 +50,16 @@ class App extends Component {
             />
 
             <Route
-              path="/viewcontact"
-              render={props => <ViewContact {...props} />}
+              path="/contactread"
+              render={props => <ContactRead {...props} />}
             />
 
-            <Route path="/phonebookadmin" component={AdminPhonebook} />
+            <Route path="/phonebookadmin" component={PhonebookAdmin} />
 
             <Route
-              path="/addcontact"
+              path="/contactcreate"
               render={props => (
-                <AdminContact
+                <ContactCreate
                   {...props}
                   onContactAdded={this.props.onContactAdded}
                 />
@@ -65,9 +67,9 @@ class App extends Component {
             />
 
             <Route
-              path="/editcontact"
+              path="/contactupdate"
               render={props => (
-                <EditContact
+                <ContactUpdate
                   {...props}
                   onContactUpdated={this.props.onContactUpdated}
                 />

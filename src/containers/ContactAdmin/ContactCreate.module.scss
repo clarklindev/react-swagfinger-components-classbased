@@ -1,4 +1,4 @@
-.AdminContact {
+.ContactCreate {
   .Wrapper {
     box-sizing: border-box;
     max-width: var(--maxwidth);
@@ -6,6 +6,7 @@
   }
 
   .Label {
+    color: var(--colorheader);
     font-weight: bold;
     display: block;
     margin-bottom: 8px;

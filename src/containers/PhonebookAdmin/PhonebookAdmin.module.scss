@@ -1,4 +1,4 @@
-.AdminPhonebook {
+.PhonebookAdmin {
   .Wrapper {
     box-sizing: border-box;
     max-width: var(--maxwidth);
@@ -27,12 +27,14 @@
     justify-content: space-between;
     margin-bottom: 10px;
     cursor: default;
+    color: var(--colordefault);
   }
 
   .Labeledgroup {
     display: flex;
     flex-direction: column;
     label {
+      color: var(--colorheader);
       font-weight: bold;
       margin-bottom: 15px;
     }

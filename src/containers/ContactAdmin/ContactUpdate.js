@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
-import classes from './EditContact.module.scss';
+import classes from './ContactUpdate.module.scss';
 import Utils from '../../Utils';
 import axios from '../../axios-contacts';
 import SectionHeader from '../../components/UI/Headers/SectionHeader';
 import Input from '../../components/UI/Input/Input';
 
-class EditContact extends Component {
+class ContactUpdate extends Component {
   constructor(props) {
     super(props);
     this.className = Utils.getClassNameString([
-      classes.EditContact,
-      'EditContact',
+      classes.ContactUpdate,
+      'ContactUpdate',
       props.className
     ]);
   }
@@ -156,7 +156,7 @@ class EditContact extends Component {
           <div className={[classes.Wrapper, 'container'].join(' ')}>
             <div class="row">
               <div class="col">
-                <SectionHeader>Edit Contact</SectionHeader>
+                <SectionHeader>Contact Update</SectionHeader>
               </div>
             </div>
             <div class="row">
@@ -195,4 +195,4 @@ class EditContact extends Component {
     );
   }
 }
-export default EditContact;
+export default ContactUpdate;

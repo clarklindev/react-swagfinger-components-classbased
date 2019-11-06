@@ -1,4 +1,4 @@
-.EditContact {
+.ContactUpdate {
   .Wrapper {
     box-sizing: border-box;
     max-width: var(--maxwidth);
@@ -20,6 +20,7 @@
     justify-items: flex-start;
     justify-self: flex-start;
     label {
+      color: var(--colorheader);
       font-weight: bold;
       margin-bottom: 8px;
       text-align: left;

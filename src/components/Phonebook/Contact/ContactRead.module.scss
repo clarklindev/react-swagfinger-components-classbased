@@ -1,4 +1,4 @@
-.ViewContact {
+.ContactRead {
   .Wrapper {
     box-sizing: border-box;
     max-width: var(--maxwidth);
@@ -10,6 +10,7 @@
     margin-bottom: 30px;
 
     label {
+      color: var(--colorheader);
       font-weight: bold;
       margin-bottom: 10px;
     }
@@ -17,6 +18,7 @@
   p {
     margin: 0;
     padding: 0;
+    color: var(--colordefault);
   }
   ul {
     list-style-type: none;
@@ -27,5 +29,6 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    color: var(--colordefault);
   }
 }

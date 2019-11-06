@@ -4,6 +4,7 @@
   margin: 0 0 15px 0;
 
   .Label {
+    color: var(--colorheader);
     font-weight: bold;
     display: block;
     margin-bottom: 15px;
@@ -20,6 +21,7 @@
     display: block;
     width: 100%;
     box-sizing: border-box;
+    color: var(--colordefault);
   }
 
   .InputElement:focus {

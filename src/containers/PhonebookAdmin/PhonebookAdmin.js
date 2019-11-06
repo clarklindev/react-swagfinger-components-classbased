@@ -5,13 +5,13 @@ import { Link } from 'react-router-dom';
 import * as actions from '../../store/actions/index';
 import Contact from '../../components/Phonebook/Contact/Contact';
 
-import classes from './AdminPhonebook.module.scss';
+import classes from './PhonebookAdmin.module.scss';
 import Utils from '../../Utils';
-import SearchFilter from '../../containers/SearchFilter/SearchFilter';
+import SearchFilter from '../SearchFilter/SearchFilter';
 import SectionHeader from '../../components/UI/Headers/SectionHeader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-class AdminPhonebook extends Component {
+class PhonebookAdmin extends Component {
   state = {
     filterText: ''
   };
@@ -35,7 +35,7 @@ class AdminPhonebook extends Component {
     console.log('clicked id: ', id);
     //navigate programatically
     this.props.history.push({
-      pathname: `/editcontact`,
+      pathname: `/contactupdate`,
       search: `?id=${id}`
     });
   };
@@ -88,8 +88,8 @@ class AdminPhonebook extends Component {
         );
       });
     const className = Utils.getClassNameString([
-      classes.AdminPhonebook,
-      AdminPhonebook.name,
+      classes.PhonebookAdmin,
+      PhonebookAdmin.name,
       this.props.className
     ]);
 
@@ -113,7 +113,7 @@ class AdminPhonebook extends Component {
                   <label>Contacts</label>
                   <Link
                     to={{
-                      pathname: '/addcontact'
+                      pathname: '/contactcreate'
                     }}
                     style={{
                       textDecoration: 'none',
@@ -164,4 +164,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(AdminPhonebook);
+)(PhonebookAdmin);

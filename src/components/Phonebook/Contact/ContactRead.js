@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import classes from './ViewContact.module.scss';
+import classes from './ContactRead.module.scss';
 import Utils from '../../../Utils';
 import axios from '../../../axios-contacts';
 import SectionHeader from '../../UI/Headers/SectionHeader';
 
-class ViewContact extends Component {
+class ContactRead extends Component {
   constructor(props) {
     super(props);
     this.className = Utils.getClassNameString([
-      classes.ViewContact,
-      'ViewContact',
+      classes.ContactRead,
+      'ContactRead',
       props.className
     ]);
   }
@@ -35,13 +35,22 @@ class ViewContact extends Component {
     if (this.state.loadedContact) {
       let contactnumbers = this.state.loadedContact['contactnumbers'].map(
         (each, index) => {
-          return <li key={index}>{each.number}</li>;
+          return each.number !== '' ? (
+            <li key={'contactnumbers' + index}>{each.number}</li>
+          ) : (
+            undefined
+          );
         }
       );
       let emails = this.state.loadedContact['emails'].map((each, index) => {
-        return <li key={index}>{each.email}</li>;
+        return each.email !== '' ? (
+          <li key={'emails' + index}>{each.email}</li>
+        ) : (
+          undefined
+        );
       });
 
+      // note the order of the render is important hence why manually setting the content order
       contact = (
         <React.Fragment>
           <div className={classes.LabelGroup}>
@@ -72,7 +81,7 @@ class ViewContact extends Component {
           <div className={[classes.Wrapper, 'container'].join(' ')}>
             <div className="row">
               <div className="col">
-                <SectionHeader>View Contact</SectionHeader>
+                <SectionHeader>Contact Read</SectionHeader>
               </div>
             </div>
             <div className="row">
@@ -85,4 +94,4 @@ class ViewContact extends Component {
   }
 }
 
-export default ViewContact;
+export default ContactRead;

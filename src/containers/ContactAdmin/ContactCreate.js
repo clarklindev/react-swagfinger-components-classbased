@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import SectionHeader from '../../components/UI/Headers/SectionHeader';
-import classes from './AddContact.module.scss';
+import classes from './ContactCreate.module.scss';
 import Utils from '../../Utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Input from '../../components/UI/Input/Input';
 
-class AdminContact extends Component {
+class ContactCreate extends Component {
   constructor(props) {
     super(props);
     this.className = Utils.getClassNameString([
-      classes.AdminContact,
-      AdminContact.name,
+      classes.ContactCreate,
+      ContactCreate.name,
       this.props.className
     ]);
   }
@@ -106,7 +106,7 @@ class AdminContact extends Component {
           <div className={[classes.Wrapper, 'container'].join(' ')}>
             <div className="row">
               <div className="col">
-                <SectionHeader>Add Contact</SectionHeader>
+                <SectionHeader>Contact Create</SectionHeader>
               </div>
             </div>
             <div className="row">
@@ -172,7 +172,7 @@ class AdminContact extends Component {
             </div>
 
             <div className="row">
-              <div class="col">
+              <div className="col">
                 <label className={classes.Label}>Email</label>
                 <button
                   title="Add"
@@ -216,7 +216,7 @@ class AdminContact extends Component {
                       (this.state.contactnumbers.length ||
                         this.state.emails.length)
                     ) {
-                      return this.props.onContactAdded(
+                      return this.props.onContactCreateed(
                         {
                           name: this.state.name,
                           lastname: this.state.lastname,
@@ -238,4 +238,4 @@ class AdminContact extends Component {
   }
 }
 
-export default AdminContact;
+export default ContactCreate;

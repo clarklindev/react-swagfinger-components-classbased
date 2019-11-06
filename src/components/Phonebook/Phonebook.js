@@ -97,7 +97,7 @@ class Phonebook extends Component {
           <li key={`${id}`}>
             <Link
               to={{
-                pathname: '/viewcontact',
+                pathname: '/contactread',
                 search: `?id=${id}`
               }}>
               <Contact id={`${id}`} displayText={entry} extraText={extra} />
