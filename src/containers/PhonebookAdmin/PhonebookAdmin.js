@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import * as actions from '../../store/actions/index';
 import Contact from '../../components/Phonebook/Contact/Contact';
 
@@ -12,6 +11,14 @@ import SectionHeader from '../../components/UI/Headers/SectionHeader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class PhonebookAdmin extends Component {
+  constructor(props) {
+    super(props);
+    this.className = Utils.getClassNameString([
+      classes.PhonebookAdmin,
+      PhonebookAdmin.name,
+      this.props.className
+    ]);
+  }
   state = {
     filterText: ''
   };
@@ -41,60 +48,95 @@ class PhonebookAdmin extends Component {
   };
 
   render() {
+    let cleanedUpSearchText = this.state.filterText
+      .replace(/\\/gi, '') //replace \ with empty
+      .replace(/\./gi, '\\.'); //replace . with \.
+
+    let regex = new RegExp(cleanedUpSearchText, 'gi'); //global and case-insensitive
+
     let filtered = this.props.storedPhonebook
-      .filter(item => {
-        let combinedString = `${item.name} ${item.lastname}`; //same as html presentation
-        return combinedString
+      .filter(({ name, lastname, contactnumbers, emails }) => {
+        let combinedString = `${name} ${lastname}` //same as html presentation
           .toLowerCase()
           .includes(this.state.filterText.toLowerCase()); //match filterText
+
+        let contactnumberString = contactnumbers.find(each => {
+          return each.number.includes(this.state.filterText.toLowerCase());
+        });
+
+        let emailsString = emails.find(each => {
+          return each.email.includes(this.state.filterText.toLowerCase());
+        });
+
+        return (
+          combinedString === true ||
+          contactnumberString !== undefined ||
+          emailsString !== undefined
+        );
       })
       //all that match..return an <li> element
-      .map(phonebookEntry => {
-        let regex = new RegExp(this.state.filterText, 'gi'); //global and case-insensitive
+      .map(({ id, name, lastname, contactnumbers, emails }) => {
+        // at this stage every phonebookEntry contains a match from filterText
+
+        let contactnumberString = contactnumbers.find(each => {
+          return each.number.includes(this.state.filterText.toLowerCase());
+        });
+
+        let emailsString = emails.find(each => {
+          return each.email.includes(this.state.filterText.toLowerCase());
+        });
+        console.log('contact numbers: ', contactnumberString);
+        console.log('email numbers: ', emailsString);
 
         let entry =
           this.state.filterText.length > 0
-            ? this.regMatch(
-                `${phonebookEntry.name} ${phonebookEntry.lastname}`,
-                regex
-              )
-            : `${phonebookEntry.name} ${phonebookEntry.lastname}`;
+            ? this.regMatch(`${name} ${lastname}`, regex)
+            : `${name} ${lastname}`;
+
+        let extra = null;
+        let matchedNumber = null;
+        if (
+          contactnumberString !== undefined &&
+          this.state.filterText.length > 0
+        ) {
+          matchedNumber = this.regMatch(contactnumberString.number, regex);
+          extra = matchedNumber;
+        }
+
+        let matchedEmail = null;
+        if (emailsString !== undefined && this.state.filterText.length > 0) {
+          matchedEmail = this.regMatch(emailsString.email, regex);
+          extra = matchedEmail;
+        }
 
         return (
-          <li key={phonebookEntry.id}>
+          <li key={id}>
             <Contact
-              id={phonebookEntry.id}
+              id={id}
               displayText={entry}
+              extraText={extra}
               onUpdated={this.props.onContactUpdated}
             />
 
             <div className={classes.ContactButtons}>
               <button
                 title="Edit"
-                onClick={this.editContactHandler.bind(this, phonebookEntry.id)}>
+                onClick={this.editContactHandler.bind(this, id)}>
                 <FontAwesomeIcon icon={['far', 'edit']} />
               </button>
 
               <button
                 title="Delete"
-                onClick={this.props.onContactRemoved.bind(
-                  this,
-                  phonebookEntry.id
-                )}>
+                onClick={this.props.onContactDeleted.bind(this, id)}>
                 <FontAwesomeIcon icon={['far', 'trash-alt']} />
               </button>
             </div>
           </li>
         );
       });
-    const className = Utils.getClassNameString([
-      classes.PhonebookAdmin,
-      PhonebookAdmin.name,
-      this.props.className
-    ]);
 
     return (
-      <div className={className}>
+      <div className={this.className}>
         <div className="container">
           <div className={[classes.Wrapper, 'container'].join(' ')}>
             <div className="row">
@@ -111,18 +153,14 @@ class PhonebookAdmin extends Component {
               <div className="col">
                 <div className={classes.Labeledgroup}>
                   <label>Contacts</label>
-                  <Link
-                    to={{
-                      pathname: '/contactcreate'
-                    }}
-                    style={{
-                      textDecoration: 'none',
-                      color: 'black'
+                  {/* react 16.8+, react-router 5, no need for withRouter*/}
+                  <button
+                    title="Add"
+                    onClick={() => {
+                      this.props.history.push('contactcreate');
                     }}>
-                    <button title="Add">
-                      <FontAwesomeIcon icon={['fas', 'plus']} /> Add Contact
-                    </button>
-                  </Link>
+                    <FontAwesomeIcon icon={['fas', 'plus']} /> Add Contact
+                  </button>
                 </div>
               </div>
             </div>
@@ -144,15 +182,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onContactAdded: (contact, reset) => {
-      dispatch(actions.processAddContact(contact));
-      reset();
-    },
-
-    onContactRemoved: id => dispatch(actions.processRemoveContact(id)),
+    onContactDeleted: id => dispatch(actions.processContactDelete(id)),
 
     onContactUpdated: contact => {
-      dispatch(actions.processUpdateContact(contact));
+      dispatch(actions.processContactUpdate(contact));
     },
 
     onFetchContacts: () => {

@@ -61,7 +61,7 @@ class App extends Component {
               render={props => (
                 <ContactCreate
                   {...props}
-                  onContactAdded={this.props.onContactAdded}
+                  onContactCreated={this.props.onContactCreated}
                 />
               )}
             />
@@ -92,13 +92,13 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onContactAdded: (contact, reset) => {
-      dispatch(actions.processAddContact(contact));
+    onContactCreated: (contact, reset) => {
+      dispatch(actions.processContactCreate(contact));
       reset();
     },
 
     onContactUpdated: (contact, reset) => {
-      dispatch(actions.processUpdateContact(contact));
+      dispatch(actions.processContactUpdate(contact));
       reset();
     },
 

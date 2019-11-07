@@ -11,6 +11,11 @@
     }
   }
 
+  a {
+    text-decoration: 'none';
+    color: 'black';
+  }
+
   ul {
     list-style-type: none;
     margin: 0;
@@ -31,9 +36,8 @@
   }
 
   .Labeledgroup {
-    display: flex;
-    flex-direction: column;
     label {
+      display: block;
       color: var(--colorheader);
       font-weight: bold;
       margin-bottom: 15px;

@@ -2,22 +2,22 @@
 import * as actionTypes from './actionsTypes';
 import axios from '../../axios-contacts';
 
-export const addContact = contact => {
+export const contactCreate = contact => {
   return {
-    type: actionTypes.ADD_CONTACT,
+    type: actionTypes.CONTACT_CREATE,
     contactData: contact
   };
 };
 
 //async
-export const processAddContact = contact => {
+export const processContactCreate = contact => {
   return dispatch => {
     axios
       .post('/contacts.json', contact)
       .then(response => {
         console.log('response.data: ', response.data);
         dispatch(
-          addContact({
+          contactCreate({
             name: contact.name,
             lastname: contact.lastname,
             contact: contact.contact,
@@ -29,32 +29,32 @@ export const processAddContact = contact => {
   };
 };
 
-export const removeContact = id => {
-  return { type: actionTypes.REMOVE_CONTACT, contactData: { id: id } };
+export const contactDelete = id => {
+  return { type: actionTypes.CONTACT_DELETE, contactData: { id: id } };
 };
 
 //async
-export const processRemoveContact = id => {
+export const processContactDelete = id => {
   return dispatch => {
     axios.delete(`/contacts/${id}.json`).then(response => {
       console.log(response);
-      dispatch(removeContact(id));
+      dispatch(contactDelete(id));
     });
   };
 };
 
-export const updateContact = ({ id, name, lastname, contact }) => {
+export const contactUpdate = ({ id, name, lastname, contact }) => {
   return {
-    type: actionTypes.UPDATE_CONTACT,
+    type: actionTypes.CONTACT_UPDATE,
     contactData: { id: id, name: name, lastname: lastname, contact: contact }
   };
 };
 //async
-export const processUpdateContact = contact => {
+export const processContactUpdate = contact => {
   return dispatch => {
     axios.put(`/contacts/${contact.id}.json`, contact).then(response => {
       console.log(response);
-      dispatch(updateContact(contact));
+      dispatch(contactUpdate(contact));
     });
   };
 };

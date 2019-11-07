@@ -31,7 +31,7 @@ const removeContact = (state, action) => {
   const updatedArray = state.phoneBook.filter(
     contact => contact.id !== action.contactData.id
   );
-  console.log('removeCONTACT updated array: ', updatedArray);
+  console.log('contactDELETE updated array: ', updatedArray);
   console.log('state before remove: ', state);
   return updateObject(state, { phoneBook: updatedArray });
 };
@@ -39,13 +39,13 @@ const removeContact = (state, action) => {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     //add
-    case actionTypes.ADD_CONTACT:
+    case actionTypes.CONTACT_CREATE:
       return addContact(state, action);
     //update
-    case actionTypes.UPDATE_CONTACT:
+    case actionTypes.CONTACT_UPDATE:
       return updateContact(state, action);
     //remove
-    case actionTypes.REMOVE_CONTACT:
+    case actionTypes.CONTACT_DELETE:
       return removeContact(state, action);
 
     //start

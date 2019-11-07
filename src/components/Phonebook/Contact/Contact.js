@@ -17,19 +17,27 @@ class Contact extends Component {
 
   componentDidMount() {
     this.displayTextRef.current.innerHTML = this.props.displayText;
-    this.extraTextRef.current.innerHTML = this.props.extraText;
+    if (this.props.extraText) {
+      this.extraTextRef.current.innerHTML = this.props.extraText;
+    }
   }
 
   componentDidUpdate() {
     this.displayTextRef.current.innerHTML = this.props.displayText;
-    this.extraTextRef.current.innerHTML = this.props.extraText;
+    if (this.props.extraText) {
+      this.extraTextRef.current.innerHTML = this.props.extraText;
+    }
   }
   render() {
+    let hasExtraText = this.props.extraText ? (
+      <p ref={this.extraTextRef}></p>
+    ) : null;
+
     return (
       <div className={this.className}>
         <div className={classes.Labeledgroup}>
           <p ref={this.displayTextRef}></p>
-          <p ref={this.extraTextRef}></p>
+          {hasExtraText}
         </div>
       </div>
     );

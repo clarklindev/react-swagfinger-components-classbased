@@ -10,41 +10,58 @@ class ContactUpdate extends Component {
     super(props);
     this.className = Utils.getClassNameString([
       classes.ContactUpdate,
-      'ContactUpdate',
-      props.className
+      ContactUpdate.name,
+      this.props.className
     ]);
   }
 
   state = {
     loadedContact: false,
-    id: '',
-    name: '',
-    lastname: '',
-    contactnumbers: [{ number: '' }],
-    emails: [{ email: '' }]
-  };
-  reset = () => {
-    this.setState({
-      loadedContact: false,
+    contact: {
       id: '',
       name: '',
       lastname: '',
       contactnumbers: [{ number: '' }],
       emails: [{ email: '' }]
+    }
+  };
+  reset = () => {
+    this.setState({
+      loadedContact: false,
+      contact: {
+        id: '',
+        name: '',
+        lastname: '',
+        contactnumbers: [{ number: '' }],
+        emails: [{ email: '' }]
+      }
     });
   };
   componentDidMount() {
     const query = new URLSearchParams(this.props.location.search);
     //get id in url query params
     const id = query.get('id');
+
     if (id) {
       axios.get(`/contacts/${id}.json`).then(response => {
         console.log('response: ', response.data);
-        this.setState({ loadedContact: true, id: id });
+
+        this.setState(prevState => ({
+          loadedContact: true,
+          contact: {
+            ...prevState.contact,
+            id: id
+          }
+        }));
+
         Object.keys(response.data).map(item => {
           console.log('item: ', item);
-          this.setState({ [item]: response.data[item] });
-          return true;
+          return this.setState(prevState => ({
+            contact: {
+              ...prevState.contact,
+              [item]: response.data[item]
+            }
+          }));
         });
       });
     }
@@ -52,53 +69,77 @@ class ContactUpdate extends Component {
 
   nameChangeHandler = event => {
     console.log('nameChangeHandler');
-    this.setState({ name: event.target.value });
+    let val = event.target.value; //save value as setState is async and event will get lost
+    this.setState(prevState => ({
+      contact: {
+        ...prevState.contact,
+        name: val
+      }
+    }));
   };
   lastnameChangeHandler = event => {
     console.log('lastnameChangeHandler');
-    this.setState({ lastname: event.target.value });
+    let val = event.target.value; //save value as setState is async and event will get lost
+    this.setState(prevState => ({
+      contact: {
+        ...prevState.contact,
+        lastname: val
+      }
+    }));
   };
+
   contactnumberChangeHandler = i => event => {
     console.log('contactnumberChangeHandler: ', event.target.value);
-    const newContacts = this.state.contactnumbers.map(
+    let val = event.target.value;
+
+    const newContacts = this.state.contact.contactnumbers.map(
       (contactnumber, index) => {
         if (i !== index) {
           return contactnumber;
         }
-        return { ...contactnumber, number: event.target.value };
+        return { ...contactnumber, number: val };
       }
     );
-    this.setState({ contactnumbers: newContacts });
+    this.setState(prevState => ({
+      contact: { ...prevState.contact, contactnumbers: newContacts }
+    }));
   };
+
   emailChangeHandler = i => event => {
     console.log('emailChangeHandler: ', event.target.value);
-    const updatedEmails = this.state.emails.map((email, index) => {
+    let val = event.target.value;
+
+    const updatedEmails = this.state.contact.emails.map((email, index) => {
       if (i !== index) {
         return email;
       }
-      return { ...email, email: event.target.value };
+      return { ...email, email: val };
     });
-    this.setState({ emails: updatedEmails });
+    this.setState(prevState => ({
+      contact: { ...prevState.contact, emails: updatedEmails }
+    }));
   };
 
   render() {
     let contact;
 
     if (this.state.loadedContact === true) {
-      let contactnumbers = this.state['contactnumbers'].map((each, index) => {
-        return (
-          <Input
-            inputtype="input"
-            type="text"
-            name="contactnumber"
-            placeholder="contact number"
-            key={index}
-            value={this.state['contactnumbers'][index].number}
-            changed={this.contactnumberChangeHandler(index)}
-          />
-        );
-      });
-      let emails = this.state['emails'].map((each, index) => {
+      let contactnumbers = this.state.contact['contactnumbers'].map(
+        (each, index) => {
+          return (
+            <Input
+              inputtype="input"
+              type="text"
+              name="contactnumber"
+              placeholder="contact number"
+              key={index}
+              value={this.state.contact['contactnumbers'][index].number}
+              changed={this.contactnumberChangeHandler(index)}
+            />
+          );
+        }
+      );
+      let emails = this.state.contact['emails'].map((each, index) => {
         return (
           <Input
             inputtype="input"
@@ -106,7 +147,7 @@ class ContactUpdate extends Component {
             name="email"
             placeholder="email"
             key={index}
-            value={this.state['emails'][index].email}
+            value={this.state.contact['emails'][index].email}
             changed={this.emailChangeHandler(index)}
           />
         );
@@ -121,7 +162,7 @@ class ContactUpdate extends Component {
               name="name"
               placeholder="name"
               label="Name"
-              value={this.state['name']}
+              value={this.state.contact['name']}
               changed={this.nameChangeHandler}
             />
           </div>
@@ -133,7 +174,7 @@ class ContactUpdate extends Component {
               name="last name"
               placeholder="last name"
               label="Last name"
-              value={this.state['lastname']}
+              value={this.state.contact['lastname']}
               changed={this.lastnameChangeHandler}
             />
           </div>
@@ -154,34 +195,34 @@ class ContactUpdate extends Component {
       <div className={this.className}>
         <div className="container">
           <div className={[classes.Wrapper, 'container'].join(' ')}>
-            <div class="row">
-              <div class="col">
+            <div className="row">
+              <div className="col">
                 <SectionHeader>Contact Update</SectionHeader>
               </div>
             </div>
-            <div class="row">
-              <div class="col">{contact}</div>
+            <div className="row">
+              <div className="col">{contact}</div>
             </div>
-            <div class="row">
-              <div class="col">
+            <div className="row">
+              <div className="col">
                 <button
                   onClick={() => {
                     //validate (super simple...)
                     if (
-                      this.state.name.trim() !== '' &&
-                      this.state.lastname.trim() !== '' &&
-                      (this.state.contactnumbers.length ||
-                        this.state.emails.length)
+                      this.state.contact.name.trim() !== '' &&
+                      this.state.contact.lastname.trim() !== '' &&
+                      (this.state.contact.contactnumbers.length ||
+                        this.state.contact.emails.length)
                     ) {
                       return this.props.onContactUpdated(
                         {
-                          id: this.state.id,
-                          name: this.state.name,
-                          lastname: this.state.lastname,
-                          contactnumbers: this.state.contactnumbers,
-                          emails: this.state.emails
+                          id: this.state.contact.id,
+                          name: this.state.contact.name,
+                          lastname: this.state.contact.lastname,
+                          contactnumbers: this.state.contact.contactnumbers,
+                          emails: this.state.contact.emails
                         },
-                        () => console.log('helloworld')
+                        () => console.log('callback...')
                       );
                     }
                   }}>
