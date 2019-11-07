@@ -74,6 +74,9 @@ class PhonebookAdmin extends Component {
           emailsString !== undefined
         );
       })
+      .sort((a, b) => {
+        return a.name.localeCompare(b.name);
+      })
       //all that match..return an <li> element
       .map(({ id, name, lastname, contactnumbers, emails }) => {
         // at this stage every phonebookEntry contains a match from filterText

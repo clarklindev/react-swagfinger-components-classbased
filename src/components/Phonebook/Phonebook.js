@@ -61,6 +61,9 @@ class Phonebook extends Component {
           emailsString !== undefined
         );
       })
+      .sort((a, b) => {
+        return a.name.localeCompare(b.name);
+      })
       .map(({ id, name, lastname, contactnumbers, emails }) => {
         // at this stage every phonebookEntry contains a match from filterText
 
