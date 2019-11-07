@@ -5,12 +5,24 @@
     margin: 0 auto;
   }
 
-  ul {
+  .Label {
+    color: var(--colorheader);
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+    text-align: left;
+  }
+
+  .AddButton {
+    margin-bottom: 15px;
+  }
+  .RemoveButton {
+    margin-left: 10px;
+  }
+
+  .ContactGroup {
     display: flex;
-    flex-direction: column;
-    padding: 0;
-    margin-top: 0px;
-    margin-bottom: 0px;
+    flex-direction: row;
   }
 
   .LabelButtonGroup {
@@ -25,5 +37,13 @@
       margin-bottom: 8px;
       text-align: left;
     }
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin-top: 0px;
+    margin-bottom: 0px;
   }
 }

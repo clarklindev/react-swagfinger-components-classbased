@@ -4,7 +4,7 @@ import Utils from '../../Utils';
 import axios from '../../axios-contacts';
 import SectionHeader from '../../components/UI/Headers/SectionHeader';
 import Input from '../../components/UI/Input/Input';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 class ContactUpdate extends Component {
   constructor(props) {
     super(props);
@@ -88,6 +88,32 @@ class ContactUpdate extends Component {
     }));
   };
 
+  //contact
+  contactnumberAddHandler = event => {
+    this.setState(prevState => ({
+      contact: {
+        ...prevState.contact,
+        contactnumbers: prevState.contact.contactnumbers.concat([
+          { number: '' }
+        ])
+      }
+    }));
+  };
+
+  contactnumberRemoveHandler = i => event => {
+    console.log('i:', i);
+    let updatedContacts = this.state.contact.contactnumbers.filter(
+      (_, index) => i !== index
+    );
+    console.log('updatedContacts: ', updatedContacts);
+
+    this.setState(prevState => ({
+      contact: {
+        ...prevState.contact,
+        contactnumbers: updatedContacts
+      }
+    }));
+  };
   contactnumberChangeHandler = i => event => {
     console.log('contactnumberChangeHandler: ', event.target.value);
     let val = event.target.value;
@@ -101,7 +127,35 @@ class ContactUpdate extends Component {
       }
     );
     this.setState(prevState => ({
-      contact: { ...prevState.contact, contactnumbers: newContacts }
+      contact: {
+        ...prevState.contact,
+        contactnumbers: newContacts
+      }
+    }));
+  };
+
+  //email
+  emailAddHandler = event => {
+    this.setState(prevState => ({
+      contact: {
+        ...prevState.contact,
+        emails: prevState.contact.emails.concat([{ email: '' }])
+      }
+    }));
+  };
+
+  emailRemoveHandler = i => event => {
+    console.log('i:', i);
+    let updatedEmails = this.state.contact.emails.filter(
+      (_, index) => i !== index
+    );
+    console.log('updatedContacts: ', updatedEmails);
+
+    this.setState(prevState => ({
+      contact: {
+        ...prevState.contact,
+        emails: updatedEmails
+      }
     }));
   };
 
@@ -124,32 +178,50 @@ class ContactUpdate extends Component {
     let contact;
 
     if (this.state.loadedContact === true) {
-      let contactnumbers = this.state.contact['contactnumbers'].map(
+      let contactnumbers = this.state.contact.contactnumbers.map(
         (each, index) => {
           return (
-            <Input
-              inputtype="input"
-              type="text"
-              name="contactnumber"
-              placeholder="contact number"
-              key={index}
-              value={this.state.contact['contactnumbers'][index].number}
-              changed={this.contactnumberChangeHandler(index)}
-            />
+            <div className={classes.ContactGroup} key={index}>
+              <Input
+                inputtype="input"
+                type="text"
+                name="contactnumber"
+                placeholder="contact number"
+                key={index}
+                value={this.state.contact.contactnumbers[index].number}
+                changed={this.contactnumberChangeHandler(index)}
+              />
+              <button
+                title="Delete"
+                type="button"
+                className={classes.RemoveButton}
+                onClick={this.contactnumberRemoveHandler(index)}>
+                <FontAwesomeIcon icon={['far', 'trash-alt']} />
+              </button>
+            </div>
           );
         }
       );
-      let emails = this.state.contact['emails'].map((each, index) => {
+      let emails = this.state.contact.emails.map((each, index) => {
         return (
-          <Input
-            inputtype="input"
-            type="text"
-            name="email"
-            placeholder="email"
-            key={index}
-            value={this.state.contact['emails'][index].email}
-            changed={this.emailChangeHandler(index)}
-          />
+          <div className={classes.ContactGroup} key={index}>
+            <Input
+              inputtype="input"
+              type="text"
+              name="email"
+              placeholder="email"
+              key={index}
+              value={this.state.contact.emails[index].email}
+              changed={this.emailChangeHandler(index)}
+            />
+            <button
+              title="Delete"
+              type="button"
+              className={classes.RemoveButton}
+              onClick={this.emailRemoveHandler(index)}>
+              <FontAwesomeIcon icon={['far', 'trash-alt']} />
+            </button>
+          </div>
         );
       });
 
@@ -162,7 +234,7 @@ class ContactUpdate extends Component {
               name="name"
               placeholder="name"
               label="Name"
-              value={this.state.contact['name']}
+              value={this.state.contact.name}
               changed={this.nameChangeHandler}
             />
           </div>
@@ -174,20 +246,32 @@ class ContactUpdate extends Component {
               name="last name"
               placeholder="last name"
               label="Last name"
-              value={this.state.contact['lastname']}
+              value={this.state.contact.lastname}
               changed={this.lastnameChangeHandler}
             />
           </div>
 
-          <div className={classes.LabelButtonGroup}>
-            <label>Contact number</label>
-            <ul>{contactnumbers}</ul>
-          </div>
+          <label className={classes.Label}>Contact number</label>
 
-          <div className={classes.LabelButtonGroup}>
-            <label>Email</label>
-            <ul>{emails}</ul>
-          </div>
+          <button
+            title="Add"
+            className={classes.AddButton}
+            onClick={this.contactnumberAddHandler}>
+            <FontAwesomeIcon icon={['fas', 'plus']} /> Add Number
+          </button>
+
+          <ul>{contactnumbers}</ul>
+
+          <label className={classes.Label}>Email</label>
+
+          <button
+            title="Add"
+            className={classes.AddButton}
+            onClick={this.emailAddHandler}>
+            <FontAwesomeIcon icon={['fas', 'plus']} /> Add Email
+          </button>
+
+          <ul>{emails}</ul>
         </React.Fragment>
       );
     }
