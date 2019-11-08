@@ -6,6 +6,7 @@ import Utils from '../../Utils';
 import Input from '../../components/UI/Input/Input';
 import Modal from '../../components/UI/Modal/Modal';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import axios from '../../axios-contacts';
 
 class ContactCreate extends Component {
   constructor(props) {
@@ -293,4 +294,4 @@ class ContactCreate extends Component {
   }
 }
 
-export default withErrorHandler(ContactCreate);
+export default withErrorHandler(ContactCreate, axios);
