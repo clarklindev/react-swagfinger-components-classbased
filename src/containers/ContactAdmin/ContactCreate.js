@@ -5,6 +5,7 @@ import classes from './ContactCreate.module.scss';
 import Utils from '../../Utils';
 import Input from '../../components/UI/Input/Input';
 import Modal from '../../components/UI/Modal/Modal';
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 
 class ContactCreate extends Component {
   constructor(props) {
@@ -292,4 +293,4 @@ class ContactCreate extends Component {
   }
 }
 
-export default ContactCreate;
+export default withErrorHandler(ContactCreate);
