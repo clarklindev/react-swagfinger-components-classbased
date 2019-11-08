@@ -1,0 +1,61 @@
+.SideMenu {
+  padding: 0;
+  margin: 0;
+
+  .Backdrop {
+    display: block;
+  }
+
+  .SideMenuBack {
+    transition: transform 0.3s ease-out;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 200; //higher than backdrop z-index
+    background-color: white;
+    box-sizing: border-box;
+
+    .SideMenuHeader {
+      background-color: black;
+      width: 100%;
+      height: 56px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      h2 {
+        color: white;
+        line-height: 50px;
+        margin: 0 20px;
+      }
+    }
+    nav {
+      padding: 30px;
+    }
+  }
+  button {
+    color: white;
+    padding: 0 15px;
+    margin: 0;
+  }
+}
+
+@media (min-width: 500px) {
+  .SideMenu {
+    .SideMenuBack {
+      display: none;
+    }
+    .Backdrop {
+      display: none;
+    }
+  }
+}
+
+.Open {
+  transform: translateX(0);
+}
+
+.Close {
+  transform: translateX(-100%);
+}

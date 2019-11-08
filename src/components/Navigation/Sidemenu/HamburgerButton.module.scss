@@ -1,0 +1,9 @@
+.HamburgerButton {
+  cursor: pointer;
+}
+
+@media (min-width: 500px) {
+  .HamburgerButton {
+    display: none;
+  }
+}

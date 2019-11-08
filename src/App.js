@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 // font awesome
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 import {
   faEdit,
   faTrashAlt as farFaTrashAlt
@@ -26,7 +26,7 @@ import ContactCreate from './containers/ContactAdmin/ContactCreate';
 import ContactUpdate from './containers/ContactAdmin/ContactUpdate';
 
 //add to fontawesome lib
-library.add(faEdit, farFaTrashAlt, faPlus);
+library.add(faEdit, faTimes, farFaTrashAlt, faPlus, faBars);
 
 class App extends Component {
   componentDidMount() {

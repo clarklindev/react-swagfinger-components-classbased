@@ -1,4 +1,5 @@
 .Toolbar {
+  justify-content: flex-start;
   height: 56px;
   width: 100%;
   position: fixed;
@@ -7,19 +8,22 @@
   color: white;
   background-color: black;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   padding: 0 20px;
   box-sizing: border-box;
   z-index: 90;
 }
-
 .Toolbar nav {
+  display: none;
   height: 100%;
 }
 
-@media (max-width: 499px) {
-  .DesktopOnly {
-    display: none;
+@media (min-width: 500px) {
+  .Toolbar {
+    justify-content: flex-end;
+  }
+
+  .Toolbar nav {
+    display: block;
   }
 }

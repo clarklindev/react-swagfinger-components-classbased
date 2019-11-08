@@ -1,16 +1,14 @@
 .NavigationItem {
   margin: 10px 0;
   box-sizing: border-box;
-  display: flex;
+  display: block;
   height: 100%;
-  align-items: center;
 }
 
 .NavigationItem a {
-  color: white;
+  color: var(--colordefault);
   text-decoration: none;
   width: 100%;
-  padding: 16px 10px;
   box-sizing: border-box;
   display: block;
 }
@@ -18,7 +16,7 @@
 .NavigationItem a:hover,
 .NavigationItem a:active,
 .NavigationItem a.active {
-  color: white;
+  color: var(--colordefault);
 }
 
 @media (min-width: 500px) {
@@ -31,7 +29,14 @@
   }
 
   .NavigationItem a {
+    color: white;
     height: 100%;
     padding: 16px 10px;
+  }
+
+  .NavigationItem a:hover,
+  .NavigationItem a:active,
+  .NavigationItem a.active {
+    color: white;
   }
 }
