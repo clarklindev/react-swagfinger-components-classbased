@@ -13,7 +13,7 @@ export const contactCreate = contact => {
 export const processContactCreate = contact => {
   return dispatch => {
     axios
-      .post('/contacts', contact)
+      .post('/contacts.json', contact)
       .then(response => {
         console.log('response.data: ', response.data);
         dispatch(
