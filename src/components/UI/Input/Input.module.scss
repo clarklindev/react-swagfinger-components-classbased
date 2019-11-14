@@ -13,9 +13,9 @@
 
   .InputElement {
     outline: none;
-    border: 1px solid #e6e6e6;
+    border: 1px solid var(--colorborder);
     background-color: white;
-    border-radius: 5px;
+    border-radius: var(--borderradius);
     font: inherit;
     padding: 6px 10px;
     display: block;

@@ -12,8 +12,8 @@
   }
   li {
     background-color: white;
-    border: 1px solid #e6e6e6;
-    border-radius: 5px;
+    border: 1px solid var(--colorborder);
+    border-radius: var(--borderradius);
     display: flex;
     flex-direction: row;
     align-items: center;

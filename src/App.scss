@@ -4,7 +4,8 @@
   --colorheader: black; //used for headers
   --colorhighlight: black; //highlighting - used for attracting attention to something
   --colordefault: #666666; //default font color
-  --colorborder: #e6e6e6;
+  --colorborder: #e6ecf0;
+  --borderradius: 3px;
 }
 
 input {
@@ -15,7 +16,7 @@ button {
   border: 1px solid var(--colorborder);
   background-color: white;
   padding: 0px 15px;
-  border-radius: 5px;
+  border-radius: var(--borderradius);
   height: var(--inputheight);
   cursor: pointer;
   &:focus {
