@@ -1,10 +1,10 @@
-import React from 'react';
-import NavigationItems from '../NavigationItems/NavigationItems';
-import classes from './SideMenu.module.scss';
-import Backdrop from '../../UI/Backdrop/Backdrop';
-import Utils from '../../../Utils';
-import Button from '../../UI/Button/Button';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from "react";
+import NavigationItems from "../NavigationItems/NavigationItems";
+import classes from "./SideMenu.module.scss";
+import Backdrop from "../../UI/Backdrop/Backdrop";
+import Utils from "../../../Utils";
+import Button from "../../UI/Button/Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const sideMenu = props => {
   let classList = Utils.getClassNameString([
@@ -25,8 +25,8 @@ const sideMenu = props => {
       <div className={classList}>
         <div className={classes.SideMenuHeader}>
           <h2>Menu</h2>
-          <Button className={classes.Button} clicked={props.closed}>
-            <FontAwesomeIcon icon={['fas', 'times']} />
+          <Button className="CloseBtn" clicked={props.closed}>
+            <FontAwesomeIcon icon={["fas", "times"]} />
           </Button>
         </div>
 
