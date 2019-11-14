@@ -1,29 +1,29 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 // font awesome
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faPlus, faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faPlus, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import {
   faEdit,
   faTrashAlt as farFaTrashAlt
-} from '@fortawesome/free-regular-svg-icons';
+} from "@fortawesome/free-regular-svg-icons";
 
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch, Redirect } from "react-router-dom";
 //js
 
-import './App.scss';
-import './sass-flexbox-grid.scss';
-import * as actions from './store/actions/index';
-import { connect } from 'react-redux';
-import Layout from './hoc/Layout/Layout';
+import "./App.scss";
+import "./sass-flexbox-grid.scss";
+import * as actions from "./store/actions/index";
+import { connect } from "react-redux";
+import Layout from "./hoc/Layout/Layout";
 //components
-import Phonebook from './components/Phonebook/Phonebook';
-import ContactRead from './components/Phonebook/Contact/ContactRead';
+import Phonebook from "./components/Phonebook/Phonebook";
+import ContactRead from "./components/Phonebook/Contact/ContactRead";
 //containers
-import Auth from './containers/Auth/Auth';
-import PhonebookAdmin from './containers/PhonebookAdmin/PhonebookAdmin';
-import ContactCreate from './containers/ContactAdmin/ContactCreate';
-import ContactUpdate from './containers/ContactAdmin/ContactUpdate';
+import Auth from "./containers/Auth/Auth";
+import PhonebookAdmin from "./containers/PhonebookAdmin/PhonebookAdmin";
+import ContactCreate from "./containers/ContactAdmin/ContactCreate";
+import ContactUpdate from "./containers/ContactAdmin/ContactUpdate";
 
 //add to fontawesome lib
 library.add(faEdit, faTimes, farFaTrashAlt, faPlus, faBars);
@@ -41,12 +41,7 @@ class App extends Component {
             {/* default route */}
             <Route
               path="/phonebook"
-              render={props => (
-                <Phonebook
-                  {...props}
-                  storedPhonebook={this.props.storedPhonebook}
-                />
-              )}
+              render={props => <Phonebook {...props} />}
             />
 
             <Route
@@ -54,7 +49,10 @@ class App extends Component {
               render={props => <ContactRead {...props} />}
             />
 
-            <Route path="/phonebookadmin" component={PhonebookAdmin} />
+            <Route
+              path="/phonebookadmin"
+              render={props => <PhonebookAdmin {...props} />}
+            />
 
             <Route
               path="/contactcreate"
@@ -92,14 +90,12 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onContactCreated: (contact, reset) => {
+    onContactCreated: contact => {
       dispatch(actions.processContactCreate(contact));
-      reset();
     },
 
-    onContactUpdated: (contact, reset) => {
+    onContactUpdated: contact => {
       dispatch(actions.processContactUpdate(contact));
-      reset();
     },
 
     onFetchContacts: () => {
@@ -108,7 +104,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

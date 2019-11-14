@@ -1,6 +1,6 @@
 // actions
-import * as actionTypes from './actionsTypes';
-import axios from '../../axios-contacts';
+import * as actionTypes from "./actionsTypes";
+import axios from "../../axios-contacts";
 
 export const contactCreate = contact => {
   return {
@@ -13,19 +13,21 @@ export const contactCreate = contact => {
 export const processContactCreate = contact => {
   return dispatch => {
     axios
-      .post('/contacts.json', contact)
+      .post("/contacts.json", contact)
       .then(response => {
-        console.log('response.data: ', response.data);
         dispatch(
           contactCreate({
+            id: response.data.name,
             name: contact.name,
             lastname: contact.lastname,
-            contact: contact.contact,
-            id: response.data.name
+            contactnumbers: contact.contactnumbers,
+            emails: contact.emails
           })
         );
       })
-      .catch(err => {});
+      .catch(error => {
+        console.log("ERROR");
+      });
   };
 };
 
@@ -43,10 +45,22 @@ export const processContactDelete = id => {
   };
 };
 
-export const contactUpdate = ({ id, name, lastname, contact }) => {
+export const contactUpdate = ({
+  id,
+  name,
+  lastname,
+  contactnumbers,
+  emails
+}) => {
   return {
     type: actionTypes.CONTACT_UPDATE,
-    contactData: { id: id, name: name, lastname: lastname, contact: contact }
+    contactData: {
+      id: id,
+      name: name,
+      lastname: lastname,
+      contactnumbers: contactnumbers,
+      emails: emails
+    }
   };
 };
 //async
@@ -82,16 +96,16 @@ export const fetchContactsFail = error => {
 };
 
 // async constant
-export const fetchContacts = () => {
+export const fetchContacts = signal => {
   return dispatch => {
     axios
-      .get('/contacts.json')
-      .then(res => {
+      .get("/contacts.json")
+      .then(response => {
         const fetchedContacts = [];
-        for (let key in res.data) {
-          fetchedContacts.push({ ...res.data[key], id: key });
+        for (let key in response.data) {
+          fetchedContacts.push({ ...response.data[key], id: key });
         }
-        console.log('fetched contacts: ', fetchedContacts);
+        console.log("fetched contacts: ", fetchedContacts);
         dispatch(fetchContactsSuccess(fetchedContacts));
       })
       .catch(err => {

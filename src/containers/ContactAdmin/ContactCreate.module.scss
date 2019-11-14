@@ -19,6 +19,7 @@
   .RemoveButton {
     margin-left: 10px;
   }
+
   .ContactGroup {
     display: flex;
     flex-direction: row;
@@ -34,4 +35,7 @@
       margin-bottom: 15px;
     }
   }
+}
+.ModalHeader {
+  margin: 0px;
 }

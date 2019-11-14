@@ -1,13 +1,14 @@
-import React, { Component } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import SectionHeader from '../../components/UI/Headers/SectionHeader';
-import classes from './ContactCreate.module.scss';
-import Utils from '../../Utils';
-import Input from '../../components/UI/Input/Input';
-import Modal from '../../components/UI/Modal/Modal';
-import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
-import axios from '../../axios-contacts';
+import React, { Component } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import SectionHeader from "../../components/UI/Headers/SectionHeader";
+import classes from "./ContactCreate.module.scss";
+import Utils from "../../Utils";
+import Input from "../../components/UI/Input/Input";
+import Modal from "../../components/UI/Modal/Modal";
+import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
+import axios from "../../axios-contacts";
+import Button from "../../components/UI/Button/Button";
 class ContactCreate extends Component {
   constructor(props) {
     super(props);
@@ -20,23 +21,51 @@ class ContactCreate extends Component {
 
   state = {
     contact: {
-      name: '',
-      lastname: '',
-      contactnumbers: [{ number: '' }],
-      emails: [{ email: '' }]
-    }
+      name: "",
+      lastname: "",
+      contactnumbers: [{ number: "" }],
+      emails: [{ email: "" }]
+    },
+    saving: false
   };
+
+  componentWillUnmount() {}
+
+  componentnWillUpdate() {}
 
   reset = () => {
     this.setState({
       contact: {
-        id: '',
-        name: '',
-        lastname: '',
-        contactnumbers: [{ number: '' }],
-        emails: [{ email: '' }]
-      }
+        id: "",
+        name: "",
+        lastname: "",
+        contactnumbers: [{ number: "" }],
+        emails: [{ email: "" }]
+      },
+      saving: false
     });
+  };
+
+  redirect = () => {
+    this.props.history.push("/phonebookadmin");
+  };
+
+  contactCreateHandler = () => {
+    //validate
+    if (
+      this.state.contact.name.trim() !== "" &&
+      this.state.contact.lastname.trim() !== "" &&
+      (this.state.contact.contactnumbers.length ||
+        this.state.contact.emails.length)
+    ) {
+      this.setState({ saving: true });
+      return this.props.onContactCreated({
+        name: this.state.contact.name,
+        lastname: this.state.contact.lastname,
+        contactnumbers: this.state.contact.contactnumbers,
+        emails: this.state.contact.emails
+      });
+    }
   };
 
   nameChangeHandler = event => {
@@ -67,18 +96,18 @@ class ContactCreate extends Component {
       contact: {
         ...prevState.contact,
         contactnumbers: prevState.contact.contactnumbers.concat([
-          { number: '' }
+          { number: "" }
         ])
       }
     }));
   };
 
   contactnumberRemoveHandler = i => event => {
-    console.log('i:', i);
+    console.log("i:", i);
     let updatedContacts = this.state.contact.contactnumbers.filter(
       (_, index) => i !== index
     );
-    console.log('updatedContacts: ', updatedContacts);
+    console.log("updatedContacts: ", updatedContacts);
 
     this.setState(prevState => ({
       contact: {
@@ -89,7 +118,7 @@ class ContactCreate extends Component {
   };
 
   contactnumberChangeHandler = i => event => {
-    console.log('contactnumberChangeHandler: ', event.target.value);
+    console.log("contactnumberChangeHandler: ", event.target.value);
     let val = event.target.value;
     const newContacts = this.state.contact.contactnumbers.map(
       (contactnumber, index) => {
@@ -112,17 +141,17 @@ class ContactCreate extends Component {
     this.setState(prevState => ({
       contact: {
         ...prevState.contact,
-        emails: prevState.contact.emails.concat([{ email: '' }])
+        emails: prevState.contact.emails.concat([{ email: "" }])
       }
     }));
   };
 
   emailRemoveHandler = i => event => {
-    console.log('i:', i);
+    console.log("i:", i);
     let updatedEmails = this.state.contact.emails.filter(
       (_, index) => i !== index
     );
-    console.log('updatedContacts: ', updatedEmails);
+    console.log("updatedContacts: ", updatedEmails);
 
     this.setState(prevState => ({
       contact: {
@@ -133,7 +162,7 @@ class ContactCreate extends Component {
   };
 
   emailChangeHandler = i => event => {
-    console.log('emailChangeHandler: ', event.target.value);
+    console.log("emailChangeHandler: ", event.target.value);
     let val = event.target.value;
 
     const updatedEmails = this.state.contact.emails.map((email, index) => {
@@ -154,11 +183,19 @@ class ContactCreate extends Component {
     return (
       <React.Fragment>
         {/* add modal just in-case needed, show binds to state of true/false */}
-        <Modal show={false}></Modal>
+        <Modal show={this.state.saving}>
+          <div className="ModalHeader">
+            <h2 className={classes.ModalHeader}>Contact Created</h2>
+          </div>
+          <p>Contact Created</p>
+          <Button className={classes.ContinueButton} clicked={this.redirect}>
+            Continue
+          </Button>
+        </Modal>
 
         <div className={this.className}>
           <div className="container">
-            <div className={[classes.Wrapper, 'container'].join(' ')}>
+            <div className={[classes.Wrapper, "container"].join(" ")}>
               <div className="row">
                 <div className="col">
                   <SectionHeader>Contact Create</SectionHeader>
@@ -198,8 +235,9 @@ class ContactCreate extends Component {
                   <button
                     title="Add"
                     className={classes.AddButton}
-                    onClick={this.contactnumberAddHandler}>
-                    <FontAwesomeIcon icon={['fas', 'plus']} /> Add Number
+                    onClick={this.contactnumberAddHandler}
+                  >
+                    <FontAwesomeIcon icon={["fas", "plus"]} /> Add Number
                   </button>
                   {this.state.contact.contactnumbers.map(
                     (contactnumber, index) => {
@@ -217,8 +255,9 @@ class ContactCreate extends Component {
                             title="Delete"
                             type="button"
                             className={classes.RemoveButton}
-                            onClick={this.contactnumberRemoveHandler(index)}>
-                            <FontAwesomeIcon icon={['far', 'trash-alt']} />
+                            onClick={this.contactnumberRemoveHandler(index)}
+                          >
+                            <FontAwesomeIcon icon={["far", "trash-alt"]} />
                           </button>
                         </div>
                       );
@@ -233,8 +272,9 @@ class ContactCreate extends Component {
                   <button
                     title="Add"
                     className={classes.AddButton}
-                    onClick={this.emailAddHandler}>
-                    <FontAwesomeIcon icon={['fas', 'plus']} /> Add Email
+                    onClick={this.emailAddHandler}
+                  >
+                    <FontAwesomeIcon icon={["fas", "plus"]} /> Add Email
                   </button>
                   {this.state.contact.emails.map((each, index) => {
                     return (
@@ -251,8 +291,9 @@ class ContactCreate extends Component {
                           title="Delete"
                           type="button"
                           className={classes.RemoveButton}
-                          onClick={this.emailRemoveHandler(index)}>
-                          <FontAwesomeIcon icon={['far', 'trash-alt']} />
+                          onClick={this.emailRemoveHandler(index)}
+                        >
+                          <FontAwesomeIcon icon={["far", "trash-alt"]} />
                         </button>
                       </div>
                     );
@@ -262,28 +303,7 @@ class ContactCreate extends Component {
 
               <div className="row">
                 <div className="col">
-                  <button
-                    onClick={() => {
-                      //validate
-                      if (
-                        this.state.contact.name.trim() !== '' &&
-                        this.state.contact.lastname.trim() !== '' &&
-                        (this.state.contact.contactnumbers.length ||
-                          this.state.contact.emails.length)
-                      ) {
-                        return this.props.onContactCreated(
-                          {
-                            name: this.state.contact.name,
-                            lastname: this.state.contact.lastname,
-                            contactnumbers: this.state.contact.contactnumbers,
-                            emails: this.state.contact.emails
-                          },
-                          this.reset
-                        );
-                      }
-                    }}>
-                    save
-                  </button>
+                  <button onClick={this.contactCreateHandler}>save</button>
                 </div>
               </div>
             </div>

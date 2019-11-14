@@ -1,10 +1,13 @@
-import React, { Component } from 'react';
-import classes from './ContactUpdate.module.scss';
-import Utils from '../../Utils';
-import axios from '../../axios-contacts';
-import SectionHeader from '../../components/UI/Headers/SectionHeader';
-import Input from '../../components/UI/Input/Input';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { Component } from "react";
+import classes from "./ContactUpdate.module.scss";
+import Utils from "../../Utils";
+import axios from "../../axios-contacts";
+import Modal from "../../components/UI/Modal/Modal";
+import Button from "../../components/UI/Button/Button";
+
+import SectionHeader from "../../components/UI/Headers/SectionHeader";
+import Input from "../../components/UI/Input/Input";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 class ContactUpdate extends Component {
   constructor(props) {
     super(props);
@@ -17,34 +20,36 @@ class ContactUpdate extends Component {
 
   state = {
     loadedContact: false,
+    saving: false,
     contact: {
-      id: '',
-      name: '',
-      lastname: '',
-      contactnumbers: [{ number: '' }],
-      emails: [{ email: '' }]
+      id: "",
+      name: "",
+      lastname: "",
+      contactnumbers: [{ number: "" }],
+      emails: [{ email: "" }]
     }
   };
   reset = () => {
     this.setState({
       loadedContact: false,
       contact: {
-        id: '',
-        name: '',
-        lastname: '',
-        contactnumbers: [{ number: '' }],
-        emails: [{ email: '' }]
-      }
+        id: "",
+        name: "",
+        lastname: "",
+        contactnumbers: [{ number: "" }],
+        emails: [{ email: "" }]
+      },
+      saving: false
     });
   };
   componentDidMount() {
     const query = new URLSearchParams(this.props.location.search);
     //get id in url query params
-    const id = query.get('id');
+    const id = query.get("id");
 
     if (id) {
       axios.get(`/contacts/${id}.json`).then(response => {
-        console.log('response: ', response.data);
+        console.log("response: ", response.data);
 
         this.setState(prevState => ({
           loadedContact: true,
@@ -55,7 +60,7 @@ class ContactUpdate extends Component {
         }));
 
         Object.keys(response.data).map(item => {
-          console.log('item: ', item);
+          console.log("item: ", item);
           return this.setState(prevState => ({
             contact: {
               ...prevState.contact,
@@ -67,8 +72,32 @@ class ContactUpdate extends Component {
     }
   }
 
+  redirect = () => {
+    this.props.history.push("/phonebookadmin");
+  };
+
+  contactUpdateHandler = () => {
+    //validate (super simple...)
+    if (
+      this.state.contact.name.trim() !== "" &&
+      this.state.contact.lastname.trim() !== "" &&
+      (this.state.contact.contactnumbers.length ||
+        this.state.contact.emails.length)
+    ) {
+      this.setState({ saving: true });
+
+      return this.props.onContactUpdated({
+        id: this.state.contact.id,
+        name: this.state.contact.name,
+        lastname: this.state.contact.lastname,
+        contactnumbers: this.state.contact.contactnumbers,
+        emails: this.state.contact.emails
+      });
+    }
+  };
+
   nameChangeHandler = event => {
-    console.log('nameChangeHandler');
+    console.log("nameChangeHandler");
     let val = event.target.value; //save value as setState is async and event will get lost
     this.setState(prevState => ({
       contact: {
@@ -78,7 +107,7 @@ class ContactUpdate extends Component {
     }));
   };
   lastnameChangeHandler = event => {
-    console.log('lastnameChangeHandler');
+    console.log("lastnameChangeHandler");
     let val = event.target.value; //save value as setState is async and event will get lost
     this.setState(prevState => ({
       contact: {
@@ -94,18 +123,18 @@ class ContactUpdate extends Component {
       contact: {
         ...prevState.contact,
         contactnumbers: prevState.contact.contactnumbers.concat([
-          { number: '' }
+          { number: "" }
         ])
       }
     }));
   };
 
   contactnumberRemoveHandler = i => event => {
-    console.log('i:', i);
+    console.log("i:", i);
     let updatedContacts = this.state.contact.contactnumbers.filter(
       (_, index) => i !== index
     );
-    console.log('updatedContacts: ', updatedContacts);
+    console.log("updatedContacts: ", updatedContacts);
 
     this.setState(prevState => ({
       contact: {
@@ -115,7 +144,7 @@ class ContactUpdate extends Component {
     }));
   };
   contactnumberChangeHandler = i => event => {
-    console.log('contactnumberChangeHandler: ', event.target.value);
+    console.log("contactnumberChangeHandler: ", event.target.value);
     let val = event.target.value;
 
     const newContacts = this.state.contact.contactnumbers.map(
@@ -139,17 +168,17 @@ class ContactUpdate extends Component {
     this.setState(prevState => ({
       contact: {
         ...prevState.contact,
-        emails: prevState.contact.emails.concat([{ email: '' }])
+        emails: prevState.contact.emails.concat([{ email: "" }])
       }
     }));
   };
 
   emailRemoveHandler = i => event => {
-    console.log('i:', i);
+    console.log("i:", i);
     let updatedEmails = this.state.contact.emails.filter(
       (_, index) => i !== index
     );
-    console.log('updatedContacts: ', updatedEmails);
+    console.log("updatedContacts: ", updatedEmails);
 
     this.setState(prevState => ({
       contact: {
@@ -160,7 +189,7 @@ class ContactUpdate extends Component {
   };
 
   emailChangeHandler = i => event => {
-    console.log('emailChangeHandler: ', event.target.value);
+    console.log("emailChangeHandler: ", event.target.value);
     let val = event.target.value;
 
     const updatedEmails = this.state.contact.emails.map((email, index) => {
@@ -195,8 +224,9 @@ class ContactUpdate extends Component {
                 title="Delete"
                 type="button"
                 className={classes.RemoveButton}
-                onClick={this.contactnumberRemoveHandler(index)}>
-                <FontAwesomeIcon icon={['far', 'trash-alt']} />
+                onClick={this.contactnumberRemoveHandler(index)}
+              >
+                <FontAwesomeIcon icon={["far", "trash-alt"]} />
               </button>
             </div>
           );
@@ -218,8 +248,9 @@ class ContactUpdate extends Component {
               title="Delete"
               type="button"
               className={classes.RemoveButton}
-              onClick={this.emailRemoveHandler(index)}>
-              <FontAwesomeIcon icon={['far', 'trash-alt']} />
+              onClick={this.emailRemoveHandler(index)}
+            >
+              <FontAwesomeIcon icon={["far", "trash-alt"]} />
             </button>
           </div>
         );
@@ -256,8 +287,9 @@ class ContactUpdate extends Component {
           <button
             title="Add"
             className={classes.AddButton}
-            onClick={this.contactnumberAddHandler}>
-            <FontAwesomeIcon icon={['fas', 'plus']} /> Add Number
+            onClick={this.contactnumberAddHandler}
+          >
+            <FontAwesomeIcon icon={["fas", "plus"]} /> Add Number
           </button>
 
           <ul>{contactnumbers}</ul>
@@ -267,8 +299,9 @@ class ContactUpdate extends Component {
           <button
             title="Add"
             className={classes.AddButton}
-            onClick={this.emailAddHandler}>
-            <FontAwesomeIcon icon={['fas', 'plus']} /> Add Email
+            onClick={this.emailAddHandler}
+          >
+            <FontAwesomeIcon icon={["fas", "plus"]} /> Add Email
           </button>
 
           <ul>{emails}</ul>
@@ -276,47 +309,37 @@ class ContactUpdate extends Component {
       );
     }
     return (
-      <div className={this.className}>
-        <div className="container">
-          <div className={[classes.Wrapper, 'container'].join(' ')}>
-            <div className="row">
-              <div className="col">
-                <SectionHeader>Contact Update</SectionHeader>
+      <React.Fragment>
+        <Modal show={this.state.saving}>
+          <div className="ModalHeader">
+            <h2 className={classes.ModalHeader}>Contact Updated</h2>
+          </div>
+          <p>Contact Updated</p>
+          <Button className={classes.ContinueButton} clicked={this.redirect}>
+            Continue
+          </Button>
+        </Modal>
+
+        <div className={this.className}>
+          <div className="container">
+            <div className={[classes.Wrapper, "container"].join(" ")}>
+              <div className="row">
+                <div className="col">
+                  <SectionHeader>Contact Update</SectionHeader>
+                </div>
               </div>
-            </div>
-            <div className="row">
-              <div className="col">{contact}</div>
-            </div>
-            <div className="row">
-              <div className="col">
-                <button
-                  onClick={() => {
-                    //validate (super simple...)
-                    if (
-                      this.state.contact.name.trim() !== '' &&
-                      this.state.contact.lastname.trim() !== '' &&
-                      (this.state.contact.contactnumbers.length ||
-                        this.state.contact.emails.length)
-                    ) {
-                      return this.props.onContactUpdated(
-                        {
-                          id: this.state.contact.id,
-                          name: this.state.contact.name,
-                          lastname: this.state.contact.lastname,
-                          contactnumbers: this.state.contact.contactnumbers,
-                          emails: this.state.contact.emails
-                        },
-                        () => console.log('callback...')
-                      );
-                    }
-                  }}>
-                  save
-                </button>
+              <div className="row">
+                <div className="col">{contact}</div>
+              </div>
+              <div className="row">
+                <div className="col">
+                  <button onClick={this.contactUpdateHandler}>save</button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 }
