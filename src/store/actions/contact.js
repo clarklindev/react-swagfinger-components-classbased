@@ -10,7 +10,7 @@ export const contactCreate = contact => {
 };
 
 //async
-export const processContactCreate = contact => {
+export const processContactCreate = (contact, callback) => {
   return dispatch => {
     axios
       .post("/contacts.json", contact)
@@ -24,9 +24,10 @@ export const processContactCreate = contact => {
             emails: contact.emails
           })
         );
+        callback();
       })
       .catch(error => {
-        console.log("ERROR");
+        console.log("ERROR:", error);
       });
   };
 };
@@ -64,12 +65,18 @@ export const contactUpdate = ({
   };
 };
 //async
-export const processContactUpdate = contact => {
+export const processContactUpdate = (contact, callback) => {
   return dispatch => {
-    axios.put(`/contacts/${contact.id}.json`, contact).then(response => {
-      console.log(response);
-      dispatch(contactUpdate(contact));
-    });
+    axios
+      .put(`/contacts/${contact.id}.json`, contact)
+      .then(response => {
+        console.log(response);
+        dispatch(contactUpdate(contact));
+        callback();
+      })
+      .catch(error => {
+        console.log("ERROR:", error);
+      });
   };
 };
 

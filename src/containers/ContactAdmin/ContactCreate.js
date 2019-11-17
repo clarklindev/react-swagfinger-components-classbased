@@ -8,7 +8,6 @@ import Input from "../../components/UI/Input/Input";
 import Modal from "../../components/UI/Modal/Modal";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import axios from "../../axios-contacts";
-import Button from "../../components/UI/Button/Button";
 class ContactCreate extends Component {
   constructor(props) {
     super(props);
@@ -59,12 +58,19 @@ class ContactCreate extends Component {
         this.state.contact.emails.length)
     ) {
       this.setState({ saving: true });
-      return this.props.onContactCreated({
-        name: this.state.contact.name,
-        lastname: this.state.contact.lastname,
-        contactnumbers: this.state.contact.contactnumbers,
-        emails: this.state.contact.emails
-      });
+      return this.props.onContactCreated(
+        {
+          name: this.state.contact.name,
+          lastname: this.state.contact.lastname,
+          contactnumbers: this.state.contact.contactnumbers,
+          emails: this.state.contact.emails
+        },
+        () => {
+          console.log("CALLBACK");
+          this.setState({ saving: false });
+          this.redirect();
+        }
+      );
     }
   };
 
@@ -184,13 +190,7 @@ class ContactCreate extends Component {
       <React.Fragment>
         {/* add modal just in-case needed, show binds to state of true/false */}
         <Modal show={this.state.saving}>
-          <div className="ModalHeader">
-            <h2 className={classes.ModalHeader}>Contact Created</h2>
-          </div>
-          <p>Contact Created</p>
-          <Button className={classes.ContinueButton} clicked={this.redirect}>
-            Continue
-          </Button>
+          <p>Saving</p>
         </Modal>
 
         <div className={this.className}>

@@ -90,12 +90,12 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onContactCreated: contact => {
-      dispatch(actions.processContactCreate(contact));
+    onContactCreated: async (contact, callback) => {
+      dispatch(actions.processContactCreate(contact, callback));
     },
 
-    onContactUpdated: contact => {
-      dispatch(actions.processContactUpdate(contact));
+    onContactUpdated: (contact, callback) => {
+      dispatch(actions.processContactUpdate(contact, callback));
     },
 
     onFetchContacts: () => {

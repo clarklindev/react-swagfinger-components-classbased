@@ -86,13 +86,20 @@ class ContactUpdate extends Component {
     ) {
       this.setState({ saving: true });
 
-      return this.props.onContactUpdated({
-        id: this.state.contact.id,
-        name: this.state.contact.name,
-        lastname: this.state.contact.lastname,
-        contactnumbers: this.state.contact.contactnumbers,
-        emails: this.state.contact.emails
-      });
+      return this.props.onContactUpdated(
+        {
+          id: this.state.contact.id,
+          name: this.state.contact.name,
+          lastname: this.state.contact.lastname,
+          contactnumbers: this.state.contact.contactnumbers,
+          emails: this.state.contact.emails
+        },
+        () => {
+          console.log("CALLBACK");
+          this.setState({ saving: false });
+          this.redirect();
+        }
+      );
     }
   };
 
@@ -311,13 +318,7 @@ class ContactUpdate extends Component {
     return (
       <React.Fragment>
         <Modal show={this.state.saving}>
-          <div className="ModalHeader">
-            <h2 className={classes.ModalHeader}>Contact Updated</h2>
-          </div>
-          <p>Contact Updated</p>
-          <Button className={classes.ContinueButton} clicked={this.redirect}>
-            Continue
-          </Button>
+          <p>Updating</p>
         </Modal>
 
         <div className={this.className}>
