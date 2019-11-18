@@ -3,7 +3,7 @@ import React from 'react';
 import classes from './Input.module.scss';
 import Utils from '../../../Utils';
 
-const input = props => {
+const input = (props) => {
   let inputElement = null;
   let label = null;
   const inputClasses = [classes.InputElement];
@@ -18,7 +18,7 @@ const input = props => {
     inputClasses.push(classes.Invalid);
   }
 
-  switch (props.inputtype) {
+  switch (props.elementType) {
     case 'input':
       inputElement = (
         <input
@@ -47,7 +47,7 @@ const input = props => {
           className={inputClasses.join(' ')}
           value={props.value}
           onChange={props.changed}>
-          {props.elementConfig.options.map(option => (
+          {props.elementConfig.options.map((option) => (
             <option key={option.value} value={option.value}>
               {option.displayValue}
             </option>
@@ -59,7 +59,6 @@ const input = props => {
       inputElement = (
         <input
           className={inputClasses.join(' ')}
-          placeholder={props.placeholder}
           {...props.elementConfig}
           value={props.value}
           onChange={props.changed}

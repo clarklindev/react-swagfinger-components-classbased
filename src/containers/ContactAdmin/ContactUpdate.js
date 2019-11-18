@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import classes from "./ContactUpdate.module.scss";
-import Utils from "../../Utils";
-import axios from "../../axios-contacts";
-import Modal from "../../components/UI/Modal/Modal";
-import Button from "../../components/UI/Button/Button";
+import React, { Component } from 'react';
+import classes from './ContactUpdate.module.scss';
+import Utils from '../../Utils';
+import axios from '../../axios-contacts';
+import Modal from '../../components/UI/Modal/Modal';
+// import Button from "../../components/UI/Button/Button";
 
-import SectionHeader from "../../components/UI/Headers/SectionHeader";
-import Input from "../../components/UI/Input/Input";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import SectionHeader from '../../components/UI/Headers/SectionHeader';
+import Input from '../../components/UI/Input/Input';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 class ContactUpdate extends Component {
   constructor(props) {
     super(props);
@@ -22,22 +22,22 @@ class ContactUpdate extends Component {
     loadedContact: false,
     saving: false,
     contact: {
-      id: "",
-      name: "",
-      lastname: "",
-      contactnumbers: [{ number: "" }],
-      emails: [{ email: "" }]
+      id: '',
+      name: '',
+      lastname: '',
+      contactnumbers: [{ number: '' }],
+      emails: [{ email: '' }]
     }
   };
   reset = () => {
     this.setState({
       loadedContact: false,
       contact: {
-        id: "",
-        name: "",
-        lastname: "",
-        contactnumbers: [{ number: "" }],
-        emails: [{ email: "" }]
+        id: '',
+        name: '',
+        lastname: '',
+        contactnumbers: [{ number: '' }],
+        emails: [{ email: '' }]
       },
       saving: false
     });
@@ -45,13 +45,13 @@ class ContactUpdate extends Component {
   componentDidMount() {
     const query = new URLSearchParams(this.props.location.search);
     //get id in url query params
-    const id = query.get("id");
+    const id = query.get('id');
 
     if (id) {
-      axios.get(`/contacts/${id}.json`).then(response => {
-        console.log("response: ", response.data);
+      axios.get(`/contacts/${id}.json`).then((response) => {
+        console.log('response: ', response.data);
 
-        this.setState(prevState => ({
+        this.setState((prevState) => ({
           loadedContact: true,
           contact: {
             ...prevState.contact,
@@ -59,9 +59,9 @@ class ContactUpdate extends Component {
           }
         }));
 
-        Object.keys(response.data).map(item => {
-          console.log("item: ", item);
-          return this.setState(prevState => ({
+        Object.keys(response.data).map((item) => {
+          console.log('item: ', item);
+          return this.setState((prevState) => ({
             contact: {
               ...prevState.contact,
               [item]: response.data[item]
@@ -73,14 +73,14 @@ class ContactUpdate extends Component {
   }
 
   redirect = () => {
-    this.props.history.push("/phonebookadmin");
+    this.props.history.push('/phonebookadmin');
   };
 
   contactUpdateHandler = () => {
     //validate (super simple...)
     if (
-      this.state.contact.name.trim() !== "" &&
-      this.state.contact.lastname.trim() !== "" &&
+      this.state.contact.name.trim() !== '' &&
+      this.state.contact.lastname.trim() !== '' &&
       (this.state.contact.contactnumbers.length ||
         this.state.contact.emails.length)
     ) {
@@ -95,7 +95,7 @@ class ContactUpdate extends Component {
           emails: this.state.contact.emails
         },
         () => {
-          console.log("CALLBACK");
+          console.log('CALLBACK');
           this.setState({ saving: false });
           this.redirect();
         }
@@ -103,20 +103,20 @@ class ContactUpdate extends Component {
     }
   };
 
-  nameChangeHandler = event => {
-    console.log("nameChangeHandler");
+  nameChangeHandler = (event) => {
+    console.log('nameChangeHandler');
     let val = event.target.value; //save value as setState is async and event will get lost
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       contact: {
         ...prevState.contact,
         name: val
       }
     }));
   };
-  lastnameChangeHandler = event => {
-    console.log("lastnameChangeHandler");
+  lastnameChangeHandler = (event) => {
+    console.log('lastnameChangeHandler');
     let val = event.target.value; //save value as setState is async and event will get lost
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       contact: {
         ...prevState.contact,
         lastname: val
@@ -125,33 +125,33 @@ class ContactUpdate extends Component {
   };
 
   //contact
-  contactnumberAddHandler = event => {
-    this.setState(prevState => ({
+  contactnumberAddHandler = (event) => {
+    this.setState((prevState) => ({
       contact: {
         ...prevState.contact,
         contactnumbers: prevState.contact.contactnumbers.concat([
-          { number: "" }
+          { number: '' }
         ])
       }
     }));
   };
 
-  contactnumberRemoveHandler = i => event => {
-    console.log("i:", i);
+  contactnumberRemoveHandler = (i) => (event) => {
+    console.log('i:', i);
     let updatedContacts = this.state.contact.contactnumbers.filter(
       (_, index) => i !== index
     );
-    console.log("updatedContacts: ", updatedContacts);
+    console.log('updatedContacts: ', updatedContacts);
 
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       contact: {
         ...prevState.contact,
         contactnumbers: updatedContacts
       }
     }));
   };
-  contactnumberChangeHandler = i => event => {
-    console.log("contactnumberChangeHandler: ", event.target.value);
+  contactnumberChangeHandler = (i) => (event) => {
+    console.log('contactnumberChangeHandler: ', event.target.value);
     let val = event.target.value;
 
     const newContacts = this.state.contact.contactnumbers.map(
@@ -162,7 +162,7 @@ class ContactUpdate extends Component {
         return { ...contactnumber, number: val };
       }
     );
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       contact: {
         ...prevState.contact,
         contactnumbers: newContacts
@@ -171,23 +171,23 @@ class ContactUpdate extends Component {
   };
 
   //email
-  emailAddHandler = event => {
-    this.setState(prevState => ({
+  emailAddHandler = (event) => {
+    this.setState((prevState) => ({
       contact: {
         ...prevState.contact,
-        emails: prevState.contact.emails.concat([{ email: "" }])
+        emails: prevState.contact.emails.concat([{ email: '' }])
       }
     }));
   };
 
-  emailRemoveHandler = i => event => {
-    console.log("i:", i);
+  emailRemoveHandler = (i) => (event) => {
+    console.log('i:', i);
     let updatedEmails = this.state.contact.emails.filter(
       (_, index) => i !== index
     );
-    console.log("updatedContacts: ", updatedEmails);
+    console.log('updatedContacts: ', updatedEmails);
 
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       contact: {
         ...prevState.contact,
         emails: updatedEmails
@@ -195,8 +195,8 @@ class ContactUpdate extends Component {
     }));
   };
 
-  emailChangeHandler = i => event => {
-    console.log("emailChangeHandler: ", event.target.value);
+  emailChangeHandler = (i) => (event) => {
+    console.log('emailChangeHandler: ', event.target.value);
     let val = event.target.value;
 
     const updatedEmails = this.state.contact.emails.map((email, index) => {
@@ -205,7 +205,7 @@ class ContactUpdate extends Component {
       }
       return { ...email, email: val };
     });
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       contact: { ...prevState.contact, emails: updatedEmails }
     }));
   };
@@ -219,21 +219,20 @@ class ContactUpdate extends Component {
           return (
             <div className={classes.ContactGroup} key={index}>
               <Input
-                inputtype="input"
-                type="text"
-                name="contactnumber"
-                placeholder="contact number"
+                inputtype='input'
+                type='text'
+                name='contactnumber'
+                placeholder='contact number'
                 key={index}
                 value={this.state.contact.contactnumbers[index].number}
                 changed={this.contactnumberChangeHandler(index)}
               />
               <button
-                title="Delete"
-                type="button"
+                title='Delete'
+                type='button'
                 className={classes.RemoveButton}
-                onClick={this.contactnumberRemoveHandler(index)}
-              >
-                <FontAwesomeIcon icon={["far", "trash-alt"]} />
+                onClick={this.contactnumberRemoveHandler(index)}>
+                <FontAwesomeIcon icon={['far', 'trash-alt']} />
               </button>
             </div>
           );
@@ -243,21 +242,20 @@ class ContactUpdate extends Component {
         return (
           <div className={classes.ContactGroup} key={index}>
             <Input
-              inputtype="input"
-              type="text"
-              name="email"
-              placeholder="email"
+              inputtype='input'
+              type='text'
+              name='email'
+              placeholder='email'
               key={index}
               value={this.state.contact.emails[index].email}
               changed={this.emailChangeHandler(index)}
             />
             <button
-              title="Delete"
-              type="button"
+              title='Delete'
+              type='button'
               className={classes.RemoveButton}
-              onClick={this.emailRemoveHandler(index)}
-            >
-              <FontAwesomeIcon icon={["far", "trash-alt"]} />
+              onClick={this.emailRemoveHandler(index)}>
+              <FontAwesomeIcon icon={['far', 'trash-alt']} />
             </button>
           </div>
         );
@@ -267,11 +265,11 @@ class ContactUpdate extends Component {
         <React.Fragment>
           <div className={classes.LabelButtonGroup}>
             <Input
-              inputtype="input"
-              type="text"
-              name="name"
-              placeholder="name"
-              label="Name"
+              inputtype='input'
+              type='text'
+              name='name'
+              placeholder='name'
+              label='Name'
               value={this.state.contact.name}
               changed={this.nameChangeHandler}
             />
@@ -279,11 +277,11 @@ class ContactUpdate extends Component {
 
           <div className={classes.LabelButtonGroup}>
             <Input
-              inputtype="input"
-              type="text"
-              name="last name"
-              placeholder="last name"
-              label="Last name"
+              inputtype='input'
+              type='text'
+              name='last name'
+              placeholder='last name'
+              label='Last name'
               value={this.state.contact.lastname}
               changed={this.lastnameChangeHandler}
             />
@@ -292,11 +290,10 @@ class ContactUpdate extends Component {
           <label className={classes.Label}>Contact number</label>
 
           <button
-            title="Add"
+            title='Add'
             className={classes.AddButton}
-            onClick={this.contactnumberAddHandler}
-          >
-            <FontAwesomeIcon icon={["fas", "plus"]} /> Add Number
+            onClick={this.contactnumberAddHandler}>
+            <FontAwesomeIcon icon={['fas', 'plus']} /> Add Number
           </button>
 
           <ul>{contactnumbers}</ul>
@@ -304,11 +301,10 @@ class ContactUpdate extends Component {
           <label className={classes.Label}>Email</label>
 
           <button
-            title="Add"
+            title='Add'
             className={classes.AddButton}
-            onClick={this.emailAddHandler}
-          >
-            <FontAwesomeIcon icon={["fas", "plus"]} /> Add Email
+            onClick={this.emailAddHandler}>
+            <FontAwesomeIcon icon={['fas', 'plus']} /> Add Email
           </button>
 
           <ul>{emails}</ul>
@@ -322,18 +318,18 @@ class ContactUpdate extends Component {
         </Modal>
 
         <div className={this.className}>
-          <div className="container">
-            <div className={[classes.Wrapper, "container"].join(" ")}>
-              <div className="row">
-                <div className="col">
+          <div className='container'>
+            <div className={[classes.Wrapper, 'container'].join(' ')}>
+              <div className='row'>
+                <div className='col'>
                   <SectionHeader>Contact Update</SectionHeader>
                 </div>
               </div>
-              <div className="row">
-                <div className="col">{contact}</div>
+              <div className='row'>
+                <div className='col'>{contact}</div>
               </div>
-              <div className="row">
-                <div className="col">
+              <div className='row'>
+                <div className='col'>
                   <button onClick={this.contactUpdateHandler}>save</button>
                 </div>
               </div>

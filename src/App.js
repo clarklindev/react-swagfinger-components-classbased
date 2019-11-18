@@ -1,29 +1,29 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
 // font awesome
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faPlus, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faPlus, faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 import {
   faEdit,
   faTrashAlt as farFaTrashAlt
-} from "@fortawesome/free-regular-svg-icons";
+} from '@fortawesome/free-regular-svg-icons';
 
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch, Redirect } from 'react-router-dom';
 //js
 
-import "./App.scss";
-import "./sass-flexbox-grid.scss";
-import * as actions from "./store/actions/index";
-import { connect } from "react-redux";
-import Layout from "./hoc/Layout/Layout";
+import './App.scss';
+import './sass-flexbox-grid.scss';
+import * as actions from './store/actions/index';
+import { connect } from 'react-redux';
+import Layout from './hoc/Layout/Layout';
 //components
-import Phonebook from "./components/Phonebook/Phonebook";
-import ContactRead from "./components/Phonebook/Contact/ContactRead";
+import Phonebook from './components/Phonebook/Phonebook';
+import ContactRead from './components/Phonebook/Contact/ContactRead';
 //containers
-import Auth from "./containers/Auth/Auth";
-import PhonebookAdmin from "./containers/PhonebookAdmin/PhonebookAdmin";
-import ContactCreate from "./containers/ContactAdmin/ContactCreate";
-import ContactUpdate from "./containers/ContactAdmin/ContactUpdate";
+import Auth from './containers/Auth/Auth';
+import PhonebookAdmin from './containers/PhonebookAdmin/PhonebookAdmin';
+import ContactCreate from './containers/ContactAdmin/ContactCreate';
+import ContactUpdate from './containers/ContactAdmin/ContactUpdate';
 
 //add to fontawesome lib
 library.add(faEdit, faTimes, farFaTrashAlt, faPlus, faBars);
@@ -36,27 +36,27 @@ class App extends Component {
   render() {
     return (
       <Layout>
-        <div className="App">
+        <div className='App'>
           <Switch>
             {/* default route */}
             <Route
-              path="/phonebook"
-              render={props => <Phonebook {...props} />}
+              path='/phonebook'
+              render={(props) => <Phonebook {...props} />}
             />
 
             <Route
-              path="/contactread"
-              render={props => <ContactRead {...props} />}
+              path='/contactread'
+              render={(props) => <ContactRead {...props} />}
             />
 
             <Route
-              path="/phonebookadmin"
-              render={props => <PhonebookAdmin {...props} />}
+              path='/phonebookadmin'
+              render={(props) => <PhonebookAdmin {...props} />}
             />
 
             <Route
-              path="/contactcreate"
-              render={props => (
+              path='/contactcreate'
+              render={(props) => (
                 <ContactCreate
                   {...props}
                   onContactCreated={this.props.onContactCreated}
@@ -65,17 +65,17 @@ class App extends Component {
             />
 
             <Route
-              path="/contactupdate"
-              render={props => (
+              path='/contactupdate'
+              render={(props) => (
                 <ContactUpdate
                   {...props}
                   onContactUpdated={this.props.onContactUpdated}
                 />
               )}
             />
-            <Route path="/auth" component={Auth} />
+            <Route path='/auth' component={Auth} />
 
-            <Redirect from="/" to="/phonebook" />
+            <Redirect from='/' to='/phonebook' />
             {/* <Route path="/" exact component={Auth} /> */}
           </Switch>
         </div>
@@ -84,11 +84,11 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return { storedPhonebook: state.phoneBook };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     onContactCreated: async (contact, callback) => {
       dispatch(actions.processContactCreate(contact, callback));

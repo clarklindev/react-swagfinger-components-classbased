@@ -1,13 +1,14 @@
-import React, { Component } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { Component } from 'react';
 
-import SectionHeader from "../../components/UI/Headers/SectionHeader";
-import classes from "./ContactCreate.module.scss";
-import Utils from "../../Utils";
-import Input from "../../components/UI/Input/Input";
-import Modal from "../../components/UI/Modal/Modal";
-import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
-import axios from "../../axios-contacts";
+import SectionHeader from '../../components/UI/Headers/SectionHeader';
+import classes from './ContactCreate.module.scss';
+import Utils from '../../Utils';
+import Input from '../../components/UI/Input/Input';
+import Modal from '../../components/UI/Modal/Modal';
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import axios from '../../axios-contacts';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 class ContactCreate extends Component {
   constructor(props) {
     super(props);
@@ -20,53 +21,58 @@ class ContactCreate extends Component {
 
   state = {
     contact: {
-      name: "",
-      lastname: "",
-      contactnumbers: [{ number: "" }],
-      emails: [{ email: "" }]
+      name: {
+        elementType: 'input',
+        elementConfig: { type: 'text', placeholder: 'your name' },
+        label: 'Name',
+        value: ''
+      },
+
+      lastname: {
+        elementType: 'input',
+        elementConfig: { type: 'text', placeholder: 'your lastname' },
+        label: 'Last name',
+        value: ''
+      },
+
+      contactnumbers: {
+        elementType: 'multiinput',
+        elementConfig: { type: 'text', placeholder: 'your number' },
+        label: 'Contact',
+        value: ['']
+      },
+      emails: {
+        elementType: 'multiinput',
+        elementConfig: { type: 'text', placeholder: 'your email' },
+        label: 'Email',
+        value: ['']
+      }
     },
     saving: false
   };
 
-  componentWillUnmount() {}
-
-  componentnWillUpdate() {}
-
-  reset = () => {
-    this.setState({
-      contact: {
-        id: "",
-        name: "",
-        lastname: "",
-        contactnumbers: [{ number: "" }],
-        emails: [{ email: "" }]
-      },
-      saving: false
-    });
-  };
-
   redirect = () => {
-    this.props.history.push("/phonebookadmin");
+    this.props.history.push('/phonebookadmin');
   };
 
   contactCreateHandler = () => {
     //validate
     if (
-      this.state.contact.name.trim() !== "" &&
-      this.state.contact.lastname.trim() !== "" &&
-      (this.state.contact.contactnumbers.length ||
-        this.state.contact.emails.length)
+      this.state.contact.name.trim() !== '' &&
+      this.state.contact.lastname.trim() !== '' &&
+      (this.state.contact.contactnumbers.value.length ||
+        this.state.contact.emails.value.length)
     ) {
       this.setState({ saving: true });
       return this.props.onContactCreated(
         {
-          name: this.state.contact.name,
-          lastname: this.state.contact.lastname,
-          contactnumbers: this.state.contact.contactnumbers,
-          emails: this.state.contact.emails
+          name: this.state.contact.name.value,
+          lastname: this.state.contact.lastname.value,
+          contactnumbers: this.state.contact.contactnumbers.value,
+          emails: this.state.contact.emails.value
         },
         () => {
-          console.log("CALLBACK");
+          console.log('CALLBACK');
           this.setState({ saving: false });
           this.redirect();
         }
@@ -74,118 +80,126 @@ class ContactCreate extends Component {
     }
   };
 
-  nameChangeHandler = event => {
-    // setState is "async", so by the time the function you pass to setState is executed (and the event is accessed), the event is no longer around.
-    let val = event.target.value; //save the target before event dissapears
-
-    this.setState(prevState => ({
-      contact: {
-        ...prevState.contact,
-        name: val
-      }
-    }));
-  };
-
-  lastnameChangeHandler = event => {
-    let val = event.target.value;
-    this.setState(prevState => ({
-      contact: {
-        ...prevState.contact,
-        lastname: val
-      }
-    }));
-  };
-
   //contact
-  contactnumberAddHandler = event => {
-    this.setState(prevState => ({
+  addInputHandler = (event, key) => {
+    event.preventDefault();
+
+    this.setState((prevState) => ({
       contact: {
         ...prevState.contact,
-        contactnumbers: prevState.contact.contactnumbers.concat([
-          { number: "" }
-        ])
-      }
-    }));
-  };
-
-  contactnumberRemoveHandler = i => event => {
-    console.log("i:", i);
-    let updatedContacts = this.state.contact.contactnumbers.filter(
-      (_, index) => i !== index
-    );
-    console.log("updatedContacts: ", updatedContacts);
-
-    this.setState(prevState => ({
-      contact: {
-        ...prevState.contact,
-        contactnumbers: updatedContacts
-      }
-    }));
-  };
-
-  contactnumberChangeHandler = i => event => {
-    console.log("contactnumberChangeHandler: ", event.target.value);
-    let val = event.target.value;
-    const newContacts = this.state.contact.contactnumbers.map(
-      (contactnumber, index) => {
-        if (i !== index) {
-          return contactnumber;
+        [key]: {
+          ...prevState.contact[key],
+          value: prevState.contact[key].value.concat('')
         }
-        return { ...contactnumber, number: val }; //update the number of the one that has the same index
       }
+    }));
+  };
+
+  removeInputHandler = (event, key, index) => {
+    event.preventDefault();
+
+    let updatedInputs = this.state.contact[key].value.filter(
+      (_, i) => index !== i
     );
-    this.setState(prevState => ({
+    console.log('updatedInputs: ', updatedInputs);
+
+    this.setState((prevState) => ({
       contact: {
         ...prevState.contact,
-        contactnumbers: newContacts
+        [key]: {
+          ...prevState.contact[key],
+          value: updatedInputs
+        }
       }
     }));
   };
 
-  //email
-  emailAddHandler = event => {
-    this.setState(prevState => ({
-      contact: {
-        ...prevState.contact,
-        emails: prevState.contact.emails.concat([{ email: "" }])
-      }
-    }));
-  };
+  // ------------------------------------
+  inputChangedHandler = (event, inputIdentifier, index = null) => {
+    const updatedForm = {
+      ...this.state.contact
+    };
+    const updatedFormElement = {
+      ...updatedForm[inputIdentifier]
+    };
 
-  emailRemoveHandler = i => event => {
-    console.log("i:", i);
-    let updatedEmails = this.state.contact.emails.filter(
-      (_, index) => i !== index
-    );
-    console.log("updatedContacts: ", updatedEmails);
-
-    this.setState(prevState => ({
-      contact: {
-        ...prevState.contact,
-        emails: updatedEmails
-      }
-    }));
-  };
-
-  emailChangeHandler = i => event => {
-    console.log("emailChangeHandler: ", event.target.value);
-    let val = event.target.value;
-
-    const updatedEmails = this.state.contact.emails.map((email, index) => {
-      if (i !== index) {
-        return email;
-      }
-      return { ...email, email: val }; //update the number of the one that has the same index
-    });
-    this.setState(prevState => ({
-      contact: {
-        ...prevState.contact,
-        emails: updatedEmails
-      }
-    }));
+    //if array
+    if (index !== null) {
+      updatedFormElement.value[index] = event.target.value;
+    } else {
+      //if single value
+      updatedFormElement.value = event.target.value;
+    }
+    updatedForm[inputIdentifier] = updatedFormElement;
+    this.setState({ contact: updatedForm });
   };
 
   render() {
+    console.log('STATE: ', this.state);
+    let formElementsArray = [];
+
+    for (let key in this.state.contact) {
+      formElementsArray.push({
+        id: key,
+        data: this.state.contact[key] //refers to the object associated with the contact property
+      });
+    }
+
+    let output = null;
+
+    let formInputs = formElementsArray.map((formElement) => {
+      output = (
+        <Input
+          key={formElement.id}
+          elementType={formElement.data.elementType}
+          elementConfig={formElement.data.elementConfig}
+          label={formElement.data.label}
+          value={formElement.data.value}
+          changed={(event) => this.inputChangedHandler(event, formElement.id)}
+        />
+      );
+
+      if (Array.isArray(formElement.data.value)) {
+        output = (
+          <div key={formElement.id}>
+            <label className={classes.Label}>{formElement.data.label}</label>
+            <button
+              title='Add'
+              className={classes.AddButton}
+              onClick={(event) => this.addInputHandler(event, formElement.id)}>
+              <FontAwesomeIcon icon={['fas', 'plus']} /> Add
+            </button>
+            {formElement.data.value.map((data, index) => {
+              return (
+                <div
+                  className={classes.ContactGroup}
+                  key={formElement.id + index}>
+                  <Input
+                    elementType={formElement.data.elementType}
+                    elementConfig={formElement.data.elementConfig}
+                    value={data}
+                    changed={(event) =>
+                      this.inputChangedHandler(event, formElement.id, index)
+                    }
+                  />
+                  <button
+                    title='Delete'
+                    type='button'
+                    className={classes.RemoveButton}
+                    onClick={(event) =>
+                      this.removeInputHandler(event, formElement.id, index)
+                    }>
+                    <FontAwesomeIcon icon={['far', 'trash-alt']} />
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        );
+      }
+      return output;
+    });
+
     return (
       <React.Fragment>
         {/* add modal just in-case needed, show binds to state of true/false */}
@@ -194,118 +208,25 @@ class ContactCreate extends Component {
         </Modal>
 
         <div className={this.className}>
-          <div className="container">
-            <div className={[classes.Wrapper, "container"].join(" ")}>
-              <div className="row">
-                <div className="col">
-                  <SectionHeader>Contact Create</SectionHeader>
+          <div className='container'>
+            <div className={[classes.Wrapper, 'container'].join(' ')}>
+              <form>
+                <div className='row'>
+                  <div className='col'>
+                    <SectionHeader>Contact Create</SectionHeader>
+                  </div>
                 </div>
-              </div>
-              <div className="row">
-                <div className="col">
-                  <Input
-                    inputtype="input"
-                    type="text"
-                    name="name"
-                    placeholder="name"
-                    label="Name"
-                    changed={this.nameChangeHandler}
-                    value={this.state.contact.name}
-                  />
-                </div>
-              </div>
 
-              <div className="row">
-                <div className="col">
-                  <Input
-                    inputtype="input"
-                    type="text"
-                    name="lastname"
-                    placeholder="last name"
-                    label="Last name"
-                    changed={this.lastnameChangeHandler}
-                    value={this.state.contact.lastname}
-                  />
+                <div className='row'>
+                  <div className='col'>{formInputs}</div>
                 </div>
-              </div>
 
-              <div className="row">
-                <div className="col">
-                  <label className={classes.Label}>Contact number</label>
-                  <button
-                    title="Add"
-                    className={classes.AddButton}
-                    onClick={this.contactnumberAddHandler}
-                  >
-                    <FontAwesomeIcon icon={["fas", "plus"]} /> Add Number
-                  </button>
-                  {this.state.contact.contactnumbers.map(
-                    (contactnumber, index) => {
-                      return (
-                        <div className={classes.ContactGroup} key={index}>
-                          <Input
-                            inputtype="input"
-                            type="text"
-                            name="contactnumber"
-                            placeholder="contact number"
-                            changed={this.contactnumberChangeHandler(index)}
-                            value={contactnumber.number}
-                          />
-                          <button
-                            title="Delete"
-                            type="button"
-                            className={classes.RemoveButton}
-                            onClick={this.contactnumberRemoveHandler(index)}
-                          >
-                            <FontAwesomeIcon icon={["far", "trash-alt"]} />
-                          </button>
-                        </div>
-                      );
-                    }
-                  )}
+                <div className='row'>
+                  <div className='col'>
+                    <button onClick={this.contactCreateHandler}>save</button>
+                  </div>
                 </div>
-              </div>
-
-              <div className="row">
-                <div className="col">
-                  <label className={classes.Label}>Email</label>
-                  <button
-                    title="Add"
-                    className={classes.AddButton}
-                    onClick={this.emailAddHandler}
-                  >
-                    <FontAwesomeIcon icon={["fas", "plus"]} /> Add Email
-                  </button>
-                  {this.state.contact.emails.map((each, index) => {
-                    return (
-                      <div className={classes.ContactGroup} key={index}>
-                        <Input
-                          inputtype="input"
-                          type="text"
-                          name="email"
-                          placeholder="email"
-                          changed={this.emailChangeHandler(index)}
-                          value={each.email}
-                        />
-                        <button
-                          title="Delete"
-                          type="button"
-                          className={classes.RemoveButton}
-                          onClick={this.emailRemoveHandler(index)}
-                        >
-                          <FontAwesomeIcon icon={["far", "trash-alt"]} />
-                        </button>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div className="row">
-                <div className="col">
-                  <button onClick={this.contactCreateHandler}>save</button>
-                </div>
-              </div>
+              </form>
             </div>
           </div>
         </div>
