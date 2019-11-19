@@ -89,13 +89,13 @@ class Phonebook extends Component {
           contactnumberString !== undefined &&
           this.state.filterText.length > 0
         ) {
-          matchedNumber = this.regMatch(contactnumberString.number, regex);
+          matchedNumber = this.regMatch(contactnumberString, regex);
           extra = matchedNumber;
         }
 
         let matchedEmail = null;
         if (emailsString !== undefined && this.state.filterText.length > 0) {
-          matchedEmail = this.regMatch(emailsString.email, regex);
+          matchedEmail = this.regMatch(emailsString, regex);
           extra = matchedEmail;
         }
         return (
