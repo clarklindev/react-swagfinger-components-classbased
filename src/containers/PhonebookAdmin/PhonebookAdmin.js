@@ -1,14 +1,14 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import { connect } from "react-redux";
-import * as actions from "../../store/actions/index";
-import Contact from "../../components/Phonebook/Contact/Contact";
+import { connect } from 'react-redux';
+import * as actions from '../../store/actions/index';
+import Contact from '../../components/Phonebook/Contact/Contact';
 
-import classes from "./PhonebookAdmin.module.scss";
-import Utils from "../../Utils";
-import SearchFilter from "../SearchFilter/SearchFilter";
-import SectionHeader from "../../components/UI/Headers/SectionHeader";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import classes from './PhonebookAdmin.module.scss';
+import Utils from '../../Utils';
+import SearchFilter from '../SearchFilter/SearchFilter';
+import SectionHeader from '../../components/UI/Headers/SectionHeader';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class PhonebookAdmin extends Component {
   constructor(props) {
@@ -21,22 +21,22 @@ class PhonebookAdmin extends Component {
   }
 
   state = {
-    filterText: ""
+    filterText: ''
   };
 
-  searchChangedHandler = event => {
+  searchChangedHandler = (event) => {
     //match string
-    console.log("input:", event.target.value);
+    console.log('input:', event.target.value);
     this.setState({ filterText: event.target.value });
   };
 
   //highlighting - matching regular expression (useful for search matching)
   regMatch = (str, regex) => {
-    return str.replace(regex, str => `<span>${str}</span>`);
+    return str.replace(regex, (str) => `<span>${str}</span>`);
   };
 
-  editContactHandler = id => {
-    console.log("clicked id: ", id);
+  editContactHandler = (id) => {
+    console.log('clicked id: ', id);
     //navigate programatically
     this.props.history.push({
       pathname: `/contactupdate`,
@@ -46,10 +46,10 @@ class PhonebookAdmin extends Component {
 
   render() {
     let cleanedUpSearchText = this.state.filterText
-      .replace(/\\/gi, "") //replace \ with empty
-      .replace(/\./gi, "\\."); //replace . with \.
+      .replace(/\\/gi, '') //replace \ with empty
+      .replace(/\./gi, '\\.'); //replace . with \.
 
-    let regex = new RegExp(cleanedUpSearchText, "gi"); //global and case-insensitive
+    let regex = new RegExp(cleanedUpSearchText, 'gi'); //global and case-insensitive
 
     let filtered = null;
     filtered =
@@ -60,14 +60,12 @@ class PhonebookAdmin extends Component {
                 .toLowerCase()
                 .includes(this.state.filterText.toLowerCase()); //match filterText
 
-              let contactnumberString = contactnumbers.find(each => {
-                return each.number.includes(
-                  this.state.filterText.toLowerCase()
-                );
+              let contactnumberString = contactnumbers.find((each) => {
+                return each.includes(this.state.filterText.toLowerCase());
               });
 
-              let emailsString = emails.find(each => {
-                return each.email.includes(this.state.filterText.toLowerCase());
+              let emailsString = emails.find((each) => {
+                return each.includes(this.state.filterText.toLowerCase());
               });
 
               return (
@@ -83,17 +81,16 @@ class PhonebookAdmin extends Component {
             .map(({ id, name, lastname, contactnumbers, emails }) => {
               // at this stage every phonebookEntry contains a match from filterText
 
-              let contactnumberString = contactnumbers.find(each => {
-                return each.number.includes(
-                  this.state.filterText.toLowerCase()
-                );
+              let contactnumberString = contactnumbers.find((each) => {
+                return each.includes(this.state.filterText.toLowerCase());
               });
 
-              let emailsString = emails.find(each => {
-                return each.email.includes(this.state.filterText.toLowerCase());
+              let emailsString = emails.find((each) => {
+                return each.includes(this.state.filterText.toLowerCase());
               });
-              console.log("contact numbers: ", contactnumberString);
-              console.log("email numbers: ", emailsString);
+
+              console.log('contact numbers: ', contactnumberString);
+              console.log('email numbers: ', emailsString);
 
               let entry =
                 this.state.filterText.length > 0
@@ -106,10 +103,7 @@ class PhonebookAdmin extends Component {
                 contactnumberString !== undefined &&
                 this.state.filterText.length > 0
               ) {
-                matchedNumber = this.regMatch(
-                  contactnumberString.number,
-                  regex
-                );
+                matchedNumber = this.regMatch(contactnumberString, regex);
                 extra = matchedNumber;
               }
 
@@ -118,7 +112,7 @@ class PhonebookAdmin extends Component {
                 emailsString !== undefined &&
                 this.state.filterText.length > 0
               ) {
-                matchedEmail = this.regMatch(emailsString.email, regex);
+                matchedEmail = this.regMatch(emailsString, regex);
                 extra = matchedEmail;
               }
 
@@ -133,17 +127,15 @@ class PhonebookAdmin extends Component {
 
                   <div className={classes.ContactButtons}>
                     <button
-                      title="Edit"
-                      onClick={this.editContactHandler.bind(this, id)}
-                    >
-                      <FontAwesomeIcon icon={["far", "edit"]} />
+                      title='Edit'
+                      onClick={this.editContactHandler.bind(this, id)}>
+                      <FontAwesomeIcon icon={['far', 'edit']} />
                     </button>
 
                     <button
-                      title="Delete"
-                      onClick={this.props.onContactDeleted.bind(this, id)}
-                    >
-                      <FontAwesomeIcon icon={["far", "trash-alt"]} />
+                      title='Delete'
+                      onClick={this.props.onContactDeleted.bind(this, id)}>
+                      <FontAwesomeIcon icon={['far', 'trash-alt']} />
                     </button>
                   </div>
                 </li>
@@ -153,36 +145,35 @@ class PhonebookAdmin extends Component {
 
     return (
       <div className={this.className}>
-        <div className="container">
-          <div className={[classes.Wrapper, "container"].join(" ")}>
-            <div className="row">
-              <div className="col">
+        <div className='container'>
+          <div className={[classes.Wrapper, 'container'].join(' ')}>
+            <div className='row'>
+              <div className='col'>
                 <SectionHeader>Phonebook Admin</SectionHeader>
               </div>
             </div>
-            <div className="row">
-              <div className="col">
+            <div className='row'>
+              <div className='col'>
                 <SearchFilter changed={this.searchChangedHandler} />
               </div>
             </div>
-            <div className="row">
-              <div className="col">
+            <div className='row'>
+              <div className='col'>
                 <div className={classes.Labeledgroup}>
                   <label>Contacts</label>
                   {/* react 16.8+, react-router 5, no need for withRouter*/}
                   <button
-                    title="Add"
+                    title='Add'
                     onClick={() => {
-                      this.props.history.push("contactcreate");
-                    }}
-                  >
-                    <FontAwesomeIcon icon={["fas", "plus"]} /> Add Contact
+                      this.props.history.push('contactcreate');
+                    }}>
+                    <FontAwesomeIcon icon={['fas', 'plus']} /> Add Contact
                   </button>
                 </div>
               </div>
             </div>
-            <div className="row">
-              <div className="col">
+            <div className='row'>
+              <div className='col'>
                 <ul>{filtered}</ul>
               </div>
             </div>
@@ -193,15 +184,15 @@ class PhonebookAdmin extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return { storedPhonebook: state.phoneBook };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    onContactDeleted: id => dispatch(actions.processContactDelete(id)),
+    onContactDeleted: (id) => dispatch(actions.processContactDelete(id)),
 
-    onContactUpdated: contact => {
+    onContactUpdated: (contact) => {
       dispatch(actions.processContactUpdate(contact));
     }
   };

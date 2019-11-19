@@ -5,37 +5,7 @@
     margin: 0 auto;
   }
 
-  .Label {
-    color: var(--colorheader);
-    font-weight: bold;
-    display: block;
-    margin-bottom: 8px;
-    text-align: left;
+  .ModalHeader {
+    margin: 0px;
   }
-
-  .AddButton {
-    margin-bottom: 15px;
-  }
-  .RemoveButton {
-    margin-left: 10px;
-  }
-
-  .ContactGroup {
-    display: flex;
-    flex-direction: row;
-  }
-
-  .Labeledgroup {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-end;
-    label {
-      font-weight: bold;
-      margin-bottom: 15px;
-    }
-  }
-}
-.ModalHeader {
-  margin: 0px;
 }

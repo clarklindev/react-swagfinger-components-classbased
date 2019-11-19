@@ -33,4 +33,28 @@
     border: 1px solid red;
     background-color: #fda49a;
   }
+
+  .Labeledgroup {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    label {
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+  }
+
+  .ContactGroup {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+  }
+
+  .AddButton {
+    margin-bottom: 15px;
+  }
+  .RemoveButton {
+    margin-left: 10px;
+  }
 }

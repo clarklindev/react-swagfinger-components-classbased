@@ -1,8 +1,8 @@
 // actions
-import * as actionTypes from "./actionsTypes";
-import axios from "../../axios-contacts";
+import * as actionTypes from './actionsTypes';
+import axios from '../../axios-contacts';
 
-export const contactCreate = contact => {
+export const contactCreate = (contact) => {
   return {
     type: actionTypes.CONTACT_CREATE,
     contactData: contact
@@ -11,10 +11,10 @@ export const contactCreate = contact => {
 
 //async
 export const processContactCreate = (contact, callback) => {
-  return dispatch => {
+  return (dispatch) => {
     axios
-      .post("/contacts.json", contact)
-      .then(response => {
+      .post('/contacts.json', contact)
+      .then((response) => {
         dispatch(
           contactCreate({
             id: response.data.name,
@@ -26,20 +26,20 @@ export const processContactCreate = (contact, callback) => {
         );
         callback();
       })
-      .catch(error => {
-        console.log("ERROR:", error);
+      .catch((error) => {
+        console.log('ERROR:', error);
       });
   };
 };
 
-export const contactDelete = id => {
+export const contactDelete = (id) => {
   return { type: actionTypes.CONTACT_DELETE, contactData: { id: id } };
 };
 
 //async
-export const processContactDelete = id => {
-  return dispatch => {
-    axios.delete(`/contacts/${id}.json`).then(response => {
+export const processContactDelete = (id) => {
+  return (dispatch) => {
+    axios.delete(`/contacts/${id}.json`).then((response) => {
       console.log(response);
       dispatch(contactDelete(id));
     });
@@ -66,16 +66,16 @@ export const contactUpdate = ({
 };
 //async
 export const processContactUpdate = (contact, callback) => {
-  return dispatch => {
+  return (dispatch) => {
     axios
       .put(`/contacts/${contact.id}.json`, contact)
-      .then(response => {
+      .then((response) => {
         console.log(response);
         dispatch(contactUpdate(contact));
         callback();
       })
-      .catch(error => {
-        console.log("ERROR:", error);
+      .catch((error) => {
+        console.log('ERROR:', error);
       });
   };
 };
@@ -88,14 +88,14 @@ export const fetchContactsStart = () => {
   };
 };
 
-export const fetchContactsSuccess = contacts => {
+export const fetchContactsSuccess = (contacts) => {
   return {
     type: actionTypes.FETCH_CONTACTS_SUCCESS,
     contacts: contacts
   };
 };
 
-export const fetchContactsFail = error => {
+export const fetchContactsFail = (error) => {
   return {
     type: actionTypes.FETCH_CONTACTS_FAIL,
     error: error
@@ -103,19 +103,19 @@ export const fetchContactsFail = error => {
 };
 
 // async constant
-export const fetchContacts = signal => {
-  return dispatch => {
+export const fetchContacts = (signal) => {
+  return (dispatch) => {
     axios
-      .get("/contacts.json")
-      .then(response => {
+      .get('/contacts.json')
+      .then((response) => {
         const fetchedContacts = [];
         for (let key in response.data) {
           fetchedContacts.push({ ...response.data[key], id: key });
         }
-        console.log("fetched contacts: ", fetchedContacts);
+        console.log('fetched contacts: ', fetchedContacts);
         dispatch(fetchContactsSuccess(fetchedContacts));
       })
-      .catch(err => {
+      .catch((err) => {
         dispatch(fetchContactsFail(err));
       });
   };

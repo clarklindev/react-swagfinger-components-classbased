@@ -1,11 +1,12 @@
 // reducer
-import * as actionTypes from "../actions/actionsTypes";
-import { updateObject } from "../utility";
+import * as actionTypes from '../actions/actionsTypes';
+import { updateObject } from '../utility';
 const initialState = {
   phoneBook: [],
   loading: false
 };
 const addContact = (state, action) => {
+  console.log('CONTACT ADDED');
   return updateObject(state, {
     phoneBook: state.phoneBook.concat(action.contactData)
   });
@@ -13,7 +14,7 @@ const addContact = (state, action) => {
 
 const updateContact = (state, action) => {
   let updateitemIndex = state.phoneBook.findIndex(
-    contact => contact.id === action.contactData.id
+    (contact) => contact.id === action.contactData.id
   );
   let updateitem = { ...state.phoneBook[updateitemIndex] };
   updateitem.name = action.contactData.name;
@@ -23,17 +24,17 @@ const updateContact = (state, action) => {
 
   let contacts = [...state.phoneBook];
   contacts[updateitemIndex] = updateitem;
-  console.log("contacts: ", contacts);
-  console.log("state before update: ", state);
+  console.log('contacts: ', contacts);
+  console.log('state before update: ', state);
   return updateObject(state, { phoneBook: contacts });
 };
 
 const removeContact = (state, action) => {
   const updatedArray = state.phoneBook.filter(
-    contact => contact.id !== action.contactData.id
+    (contact) => contact.id !== action.contactData.id
   );
-  console.log("contactDELETE updated array: ", updatedArray);
-  console.log("state before remove: ", state);
+  console.log('contactDELETE updated array: ', updatedArray);
+  console.log('state before remove: ', state);
   return updateObject(state, { phoneBook: updatedArray });
 };
 

@@ -2,6 +2,7 @@ import React from 'react';
 
 import classes from './Input.module.scss';
 import Utils from '../../../Utils';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const input = (props) => {
   let inputElement = null;
@@ -18,26 +19,65 @@ const input = (props) => {
     inputClasses.push(classes.Invalid);
   }
 
-  switch (props.elementType) {
+  label = props.label ? (
+    <label className={classes.Label}>{props.label}</label>
+  ) : null;
+
+  switch (props.elementtype) {
     case 'input':
       inputElement = (
         <input
           className={inputClasses.join(' ')}
           placeholder={props.placeholder}
-          {...props.elementConfig}
+          {...props.elementconfig}
           value={props.value}
-          onChange={props.changed}
+          onChange={(event) => props.changed(event, props.name)}
         />
       );
       break;
+
+    case 'multiinput':
+      inputElement = (
+        <React.Fragment>
+          {props.value.map((_, index) => {
+            return (
+              <div className={classes.ContactGroup} key={props.name + index}>
+                <input
+                  className={inputClasses.join(' ')}
+                  placeholder={props.placeholder}
+                  {...props.elementconfig}
+                  onChange={(event) => props.changed(event, props.name, index)}
+                />
+                <button
+                  title='Delete'
+                  type='button'
+                  className={classes.RemoveButton}
+                  onClick={(event) =>
+                    props.removeInput(event, props.name, index)
+                  }>
+                  <FontAwesomeIcon icon={['far', 'trash-alt']} />
+                </button>
+              </div>
+            );
+          })}
+          <button
+            title='Add'
+            className={classes.AddButton}
+            onClick={(event) => props.addInput(event, props.name)}>
+            <FontAwesomeIcon icon={['fas', 'plus']} /> Add
+          </button>
+        </React.Fragment>
+      );
+      break;
+
     case 'textarea':
       inputElement = (
         <textarea
           className={inputClasses.join(' ')}
           placeholder={props.placeholder}
-          {...props.elementConfig}
+          {...props.elementconfig}
           value={props.value}
-          onChange={props.changed}
+          onChange={(event) => props.changed(event, props.name)}
         />
       );
       break;
@@ -46,8 +86,8 @@ const input = (props) => {
         <select
           className={inputClasses.join(' ')}
           value={props.value}
-          onChange={props.changed}>
-          {props.elementConfig.options.map((option) => (
+          onChange={(event) => props.changed(event, props.name)}>
+          {props.elementconfig.options.map((option) => (
             <option key={option.value} value={option.value}>
               {option.displayValue}
             </option>
@@ -59,16 +99,13 @@ const input = (props) => {
       inputElement = (
         <input
           className={inputClasses.join(' ')}
-          {...props.elementConfig}
+          placeholder={props.placeholder}
+          {...props.elementconfig}
           value={props.value}
-          onChange={props.changed}
+          onChange={(event) => props.changed(event, props.name)}
         />
       );
   }
-
-  label = props.label ? (
-    <label className={classes.Label}>{props.label}</label>
-  ) : null;
 
   return (
     <div className={className}>

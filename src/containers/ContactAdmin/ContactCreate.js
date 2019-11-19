@@ -4,10 +4,10 @@ import SectionHeader from '../../components/UI/Headers/SectionHeader';
 import classes from './ContactCreate.module.scss';
 import Utils from '../../Utils';
 import Input from '../../components/UI/Input/Input';
+
 import Modal from '../../components/UI/Modal/Modal';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import axios from '../../axios-contacts';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class ContactCreate extends Component {
   constructor(props) {
@@ -22,28 +22,28 @@ class ContactCreate extends Component {
   state = {
     contact: {
       name: {
-        elementType: 'input',
-        elementConfig: { type: 'text', placeholder: 'your name' },
+        elementtype: 'input',
+        elementconfig: { type: 'text', placeholder: 'your name' },
         label: 'Name',
         value: ''
       },
 
       lastname: {
-        elementType: 'input',
-        elementConfig: { type: 'text', placeholder: 'your lastname' },
+        elementtype: 'input',
+        elementconfig: { type: 'text', placeholder: 'your lastname' },
         label: 'Last name',
         value: ''
       },
 
       contactnumbers: {
-        elementType: 'multiinput',
-        elementConfig: { type: 'text', placeholder: 'your number' },
+        elementtype: 'multiinput',
+        elementconfig: { type: 'text', placeholder: 'your number' },
         label: 'Contact',
         value: ['']
       },
       emails: {
-        elementType: 'multiinput',
-        elementConfig: { type: 'text', placeholder: 'your email' },
+        elementtype: 'multiinput',
+        elementconfig: { type: 'text', placeholder: 'your email' },
         label: 'Email',
         value: ['']
       }
@@ -55,14 +55,18 @@ class ContactCreate extends Component {
     this.props.history.push('/phonebookadmin');
   };
 
-  contactCreateHandler = () => {
+  contactCreateHandler = (event) => {
+    event.preventDefault();
+
     //validate
     if (
-      this.state.contact.name.trim() !== '' &&
-      this.state.contact.lastname.trim() !== '' &&
+      this.state.contact.name.value.trim() !== '' &&
+      this.state.contact.lastname.value.trim() !== '' &&
       (this.state.contact.contactnumbers.value.length ||
         this.state.contact.emails.value.length)
     ) {
+      console.log('submit');
+
       this.setState({ saving: true });
       return this.props.onContactCreated(
         {
@@ -83,6 +87,7 @@ class ContactCreate extends Component {
   //contact
   addInputHandler = (event, key) => {
     event.preventDefault();
+    console.log('KEY:', key);
 
     this.setState((prevState) => ({
       contact: {
@@ -135,9 +140,8 @@ class ContactCreate extends Component {
   };
 
   render() {
-    console.log('STATE: ', this.state);
     let formElementsArray = [];
-
+    console.log('STATE: ', this.state);
     for (let key in this.state.contact) {
       formElementsArray.push({
         id: key,
@@ -145,59 +149,20 @@ class ContactCreate extends Component {
       });
     }
 
-    let output = null;
-
     let formInputs = formElementsArray.map((formElement) => {
-      output = (
+      return (
         <Input
           key={formElement.id}
-          elementType={formElement.data.elementType}
-          elementConfig={formElement.data.elementConfig}
+          name={formElement.id}
+          elementtype={formElement.data.elementtype}
+          elementconfig={formElement.data.elementconfig}
           label={formElement.data.label}
           value={formElement.data.value}
-          changed={(event) => this.inputChangedHandler(event, formElement.id)}
+          changed={this.inputChangedHandler}
+          addInput={this.addInputHandler}
+          removeInput={this.removeInputHandler}
         />
       );
-
-      if (Array.isArray(formElement.data.value)) {
-        output = (
-          <div key={formElement.id}>
-            <label className={classes.Label}>{formElement.data.label}</label>
-            <button
-              title='Add'
-              className={classes.AddButton}
-              onClick={(event) => this.addInputHandler(event, formElement.id)}>
-              <FontAwesomeIcon icon={['fas', 'plus']} /> Add
-            </button>
-            {formElement.data.value.map((data, index) => {
-              return (
-                <div
-                  className={classes.ContactGroup}
-                  key={formElement.id + index}>
-                  <Input
-                    elementType={formElement.data.elementType}
-                    elementConfig={formElement.data.elementConfig}
-                    value={data}
-                    changed={(event) =>
-                      this.inputChangedHandler(event, formElement.id, index)
-                    }
-                  />
-                  <button
-                    title='Delete'
-                    type='button'
-                    className={classes.RemoveButton}
-                    onClick={(event) =>
-                      this.removeInputHandler(event, formElement.id, index)
-                    }>
-                    <FontAwesomeIcon icon={['far', 'trash-alt']} />
-                  </button>
-                </div>
-              );
-            })}
-          </div>
-        );
-      }
-      return output;
     });
 
     return (
@@ -210,7 +175,7 @@ class ContactCreate extends Component {
         <div className={this.className}>
           <div className='container'>
             <div className={[classes.Wrapper, 'container'].join(' ')}>
-              <form>
+              <form onSubmit={this.contactCreateHandler}>
                 <div className='row'>
                   <div className='col'>
                     <SectionHeader>Contact Create</SectionHeader>
@@ -223,7 +188,7 @@ class ContactCreate extends Component {
 
                 <div className='row'>
                   <div className='col'>
-                    <button onClick={this.contactCreateHandler}>save</button>
+                    <input type='submit' value='Submit' />
                   </div>
                 </div>
               </form>
