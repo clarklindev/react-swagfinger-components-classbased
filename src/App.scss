@@ -17,7 +17,10 @@ input {
   color: var(--colorplaceholder);
 }
 
-button {
+button,
+input[type='submit'],
+input[type='reset'],
+input[type='button'] {
   border: 1px solid var(--colorborder);
   background-color: white;
   padding: 0px 15px;
