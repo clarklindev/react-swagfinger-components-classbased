@@ -68,19 +68,18 @@ class ContactCreate extends Component {
       console.log('submit');
 
       this.setState({ saving: true });
-      return this.props.onContactCreated(
-        {
-          name: this.state.contact.name.value,
-          lastname: this.state.contact.lastname.value,
-          contactnumbers: this.state.contact.contactnumbers.value,
-          emails: this.state.contact.emails.value
-        },
-        () => {
-          console.log('CALLBACK');
-          this.setState({ saving: false });
-          this.redirect();
-        }
-      );
+      const formData = {};
+      for (let formElementIdentifier in this.state.contact) {
+        formData[formElementIdentifier] = this.state.contact[
+          formElementIdentifier
+        ].value;
+      }
+
+      return this.props.onContactCreated(formData, () => {
+        console.log('CALLBACK');
+        this.setState({ saving: false });
+        this.redirect();
+      });
     }
   };
 
