@@ -94,8 +94,9 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actions.processContactCreate(contact, callback));
     },
 
-    onContactUpdated: (contact, callback) => {
-      dispatch(actions.processContactUpdate(contact, callback));
+    onContactUpdated: (contact, id, callback) => {
+      console.log('FOOOD: ', contact);
+      dispatch(actions.processContactUpdate(contact, id, callback));
     },
 
     onFetchContacts: () => {

@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-
-import SectionHeader from '../../components/UI/Headers/SectionHeader';
 import classes from './ContactCreate.module.scss';
 import Utils from '../../Utils';
+import axios from '../../axios-contacts';
+import Modal from '../../components/UI/Modal/Modal';
+
+
+import SectionHeader from '../../components/UI/Headers/SectionHeader';
 import Input from '../../components/UI/Input/Input';
 
-import Modal from '../../components/UI/Modal/Modal';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
-import axios from '../../axios-contacts';
 
 class ContactCreate extends Component {
   constructor(props) {

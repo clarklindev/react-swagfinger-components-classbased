@@ -39,12 +39,13 @@ const input = (props) => {
     case 'multiinput':
       inputElement = (
         <React.Fragment>
-          {props.value.map((_, index) => {
+          {props.value.map((val, index) => {
             return (
               <div className={classes.ContactGroup} key={props.name + index}>
                 <input
                   className={inputClasses.join(' ')}
                   placeholder={props.placeholder}
+                  value={val}
                   {...props.elementconfig}
                   onChange={(event) => props.changed(event, props.name, index)}
                 />
