@@ -25,31 +25,48 @@ class ContactUpdate extends Component {
         elementtype: 'input',
         elementconfig: { type: 'text', placeholder: 'your name' },
         label: 'Name',
-        value: ''
+        validation: {
+          required: true
+        },
+        value: '',
+        valid: false,
+        touched: false
       },
 
       lastname: {
         elementtype: 'input',
         elementconfig: { type: 'text', placeholder: 'your lastname' },
         label: 'Last name',
-        value: ''
+        validation: {
+          required: true
+        },
+        value: '',
+        valid: false,
+        touched: false
       },
 
       contactnumbers: {
         elementtype: 'multiinput',
         elementconfig: { type: 'text', placeholder: 'your number' },
         label: 'Contact',
-        value: ['']
+        validation: {
+          required: true
+        },
+        value: [{ value: '', valid: false, touched: false }]
       },
       emails: {
         elementtype: 'multiinput',
         elementconfig: { type: 'text', placeholder: 'your email' },
         label: 'Email',
-        value: ['']
+        validation: {
+          required: true
+        },
+        value: [{ value: '', valid: false, touched: false }]
       }
     },
     id: null,
-    saving: false
+    saving: false,
+    formIsValid: true
   };
 
   componentDidMount() {
@@ -72,17 +89,24 @@ class ContactUpdate extends Component {
         Object.keys(response.data).map((item) => {
           console.log('item: ', item);
 
+          let val = Array.isArray(response.data[item])
+            ? response.data[item].map((each) => {
+                return { value: each, valid: true, touched: false };
+              })
+            : response.data[item];
+
           return this.setState((prevState) => {
             const updatedState = {
               contact: {
                 ...prevState.contact,
                 [item]: {
                   ...prevState.contact[item],
-                  value: response.data[item]
+                  value: val,
+                  valid: true //overall validity of input values (collection),
                 }
-              }
+              },
+              formIsValid: true
             };
-
             return updatedState;
           });
         });
@@ -93,6 +117,23 @@ class ContactUpdate extends Component {
   redirect = () => {
     this.props.history.push('/phonebookadmin');
   };
+
+  // STARTS OFF AS TRUE, THE RULES "TRY" FALSIFY THE FUNCTION CALL
+  // RETURN TRUE if isValid / FALSE if NOT isValid
+  validationCheck(value, rules) {
+    let isValid = true;
+
+    //add validation rules below
+    if (rules.required) {
+      isValid = value.trim() !== '' && isValid;
+    }
+
+    //has only alphabet
+    //has only numbers
+
+    //---------------------------------
+    return isValid;
+  }
 
   contactUpdateHandler = (event) => {
     event.preventDefault();
@@ -109,13 +150,23 @@ class ContactUpdate extends Component {
       this.setState({ saving: true });
       const formData = {};
       for (let formElementIdentifier in this.state.contact) {
-        formData[formElementIdentifier] = this.state.contact[
-          formElementIdentifier
-        ].value;
+        if (
+          this.state.contact[formElementIdentifier].elementtype === 'multiinput'
+        ) {
+          formData[formElementIdentifier] = this.state.contact[
+            formElementIdentifier
+          ].value.map((each) => {
+            console.log('EACH VALUE: ', each.value);
+            return each.value;
+          });
+        } else {
+          formData[formElementIdentifier] = this.state.contact[
+            formElementIdentifier
+          ].value;
+        }
       }
-
       return this.props.onContactUpdated(formData, this.state.id, () => {
-        console.log('CALLBACK');
+        console.log('CONTACT UPDATED: ', formData);
         this.setState({ saving: false });
         this.redirect();
       });
@@ -132,9 +183,16 @@ class ContactUpdate extends Component {
         ...prevState.contact,
         [key]: {
           ...prevState.contact[key],
-          value: prevState.contact[key].value.concat('')
+          value: prevState.contact[key].value.concat({
+            value: '',
+            valid: false,
+            touched: false
+          })
         }
       }
+    }));
+    this.setState((prevState) => ({
+      formIsValid: this.isValidCheck(prevState.contact)
     }));
   };
 
@@ -155,33 +213,68 @@ class ContactUpdate extends Component {
         }
       }
     }));
+    this.setState((prevState) => ({
+      formIsValid: this.isValidCheck(prevState.contact)
+    }));
+  };
+
+  isValidCheck = (contact) => {
+    console.log('IS CONTACT VALID CHECK');
+    let formIsValid = true;
+    for (let inputIdentifier in contact) {
+      if (contact[inputIdentifier].elementtype === 'multiinput') {
+        for (let each of contact[inputIdentifier].value) {
+          formIsValid = each.valid && formIsValid;
+        }
+        contact[inputIdentifier].valid = formIsValid; //update array group validity
+      } else {
+        formIsValid = contact[inputIdentifier].valid && formIsValid;
+      }
+    }
+    return formIsValid;
   };
 
   // ------------------------------------
   inputChangedHandler = (event, inputIdentifier, index = null) => {
+    //single contact
     const updatedForm = {
       ...this.state.contact
     };
+
+    //single prop of contact
     const updatedFormElement = {
       ...updatedForm[inputIdentifier]
     };
 
     //if array
     if (index !== null) {
-      updatedFormElement.value[index] = event.target.value;
+      updatedFormElement.value[index].value = event.target.value;
+      updatedFormElement.value[index].valid = this.validationCheck(
+        updatedFormElement.value[index].value,
+        updatedFormElement.validation
+      );
+      updatedFormElement.value[index].touched = true;
     } else {
       //if single value
       updatedFormElement.value = event.target.value;
+      updatedFormElement.valid = this.validationCheck(
+        updatedFormElement.value,
+        updatedFormElement.validation
+      );
+      updatedFormElement.touched = true;
     }
-    updatedForm[inputIdentifier] = updatedFormElement;
-    this.setState({ contact: updatedForm });
+
+    updatedForm[inputIdentifier] = updatedFormElement; //update form's input element state as that or 'updatedFormElement'
+
+    const contactValidCheck = this.isValidCheck(updatedForm);
+    console.log('FORM VALIDITY: ', contactValidCheck);
+    this.setState({ contact: updatedForm, formIsValid: contactValidCheck });
   };
 
   render() {
     let formElementsArray = [];
     console.log('STATE: ', this.state);
     for (let key in this.state.contact) {
-      //generate an input if not the id prop
       formElementsArray.push({
         id: key,
         data: this.state.contact[key] //refers to the object associated with the contact property
@@ -197,8 +290,11 @@ class ContactUpdate extends Component {
           elementconfig={formElement.data.elementconfig}
           label={formElement.data.label}
           value={formElement.data.value}
+          touched={formElement.data.touched}
+          invalid={!formElement.data.valid}
           changed={this.inputChangedHandler}
           addInput={this.addInputHandler}
+          shouldValidate={formElement.data.validation}
           removeInput={this.removeInputHandler}
         />
       );
@@ -227,7 +323,11 @@ class ContactUpdate extends Component {
 
                 <div className='row'>
                   <div className='col'>
-                    <input type='submit' value='Submit' />
+                    <input
+                      type='submit'
+                      value='Submit'
+                      disabled={!this.state.formIsValid}
+                    />
                   </div>
                 </div>
               </form>

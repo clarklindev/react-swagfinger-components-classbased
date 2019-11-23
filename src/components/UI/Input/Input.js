@@ -45,19 +45,21 @@ const input = (props) => {
                 <input
                   className={inputClasses.join(' ')}
                   placeholder={props.placeholder}
-                  value={val}
+                  value={val.value}
                   {...props.elementconfig}
                   onChange={(event) => props.changed(event, props.name, index)}
                 />
-                <button
-                  title='Delete'
-                  type='button'
-                  className={classes.RemoveButton}
-                  onClick={(event) =>
-                    props.removeInput(event, props.name, index)
-                  }>
-                  <FontAwesomeIcon icon={['far', 'trash-alt']} />
-                </button>
+                {props.value.length > 1 ? (
+                  <button
+                    title='Delete'
+                    type='button'
+                    className={classes.RemoveButton}
+                    onClick={(event) =>
+                      props.removeInput(event, props.name, index)
+                    }>
+                    <FontAwesomeIcon icon={['far', 'trash-alt']} />
+                  </button>
+                ) : null}
               </div>
             );
           })}

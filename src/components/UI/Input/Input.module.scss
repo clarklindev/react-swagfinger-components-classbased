@@ -31,7 +31,7 @@
 
   .Invalid {
     border: 1px solid red;
-    background-color: #fda49a;
+    background-color: white;
   }
 
   .Labeledgroup {
@@ -57,4 +57,10 @@
   .RemoveButton {
     margin-left: 10px;
   }
+}
+
+.Input:disabled {
+  color: #e6e6e6;
+  background-color: #858585;
+  cursor: not-allowed;
 }

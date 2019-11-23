@@ -4,7 +4,6 @@ import Utils from '../../Utils';
 import axios from '../../axios-contacts';
 import Modal from '../../components/UI/Modal/Modal';
 
-
 import SectionHeader from '../../components/UI/Headers/SectionHeader';
 import Input from '../../components/UI/Input/Input';
 
@@ -26,35 +25,70 @@ class ContactCreate extends Component {
         elementtype: 'input',
         elementconfig: { type: 'text', placeholder: 'your name' },
         label: 'Name',
-        value: ''
+        validation: {
+          required: true
+        },
+        value: '',
+        valid: false,
+        touched: false
       },
 
       lastname: {
         elementtype: 'input',
         elementconfig: { type: 'text', placeholder: 'your lastname' },
         label: 'Last name',
-        value: ''
+        validation: {
+          required: true
+        },
+        value: '',
+        valid: false,
+        touched: false
       },
 
       contactnumbers: {
         elementtype: 'multiinput',
         elementconfig: { type: 'text', placeholder: 'your number' },
         label: 'Contact',
-        value: ['']
+        validation: {
+          required: true
+        },
+        value: [{ value: '', valid: false, touched: false }]
       },
       emails: {
         elementtype: 'multiinput',
         elementconfig: { type: 'text', placeholder: 'your email' },
         label: 'Email',
-        value: ['']
+        validation: {
+          required: true
+        },
+        value: [{ value: '', valid: false, touched: false }]
       }
     },
-    saving: false
+    id: null,
+    saving: false,
+    formIsValid: true
   };
 
   redirect = () => {
     this.props.history.push('/phonebookadmin');
   };
+
+  // STARTS OFF AS TRUE, THE RULES "TRY" FALSIFY THE FUNCTION CALL
+  // RETURN TRUE if isValid / FALSE if NOT isValid
+  validationCheck(value, rules) {
+    let isValid = true;
+
+    //add validation rules below
+    if (rules.required) {
+      isValid = value.trim() !== '' && isValid;
+    }
+
+    //has only alphabet
+    //has only numbers
+
+    //---------------------------------
+    return isValid;
+  }
 
   contactCreateHandler = (event) => {
     event.preventDefault();
@@ -71,13 +105,21 @@ class ContactCreate extends Component {
       this.setState({ saving: true });
       const formData = {};
       for (let formElementIdentifier in this.state.contact) {
-        formData[formElementIdentifier] = this.state.contact[
-          formElementIdentifier
-        ].value;
+        if (this.state.contact[formElementIdentifier].elementtype === 'multiinput') {
+          formData[formElementIdentifier] = this.state.contact[
+            formElementIdentifier
+          ].value.map((each) => {
+            console.log('EACH VALUE: ', each.value);
+            return each.value;
+          });
+        } else {
+          formData[formElementIdentifier] = this.state.contact[
+            formElementIdentifier
+          ].value;
+        }
       }
-
       return this.props.onContactCreated(formData, () => {
-        console.log('CALLBACK');
+        console.log('CONTACT CREATED', formData);
         this.setState({ saving: false });
         this.redirect();
       });
@@ -94,7 +136,11 @@ class ContactCreate extends Component {
         ...prevState.contact,
         [key]: {
           ...prevState.contact[key],
-          value: prevState.contact[key].value.concat('')
+          value: prevState.contact[key].value.concat({
+            value: '',
+            valid: false,
+            touched: false
+          })
         }
       }
     }));
@@ -130,13 +176,35 @@ class ContactCreate extends Component {
 
     //if array
     if (index !== null) {
-      updatedFormElement.value[index] = event.target.value;
+      updatedFormElement.value[index].value = event.target.value;
+      updatedFormElement.value[index].valid = this.validationCheck(
+        updatedFormElement.value[index].value,
+        updatedFormElement.validation
+      );
+      updatedFormElement.value[index].touched = true;
     } else {
       //if single value
       updatedFormElement.value = event.target.value;
+      updatedFormElement.valid = this.validationCheck(
+        updatedFormElement.value,
+        updatedFormElement.validation
+      );
+      updatedFormElement.touched = true;
     }
     updatedForm[inputIdentifier] = updatedFormElement;
-    this.setState({ contact: updatedForm });
+    let formIsValid = true;
+
+    for (let inputIdentifier in updatedForm) {
+      if (updatedForm[inputIdentifier].elementtype === 'multiinput') {
+        for (let each of updatedForm[inputIdentifier].value) {
+          formIsValid = each.valid && formIsValid;
+        }
+      } else {
+        formIsValid = updatedForm[inputIdentifier].valid && formIsValid;
+      }
+    }
+    console.log('FORM VALID: ', formIsValid);
+    this.setState({ contact: updatedForm, formIsValid: formIsValid });
   };
 
   render() {
@@ -159,7 +227,10 @@ class ContactCreate extends Component {
           label={formElement.data.label}
           value={formElement.data.value}
           changed={this.inputChangedHandler}
+          touched={formElement.data.touched}
           addInput={this.addInputHandler}
+          invalid={!formElement.data.valid}
+          shouldValidate={formElement.data.validation}
           removeInput={this.removeInputHandler}
         />
       );
@@ -188,7 +259,11 @@ class ContactCreate extends Component {
 
                 <div className='row'>
                   <div className='col'>
-                    <input type='submit' value='Submit' />
+                    <input
+                      type='submit'
+                      value='Submit'
+                      disabled={!this.state.formIsValid}
+                    />
                   </div>
                 </div>
               </form>
