@@ -28,9 +28,7 @@ class ContactCreate extends Component {
         validation: {
           required: true
         },
-        value: '',
-        valid: false,
-        touched: false
+        value: { data: '', valid: false, touched: false }
       },
 
       lastname: {
@@ -40,9 +38,7 @@ class ContactCreate extends Component {
         validation: {
           required: true
         },
-        value: '',
-        valid: false,
-        touched: false
+        value: { data: '', valid: false, touched: false }
       },
 
       contactnumbers: {
@@ -52,7 +48,7 @@ class ContactCreate extends Component {
         validation: {
           required: true
         },
-        value: [{ value: '', valid: false, touched: false }]
+        value: [{ data: '', valid: false, touched: false }]
       },
       emails: {
         elementtype: 'multiinput',
@@ -61,12 +57,12 @@ class ContactCreate extends Component {
         validation: {
           required: true
         },
-        value: [{ value: '', valid: false, touched: false }]
+        value: [{ data: '', valid: false, touched: false }]
       }
     },
     id: null,
     saving: false,
-    formIsValid: true
+    formIsValid: null
   };
 
   redirect = () => {
@@ -95,8 +91,8 @@ class ContactCreate extends Component {
 
     //validate
     if (
-      this.state.contact.name.value.trim() !== '' &&
-      this.state.contact.lastname.value.trim() !== '' &&
+      this.state.contact.name.value.data.trim() !== '' &&
+      this.state.contact.lastname.value.data.trim() !== '' &&
       (this.state.contact.contactnumbers.value.length ||
         this.state.contact.emails.value.length)
     ) {
@@ -105,17 +101,22 @@ class ContactCreate extends Component {
       this.setState({ saving: true });
       const formData = {};
       for (let formElementIdentifier in this.state.contact) {
-        if (this.state.contact[formElementIdentifier].elementtype === 'multiinput') {
+        //array value
+        if (
+          this.state.contact[formElementIdentifier].elementtype === 'multiinput'
+        ) {
           formData[formElementIdentifier] = this.state.contact[
             formElementIdentifier
           ].value.map((each) => {
-            console.log('EACH VALUE: ', each.value);
-            return each.value;
+            console.log('EACH VALUE: ', each.data);
+            return each.data;
           });
-        } else {
+        }
+        //single value
+        else {
           formData[formElementIdentifier] = this.state.contact[
             formElementIdentifier
-          ].value;
+          ].value.data;
         }
       }
       return this.props.onContactCreated(formData, () => {
@@ -127,6 +128,8 @@ class ContactCreate extends Component {
   };
 
   //contact
+  //addInputHandler is only called on a multiinput type...
+  //assumption is working with array hence .concat({})
   addInputHandler = (event, key) => {
     event.preventDefault();
     console.log('KEY:', key);
@@ -137,15 +140,19 @@ class ContactCreate extends Component {
         [key]: {
           ...prevState.contact[key],
           value: prevState.contact[key].value.concat({
-            value: '',
+            data: '',
             valid: false,
             touched: false
           })
         }
       }
     }));
+    this.setState((prevState) => ({
+      formIsValid: this.checkInputValidProperty(prevState.contact)
+    }));
   };
 
+  //remove checks the index of the input and removes it from the inputs array by index
   removeInputHandler = (event, key, index) => {
     event.preventDefault();
 
@@ -163,48 +170,64 @@ class ContactCreate extends Component {
         }
       }
     }));
+    this.setState((prevState) => ({
+      formIsValid: this.checkInputValidProperty(prevState.contact)
+    }));
+  };
+
+  checkInputValidProperty = (contact) => {
+    console.log('IS CONTACT VALID CHECK');
+    let formIsValid = true;
+
+    //each prop in contact
+    for (let inputIdentifier in contact) {
+      //if the prop of contact has an element type of...
+      if (contact[inputIdentifier].elementtype === 'multiinput') {
+        for (let each of contact[inputIdentifier].value) {
+          formIsValid = each.valid && formIsValid;
+        }
+      } else {
+        formIsValid = contact[inputIdentifier].value.valid && formIsValid;
+      }
+    }
+    return formIsValid;
   };
 
   // ------------------------------------
   inputChangedHandler = (event, inputIdentifier, index = null) => {
+    //single contact
     const updatedForm = {
       ...this.state.contact
     };
+
+    //single prop of contact
     const updatedFormElement = {
       ...updatedForm[inputIdentifier]
     };
 
     //if array
     if (index !== null) {
-      updatedFormElement.value[index].value = event.target.value;
+      updatedFormElement.value[index].data = event.target.value;
       updatedFormElement.value[index].valid = this.validationCheck(
-        updatedFormElement.value[index].value,
+        updatedFormElement.value[index].data,
         updatedFormElement.validation
       );
       updatedFormElement.value[index].touched = true;
     } else {
       //if single value
-      updatedFormElement.value = event.target.value;
-      updatedFormElement.valid = this.validationCheck(
-        updatedFormElement.value,
+      updatedFormElement.value.data = event.target.value;
+      updatedFormElement.value.valid = this.validationCheck(
+        updatedFormElement.value.data,
         updatedFormElement.validation
       );
-      updatedFormElement.touched = true;
+      updatedFormElement.value.touched = true;
     }
-    updatedForm[inputIdentifier] = updatedFormElement;
-    let formIsValid = true;
 
-    for (let inputIdentifier in updatedForm) {
-      if (updatedForm[inputIdentifier].elementtype === 'multiinput') {
-        for (let each of updatedForm[inputIdentifier].value) {
-          formIsValid = each.valid && formIsValid;
-        }
-      } else {
-        formIsValid = updatedForm[inputIdentifier].valid && formIsValid;
-      }
-    }
-    console.log('FORM VALID: ', formIsValid);
-    this.setState({ contact: updatedForm, formIsValid: formIsValid });
+    updatedForm[inputIdentifier] = updatedFormElement; //update form's input element state as that or 'updatedFormElement'
+
+    const contactValidCheck = this.checkInputValidProperty(updatedForm);
+    console.log('FORM VALIDITY: ', contactValidCheck);
+    this.setState({ contact: updatedForm, formIsValid: contactValidCheck });
   };
 
   render() {
@@ -217,20 +240,18 @@ class ContactCreate extends Component {
       });
     }
 
-    let formInputs = formElementsArray.map((formElement) => {
+    let formInputs = formElementsArray.map(({ id, data }) => {
       return (
         <Input
-          key={formElement.id}
-          name={formElement.id}
-          elementtype={formElement.data.elementtype}
-          elementconfig={formElement.data.elementconfig}
-          label={formElement.data.label}
-          value={formElement.data.value}
+          key={id}
+          name={id}
+          elementtype={data.elementtype}
+          elementconfig={data.elementconfig}
+          label={data.label}
+          value={data.value} //{data, valid, touched}
+          shouldValidate={data.validation}
           changed={this.inputChangedHandler}
-          touched={formElement.data.touched}
           addInput={this.addInputHandler}
-          invalid={!formElement.data.valid}
-          shouldValidate={formElement.data.validation}
           removeInput={this.removeInputHandler}
         />
       );

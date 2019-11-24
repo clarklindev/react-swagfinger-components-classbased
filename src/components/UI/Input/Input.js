@@ -15,7 +15,13 @@ const input = (props) => {
     props.className
   ]);
 
-  if (props.invalid && props.shouldValidate && props.touched) {
+  //add Invalid class if...
+  if (
+    props.elementtype !== 'multiinput' &&
+    props.shouldValidate &&
+    !props.value.valid &&
+    props.value.touched
+  ) {
     inputClasses.push(classes.Invalid);
   }
 
@@ -30,7 +36,7 @@ const input = (props) => {
           className={inputClasses.join(' ')}
           placeholder={props.placeholder}
           {...props.elementconfig}
-          value={props.value}
+          value={props.value.data}
           onChange={(event) => props.changed(event, props.name)}
         />
       );
@@ -40,12 +46,16 @@ const input = (props) => {
       inputElement = (
         <React.Fragment>
           {props.value.map((val, index) => {
+            let tempClasses = [...inputClasses];
+            if (props.shouldValidate && !val.valid && val.touched) {
+              tempClasses.push(classes.Invalid);
+            }
             return (
               <div className={classes.ContactGroup} key={props.name + index}>
                 <input
-                  className={inputClasses.join(' ')}
+                  className={tempClasses.join(' ')}
                   placeholder={props.placeholder}
-                  value={val.value}
+                  value={val.data}
                   {...props.elementconfig}
                   onChange={(event) => props.changed(event, props.name, index)}
                 />
@@ -79,7 +89,7 @@ const input = (props) => {
           className={inputClasses.join(' ')}
           placeholder={props.placeholder}
           {...props.elementconfig}
-          value={props.value}
+          value={props.value.data}
           onChange={(event) => props.changed(event, props.name)}
         />
       );
@@ -88,7 +98,7 @@ const input = (props) => {
       inputElement = (
         <select
           className={inputClasses.join(' ')}
-          value={props.value}
+          value={props.value.data}
           onChange={(event) => props.changed(event, props.name)}>
           {props.elementconfig.options.map((option) => (
             <option key={option.value} value={option.value}>
@@ -99,15 +109,7 @@ const input = (props) => {
       );
       break;
     default:
-      inputElement = (
-        <input
-          className={inputClasses.join(' ')}
-          placeholder={props.placeholder}
-          {...props.elementconfig}
-          value={props.value}
-          onChange={(event) => props.changed(event, props.name)}
-        />
-      );
+      inputElement = <p>specify input type</p>;
   }
 
   return (

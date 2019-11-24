@@ -24,6 +24,10 @@ class PhonebookAdmin extends Component {
     filterText: ''
   };
 
+  componentDidMount() {
+    this.props.onFetchContacts();
+  }
+
   searchChangedHandler = (event) => {
     //match string
     console.log('input:', event.target.value);
@@ -118,12 +122,7 @@ class PhonebookAdmin extends Component {
 
               return (
                 <li key={id}>
-                  <Contact
-                    id={id}
-                    displayText={entry}
-                    extraText={extra}
-                    onUpdated={this.props.onContactUpdated}
-                  />
+                  <Contact id={id} displayText={entry} extraText={extra} />
 
                   <div className={classes.ContactButtons}>
                     <button
@@ -154,7 +153,10 @@ class PhonebookAdmin extends Component {
             </div>
             <div className='row'>
               <div className='col'>
-                <SearchFilter changed={this.searchChangedHandler} />
+                <SearchFilter
+                  value={this.state.filterText}
+                  changed={this.searchChangedHandler}
+                />
               </div>
             </div>
             <div className='row'>
@@ -190,11 +192,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onContactDeleted: (id) => dispatch(actions.processContactDelete(id)),
-
-    onContactUpdated: (contact) => {
-      dispatch(actions.processContactUpdate(contact));
-    }
+    onContactDeleted: (id) => dispatch(actions.processContactDelete(id))
   };
 };
 

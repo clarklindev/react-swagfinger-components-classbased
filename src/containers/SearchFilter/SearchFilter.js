@@ -5,11 +5,11 @@ class SearchFilter extends Component {
   render() {
     return (
       <Input
-        inputtype="input"
-        type="text"
-        name="search"
-        placeholder="search"
-        label="Search"
+        elementtype='input'
+        elementconfig={{ type: 'text', placeholder: 'Enter your search' }}
+        name='search'
+        label='Search'
+        value={{ data: this.props.value, valid: 'true', touched: 'false' }}
         changed={this.props.changed}
       />
     );

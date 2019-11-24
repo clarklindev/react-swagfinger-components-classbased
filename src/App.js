@@ -51,7 +51,12 @@ class App extends Component {
 
             <Route
               path='/phonebookadmin'
-              render={(props) => <PhonebookAdmin {...props} />}
+              render={(props) => (
+                <PhonebookAdmin
+                  {...props}
+                  onFetchContacts={this.props.onFetchContacts}
+                />
+              )}
             />
 
             <Route
@@ -95,7 +100,6 @@ const mapDispatchToProps = (dispatch) => {
     },
 
     onContactUpdated: (contact, id, callback) => {
-      console.log('FOOOD: ', contact);
       dispatch(actions.processContactUpdate(contact, id, callback));
     },
 
