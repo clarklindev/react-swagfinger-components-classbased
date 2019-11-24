@@ -46,10 +46,14 @@ export const processContactDelete = (id) => {
   };
 };
 
-export const contactUpdate = ({ name, lastname, contactnumbers, emails }) => {
+export const contactUpdate = (
+  { name, lastname, contactnumbers, emails },
+  id
+) => {
   return {
     type: actionTypes.CONTACT_UPDATE,
     contactData: {
+      id: id,
       name: name,
       lastname: lastname,
       contactnumbers: contactnumbers,
@@ -59,12 +63,14 @@ export const contactUpdate = ({ name, lastname, contactnumbers, emails }) => {
 };
 //async
 export const processContactUpdate = (contact, id, callback) => {
+  console.log('UPDATTTTTTING: ', contact);
   return (dispatch) => {
     axios
       .put(`/contacts/${id}.json`, contact)
       .then((response) => {
+        console.log('UPDATTTTTTING THEN...: ', contact);
         console.log(response);
-        dispatch(contactUpdate(contact));
+        dispatch(contactUpdate(contact, id));
         callback();
       })
       .catch((error) => {

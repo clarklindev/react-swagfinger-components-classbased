@@ -17,6 +17,7 @@ const updateContact = (state, action) => {
     (contact) => contact.id === action.contactData.id
   );
   let updateitem = { ...state.phoneBook[updateitemIndex] };
+
   updateitem.name = action.contactData.name;
   updateitem.lastname = action.contactData.lastname;
   updateitem.contactnumbers = action.contactData.contactnumbers;

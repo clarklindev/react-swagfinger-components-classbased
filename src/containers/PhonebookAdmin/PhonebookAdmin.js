@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-import { connect } from 'react-redux';
-import * as actions from '../../store/actions/index';
 import Contact from '../../components/Phonebook/Contact/Contact';
 
 import classes from './PhonebookAdmin.module.scss';
@@ -23,10 +21,6 @@ class PhonebookAdmin extends Component {
   state = {
     filterText: ''
   };
-
-  componentDidMount() {
-    this.props.onFetchContacts();
-  }
 
   searchChangedHandler = (event) => {
     //match string
@@ -186,14 +180,4 @@ class PhonebookAdmin extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return { storedPhonebook: state.phoneBook };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onContactDeleted: (id) => dispatch(actions.processContactDelete(id))
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(PhonebookAdmin);
+export default PhonebookAdmin;

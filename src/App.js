@@ -54,7 +54,8 @@ class App extends Component {
               render={(props) => (
                 <PhonebookAdmin
                   {...props}
-                  onFetchContacts={this.props.onFetchContacts}
+                  storedPhonebook={this.props.storedPhonebook}
+                  onContactDeleted={this.props.onContactDeleted}
                 />
               )}
             />
@@ -101,6 +102,10 @@ const mapDispatchToProps = (dispatch) => {
 
     onContactUpdated: (contact, id, callback) => {
       dispatch(actions.processContactUpdate(contact, id, callback));
+    },
+
+    onContactDeleted: (id) => {
+      dispatch(actions.processContactDelete(id));
     },
 
     onFetchContacts: () => {
