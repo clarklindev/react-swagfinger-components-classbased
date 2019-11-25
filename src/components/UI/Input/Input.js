@@ -20,7 +20,7 @@ const input = (props) => {
     props.elementtype !== 'multiinput' &&
     props.shouldValidate &&
     !props.value.valid &&
-    props.value.touched
+    (props.value.touched || (!props.value.touched && !props.value.pristine))
   ) {
     inputClasses.push(classes.Invalid);
   }
@@ -47,7 +47,11 @@ const input = (props) => {
         <React.Fragment>
           {props.value.map((val, index) => {
             let tempClasses = [...inputClasses];
-            if (props.shouldValidate && !val.valid && val.touched) {
+            if (
+              props.shouldValidate &&
+              !val.valid &&
+              (val.touched || (!val.touched && !val.pristine))
+            ) {
               tempClasses.push(classes.Invalid);
             }
             return (
