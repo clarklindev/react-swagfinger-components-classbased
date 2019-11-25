@@ -14,6 +14,17 @@
       font-weight: bold;
       margin-bottom: 10px;
     }
+
+    p,
+    ul > li {
+      border: 1px solid var(--colorborder);
+      border-radius: var(--borderradius);
+      padding: 6px 10px;
+      height: var(--inputheight);
+      box-sizing: border-box;
+      line-height: 38px; //50px - (6px x2)
+      cursor: default;
+    }
   }
   p {
     margin: 0;
@@ -24,11 +35,11 @@
     list-style-type: none;
     margin: 0;
     padding: 0;
-  }
-  li {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    color: var(--colordefault);
+    li {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      color: var(--colordefault);
+    }
   }
 }

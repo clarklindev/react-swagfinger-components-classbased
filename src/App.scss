@@ -7,9 +7,11 @@
   --colorplaceholder: #cecece;
   --colorborder: #e6ecf0;
   --borderradius: 3px;
+  --paddingdefault: 15px;
 }
 
-input {
+input,
+select {
   height: var(--inputheight);
 }
 

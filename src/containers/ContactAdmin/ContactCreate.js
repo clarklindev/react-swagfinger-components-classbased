@@ -58,6 +58,36 @@ class ContactCreate extends Component {
           required: true
         },
         value: [{ data: '', valid: false, touched: false, pristine: true }]
+      },
+
+      contactpreference: {
+        elementtype: 'select',
+        elementconfig: {
+          options: [
+            { value: 'email', displayValue: 'Email' },
+            { value: 'phone', displayValue: 'Phone' }
+          ]
+        },
+        label: 'Contact preference',
+        validation: {
+          required: false
+        },
+        value: {
+          data: 'email',
+          valid: true,
+          touched: false,
+          pristine: true
+        }
+      },
+
+      notes: {
+        elementtype: 'textarea',
+        elementconfig: { type: 'text', placeholder: 'your notes' },
+        label: 'Notes',
+        validation: {
+          required: true
+        },
+        value: { data: '', valid: false, touched: false, pristine: true }
       }
     },
     id: null,

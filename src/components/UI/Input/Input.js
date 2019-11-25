@@ -18,13 +18,13 @@ const input = (props) => {
   //add Invalid class if...
   if (
     props.elementtype !== 'multiinput' &&
+    props.elementtype !== 'select' &&
     props.shouldValidate &&
     !props.value.valid &&
     (props.value.touched || (!props.value.touched && !props.value.pristine))
   ) {
     inputClasses.push(classes.Invalid);
   }
-
   label = props.label ? (
     <label className={classes.Label}>{props.label}</label>
   ) : null;

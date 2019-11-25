@@ -67,6 +67,16 @@ class ContactRead extends Component {
             <label>Email</label>
             <ul>{emails}</ul>
           </div>
+
+          <div className={classes.LabelGroup}>
+            <label>Contact Preference</label>
+            <p>{this.state.loadedContact['contactpreference']}</p>
+          </div>
+
+          <div className={classes.LabelGroup}>
+            <label>Notes</label>
+            <p>{this.state.loadedContact['notes']}</p>
+          </div>
         </React.Fragment>
       );
     }
