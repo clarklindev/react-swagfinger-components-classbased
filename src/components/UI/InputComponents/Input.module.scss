@@ -1,0 +1,30 @@
+.Input {
+  .Input:disabled {
+    color: #e6e6e6;
+    background-color: #858585;
+    cursor: not-allowed;
+  }
+
+  .InputElement {
+    outline: none;
+    border: 1px solid var(--colorborder);
+    background-color: white;
+    border-radius: var(--borderradius);
+    font: inherit;
+    padding: 6px 10px;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    color: var(--colordefault);
+  }
+
+  .InputElement:focus {
+    outline: none;
+    background-color: #e6e6e6;
+  }
+
+  .Invalid {
+    border: 1px solid red;
+    background-color: white;
+  }
+}

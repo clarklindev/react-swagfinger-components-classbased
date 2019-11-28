@@ -8,6 +8,9 @@ import InputContext from '../../../context/InputContext';
 import SelectWithInput from './SelectWithInput';
 import MultiInput from './MultiInput';
 import CheckboxCollection from './CheckboxCollection';
+import Select from './Select';
+import Textarea from './Textarea';
+import Input from './Input';
 
 class InputFactory extends Component {
   static contextType = InputContext;
@@ -25,108 +28,47 @@ class InputFactory extends Component {
 
   render() {
     //add Invalid class if...
-    let tempClasses = [...this.inputClasses];
-    if (
-      this.props.data.elementtype !== 'multiinput' &&
-      this.props.data.elementtype !== 'select' &&
-      this.props.data.validation &&
-      !this.props.data.value.valid &&
-      (this.props.data.value.touched ||
-        (!this.props.data.value.touched && !this.props.data.value.pristine))
-    ) {
-      console.log('pushing invalid: ');
-      tempClasses.push(classes.Invalid);
-    }
 
-    this.label = this.props.data.label ? (
-      <label className={classes.Label}>{this.props.data.label}</label>
-    ) : null;
     switch (this.props.data.elementtype) {
       case 'input':
-        this.inputElement = (
-          <div className={this.className}>
-            {this.label}
-            <input
-              className={tempClasses.join(' ')}
-              placeholder={this.props.data.placeholder}
-              {...this.props.data.elementconfig}
-              value={this.props.data.value.data}
-              onChange={(event) => {
-                console.log('props.data.name: ', this.props.data.name);
-                this.context.changed(event, this.props.data.name);
-              }}
-            />
-          </div>
-        );
+        this.inputElement = <Input {...this.props.data} />;
         break;
 
       case 'textarea':
-        this.inputElement = (
-          <div className={this.className}>
-            {this.label}
-            <textarea
-              className={this.inputClasses.join(' ')}
-              placeholder={this.props.data.placeholder}
-              {...this.props.data.elementconfig}
-              value={this.props.data.value.data}
-              onChange={(event) =>
-                this.context.changed(event, this.props.data.name)
-              }
-            />
-          </div>
-        );
+        this.inputElement = <Textarea {...this.props.data} />;
         break;
 
       case 'select':
-        this.inputElement = (
-          <div className={this.className}>
-            {this.label}
-            <select
-              className={this.inputClasses.join(' ')}
-              value={this.props.data.value.data}
-              onChange={(event) =>
-                this.context.changed(event, this.props.data.name)
-              }>
-              {this.props.data.elementconfig.options.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.displaytext}
-                </option>
-              ))}
-            </select>
-          </div>
-        );
+        this.inputElement = <Select {...this.props.data} />;
         break;
+
       case 'selectwithinput':
-        this.inputElement = (
-          <div className={this.className}>
-            {this.label}
-            <SelectWithInput {...this.props.data} />
-          </div>
-        );
+        this.inputElement = <SelectWithInput {...this.props.data} />;
         break;
 
       case 'multiinput':
-        this.inputElement = (
-          <div className={this.className}>
-            {this.label}
-            <MultiInput {...this.props.data} />
-          </div>
-        );
+        this.inputElement = <MultiInput {...this.props.data} />;
         break;
+
       case 'checkbox':
-        this.inputElement = (
-          <div className={this.className}>
-            {this.label}
-            <CheckboxCollection {...this.props.data} />
-          </div>
-        );
+        this.inputElement = <CheckboxCollection {...this.props.data} />;
         break;
 
       default:
         this.inputElement = <p>specify input type</p>;
         break;
     }
-    return this.inputElement;
+
+    this.label = this.props.data.label ? (
+      <label className={classes.Label}>{this.props.data.label}</label>
+    ) : null;
+
+    return (
+      <div className={this.className}>
+        {this.label}
+        {this.inputElement}
+      </div>
+    );
   }
 }
 

@@ -105,7 +105,7 @@ class ContactUpdate extends Component {
           required: false
         },
         value: {
-          data: '',
+          data: [{ data: '', valid: true, touched: false, pristine: true }],
           valid: true,
           touched: false,
           pristine: true
