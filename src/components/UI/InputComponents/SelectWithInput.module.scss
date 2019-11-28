@@ -1,15 +1,18 @@
 .SelectWithInput {
   margin: 0 0 30px 0;
+
   .SelectAndInputWrapper {
     border: 1px solid var(--colorborder);
     display: flex;
     flex-direction: row;
     flex-basis: 1;
     flex-grow: 1;
+    box-sizing: content-box;
   }
 
   select {
     border: none;
+    height: 48px;
     &:focus {
       outline: 0;
     }
