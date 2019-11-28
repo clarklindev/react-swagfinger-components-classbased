@@ -1,0 +1,47 @@
+.SelectWithInput {
+  margin: 0 0 30px 0;
+  .SelectAndInputWrapper {
+    border: 1px solid var(--colorborder);
+    display: flex;
+    flex-direction: row;
+    flex-basis: 1;
+    flex-grow: 1;
+  }
+
+  select {
+    border: none;
+    &:focus {
+      outline: 0;
+    }
+    padding: 6px 10px;
+  }
+
+  .RemoveButton {
+    margin-left: 10px;
+  }
+
+  .InputElement {
+    outline: none;
+    border: none;
+    background-color: white;
+    border-radius: var(--borderradius);
+    font: inherit;
+    padding: 6px 10px;
+    box-sizing: border-box;
+    color: var(--colordefault);
+    flex-basis: 1;
+    flex-grow: 1;
+  }
+}
+
+.Divider {
+  height: inherit;
+  width: 1px;
+  background-color: var(--colorborder);
+}
+
+.FlexGroupRow {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+}

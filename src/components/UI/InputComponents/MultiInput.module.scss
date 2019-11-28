@@ -1,0 +1,37 @@
+.MultiInput {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 0 30px 0;
+
+  .RemoveButton {
+    margin-left: 10px;
+  }
+
+  .InputElement {
+    outline: none;
+    border: 1px solid var(--colorborder);
+    background-color: white;
+    border-radius: var(--borderradius);
+    font: inherit;
+    padding: 6px 10px;
+    box-sizing: border-box;
+    color: var(--colordefault);
+    flex-basis: 1;
+    flex-grow: 1;
+  }
+  .Invalid {
+    border: 1px solid red;
+    background-color: white;
+  }
+  .FlexGroupRow {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+  }
+
+  .divider {
+    border: 1px solid red;
+    height: 1px;
+    width: 100%;
+  }
+}

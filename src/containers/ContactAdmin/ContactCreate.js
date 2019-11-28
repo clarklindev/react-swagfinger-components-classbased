@@ -5,7 +5,7 @@ import axios from '../../axios-contacts';
 import Modal from '../../components/UI/Modal/Modal';
 
 import SectionHeader from '../../components/UI/Headers/SectionHeader';
-import Input from '../../components/UI/Input/Input';
+import InputFactory from '../../components/UI/InputComponents/InputFactory';
 
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 
@@ -314,7 +314,7 @@ class ContactCreate extends Component {
 
     let formInputs = formElementsArray.map(({ id, data }) => {
       return (
-        <Input
+        <InputFactory
           key={id}
           name={id}
           elementtype={data.elementtype}

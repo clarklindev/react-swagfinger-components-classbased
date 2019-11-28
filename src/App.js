@@ -60,7 +60,7 @@ class App extends Component {
               )}
             />
 
-            <Route
+            {/* <Route
               path='/contactcreate'
               render={(props) => (
                 <ContactCreate
@@ -68,7 +68,7 @@ class App extends Component {
                   onContactCreated={this.props.onContactCreated}
                 />
               )}
-            />
+            /> */}
 
             <Route
               path='/contactupdate'
@@ -79,7 +79,7 @@ class App extends Component {
                 />
               )}
             />
-            <Route path='/auth' component={Auth} />
+            {/* <Route path='/auth' component={Auth} /> */}
 
             <Redirect from='/' to='/phonebook' />
             {/* <Route path="/" exact component={Auth} /> */}

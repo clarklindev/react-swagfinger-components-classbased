@@ -1,7 +1,7 @@
-.Input {
+.InputFactory {
   width: 100%;
   box-sizing: border-box;
-  margin: 0 0 15px 0;
+  margin: 0 0 30px 0;
 
   .Label {
     color: var(--colorheader);
@@ -32,30 +32,6 @@
   .Invalid {
     border: 1px solid red;
     background-color: white;
-  }
-
-  .Labeledgroup {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-end;
-    label {
-      font-weight: bold;
-      margin-bottom: 15px;
-    }
-  }
-
-  .ContactGroup {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 10px;
-  }
-
-  .AddButton {
-    margin-bottom: 15px;
-  }
-  .RemoveButton {
-    margin-left: 10px;
   }
 }
 

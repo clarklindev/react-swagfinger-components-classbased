@@ -5,17 +5,16 @@ import axios from '../../axios-contacts';
 import Modal from '../../components/UI/Modal/Modal';
 
 import SectionHeader from '../../components/UI/Headers/SectionHeader';
-import Input from '../../components/UI/Input/Input';
-
+import InputFactory from '../../components/UI/InputComponents/InputFactory';
+import InputContext from '../../context/InputContext';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 
 class ContactUpdate extends Component {
   constructor(props) {
     super(props);
     this.className = Utils.getClassNameString([
-      classes.ContactUpdate,
-      ContactUpdate.name,
-      this.props.className
+      classes.ContactUpdate, //css module
+      ContactUpdate.name
     ]);
   }
 
@@ -23,6 +22,7 @@ class ContactUpdate extends Component {
     contact: {
       name: {
         elementtype: 'input',
+        name: 'name',
         elementconfig: { type: 'text', placeholder: 'your name' },
         label: 'Name',
         validation: {
@@ -33,6 +33,7 @@ class ContactUpdate extends Component {
 
       lastname: {
         elementtype: 'input',
+        name: 'lastname',
         elementconfig: { type: 'text', placeholder: 'your lastname' },
         label: 'Last name',
         validation: {
@@ -43,7 +44,11 @@ class ContactUpdate extends Component {
 
       contactnumbers: {
         elementtype: 'multiinput',
-        elementconfig: { type: 'text', placeholder: 'your number' },
+        name: 'contactnumbers',
+        elementconfig: {
+          type: 'text',
+          placeholder: 'your number'
+        },
         label: 'Contact',
         validation: {
           required: true
@@ -53,7 +58,11 @@ class ContactUpdate extends Component {
 
       emails: {
         elementtype: 'multiinput',
-        elementconfig: { type: 'text', placeholder: 'your email' },
+        name: 'emails',
+        elementconfig: {
+          type: 'text',
+          placeholder: 'your email'
+        },
         label: 'Email',
         validation: {
           required: true
@@ -63,10 +72,11 @@ class ContactUpdate extends Component {
 
       contactpreference: {
         elementtype: 'select',
+        name: 'contactpreference',
         elementconfig: {
           options: [
-            { value: 'email', displayValue: 'Email' },
-            { value: 'phone', displayValue: 'Phone' }
+            { value: 'email', displaytext: 'Email' },
+            { value: 'phone', displaytext: 'Phone' }
           ]
         },
         label: 'Contact preference',
@@ -81,14 +91,54 @@ class ContactUpdate extends Component {
         }
       },
 
+      newsletter: {
+        elementtype: 'checkbox',
+        name: 'newsletter',
+        elementconfig: {
+          options: [
+            { value: 'weekly', displaytext: 'Weekly' },
+            { value: 'monthly', displaytext: 'Monthly' }
+          ]
+        },
+        label: 'Subscribe to newsletter',
+        validation: {
+          required: false
+        },
+        value: {
+          data: '',
+          valid: true,
+          touched: false,
+          pristine: true
+        }
+      },
+
+      socialmedia: {
+        elementtype: 'selectwithinput',
+        name: 'socialmedia',
+        elementconfig: {
+          options: [
+            { value: 'facebook', displaytext: 'Facebook' },
+            { value: 'instagram', displaytext: 'Instagram' },
+            { value: 'twitter', displaytext: 'Twitter' },
+            { value: 'youtube', displaytext: 'Youtube' },
+            { value: 'snapchat', displaytext: 'Snapchat' },
+            { value: 'linkedin', displaytext: 'LinkedIn' },
+            { value: 'tiktok', displaytext: 'TikTok' },
+            { value: 'pinterest', displaytext: 'Pinterest' }
+          ]
+        },
+        label: 'Social media',
+        validation: {},
+        value: []
+      },
+
       notes: {
         elementtype: 'textarea',
+        name: 'notes',
         elementconfig: { type: 'text', placeholder: 'your notes' },
         label: 'Notes',
-        validation: {
-          required: true
-        },
-        value: { data: '', valid: false, touched: false, pristine: true }
+        validation: {},
+        value: { data: '', valid: true, touched: false, pristine: true }
       }
     },
     id: null,
@@ -131,6 +181,8 @@ class ContactUpdate extends Component {
                 pristine: true
               }; //return just the value
 
+          console.log('val: ', val);
+
           return this.setState((prevState) => {
             const updatedState = {
               contact: {
@@ -164,7 +216,7 @@ class ContactUpdate extends Component {
     if (rules.required) {
       isValid = value.trim() !== '' && isValid;
     }
-
+    console.log('validation check: ', isValid);
     //---------------------------------
     return isValid;
   }
@@ -214,20 +266,22 @@ class ContactUpdate extends Component {
     event.preventDefault();
     console.log('KEY:', key);
 
-    this.setState((prevState) => ({
-      contact: {
-        ...prevState.contact,
-        [key]: {
-          ...prevState.contact[key],
-          value: prevState.contact[key].value.concat({
-            data: '',
-            valid: false,
-            touched: false,
-            pristine: true
-          })
+    this.setState((prevState) => {
+      return {
+        contact: {
+          ...prevState.contact,
+          [key]: {
+            ...prevState.contact[key],
+            value: prevState.contact[key].value.concat({
+              data: '',
+              valid: false,
+              touched: false,
+              pristine: true
+            })
+          }
         }
-      }
-    }));
+      };
+    });
     this.setState((prevState) => {
       let isValid = this.checkInputValidProperty(prevState.contact);
 
@@ -288,6 +342,7 @@ class ContactUpdate extends Component {
 
   // ------------------------------------
   inputChangedHandler = (event, inputIdentifier, index = null) => {
+    console.log('inputChangedHandler: ', inputIdentifier);
     //single contact
     const updatedForm = {
       ...this.state.contact
@@ -310,12 +365,12 @@ class ContactUpdate extends Component {
     } else {
       //if single value
       updatedFormElement.value.data = event.target.value;
+      updatedFormElement.value.touched = true;
+      updatedFormElement.value.pristine = false;
       updatedFormElement.value.valid = this.validationCheck(
         updatedFormElement.value.data,
         updatedFormElement.validation
       );
-      updatedFormElement.value.touched = true;
-      updatedFormElement.value.pristine = false;
     }
 
     updatedForm[inputIdentifier] = updatedFormElement; //update form's input element state as that or 'updatedFormElement'
@@ -327,8 +382,9 @@ class ContactUpdate extends Component {
 
   //mutate .pristine prop of inputs to false
   //used to test inputs validity
-  onSubmitTest = (bool) => {
-    this.setState({ submitTest: bool });
+  onSubmitTest = (event) => {
+    let eventType = event.type === 'mouseover' ? true : false;
+    this.setState({ submitTest: eventType });
 
     //make all inputs pristine:false
     //each prop in contact
@@ -367,22 +423,8 @@ class ContactUpdate extends Component {
       });
     }
 
-    let formInputs = formElementsArray.map(({ id, data }) => {
-      return (
-        <Input
-          key={id}
-          name={id}
-          elementtype={data.elementtype}
-          elementconfig={data.elementconfig}
-          label={data.label}
-          value={data.value} //{data, valid, touched, pristine}
-          submitTest={this.state.submitTest}
-          shouldValidate={data.validation}
-          changed={this.inputChangedHandler}
-          addInput={this.addInputHandler}
-          removeInput={this.removeInputHandler}
-        />
-      );
+    let formInputs = formElementsArray.map((each) => {
+      return <InputFactory key={each.id} id={each.id} data={each.data} />;
     });
 
     return (
@@ -399,24 +441,24 @@ class ContactUpdate extends Component {
                 <div className='row'>
                   <div className='col'>
                     <SectionHeader>Contact Update</SectionHeader>
+                    <InputContext.Provider
+                      value={{
+                        addinput: this.addInputHandler,
+                        removeinput: this.removeInputHandler,
+                        changed: this.inputChangedHandler,
+                        submitTest: this.state.submitTest
+                      }}>
+                      {formInputs}
+                    </InputContext.Provider>
                   </div>
                 </div>
-
-                <div className='row'>
-                  <div className='col'>{formInputs}</div>
-                </div>
-
                 <div className='row'>
                   <div className='col'>
                     <input
                       type='submit'
                       value='Submit'
-                      onMouseOver={() => {
-                        this.onSubmitTest(true);
-                      }}
-                      onMouseOut={() => {
-                        this.onSubmitTest(false);
-                      }}
+                      onMouseOver={(event) => this.onSubmitTest(event)}
+                      onMouseOut={(event) => this.onSubmitTest(event)}
                       // disabled={!this.state.formIsValid} //dont disable just handle with validation
                     />
                   </div>
