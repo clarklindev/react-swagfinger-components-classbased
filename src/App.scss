@@ -7,7 +7,7 @@
   --colorplaceholder: #cecece;
   --colorborder: #e6ecf0;
   --borderradius: 3px;
-  --paddingdefault: 15px;
+  --paddingdefault: 20px;
 }
 
 select {
@@ -24,10 +24,22 @@ input[type='checkbox'] {
 }
 
 button,
+input[type='submit'] {
+  border: 1px solid var(--colorborder);
+  background-color: white;
+  padding: 0px 15px;
+  border-radius: var(--borderradius);
+  height: var(--inputheight);
+  cursor: pointer;
+  &:focus {
+    outline: 0;
+  }
+}
+
 input[type='text'],
-input[type='submit'],
 input[type='reset'],
 input[type='button'] {
+  width: 100%;
   border: 1px solid var(--colorborder);
   background-color: white;
   padding: 0px 15px;

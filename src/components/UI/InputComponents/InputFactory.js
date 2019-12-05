@@ -11,6 +11,7 @@ import CheckboxCollection from './CheckboxCollection';
 import Select from './Select';
 import Textarea from './Textarea';
 import Input from './Input';
+import Datepicker from './Datepicker';
 
 class InputFactory extends Component {
   static contextType = InputContext;
@@ -36,6 +37,10 @@ class InputFactory extends Component {
 
       case 'textarea':
         this.inputElement = <Textarea {...this.props.data} />;
+        break;
+
+      case 'datepicker':
+        this.inputElement = <Datepicker {...this.props.data} />;
         break;
 
       case 'select':

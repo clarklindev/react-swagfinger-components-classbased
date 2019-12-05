@@ -1,2 +1,22 @@
 .Select {
+  width: 100%;
+  input[type='select'] {
+    flex-basis: 1;
+    flex-grow: 1;
+  }
+
+  .InputElement {
+    outline: none;
+    border: 1px solid var(--colorborder);
+    background-color: white;
+    border-radius: var(--borderradius);
+    font: inherit;
+    padding: 6px 10px;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    color: var(--colordefault);
+    flex-grow: 1;
+    flex-basis: 1;
+  }
 }

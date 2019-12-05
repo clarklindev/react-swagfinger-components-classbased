@@ -42,6 +42,14 @@ class ContactUpdate extends Component {
         value: { data: '', valid: false, touched: false, pristine: true }
       },
 
+      dateofbirth: {
+        elementtype: 'datepicker',
+        name: 'dateofbirth',
+        elementconfig: { type: 'text', placeholder: 'Date of birth' },
+        label: 'Date of birth',
+        value: { data: '', valid: false, touched: false, pristine: true }
+      },
+
       contactnumbers: {
         elementtype: 'multiinput',
         name: 'contactnumbers',

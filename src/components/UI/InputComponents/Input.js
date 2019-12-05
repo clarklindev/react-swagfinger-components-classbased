@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import classes from './InputFactory.module.scss';
+import classes from './Input.module.scss';
 import Utils from '../../../Utils';
 import InputContext from '../../../context/InputContext';
 
@@ -10,7 +10,11 @@ class Input extends Component {
   constructor(props) {
     super(props);
 
-    this.className = Utils.getClassNameString([classes.Input, Input.name]);
+    this.className = Utils.getClassNameString([
+      classes.Input,
+      Input.name,
+      this.props.className
+    ]);
 
     this.inputClasses = [classes.InputElement];
   }
@@ -29,8 +33,9 @@ class Input extends Component {
     }
     return (
       <input
-        className={tempClasses.join(' ')}
+        className={[this.className, tempClasses].join(' ')}
         placeholder={this.props.placeholder}
+        readOnly={this.props.readOnly}
         {...this.props.elementconfig}
         value={this.props.value.data}
         onChange={(event) => {

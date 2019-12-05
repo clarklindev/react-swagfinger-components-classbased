@@ -3,11 +3,12 @@ import React from 'react';
 import classes from './Button.module.scss';
 import Utils from '../../../Utils';
 
-const button = props => {
+const button = (props) => {
   let classList = Utils.getClassNameString([
     classes.Button,
     'Button',
-    classes[props.btnType]
+    classes[props.btnType],
+    props.className
   ]);
 
   return (

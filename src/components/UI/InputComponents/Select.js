@@ -12,7 +12,7 @@ class Select extends Component {
   render() {
     return (
       <select
-        className={this.className}
+        className={[this.className, this.inputClasses].join(' ')}
         value={this.props.value.data}
         onChange={(event) => this.context.changed(event, this.props.name)}>
         {this.props.elementconfig.options.map((option) => (
