@@ -44,7 +44,8 @@ class Datepicker extends Component {
 
       viewstate: 'daypicker',
 
-      format: 'iso', //iso (default) || full
+      format: 'full', //'iso' (default) eg. '2000-10-13' || 'full' eg. 'Thursday, 12 December 2019'
+      position: 'absolute', //'absolute' | 'relative'
       daypicker: { arrows: true, month: true, year: true },
       monthpicker: { arrows: false, month: false, year: false },
       yearpicker: { arrows: true, month: false, year: false }
@@ -511,9 +512,11 @@ class Datepicker extends Component {
         </Button>
       </div>
     );
+    let displayposition =
+      this.state.position === 'relative' ? 'relative' : null;
 
     let calendar = this.state.showCalendar ? (
-      <div className={classes.Calendar}>
+      <div className={[classes.Calendar, displayposition].join(' ')}>
         <div className={classes.CalendarHeader}>
           {this.state[this.state.viewstate].arrows ? (
             <button

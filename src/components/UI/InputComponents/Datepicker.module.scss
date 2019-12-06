@@ -29,6 +29,9 @@
     border: 1px solid black;
     border-radius: var(--borderradius);
     padding: var(--default-padding);
+    &[class~='relative'] {
+      position: relative;
+    }
 
     .CalendarHeader {
       display: flex;
