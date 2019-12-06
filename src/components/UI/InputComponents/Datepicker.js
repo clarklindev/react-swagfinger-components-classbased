@@ -38,10 +38,19 @@ class Datepicker extends Component {
     this.state = {
       startOfWeek: 'mon', //'mon' | 'sun'
       showCalendar: false,
+
       currentdate: new Date(),
       pickeddate: null,
 
       viewstate: 'daypicker',
+
+      // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString
+      format: {
+        weekday: 'long',
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric'
+      },
       daypicker: { arrows: true, month: true, year: true },
       monthpicker: { arrows: false, month: false, year: false },
       yearpicker: { arrows: true, month: false, year: false }
@@ -202,7 +211,6 @@ class Datepicker extends Component {
     monthIndex = this.state.currentdate.getMonth(), //zero-indexed
     year = this.state.currentdate.getFullYear()
   ) => {
-    // table header
     let tableHead = (
       <tr>
         {Object.keys(this.daysOfWeekLabels).map((each, i) => {
@@ -318,12 +326,21 @@ class Datepicker extends Component {
   onShowCalendar = () => {
     console.log('onShowCalendar');
     console.log('this.state: ', this.state);
+
     this.setState((previousState) => ({
-      showCalendar: !previousState.showCalendar
+      showCalendar: !previousState.showCalendar,
+      viewstate: 'daypicker',
+      currentdate: this.state.pickeddate ? this.state.pickeddate : new Date()
     }));
   };
 
   decrease = () => {
+    Array.from(
+      this.calendarBodyRef.current.querySelectorAll('.active')
+    ).forEach((item) => {
+      item.classList.remove('active');
+    });
+
     switch (this.state.viewstate) {
       case 'daypicker':
         this.setState((prevState) => {
@@ -363,6 +380,12 @@ class Datepicker extends Component {
     }
   };
   increase = () => {
+    Array.from(
+      this.calendarBodyRef.current.querySelectorAll('.active')
+    ).forEach((item) => {
+      item.classList.remove('active');
+    });
+
     switch (this.state.viewstate) {
       case 'daypicker':
         this.setState((prevState) => {
@@ -445,7 +468,6 @@ class Datepicker extends Component {
 
     console.log('MAGIC: ', this.calendarBodyRef.current);
 
-    //remove active class from all on calendar
     Array.from(
       this.calendarBodyRef.current.querySelectorAll('.active')
     ).forEach((item) => {
@@ -470,7 +492,21 @@ class Datepicker extends Component {
   render() {
     let dateinput = (
       <div className={classes.Dateinput} onClick={this.onShowCalendar}>
-        <Input {...this.props} readOnly />
+        <Input
+          {...this.props}
+          readOnly
+          value={{
+            data: this.state.pickeddate
+              ? new Date(this.state.pickeddate).toLocaleDateString(
+                  'en-US',
+                  this.state.format
+                )
+              : '',
+            valid: false,
+            touched: false,
+            pristine: true
+          }}
+        />
         <Button>
           <CalendarIcon />
         </Button>

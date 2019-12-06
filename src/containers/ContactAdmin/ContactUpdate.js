@@ -45,7 +45,7 @@ class ContactUpdate extends Component {
       dateofbirth: {
         elementtype: 'datepicker',
         name: 'dateofbirth',
-        elementconfig: { type: 'text', placeholder: 'Date of birth' },
+        elementconfig: { type: 'text', placeholder: 'Enter date of birth' },
         label: 'Date of birth',
         value: { data: '', valid: false, touched: false, pristine: true }
       },
