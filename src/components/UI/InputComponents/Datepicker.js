@@ -44,13 +44,7 @@ class Datepicker extends Component {
 
       viewstate: 'daypicker',
 
-      // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString
-      format: {
-        weekday: 'long',
-        day: '2-digit',
-        month: 'long',
-        year: 'numeric'
-      },
+      format: 'iso', //iso (default) || full
       daypicker: { arrows: true, month: true, year: true },
       monthpicker: { arrows: false, month: false, year: false },
       yearpicker: { arrows: true, month: false, year: false }
@@ -497,10 +491,15 @@ class Datepicker extends Component {
           readOnly
           value={{
             data: this.state.pickeddate
-              ? new Date(this.state.pickeddate).toLocaleDateString(
-                  'en-US',
-                  this.state.format
-                )
+              ? this.state.format === 'full'
+                ? // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString
+                  new Date(this.state.pickeddate).toLocaleDateString('en-GB', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long', //long | 2-digit
+                    day: '2-digit'
+                  })
+                : new Date(this.state.pickeddate).toISOString().substr(0, 10)
               : '',
             valid: false,
             touched: false,
