@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import InputFactory from '../../components/UI/InputComponents/InputFactory';
+import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
 
 class SearchFilter extends Component {
   render() {
@@ -10,7 +10,7 @@ class SearchFilter extends Component {
       label: 'Search',
       value: { data: this.props.value, valid: 'true', touched: 'false' }
     };
-    return <InputFactory data={{ ...obj }} />;
+    return <ComponentFactory data={{ ...obj }} />;
   }
 }
 

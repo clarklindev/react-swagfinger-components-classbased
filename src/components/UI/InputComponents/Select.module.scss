@@ -1,22 +1,36 @@
 .Select {
+  position: relative;
   width: 100%;
-  input[type='select'] {
-    flex-basis: 1;
-    flex-grow: 1;
-  }
-
-  .InputElement {
+  select {
     outline: none;
     border: 1px solid var(--colorborder);
     background-color: white;
     border-radius: var(--borderradius);
     font: inherit;
-    padding: 6px 10px;
-    display: block;
-    width: 100%;
+    padding: 6px 15px;
     box-sizing: border-box;
     color: var(--colordefault);
     flex-grow: 1;
     flex-basis: 1;
+
+    width: inherit;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+
+    background-repeat: no-repeat;
+    background-size: 0.5em auto;
+    background-position: right 15px center;
+    background-image: url("data:image/svg+xml;charset=utf-8, \
+    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 40'> \
+      <polygon points='0,0 60,0 30,40' style='fill:black;'/> \
+    </svg>");
+
+    &.IsOpen {
+      background-image: url("data:image/svg+xml;charset=utf-8, \
+    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 40'> \
+      <polygon points='0, 30 30, 0 60, 30' style='fill:black;'/> \
+    </svg>");
+    }
   }
 }

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import classes from './Checkbox.module.scss';
+import classes from './RadioButton.module.scss';
 
-class Checkbox extends Component {
+class RadioButton extends Component {
   render() {
     return (
-      <div className={classes.Checkbox}>
+      <div className={classes.RadioButton}>
         <label className={classes.Container}>
-          <input type='checkbox' />
+          <input type='radio' name={this.props.name} />
           <span className={classes.Checkmark}></span>
           {this.props.label}
         </label>
@@ -14,5 +14,4 @@ class Checkbox extends Component {
     );
   }
 }
-
-export default Checkbox;
+export default RadioButton;

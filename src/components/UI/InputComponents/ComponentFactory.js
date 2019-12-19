@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import classes from './InputFactory.module.scss';
+import classes from './ComponentFactory.module.scss';
 import Utils from '../../../Utils';
 import InputContext from '../../../context/InputContext';
 
@@ -8,12 +8,13 @@ import InputContext from '../../../context/InputContext';
 import SelectWithInput from './SelectWithInput';
 import MultiInput from './MultiInput';
 import CheckboxCollection from './CheckboxCollection';
+import RadioCollection from './RadioCollection';
 import Select from './Select';
 import Textarea from './Textarea';
 import Input from './Input';
 import Datepicker from './Datepicker';
-
-class InputFactory extends Component {
+import Toggle from './Toggle';
+class ComponentFactory extends Component {
   static contextType = InputContext;
 
   constructor(props) {
@@ -22,8 +23,8 @@ class InputFactory extends Component {
     this.inputElement = null;
     this.label = null;
     this.className = Utils.getClassNameString([
-      classes.InputFactory,
-      'InputFactory'
+      classes.ComponentFactory,
+      'ComponentFactory'
     ]);
   }
 
@@ -43,6 +44,10 @@ class InputFactory extends Component {
         this.inputElement = <Datepicker {...this.props.data} />;
         break;
 
+      case 'radio':
+        this.inputElement = <RadioCollection {...this.props.data} />;
+        break;
+
       case 'select':
         this.inputElement = <Select {...this.props.data} />;
         break;
@@ -57,6 +62,10 @@ class InputFactory extends Component {
 
       case 'checkbox':
         this.inputElement = <CheckboxCollection {...this.props.data} />;
+        break;
+
+      case 'toggle':
+        this.inputElement = <Toggle {...this.props.data} />;
         break;
 
       default:
@@ -77,4 +86,4 @@ class InputFactory extends Component {
   }
 }
 
-export default InputFactory;
+export default ComponentFactory;

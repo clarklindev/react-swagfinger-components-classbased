@@ -108,6 +108,8 @@ export const fetchContacts = (signal) => {
       .get('/contacts.json')
       .then((response) => {
         console.log('RESPONSE', response);
+
+        //this step is so we can add ID to the object
         const fetchedContacts = [];
         for (let key in response.data) {
           fetchedContacts.push({ ...response.data[key], id: key });

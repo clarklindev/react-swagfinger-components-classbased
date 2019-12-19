@@ -26,7 +26,7 @@ class SelectWithInput extends Component {
         {this.props.value.map((val, index) => {
           let tempClasses = [...this.inputClasses];
           if (
-            this.props.validation &&
+            this.props.validation.required &&
             !val.valid &&
             (val.touched || (!val.touched && !val.pristine))
           ) {

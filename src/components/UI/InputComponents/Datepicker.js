@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import classes from './Datepicker.module.scss';
 
 import { ReactComponent as CalendarIcon } from '../Icons/CalendarIcon.svg';
-import Input from '../InputComponents/Input';
 import Button from '../Button/Button';
 
 class Datepicker extends Component {
@@ -35,29 +34,40 @@ class Datepicker extends Component {
       'december'
     ];
 
-    this.state = {
-      startOfWeek: 'mon', //'mon' | 'sun'
-      showCalendar: false,
-
-      currentdate: new Date(),
-      pickeddate: null,
-
-      viewstate: 'daypicker',
-
-      format: 'full', //'iso' (default) eg. '2000-10-13' || 'full' eg. 'Thursday, 12 December 2019'
-      position: 'absolute', //'absolute' | 'relative'
-      daypicker: { arrows: true, month: true, year: true },
-      monthpicker: { arrows: false, month: false, year: false },
-      yearpicker: { arrows: true, month: false, year: false }
-    };
-
     this.calendarBodyRef = React.createRef();
   }
+
+  state = {
+    startOfWeek: 'mon', //'mon' | 'sun'
+    showCalendar: false,
+
+    currentdate: new Date(),
+    pickeddate: null,
+
+    viewstate: 'daypicker',
+
+    valid: null,
+    touched: false,
+
+    format: 'full', //'iso' (default) eg. '2000-10-13' || 'full' eg. 'Thursday, 12 December 2019'
+    position: 'absolute', //'absolute' | 'relative'
+    daypicker: { arrows: true, month: true, year: true },
+    monthpicker: { arrows: false, month: false, year: false },
+    yearpicker: { arrows: true, month: false, year: false }
+  };
 
   componentDidMount() {
     console.log('hello: ', this.calendarBodyRef.current);
   }
 
+  //here because date is passed as prop, done intially only once...
+  componentDidUpdate() {
+    if (this.state.pickeddate === null && this.props.value.data !== '') {
+      this.setState({
+        pickeddate: new Date(this.props.value.data)
+      });
+    }
+  }
   // helper functions
 
   //FINDS WHAT DAY OF THE WEEK IS THE 1st
@@ -217,6 +227,8 @@ class Datepicker extends Component {
             case this.daysOfWeekLabels[1]: //start of week is monday
               posInArray = i === 6 ? 0 : i + 1; //if i is 6 while looping, use 0,
               break;
+            default:
+              console.log('.startOfWeek not set');
           }
           return (
             <th key={'dayheader' + i}>{this.daysOfWeekLabels[posInArray]}</th>
@@ -255,6 +267,8 @@ class Datepicker extends Component {
                     startCounting = true;
                   }
                   break;
+                default:
+                  console.log('.startOfWeek not set');
               }
             }
 
@@ -308,7 +322,7 @@ class Datepicker extends Component {
 
   switchState = (newviewstate) => {
     console.log('viewstate: ', newviewstate);
-    if (this.state.viewstate != newviewstate) {
+    if (this.state.viewstate !== newviewstate) {
       this.setState((prevState) => {
         return {
           viewstate: newviewstate
@@ -318,18 +332,22 @@ class Datepicker extends Component {
   };
 
   //when input or calendar icon is clicked
-  onShowCalendar = () => {
+  onShowCalendar = (event) => {
+    event.preventDefault();
+
     console.log('onShowCalendar');
     console.log('this.state: ', this.state);
 
     this.setState((previousState) => ({
       showCalendar: !previousState.showCalendar,
       viewstate: 'daypicker',
-      currentdate: this.state.pickeddate ? this.state.pickeddate : new Date()
+      currentdate: this.state.pickeddate ? this.state.pickeddate : new Date(),
+      touched: true
     }));
   };
 
-  decrease = () => {
+  decrease = (event) => {
+    event.preventDefault();
     Array.from(
       this.calendarBodyRef.current.querySelectorAll('.active')
     ).forEach((item) => {
@@ -374,7 +392,8 @@ class Datepicker extends Component {
         break;
     }
   };
-  increase = () => {
+  increase = (event) => {
+    event.preventDefault();
     Array.from(
       this.calendarBodyRef.current.querySelectorAll('.active')
     ).forEach((item) => {
@@ -455,6 +474,8 @@ class Datepicker extends Component {
           };
         });
         break;
+      default:
+        console.log('target.className does not exist');
     }
   };
 
@@ -479,19 +500,38 @@ class Datepicker extends Component {
         pickeddate: new Date(
           `${prevState.currentdate.getFullYear()}-${prevState.currentdate.getMonth() +
             1}-${Math.abs(target.innerHTML)}`
-        )
+        ),
+        valid: true,
+        touched: true
       };
     });
   };
 
   render() {
+    let tempClasses = [];
+
+    if (
+      (this.props.validation.required &&
+        !this.state.valid &&
+        this.state.touched &&
+        !this.props.value.pristine) ||
+      (!this.state.touched && !this.props.value.pristine)
+    ) {
+      console.log('pushing invalid: ');
+      tempClasses.push(classes.Invalid);
+    }
+
     let dateinput = (
-      <div className={classes.Dateinput} onClick={this.onShowCalendar}>
-        <Input
+      <div
+        className={[classes.Dateinput, ...tempClasses].join(' ')}
+        onClick={this.onShowCalendar}>
+        <input
           {...this.props}
+          placeholder={this.props.placeholder}
           readOnly
-          value={{
-            data: this.state.pickeddate
+          {...this.props.elementconfig}
+          value={
+            this.state.pickeddate
               ? this.state.format === 'full'
                 ? // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString
                   new Date(this.state.pickeddate).toLocaleDateString('en-GB', {
@@ -501,10 +541,11 @@ class Datepicker extends Component {
                     day: '2-digit'
                   })
                 : new Date(this.state.pickeddate).toISOString().substr(0, 10)
-              : '',
-            valid: false,
-            touched: false,
-            pristine: true
+              : ''
+          }
+          onChange={(event) => {
+            console.log('props.name: ', this.props.name);
+            this.context.changed(event, this.props.name);
           }}
         />
         <Button>
@@ -521,7 +562,7 @@ class Datepicker extends Component {
           {this.state[this.state.viewstate].arrows ? (
             <button
               className={[classes.Chevron, classes.Decrease].join(' ')}
-              onClick={() => this.decrease()}>
+              onClick={(event) => this.decrease(event)}>
               left
             </button>
           ) : null}
@@ -544,7 +585,7 @@ class Datepicker extends Component {
           {this.state[this.state.viewstate].arrows ? (
             <button
               className={[classes.Chevron, classes.Increase].join(' ')}
-              onClick={() => this.increase()}>
+              onClick={(event) => this.increase(event)}>
               right
             </button>
           ) : null}

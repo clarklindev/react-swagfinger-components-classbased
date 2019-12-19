@@ -5,14 +5,13 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { BrowserRouter } from 'react-router-dom';
+//reducer
+import reducer from './store/reducers/contact';
 
 //app
 import App from './App';
 import './index.scss';
 import * as serviceWorker from './serviceWorker';
-
-//redux
-import reducer from './store/reducers/contact';
 
 const logger = store => {
   return next => {
@@ -26,10 +25,7 @@ const logger = store => {
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const store = createStore(
-  reducer,
-  /* preloadedState, */ composeEnhancers(applyMiddleware(logger, thunk))
-);
+const store = createStore( reducer, composeEnhancers(applyMiddleware(logger, thunk)) );
 
 ReactDOM.render(
   <Provider store={store}>

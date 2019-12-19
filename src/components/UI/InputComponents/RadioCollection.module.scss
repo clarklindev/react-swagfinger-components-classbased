@@ -1,8 +1,9 @@
-.CheckboxCollection {
+.RadioCollection {
   display: flex;
   flex-direction: column;
   border: 1px solid transparent; //var(--colorborder);
   border-radius: var(--borderradius);
+
   &.Invalid {
     border: 1px solid red; //var(--colorborder);
     padding: 6px 10px;

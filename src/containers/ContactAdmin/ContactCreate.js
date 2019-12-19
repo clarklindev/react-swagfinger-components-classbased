@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
+import * as actions from '../../store/actions/index';
 import classes from './ContactCreate.module.scss';
 import Utils from '../../Utils';
 import axios from '../../axios-contacts';
 import Modal from '../../components/UI/Modal/Modal';
 
 import SectionHeader from '../../components/UI/Headers/SectionHeader';
-import InputFactory from '../../components/UI/InputComponents/InputFactory';
+import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
 
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 
@@ -79,7 +82,12 @@ class ContactCreate extends Component {
           pristine: true
         }
       },
-
+      newsletter: {
+        elementtype: ''
+      },
+      socialmedia: {
+        elementtype: ''
+      },
       notes: {
         elementtype: 'textarea',
         elementconfig: { type: 'text', placeholder: 'your notes' },
@@ -94,10 +102,6 @@ class ContactCreate extends Component {
     saving: false,
     submitTest: false,
     formIsValid: null
-  };
-
-  redirect = () => {
-    this.props.history.push('/phonebookadmin');
   };
 
   //WHEN INPUT CHANGES...
@@ -148,7 +152,7 @@ class ContactCreate extends Component {
       return this.props.onContactCreated(formData, () => {
         console.log('CONTACT CREATED', formData);
         this.setState({ saving: false });
-        this.redirect();
+        this.props.history.push('/phonebookadmin');
       });
     }
   };
@@ -314,7 +318,7 @@ class ContactCreate extends Component {
 
     let formInputs = formElementsArray.map(({ id, data }) => {
       return (
-        <InputFactory
+        <ComponentFactory
           key={id}
           name={id}
           elementtype={data.elementtype}
@@ -375,4 +379,15 @@ class ContactCreate extends Component {
   }
 }
 
-export default withErrorHandler(ContactCreate, axios);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onContactCreated: (contact, callback) => {
+      dispatch(actions.processContactCreate(contact, callback));
+    }
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(withErrorHandler(ContactCreate, axios));

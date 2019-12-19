@@ -10,16 +10,10 @@ class Input extends Component {
   constructor(props) {
     super(props);
 
-    this.className = Utils.getClassNameString([
-      classes.Input,
-      Input.name,
-      this.props.className
-    ]);
-
-    this.inputClasses = [classes.InputElement];
+    this.className = Utils.getClassNameString([classes.Input, Input.name]);
   }
   render() {
-    let tempClasses = [...this.inputClasses];
+    let tempClasses = [];
     if (
       this.props.elementtype !== 'multiinput' &&
       this.props.elementtype !== 'select' &&

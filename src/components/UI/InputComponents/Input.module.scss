@@ -1,37 +1,31 @@
 .Input {
+  width: 100%;
   display: flex;
+  border: 1px solid var(--colorborder);
+  border-radius: var(--borderradius);
+  font: inherit;
+  padding: 0px 15px;
+  box-sizing: border-box;
+  color: var(--colordefault);
+  flex-grow: 1;
+  flex-basis: 1;
 
-  .Input:disabled {
+  &.Invalid {
+    border: 1px solid red;
+    background-color: white;
+  }
+
+  &:focus {
+    outline: none;
+    // background-color: #e6e6e6;
+  }
+  :disabled {
     color: #e6e6e6;
     background-color: #858585;
     cursor: not-allowed;
   }
 
-  .Invalid {
-    border: 1px solid red;
-    background-color: white;
-  }
-
   .NoStyle {
     border: none;
   }
-}
-
-.InputElement {
-  background-color: red;
-  outline: none;
-  border: 1px solid var(--colorborder);
-  background-color: white;
-  border-radius: var(--borderradius);
-  font: inherit;
-  padding: 6px 10px;
-  box-sizing: border-box;
-  color: var(--colordefault);
-  flex-grow: 1;
-  flex-basis: 1;
-}
-
-.InputElement:focus {
-  outline: none;
-  background-color: #e6e6e6;
 }

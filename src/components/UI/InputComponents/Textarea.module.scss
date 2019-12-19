@@ -1,0 +1,32 @@
+.Textarea {
+  width: 100%;
+  display: flex;
+  border: 1px solid var(--colorborder);
+  border-radius: var(--borderradius);
+  font: inherit;
+  padding: 6px 10px;
+  box-sizing: border-box;
+  color: var(--colordefault);
+  flex-grow: 1;
+  flex-basis: 1;
+
+  &.Invalid {
+    border: 1px solid red;
+    background-color: white;
+  }
+
+  &:focus {
+    outline: none;
+    // background-color: #e6e6e6;
+  }
+
+  :disabled {
+    color: #e6e6e6;
+    background-color: #858585;
+    cursor: not-allowed;
+  }
+
+  .NoStyle {
+    border: none;
+  }
+}

@@ -4,11 +4,13 @@ import classes from './CheckboxCollection.module.scss';
 
 class CheckboxCollection extends Component {
   render() {
-    return this.props.elementconfig.options.map((each, index) => (
-      <div className={classes.FlexGroupRow} key={this.props.name + index}>
-        <Checkbox label={each.displaytext} name={this.props.name + index} />
+    return (
+      <div className={classes.CheckboxCollection}>
+        {this.props.elementconfig.options.map((each, index) => (
+          <Checkbox label={each.displaytext} key={this.props.name + index} />
+        ))}
       </div>
-    ));
+    );
   }
 }
 

@@ -36,7 +36,15 @@ input[type='submit'] {
   }
 }
 
-input[type='text'],
+input[type='text'] {
+  // cursor: pointer;
+  height: var(--inputheight);
+  &:focus {
+    outline: 0;
+  }
+  outline: none;
+}
+
 input[type='reset'],
 input[type='button'] {
   width: 100%;
