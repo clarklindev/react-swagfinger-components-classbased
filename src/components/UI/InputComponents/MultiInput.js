@@ -39,7 +39,11 @@ class MultiInput extends Component {
                 {...this.props.elementconfig}
                 onChange={(event) =>
                   //pass in the name of the prop, and the index (if array item)
-                  this.context.changed(event, this.props.name, index)
+                  this.context.changed(
+                    event.target.value,
+                    this.props.name,
+                    index
+                  )
                 }
               />
               {this.props.value.length > 1 ? (

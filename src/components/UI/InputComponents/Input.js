@@ -34,7 +34,7 @@ class Input extends Component {
         value={this.props.value.data}
         onChange={(event) => {
           console.log('props.name: ', this.props.name);
-          this.context.changed(event, this.props.name);
+          this.context.changed(event.target.value, this.props.name);
         }}
       />
     );

@@ -545,7 +545,7 @@ class Datepicker extends Component {
           }
           onChange={(event) => {
             console.log('props.name: ', this.props.name);
-            this.context.changed(event, this.props.name);
+            this.context.changed(event.target.name, this.props.name);
           }}
         />
         <Button>

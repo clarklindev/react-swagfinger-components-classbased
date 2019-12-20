@@ -112,25 +112,26 @@ class ContactUpdate extends Component {
         value: { data: '', valid: true, touched: false, pristine: true }
       },
 
-      // socialmedia: {
-      //   elementtype: 'selectwithinput',
-      //   name: 'socialmedia',
-      //   label: 'Social media',
-      //   validation: {},
-      //   elementconfig: {
-      //     options: [
-      //       { value: 'facebook', displaytext: 'Facebook' },
-      //       { value: 'instagram', displaytext: 'Instagram' },
-      //       { value: 'twitter', displaytext: 'Twitter' },
-      //       { value: 'youtube', displaytext: 'Youtube' },
-      //       { value: 'snapchat', displaytext: 'Snapchat' },
-      //       { value: 'linkedin', displaytext: 'LinkedIn' },
-      //       { value: 'tiktok', displaytext: 'TikTok' },
-      //       { value: 'pinterest', displaytext: 'Pinterest' }
-      //     ]
-      //   },
-      //   value: []
-      // },
+      socialmedia: {
+        elementtype: 'selectwithinput',
+        name: 'socialmedia',
+        label: 'Social media',
+        validation: { required: true },
+        elementconfig: {
+          options: [
+            { value: '', displaytext: '' },
+            { value: 'facebook', displaytext: 'Facebook' },
+            { value: 'instagram', displaytext: 'Instagram' },
+            { value: 'twitter', displaytext: 'Twitter' },
+            { value: 'youtube', displaytext: 'Youtube' },
+            { value: 'snapchat', displaytext: 'Snapchat' },
+            { value: 'linkedin', displaytext: 'LinkedIn' },
+            { value: 'tiktok', displaytext: 'TikTok' },
+            { value: 'pinterest', displaytext: 'Pinterest' }
+          ]
+        },
+        value: [{ data: null, valid: true, touched: false, pristine: true }]
+      },
 
       notes: {
         elementtype: 'textarea',
@@ -232,7 +233,7 @@ class ContactUpdate extends Component {
 
     //add validation rules below
     if (rules.required) {
-      isValid = value.trim() !== '' && isValid;
+      isValid = value !== '' && isValid;
     }
     console.log('validation check: ', isValid);
     //---------------------------------
@@ -359,7 +360,7 @@ class ContactUpdate extends Component {
   };
 
   // ------------------------------------
-  inputChangedHandler = (event, inputIdentifier, index = null) => {
+  inputChangedHandler = (newval, inputIdentifier, index = null) => {
     console.log('inputChangedHandler: ', inputIdentifier);
     //single contact
     const updatedForm = {
@@ -373,7 +374,7 @@ class ContactUpdate extends Component {
 
     //if array
     if (index !== null) {
-      updatedFormElement.value[index].data = event.target.value;
+      updatedFormElement.value[index].data = newval;
       updatedFormElement.value[index].touched = true;
       updatedFormElement.value[index].pristine = false;
       updatedFormElement.value[index].valid = this.validationCheck(
@@ -382,7 +383,7 @@ class ContactUpdate extends Component {
       );
     } else {
       //if single value
-      updatedFormElement.value.data = event.target.value;
+      updatedFormElement.value.data = newval;
       updatedFormElement.value.touched = true;
       updatedFormElement.value.pristine = false;
       updatedFormElement.value.valid = this.validationCheck(
@@ -405,7 +406,10 @@ class ContactUpdate extends Component {
     //each prop in contact
     for (let inputIdentifier in this.state.form) {
       let obj;
-      if (this.state.form[inputIdentifier].elementtype === 'multiinput') {
+      if (
+        this.state.form[inputIdentifier].elementtype === 'multiinput' ||
+        this.state.form[inputIdentifier].elementtype === 'selectwithinput'
+      ) {
         obj = this.state.form[inputIdentifier].value.map((each) => {
           console.log('EACH: ', each);
           let val = { ...each };
@@ -452,7 +456,7 @@ class ContactUpdate extends Component {
         <div className={this.className}>
           <div className='container'>
             <div className={[classes.Wrapper, 'container'].join(' ')}>
-              <form onSubmit={this.contactUpdateHandler}>
+              <form onSubmit={this.contactUpdateHandler} autoComplete='off'>
                 <div className='row'>
                   <div className='col'>
                     <SectionHeader>Contact Update</SectionHeader>

@@ -8,6 +8,10 @@
     flex-basis: 1;
     flex-grow: 1;
     box-sizing: content-box;
+    &.Invalid {
+      border: 1px solid red;
+      background-color: white;
+    }
   }
 
   select {
@@ -16,7 +20,36 @@
     &:focus {
       outline: 0;
     }
-    padding: 6px 10px;
+
+    outline: none;
+    background-color: white;
+    border-radius: var(--borderradius);
+    font: inherit;
+    padding: 6px 15px;
+    box-sizing: border-box;
+    color: var(--colordefault);
+    flex-grow: 1;
+    flex-basis: 1;
+
+    width: inherit;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+
+    background-repeat: no-repeat;
+    background-size: 0.5em auto;
+    background-position: right 15px center;
+    background-image: url("data:image/svg+xml;charset=utf-8, \
+    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 40'> \
+      <polygon points='0,0 60,0 30,40' style='fill:black;'/> \
+    </svg>");
+
+    &.IsOpen {
+      background-image: url("data:image/svg+xml;charset=utf-8, \
+    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 40'> \
+      <polygon points='0, 30 30, 0 60, 30' style='fill:black;'/> \
+    </svg>");
+    }
   }
 
   .RemoveButton {
@@ -41,6 +74,9 @@
   height: inherit;
   width: 1px;
   background-color: var(--colorborder);
+  &.Invalid {
+    background-color: red;
+  }
 }
 
 .FlexGroupRow {

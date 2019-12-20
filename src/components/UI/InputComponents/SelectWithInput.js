@@ -21,26 +21,32 @@ class SelectWithInput extends Component {
   }
 
   render() {
+    const tempElementConfig = {};
     return (
       <div className={this.className}>
         {this.props.value.map((val, index) => {
-          let tempClasses = [...this.inputClasses];
-          if (
-            this.props.validation.required &&
-            !val.valid &&
-            (val.touched || (!val.touched && !val.pristine))
-          ) {
-            tempClasses.push(classes.Invalid);
-          }
+          let tempClasses = [];
+
+          let tempKey =
+            val.data !== (undefined || null) ? Object.keys(val.data)[0] : '';
+          let tempVal =
+            val.data !== (undefined || null) && tempKey
+              ? val.data[tempKey]
+              : '';
+
           return (
             <div className={classes.FlexGroupRow} key={this.props.name + index}>
-              {/* row wrapper */}
               <div className={classes.SelectAndInputWrapper}>
                 <select
-                  name={this.props.name + index}
-                  value={this.props.value.data}
+                  multiple={false}
+                  name={this.props.name}
+                  value={tempKey}
                   onChange={(event) =>
-                    this.context.changed(event, this.props.name, index)
+                    this.context.changed(
+                      { [event.target.value]: tempVal },
+                      this.props.name,
+                      index
+                    )
                   }>
                   {this.props.elementconfig.options.map((option, index) => (
                     <option key={option.value} value={option.value}>
@@ -50,14 +56,18 @@ class SelectWithInput extends Component {
                 </select>
                 <div className={classes.Divider} />
                 <input
-                  className={tempClasses.join(' ')}
+                  className={classes.InputElement}
                   placeholder={this.props.placeholder}
-                  value={val.data}
-                  name={this.props.name + index}
-                  {...this.props.elementconfig}
+                  value={tempVal}
+                  name={this.props.name}
+                  // disabled={tempKey === (undefined || null)}
                   onChange={(event) =>
                     //pass in the name of the prop, and the index (if array item)
-                    this.context.changed(event, this.props.name, index)
+                    this.context.changed(
+                      { [tempKey]: event.target.value },
+                      this.props.name,
+                      index
+                    )
                   }
                 />
               </div>
@@ -72,8 +82,8 @@ class SelectWithInput extends Component {
               </button>
             </div>
           ); //return
-        }) //map
-        }
+        })}
+
         <button
           title='Add'
           className={classes.AddButton}

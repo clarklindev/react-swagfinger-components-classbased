@@ -6,10 +6,11 @@ class RadioCollection extends Component {
   render() {
     return (
       <div className={classes.RadioCollection}>
-        {this.props.elementconfig.options.map((each) => {
+        {this.props.elementconfig.options.map((each, index) => {
           return (
             <RadioButton
               {...this.props}
+              key={this.props.name + index}
               className={classes.RadioButton}
               label={each.displaytext}
             />

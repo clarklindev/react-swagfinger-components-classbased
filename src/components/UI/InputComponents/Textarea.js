@@ -31,7 +31,9 @@ class Textarea extends Component {
         placeholder={this.props.placeholder}
         {...this.props.elementconfig}
         value={this.props.value.data}
-        onChange={(event) => this.context.changed(event, this.props.name)}
+        onChange={(event) =>
+          this.context.changed(event.target.value, this.props.name)
+        }
       />
     );
   }
