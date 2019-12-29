@@ -1,0 +1,28 @@
+.Upload {
+  display: block;
+
+  .DropWrapper {
+    position: relative;
+    padding: 15px;
+    border: 1px dashed var(--colorborder);
+    border-radius: var(--borderradius);
+    display: flex;
+    box-sizing: border-box;
+    align-items: center;
+    color: var(--colordefault);
+    input {
+      display: none;
+    }
+    button {
+      margin-left: 5px;
+
+      &.Hidden {
+        display: none;
+      }
+    }
+    &.Dragging {
+      background-color: var(--colorplaceholder);
+      color: white;
+    }
+  }
+}

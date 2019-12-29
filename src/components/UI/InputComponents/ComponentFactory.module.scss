@@ -8,4 +8,9 @@
     margin-bottom: 15px;
     text-align: left;
   }
+  .GroupRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+  }
 }

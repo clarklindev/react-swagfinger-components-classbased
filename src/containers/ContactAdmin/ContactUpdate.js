@@ -41,6 +41,15 @@ class ContactUpdate extends Component {
         value: { data: '', valid: false, touched: false, pristine: true }
       },
 
+      upload: {
+        elementtype: 'upload',
+        name: 'upload',
+        label: 'Upload',
+        validation: {},
+        elementconfig: {},
+        value: { data: '', valid: true, touced: false, pristine: true }
+      },
+
       gender: {
         elementtype: 'radio',
         name: 'gender',
@@ -148,7 +157,7 @@ class ContactUpdate extends Component {
         label: 'Hide profile',
         validation: {},
         elementconfig: {},
-        value: { data: '', valid: false, touched: false, pristine: true }
+        value: { data: null, valid: false, touched: false, pristine: true }
       }
     },
 
@@ -292,7 +301,7 @@ class ContactUpdate extends Component {
           [key]: {
             ...prevState.form[key],
             value: prevState.form[key].value.concat({
-              data: '',
+              data: null,
               valid: false,
               touched: false,
               pristine: true

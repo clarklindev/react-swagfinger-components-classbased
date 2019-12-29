@@ -1,38 +1,34 @@
 import React, { Component } from 'react';
 
 import Utils from '../../../Utils';
-import classes from './SelectWithInput.module.scss';
+import classes from './MultiSelectWithInput.module.scss';
 import InputContext from '../../../context/InputContext';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-class SelectWithInput extends Component {
+class MultiSelectWithInput extends Component {
   static contextType = InputContext;
 
   constructor(props) {
     super(props);
 
     this.className = Utils.getClassNameString([
-      classes.SelectWithInput,
-      SelectWithInput.name
+      classes.MultiSelectWithInput,
+      MultiSelectWithInput.name
     ]);
 
     this.inputClasses = [classes.InputElement];
   }
 
   render() {
-    const tempElementConfig = {};
     return (
       <div className={this.className}>
         {this.props.value.map((val, index) => {
-          let tempClasses = [];
+          let tempKey = val.data === null ? '' : val.data.option;
+          console.log('val', val);
+          console.log('tempKey: ', tempKey);
 
-          let tempKey =
-            val.data !== (undefined || null) ? Object.keys(val.data)[0] : '';
-          let tempVal =
-            val.data !== (undefined || null) && tempKey
-              ? val.data[tempKey]
-              : '';
+          let tempVal = val.data === null ? '' : val.data.value;
 
           return (
             <div className={classes.FlexGroupRow} key={this.props.name + index}>
@@ -43,7 +39,10 @@ class SelectWithInput extends Component {
                   value={tempKey}
                   onChange={(event) =>
                     this.context.changed(
-                      { [event.target.value]: tempVal },
+                      {
+                        option: event.target.value,
+                        value: ''
+                      },
                       this.props.name,
                       index
                     )
@@ -54,23 +53,30 @@ class SelectWithInput extends Component {
                     </option>
                   ))}
                 </select>
-                <div className={classes.Divider} />
-                <input
-                  className={classes.InputElement}
-                  placeholder={this.props.placeholder}
-                  value={tempVal}
-                  name={this.props.name}
-                  // disabled={tempKey === (undefined || null)}
-                  onChange={(event) =>
-                    //pass in the name of the prop, and the index (if array item)
-                    this.context.changed(
-                      { [tempKey]: event.target.value },
-                      this.props.name,
-                      index
-                    )
-                  }
-                />
+                {val.data === null ||
+                tempKey === undefined ||
+                val.data.option === '' ? null : (
+                  <React.Fragment>
+                    <div className={classes.Divider} />
+                    <input
+                      className={classes.InputElement}
+                      placeholder={this.props.placeholder}
+                      value={tempVal}
+                      name={this.props.name}
+                      // disabled={tempKey === (undefined || null)}
+                      onChange={(event) =>
+                        //pass in the name of the prop, and the index (if array item)
+                        this.context.changed(
+                          { option: tempKey, value: event.target.value },
+                          this.props.name,
+                          index
+                        )
+                      }
+                    />
+                  </React.Fragment>
+                )}
               </div>
+
               <button
                 title='Delete'
                 type='button'
@@ -97,4 +103,4 @@ class SelectWithInput extends Component {
   }
 }
 
-export default SelectWithInput;
+export default MultiSelectWithInput;

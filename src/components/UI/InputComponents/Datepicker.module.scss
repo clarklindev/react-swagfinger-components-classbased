@@ -3,6 +3,7 @@
   .Dateinput {
     display: flex;
     flex-direction: row;
+    flex-basis: 1;
     border: 1px solid var(--colorborder);
     border-radius: var(--borderradius);
     button {

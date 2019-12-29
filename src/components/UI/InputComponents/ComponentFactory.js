@@ -5,7 +5,7 @@ import Utils from '../../../Utils';
 import InputContext from '../../../context/InputContext';
 
 //components
-import SelectWithInput from './SelectWithInput';
+import MultiSelectWithInput from './MultiSelectWithInput';
 import MultiInput from './MultiInput';
 import CheckboxCollection from './CheckboxCollection';
 import RadioCollection from './RadioCollection';
@@ -14,6 +14,8 @@ import Textarea from './Textarea';
 import Input from './Input';
 import Datepicker from './Datepicker';
 import Toggle from './Toggle';
+import Upload from '../Upload/Upload';
+
 class ComponentFactory extends Component {
   static contextType = InputContext;
 
@@ -33,39 +35,93 @@ class ComponentFactory extends Component {
 
     switch (this.props.data.elementtype) {
       case 'input':
-        this.inputElement = <Input {...this.props.data} />;
+        this.inputElement = (
+          <div className={this.className}>
+            {this.label}
+            <Input {...this.props.data} />
+          </div>
+        );
         break;
 
       case 'textarea':
-        this.inputElement = <Textarea {...this.props.data} />;
+        this.inputElement = (
+          <div className={this.className}>
+            {this.label}
+            <Textarea {...this.props.data} />
+          </div>
+        );
         break;
 
       case 'datepicker':
-        this.inputElement = <Datepicker {...this.props.data} />;
+        this.inputElement = (
+          <div className={this.className}>
+            {this.label}
+            <Datepicker {...this.props.data} />
+          </div>
+        );
         break;
 
       case 'radio':
-        this.inputElement = <RadioCollection {...this.props.data} />;
+        this.inputElement = (
+          <div className={this.className}>
+            {this.label}
+            <RadioCollection {...this.props.data} />
+          </div>
+        );
         break;
 
       case 'select':
-        this.inputElement = <Select {...this.props.data} />;
+        this.inputElement = (
+          <div className={this.className}>
+            {this.label}
+            <Select {...this.props.data} />
+          </div>
+        );
         break;
 
       case 'selectwithinput':
-        this.inputElement = <SelectWithInput {...this.props.data} />;
+        this.inputElement = (
+          <div className={this.className}>
+            {this.label}
+            <MultiSelectWithInput {...this.props.data} />
+          </div>
+        );
         break;
 
       case 'multiinput':
-        this.inputElement = <MultiInput {...this.props.data} />;
+        this.inputElement = (
+          <div className={this.className}>
+            {this.label}
+            <MultiInput {...this.props.data} />
+          </div>
+        );
         break;
 
       case 'checkbox':
-        this.inputElement = <CheckboxCollection {...this.props.data} />;
+        this.inputElement = (
+          <div className={this.className}>
+            {this.label}
+            <CheckboxCollection {...this.props.data} />
+          </div>
+        );
         break;
 
       case 'toggle':
-        this.inputElement = <Toggle {...this.props.data} />;
+        this.inputElement = (
+          <div className={this.className}>
+            {this.label}
+            <Toggle {...this.props.data} />
+          </div>
+        );
+        break;
+
+      case 'upload':
+        this.inputElement = (
+          <div className={this.className}>
+            {this.label}
+            <Upload {...this.props.data} />
+          </div>
+        );
         break;
 
       default:
@@ -77,12 +133,7 @@ class ComponentFactory extends Component {
       <label className={classes.Label}>{this.props.data.label}</label>
     ) : null;
 
-    return (
-      <div className={this.className}>
-        {this.label}
-        {this.inputElement}
-      </div>
-    );
+    return this.inputElement;
   }
 }
 
