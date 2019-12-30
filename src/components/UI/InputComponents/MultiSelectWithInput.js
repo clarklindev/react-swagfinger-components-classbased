@@ -24,7 +24,7 @@ class MultiSelectWithInput extends Component {
     return (
       <div className={this.className}>
         {this.props.value.map((val, index) => {
-          let tempKey = val.data === null ? '' : val.data.option;
+          let tempKey = val.data === null ? '' : val.data.key;
           console.log('val', val);
           console.log('tempKey: ', tempKey);
 
@@ -40,7 +40,7 @@ class MultiSelectWithInput extends Component {
                   onChange={(event) =>
                     this.context.changed(
                       {
-                        option: event.target.value,
+                        key: event.target.value,
                         value: ''
                       },
                       this.props.name,
@@ -55,7 +55,7 @@ class MultiSelectWithInput extends Component {
                 </select>
                 {val.data === null ||
                 tempKey === undefined ||
-                val.data.option === '' ? null : (
+                val.data.key === '' ? null : (
                   <React.Fragment>
                     <div className={classes.Divider} />
                     <input
@@ -67,7 +67,7 @@ class MultiSelectWithInput extends Component {
                       onChange={(event) =>
                         //pass in the name of the prop, and the index (if array item)
                         this.context.changed(
-                          { option: tempKey, value: event.target.value },
+                          { key: tempKey, value: event.target.value },
                           this.props.name,
                           index
                         )
