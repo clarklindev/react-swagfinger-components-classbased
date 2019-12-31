@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import classes from './Datepicker.module.scss';
 
 import { ReactComponent as CalendarIcon } from '../Icons/CalendarIcon.svg';
-import Button from '../Button/Button';
 
 class Datepicker extends Component {
   constructor(props) {
@@ -360,15 +359,64 @@ class Datepicker extends Component {
 
   //when input or calendar icon is clicked
   onShowCalendar = (event) => {
+    event.stopPropagation();
+    event.preventDefault();
     console.log('onShowCalendar');
     console.log('this.state: ', this.state);
+    this.inputRef.current.focus();
+    this.setState((prevState) => {
+      return {
+        showCalendar: true,
+        viewstate: 'daypicker',
+        currentdate: prevState.pickeddate ? prevState.pickeddate : new Date(),
+        touched: true
+      };
+    });
+  };
 
-    this.setState((previousState) => ({
-      showCalendar: !previousState.showCalendar,
-      viewstate: 'daypicker',
-      currentdate: this.state.pickeddate ? this.state.pickeddate : new Date(),
-      touched: true
-    }));
+  onHideCalendar = (event) => {
+    event.stopPropagation();
+    event.preventDefault();
+    console.log('onHideCalendar');
+    console.log('this.state: ', this.state);
+    this.setState((prevState) => {
+      return {
+        showCalendar: false
+      };
+    });
+  };
+
+  onToggleCalendar = (event) => {
+    this.state.showCalendar === false
+      ? this.onShowCalendar(event)
+      : this.onHideCalendar(event);
+  };
+
+  onBlurHandler = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    console.log('BLUR!!');
+    console.log('event: ', event);
+    if (this.state.isInteracting === false) {
+      this.setState({ showCalendar: false });
+    } else {
+      //set focus on input
+      this.inputRef.current.focus();
+    }
+  };
+
+  onMouseOver = (event) => {
+    this.setState((prevState) => {
+      console.log('isInteracting:', true);
+      return { isInteracting: true };
+    });
+  };
+
+  onMouseOut = (event) => {
+    this.setState((prevState) => {
+      console.log('isInteracting:', false);
+      return { isInteracting: false };
+    });
   };
 
   decrease = (event) => {
@@ -453,7 +501,6 @@ class Datepicker extends Component {
             )
           };
         });
-
         break;
       default:
         break;
@@ -538,30 +585,6 @@ class Datepicker extends Component {
     });
   };
 
-  onFocusHandler = (event) => {};
-
-  onBlurHandler = (event) => {
-    console.log('BLUR!!');
-    console.log('event: ', event);
-    if (this.state.isInteracting === false) {
-      this.setState({ showCalendar: false });
-    }
-  };
-
-  onMouseOver = (event) => {
-    this.setState((prevState) => {
-      console.log('isInteracting:', true);
-      return { isInteracting: true };
-    });
-  };
-
-  onMouseOut = (event) => {
-    this.setState((prevState) => {
-      console.log('isInteracting:', false);
-      return { isInteracting: false };
-    });
-  };
-
   render() {
     let tempClasses = [];
 
@@ -579,7 +602,10 @@ class Datepicker extends Component {
     let dateinput = (
       <div
         className={[classes.Dateinput, ...tempClasses].join(' ')}
-        onClick={this.onShowCalendar}>
+        onClick={(event) => this.onToggleCalendar(event)}
+        onBlur={(event) => {
+          this.onBlurHandler(event);
+        }}>
         <input
           {...this.props}
           placeholder={this.props.placeholder}
@@ -603,16 +629,20 @@ class Datepicker extends Component {
             console.log('props.name: ', this.props.name);
             this.context.changed(event.target.name, this.props.name);
           }}
-          onBlur={(event) => {
-            this.onBlurHandler(event);
+          onClick={(event) => {
+            this.onShowCalendar(event);
           }}
         />
-        <Button
-          onBlur={(event) => {
-            this.onBlurHandler(event);
+
+        <button
+          onMouseOver={(event) => {
+            this.onMouseOver(event);
+          }}
+          onMouseOut={(event) => {
+            this.onMouseOut(event);
           }}>
           <CalendarIcon />
-        </Button>
+        </button>
       </div>
     );
     let displayposition =

@@ -20,6 +20,9 @@
       color: var(--colordefault);
       flex-grow: 1;
       flex-basis: 1;
+      // &:focus {
+      //   // background-color: red;
+      // }
     }
     &.Invalid {
       border: 1px solid red;

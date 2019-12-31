@@ -16,7 +16,8 @@ const button = (props) => {
       disabled={props.disabled}
       className={classList}
       onClick={props.clicked}
-      onBlur={props.onBlur}>
+      onBlur={props.onBlur}
+      onMouseOver={props.onMouseOver}>
       {props.children}
     </button>
   );
