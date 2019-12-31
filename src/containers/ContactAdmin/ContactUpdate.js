@@ -100,6 +100,7 @@ class ContactUpdate extends Component {
         elementconfig: {
           placeholder: 'Choose contact preference',
           options: [
+            { value: '', displaytext: 'Select an option' },
             { value: 'email', displaytext: 'Email' },
             { value: 'phone', displaytext: 'Phone' }
           ]

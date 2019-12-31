@@ -33,14 +33,15 @@ class Datepicker extends Component {
       'november',
       'december'
     ];
-
+    this.datepickerRef = React.createRef();
+    this.inputRef = React.createRef();
     this.calendarBodyRef = React.createRef();
   }
 
   state = {
-    startOfWeek: 'mon', //'mon' | 'sun'
+    startOfWeek: 'sun', //'mon' | 'sun'
     showCalendar: false,
-
+    isInteracting: false,
     currentdate: new Date(),
     pickeddate: null,
 
@@ -55,10 +56,6 @@ class Datepicker extends Component {
     monthpicker: { arrows: false, month: false, year: false },
     yearpicker: { arrows: true, month: false, year: false }
   };
-
-  componentDidMount() {
-    console.log('hello: ', this.calendarBodyRef.current);
-  }
 
   //here because date is passed as prop, done intially only once...
   componentDidUpdate() {
@@ -128,6 +125,7 @@ class Datepicker extends Component {
 
   //print month string 'eg. January'
   printMonth = (monthIndex = new Date().getMonth()) => {
+    console.log('PRINTMONTH: ', monthIndex);
     let monthString = this.monthsOfYear[monthIndex];
     //Capitalize first letter
     return monthString.charAt(0).toUpperCase() + monthString.slice(1);
@@ -157,7 +155,16 @@ class Datepicker extends Component {
                     <td key={'year' + counter}>
                       <div
                         className='year'
-                        onClick={(event) => this.clickHandler(event)}>
+                        onClick={(event) => this.clickHandler(event)}
+                        onMouseOver={(event) => {
+                          this.onMouseOver(event);
+                        }}
+                        onMouseOut={(event) => {
+                          this.onMouseOut(event);
+                        }}
+                        onBlur={(event) => {
+                          this.onBlurHandler(event);
+                        }}>
                         {this.state.currentdate.getFullYear() + counter}
                       </div>
                     </td>
@@ -198,7 +205,16 @@ class Datepicker extends Component {
                     <td key={'month' + counter}>
                       <div
                         className='month'
-                        onClick={(event) => this.clickHandler(event)}>
+                        onClick={(event) => this.clickHandler(event)}
+                        onMouseOver={(event) => {
+                          this.onMouseOver(event);
+                        }}
+                        onMouseOut={(event) => {
+                          this.onMouseOut(event);
+                        }}
+                        onBlur={(event) => {
+                          this.onBlurHandler(event);
+                        }}>
                         {monthStringFormatted}
                       </div>
                     </td>
@@ -238,13 +254,13 @@ class Datepicker extends Component {
     );
 
     //table body
-    console.log('monthIndex: ', monthIndex);
+    // console.log('monthIndex: ', monthIndex);
     let firstDay = this.firstDayInMonthIndex(monthIndex, year); //zero indexed day of week
     let daysInMonthCount = this.daysInMonth(monthIndex, year);
     let startCounting = false;
     let dayCount = 1;
     let rows = 6; //(weeks) in month, needs to be 6 to cater for 1st starting on last day of generated week (Sat) which would push another row
-    console.log('firstDay: ', firstDay);
+    // console.log('firstDay: ', firstDay);
     let tableBody = [...Array(rows)].map((each, k) => {
       return (
         <tr key={'dayrow' + k}>
@@ -257,18 +273,18 @@ class Datepicker extends Component {
                 case 'mon':
                   //start counting at j or when j = 6 is a sun
                   if (firstDay === j + 1 || (firstDay === 0 && j === 6)) {
-                    console.log('start day of month: ', j + 1);
+                    // console.log('start day of month: ', j + 1);
                     startCounting = true;
                   }
                   break;
                 case 'sun':
                   if (firstDay === j) {
-                    console.log('start day of month: ', j);
+                    // console.log('start day of month: ', j);
                     startCounting = true;
                   }
                   break;
                 default:
-                  console.log('.startOfWeek not set');
+                // console.log('.startOfWeek not set');
               }
             }
 
@@ -294,7 +310,16 @@ class Datepicker extends Component {
               day = (
                 <div
                   className={[classes.Day, extraClasses].join(' ')}
-                  onClick={(event) => this.dayClickHandler(event)}>
+                  onClick={(event) => this.dayClickHandler(event)}
+                  onMouseOver={(event) => {
+                    this.onMouseOver(event);
+                  }}
+                  onMouseOut={(event) => {
+                    this.onMouseOut(event);
+                  }}
+                  onBlur={(event) => {
+                    this.onBlurHandler(event);
+                  }}>
                   {dayCount}
                 </div>
               );
@@ -324,8 +349,10 @@ class Datepicker extends Component {
     console.log('viewstate: ', newviewstate);
     if (this.state.viewstate !== newviewstate) {
       this.setState((prevState) => {
+        this.inputRef.current.focus();
         return {
-          viewstate: newviewstate
+          viewstate: newviewstate,
+          isInteracting: false
         };
       });
     }
@@ -333,8 +360,6 @@ class Datepicker extends Component {
 
   //when input or calendar icon is clicked
   onShowCalendar = (event) => {
-    event.preventDefault();
-
     console.log('onShowCalendar');
     console.log('this.state: ', this.state);
 
@@ -347,7 +372,6 @@ class Datepicker extends Component {
   };
 
   decrease = (event) => {
-    event.preventDefault();
     Array.from(
       this.calendarBodyRef.current.querySelectorAll('.active')
     ).forEach((item) => {
@@ -362,17 +386,16 @@ class Datepicker extends Component {
             return {
               currentdate: new Date(
                 prevState.currentdate.getFullYear() - 1,
-                this.monthsOfYear.length - 1,
-                prevState.currentdate.getDate()
+                this.monthsOfYear.length - 1
               )
             };
           }
+          console.log('current month: ', prevState.currentdate.getMonth());
+
+          let updatedYear = prevState.currentdate.getFullYear();
+          let updatedMonth = prevState.currentdate.getMonth() - 1;
           return {
-            currentdate: new Date(
-              prevState.currentdate.getFullYear(),
-              prevState.currentdate.getMonth() - 1,
-              prevState.currentdate.getDate()
-            )
+            currentdate: new Date(updatedYear, updatedMonth)
           };
         });
         break;
@@ -393,7 +416,6 @@ class Datepicker extends Component {
     }
   };
   increase = (event) => {
-    event.preventDefault();
     Array.from(
       this.calendarBodyRef.current.querySelectorAll('.active')
     ).forEach((item) => {
@@ -409,18 +431,14 @@ class Datepicker extends Component {
             this.monthsOfYear.length - 1
           ) {
             return {
-              currentdate: new Date(
-                prevState.currentdate.getFullYear() + 1,
-                0,
-                prevState.currentdate.getDate()
-              )
+              currentdate: new Date(prevState.currentdate.getFullYear() + 1, 0)
             };
           }
+
           return {
             currentdate: new Date(
               prevState.currentdate.getFullYear(),
-              prevState.currentdate.getMonth() + 1,
-              prevState.currentdate.getDate()
+              prevState.currentdate.getMonth() + 1
             )
           };
         });
@@ -443,8 +461,15 @@ class Datepicker extends Component {
   };
 
   clickHandler = (event) => {
+    // event.preventDefault();
+    // event.stopPropagation();
     console.log('other:', event.target.className);
     console.log('TARGET: ', event.target);
+
+    //if month/year set state isInteracting to false so misclick can close window
+    this.setState({ isInteracting: false });
+    this.inputRef.current.focus();
+
     let target = event.target;
 
     switch (target.className) {
@@ -480,6 +505,12 @@ class Datepicker extends Component {
   };
 
   dayClickHandler = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    //set isInteracting to false to window can close on misclick
+    this.setState({ isInteracting: false });
+    this.inputRef.current.focus();
     let target = event.target;
 
     console.log('MAGIC: ', this.calendarBodyRef.current);
@@ -507,6 +538,30 @@ class Datepicker extends Component {
     });
   };
 
+  onFocusHandler = (event) => {};
+
+  onBlurHandler = (event) => {
+    console.log('BLUR!!');
+    console.log('event: ', event);
+    if (this.state.isInteracting === false) {
+      this.setState({ showCalendar: false });
+    }
+  };
+
+  onMouseOver = (event) => {
+    this.setState((prevState) => {
+      console.log('isInteracting:', true);
+      return { isInteracting: true };
+    });
+  };
+
+  onMouseOut = (event) => {
+    this.setState((prevState) => {
+      console.log('isInteracting:', false);
+      return { isInteracting: false };
+    });
+  };
+
   render() {
     let tempClasses = [];
 
@@ -530,6 +585,7 @@ class Datepicker extends Component {
           placeholder={this.props.placeholder}
           readOnly
           {...this.props.elementconfig}
+          ref={this.inputRef}
           value={
             this.state.pickeddate
               ? this.state.format === 'full'
@@ -547,8 +603,14 @@ class Datepicker extends Component {
             console.log('props.name: ', this.props.name);
             this.context.changed(event.target.name, this.props.name);
           }}
+          onBlur={(event) => {
+            this.onBlurHandler(event);
+          }}
         />
-        <Button>
+        <Button
+          onBlur={(event) => {
+            this.onBlurHandler(event);
+          }}>
           <CalendarIcon />
         </Button>
       </div>
@@ -562,7 +624,18 @@ class Datepicker extends Component {
           {this.state[this.state.viewstate].arrows ? (
             <button
               className={[classes.Chevron, classes.Decrease].join(' ')}
-              onClick={(event) => this.decrease(event)}>
+              onClick={(event) => {
+                this.decrease(event);
+              }}
+              onMouseOver={(event) => {
+                this.onMouseOver(event);
+              }}
+              onMouseOut={(event) => {
+                this.onMouseOut(event);
+              }}
+              onBlur={(event) => {
+                this.onBlurHandler(event);
+              }}>
               left
             </button>
           ) : null}
@@ -570,14 +643,27 @@ class Datepicker extends Component {
             {this.state[this.state.viewstate].year ? (
               <button
                 className={classes.Year}
-                onClick={() => this.switchState('yearpicker')}>
+                onClick={() => this.switchState('yearpicker')}
+                onMouseOver={(event) => {
+                  this.onMouseOver(event);
+                }}
+                onMouseOut={(event) => {
+                  this.onMouseOut(event);
+                }}>
                 {this.state.currentdate.getFullYear()}
               </button>
             ) : null}
             {this.state[this.state.viewstate].month ? (
               <button
                 className={classes.Month}
-                onClick={() => this.switchState('monthpicker')}>
+                onClick={() => this.switchState('monthpicker')}
+                onMouseOver={(event) => {
+                  this.onMouseOver(event);
+                }}
+                onMouseOut={(event) => {
+                  this.onMouseOut(event);
+                }}>
+                {console.log('currentdate: ', this.state.currentdate)}
                 {this.printMonth(this.state.currentdate.getMonth())}
               </button>
             ) : null}
@@ -585,7 +671,18 @@ class Datepicker extends Component {
           {this.state[this.state.viewstate].arrows ? (
             <button
               className={[classes.Chevron, classes.Increase].join(' ')}
-              onClick={(event) => this.increase(event)}>
+              onClick={(event) => {
+                this.increase(event);
+              }}
+              onMouseOver={(event) => {
+                this.onMouseOver(event);
+              }}
+              onMouseOut={(event) => {
+                this.onMouseOut(event);
+              }}
+              onBlur={(event) => {
+                this.onBlurHandler(event);
+              }}>
               right
             </button>
           ) : null}
@@ -597,7 +694,7 @@ class Datepicker extends Component {
     ) : null;
 
     return (
-      <div className={classes.Datepicker}>
+      <div className={classes.Datepicker} ref={this.datepickerRef}>
         {dateinput}
         {calendar}
       </div>

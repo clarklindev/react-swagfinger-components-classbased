@@ -72,6 +72,8 @@
 
 .Divider {
   height: inherit;
+  margin-top: 5px;
+  margin-bottom: 5px;
   width: 1px;
   background-color: var(--colorborder);
   &.Invalid {
