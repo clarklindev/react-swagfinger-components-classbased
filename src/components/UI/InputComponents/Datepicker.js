@@ -649,7 +649,14 @@ class Datepicker extends Component {
       this.state.position === 'relative' ? 'relative' : null;
 
     let calendar = this.state.showCalendar ? (
-      <div className={[classes.Calendar, displayposition].join(' ')}>
+      <div
+        className={[classes.Calendar, displayposition].join(' ')}
+        onMouseOver={(event) => {
+          this.onMouseOver(event);
+        }}
+        onMouseOut={(event) => {
+          this.onMouseOut(event);
+        }}>
         <div className={classes.CalendarHeader}>
           {this.state[this.state.viewstate].arrows ? (
             <button
