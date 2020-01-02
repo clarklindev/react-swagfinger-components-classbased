@@ -80,13 +80,13 @@ class ContactUpdate extends Component {
 
       weight: {
         elementtype: 'rangeslider',
-        name: 'height',
-        label: 'Height',
+        name: 'weight',
+        label: 'Weight',
         validation: {},
         elementconfig: {
-          increments: 0.1,
-          min: 1.4,
-          max: 2.5
+          increments: 10,
+          min: 40,
+          max: 150
         },
         value: { data: '', valid: false, touched: false, pristine: true }
       },

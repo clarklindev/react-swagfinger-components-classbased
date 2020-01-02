@@ -58,6 +58,7 @@ class Counter extends Component {
           step={Number(this.props.elementconfig.step).toFixed(2)}
           ref={this.counterRef}
           value={Number(this.props.value.data).toFixed(2)}
+          onChange={(event) => this.onChangeHandler(event)}
           onInput={(event) => this.onChangeHandler(event)}
         />
         <button disabled={isMaxBound} onClick={this.increment}>
