@@ -1,0 +1,50 @@
+.Counter {
+  display: flex;
+  flex-direction: row;
+  background: white;
+  border-radius: var(--borderradius);
+  border: 1px solid var(--colorborder);
+  overflow: hidden;
+
+  input {
+    border: none;
+    text-align: center;
+    flex-grow: 1;
+    flex-basis: 0;
+    min-width: 0;
+
+    &:focus {
+      border: none;
+      outline: none;
+    }
+  }
+
+  button {
+    border: none;
+    color: var(--colordefault);
+    padding: 0;
+    min-width: 35px;
+    max-width: 35px;
+
+    &:first-child {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      border-right: 1px solid var(--colorborder);
+    }
+
+    &:last-child {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      border-left: 1px solid var(--colorborder);
+    }
+
+    // &:hover {
+    //   background: var(--colordefault);
+    //   color: white;
+    // }
+
+    &:disabled {
+      color: var(--colorborder);
+    }
+  }
+}

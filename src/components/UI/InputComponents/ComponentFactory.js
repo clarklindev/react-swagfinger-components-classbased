@@ -15,6 +15,8 @@ import Input from './Input';
 import Datepicker from './Datepicker';
 import Toggle from './Toggle';
 import Upload from '../Upload/Upload';
+import Counter from './Counter';
+import RangeSlider from './RangeSlider';
 
 class ComponentFactory extends Component {
   static contextType = InputContext;
@@ -102,6 +104,24 @@ class ComponentFactory extends Component {
           <div className={this.className}>
             {this.label}
             <CheckboxCollection {...this.props.data} />
+          </div>
+        );
+        break;
+
+      case 'counter':
+        this.inputElement = (
+          <div className={this.className}>
+            {this.label}
+            <Counter {...this.props.data} />
+          </div>
+        );
+        break;
+
+      case 'rangeslider':
+        this.inputElement = (
+          <div className={this.className}>
+            {this.label}
+            <RangeSlider {...this.props.data} />
           </div>
         );
         break;

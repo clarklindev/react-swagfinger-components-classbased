@@ -1,7 +1,15 @@
 // font awesome
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faPlus, faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { faEdit, faTrashAlt as farFaTrashAlt} from '@fortawesome/free-regular-svg-icons';
+import {
+  faPlus,
+  faMinus,
+  faBars,
+  faTimes
+} from '@fortawesome/free-solid-svg-icons';
+import {
+  faEdit,
+  faTrashAlt as farFaTrashAlt
+} from '@fortawesome/free-regular-svg-icons';
 
 //react
 import React, { Component } from 'react';
@@ -23,22 +31,21 @@ import './App.scss';
 import './sass-flexbox-grid.scss';
 
 //add to fontawesome lib so we can reuse icons
-library.add(faEdit, faTimes, farFaTrashAlt, faPlus, faBars);
+library.add(faEdit, faTimes, farFaTrashAlt, faPlus, faMinus, faBars);
 
 class App extends Component {
-
   render() {
     return (
       <Layout>
         <div className='App'>
           <Switch>
             {/* default route */}
-            <Route path='/phonebook' component={Phonebook}/>
-            <Route path='/contactread' component={ContactRead}/>
-            <Route path='/phonebookadmin' component={PhonebookAdmin}/>
-            <Route path='/contactupdate' component={ContactUpdate}/>
-            <Route path='/contactcreate' component={ContactCreate}/>
-           
+            <Route path='/phonebook' component={Phonebook} />
+            <Route path='/contactread' component={ContactRead} />
+            <Route path='/phonebookadmin' component={PhonebookAdmin} />
+            <Route path='/contactupdate' component={ContactUpdate} />
+            <Route path='/contactcreate' component={ContactCreate} />
+
             {/* <Route path='/auth' component={Auth} /> */}
             {/* <Route path="/" exact component={Auth} /> */}
             <Redirect from='/' to='/phonebookadmin' />

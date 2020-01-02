@@ -65,6 +65,32 @@ class ContactUpdate extends Component {
         value: { data: '', valid: false, touched: false, pristine: true }
       },
 
+      height: {
+        elementtype: 'counter',
+        name: 'height',
+        label: 'Height',
+        validation: {},
+        elementconfig: {
+          step: 0.01,
+          min: 1.4,
+          max: 1.7
+        },
+        value: { data: '', valid: false, touched: false, pristine: true }
+      },
+
+      weight: {
+        elementtype: 'rangeslider',
+        name: 'height',
+        label: 'Height',
+        validation: {},
+        elementconfig: {
+          increments: 0.1,
+          min: 1.4,
+          max: 2.5
+        },
+        value: { data: '', valid: false, touched: false, pristine: true }
+      },
+
       dateofbirth: {
         elementtype: 'datepicker',
         name: 'dateofbirth',
@@ -209,7 +235,7 @@ class ContactUpdate extends Component {
                 pristine: true
               }; //return single value
 
-          console.log('val: ', val);
+          console.log('key:', item, ' | val: ', val);
 
           //update the current key with its value from firebase
           return this.setState((prevState) => {
