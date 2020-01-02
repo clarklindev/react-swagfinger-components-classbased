@@ -29,6 +29,15 @@ class Counter extends Component {
     this.counterRef.current.dispatchEvent(event);
   };
 
+  onBlur = (event) => {
+    if (event.target.value <= this.props.elementconfig.min) {
+      this.context.changed(this.props.elementconfig.min, this.props.name);
+    }
+    if (event.target.value >= this.props.elementconfig.max) {
+      this.context.changed(this.props.elementconfig.max, this.props.name);
+    }
+  };
+
   onChangeHandler = (event) => {
     console.log('CHANGED: ', this.props.name);
     this.context.changed(
@@ -60,6 +69,7 @@ class Counter extends Component {
           value={Number(this.props.value.data).toFixed(2)}
           onChange={(event) => this.onChangeHandler(event)}
           onInput={(event) => this.onChangeHandler(event)}
+          onBlur={(event) => this.onBlur(event)}
         />
         <button disabled={isMaxBound} onClick={this.increment}>
           +
