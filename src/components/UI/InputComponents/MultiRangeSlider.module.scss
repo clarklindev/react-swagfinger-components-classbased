@@ -1,7 +1,7 @@
 /* CSS Document */
 .MultiRangeSlider {
   background-color: red;
-  box-sizing: content-box;
+  box-sizing: border-box;
   .Rail {
     position: relative;
     display: flex;
@@ -9,7 +9,7 @@
     background-color: white;
     border: 1px solid #888;
     height: 20px;
-    box-sizing: content-box;
+    box-sizing: border-box;
   }
 
   .aria-widget-slider .rail.focus {
