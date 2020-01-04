@@ -91,6 +91,14 @@ class ContactUpdate extends Component {
         value: { data: '', valid: false, touched: false, pristine: true }
       },
 
+      salary: {
+        elementtype: 'multirangeslider',
+        name: 'salary',
+        label: 'Salary',
+        validation: {},
+        value: [{ data: null, valid: true, touched: false, pristine: true }]
+      },
+
       dateofbirth: {
         elementtype: 'datepicker',
         name: 'dateofbirth',

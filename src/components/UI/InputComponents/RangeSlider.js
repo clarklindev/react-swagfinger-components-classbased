@@ -6,7 +6,6 @@ class RangeSlider extends Component {
   static contextType = InputContext;
   constructor(props) {
     super(props);
-    this.sliderRef = React.createRef();
   }
 
   onChange = (event) => {
@@ -31,7 +30,6 @@ class RangeSlider extends Component {
         <input
           type='range'
           className={classes.Slider}
-          ref={this.sliderRef}
           min={this.props.elementconfig.min}
           max={this.props.elementconfig.max}
           step={this.props.elementconfig.step}

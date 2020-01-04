@@ -17,6 +17,7 @@ import Toggle from './Toggle';
 import Upload from '../Upload/Upload';
 import Counter from './Counter';
 import RangeSlider from './RangeSlider';
+import MultiRangeSlider from './MultiRangeSlider';
 
 class ComponentFactory extends Component {
   static contextType = InputContext;
@@ -122,6 +123,15 @@ class ComponentFactory extends Component {
           <div className={this.className}>
             {this.label}
             <RangeSlider {...this.props.data} />
+          </div>
+        );
+        break;
+
+      case 'multirangeslider':
+        this.inputElement = (
+          <div className={this.className}>
+            {this.label}
+            <MultiRangeSlider {...this.props.data} />
           </div>
         );
         break;

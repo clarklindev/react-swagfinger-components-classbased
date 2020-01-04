@@ -1,0 +1,22 @@
+/* CSS Document */
+.MultiRangeSlider {
+  background-color: red;
+  .Rail {
+    position: relative;
+    display: flex;
+    background-color: white;
+    border: 1px solid #888;
+    height: 20px;
+  }
+
+  .aria-widget-slider .rail.focus {
+    background-color: #aaa;
+  }
+
+  .Slider {
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    border-radius: 50%;
+  }
+}
