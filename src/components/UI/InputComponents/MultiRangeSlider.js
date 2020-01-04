@@ -29,7 +29,8 @@ class Slider extends Component {
 
   state = {
     valueNow: null,
-    finalposition: null
+    finalposition: null,
+    labelNode: null
   };
 
   componentDidMount() {
@@ -47,7 +48,7 @@ class Slider extends Component {
     }
     this.setState({ valueNow: value });
     this.railWidth = parseInt(this.props.railRef.current.offsetWidth);
-
+    console.log('railWidth: ', this.railWidth);
     this.context.changed(
       {
         min: this.props.min,
@@ -87,15 +88,36 @@ class Slider extends Component {
     //pos
     let pos = Math.round(
       ((this.state.valueNow - this.props.railMin) *
-        (this.railWidth - 2 * (this.thumbWidth - this.railBorderWidth))) /
+        (this.railWidth - 2 * this.thumbWidth)) /
         (this.props.railMax - this.props.railMin)
     );
+
     console.log('POS! : ', pos);
-    let finalposition =
-      this.props.index > 0
-        ? pos + this.thumbWidth - 3 * this.railBorderWidth
-        : pos - this.railBorderWidth;
+    let finalposition = this.props.index > 0 ? pos + this.thumbWidth : pos;
     this.setState({ finalposition: finalposition });
+
+    //set right label
+    if (this.props.index > 0) {
+      this.props.setLabelMax(
+        finalposition +
+          '|' +
+          parseInt(
+            ((finalposition - this.thumbWidth) /
+              (this.railWidth - 2 * this.thumbWidth)) *
+              100
+          )
+      );
+    }
+    //set left label
+    if (this.props.index < this.props.sliders.length - 1) {
+      this.props.setLabelMin(
+        finalposition +
+          '|' +
+          parseInt(
+            (finalposition / (this.railWidth - 2 * this.thumbWidth)) * 100
+          )
+      );
+    }
   };
 
   onMouseMoveHandler = (event) => {
@@ -150,12 +172,31 @@ class Slider extends Component {
 class MultiRangeSlider extends Component {
   constructor(props) {
     super(props);
+    this.minLabelRef = React.createRef();
+    this.maxLabelRef = React.createRef();
     this.railRef = React.createRef();
   }
+
+  state = {
+    labelMin: null,
+    labelMax: null
+  };
+
+  setLabelMinHandler = (value) => {
+    console.log('SETLABELMIN...');
+    this.setState({ labelMin: value });
+  };
+  setLabelMaxHandler = (value) => {
+    console.log('SETLABELMAX...');
+    this.setState({ labelMax: value });
+  };
 
   render() {
     return (
       <div className={classes.MultiRangeSlider}>
+        <div className={classes.SliderLabel} ref={this.minLabelRef}>
+          {this.state.labelMin}
+        </div>
         <div ref={this.railRef} className={classes.Rail}>
           {this.props.value.map((each, index) => {
             return each.data ? (
@@ -180,9 +221,14 @@ class MultiRangeSlider extends Component {
                     : each.data.max
                 }
                 sliders={this.props.value}
+                setLabelMin={this.setLabelMinHandler}
+                setLabelMax={this.setLabelMaxHandler}
               />
             ) : null;
           })}
+        </div>
+        <div className={classes.SliderLabel} ref={this.maxLabelRef}>
+          {this.state.labelMax}
         </div>
       </div>
     );

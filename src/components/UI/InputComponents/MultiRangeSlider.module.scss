@@ -1,12 +1,15 @@
 /* CSS Document */
 .MultiRangeSlider {
   background-color: red;
+  box-sizing: content-box;
   .Rail {
     position: relative;
     display: flex;
+    align-items: center;
     background-color: white;
     border: 1px solid #888;
     height: 20px;
+    box-sizing: content-box;
   }
 
   .aria-widget-slider .rail.focus {
@@ -16,7 +19,11 @@
   .Slider {
     width: 20px;
     height: 20px;
+    position: relative;
     background-color: red;
     border-radius: 50%;
+    border: 1px solid black;
+    cursor: ew-resize;
+    box-sizing: border-box;
   }
 }
