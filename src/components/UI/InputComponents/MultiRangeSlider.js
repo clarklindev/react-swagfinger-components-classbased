@@ -12,8 +12,7 @@ class Slider extends Component {
     this.valueNow = null;
     this.railWidth = 0;
     this.railBorderWidth = 1;
-    this.thumbWidth = 20;
-    this.thumbHeight = 24;
+    this.thumbWidth = 30;
 
     this.keyCode = Object.freeze({
       left: 37,
@@ -99,23 +98,21 @@ class Slider extends Component {
     //set right label
     if (this.props.index > 0) {
       this.props.setLabelMax(
-        finalposition +
-          '|' +
-          parseInt(
-            ((finalposition - this.thumbWidth) /
-              (this.railWidth - 2 * this.thumbWidth)) *
-              100
-          )
+        // finalposition +
+        // '|' +
+        parseInt(
+          ((finalposition - this.thumbWidth) /
+            (this.railWidth - 2 * this.thumbWidth)) *
+            100
+        )
       );
     }
     //set left label
     if (this.props.index < this.props.sliders.length - 1) {
       this.props.setLabelMin(
-        finalposition +
-          '|' +
-          parseInt(
-            (finalposition / (this.railWidth - 2 * this.thumbWidth)) * 100
-          )
+        // finalposition +
+        // '|' +
+        parseInt((finalposition / (this.railWidth - 2 * this.thumbWidth)) * 100)
       );
     }
   };
@@ -195,7 +192,7 @@ class MultiRangeSlider extends Component {
     return (
       <div className={classes.MultiRangeSlider}>
         <div className={classes.SliderLabel} ref={this.minLabelRef}>
-          {this.state.labelMin}
+          <input value={this.state.labelMin} />
         </div>
         <div ref={this.railRef} className={classes.Rail}>
           {this.props.value.map((each, index) => {
@@ -228,7 +225,7 @@ class MultiRangeSlider extends Component {
           })}
         </div>
         <div className={classes.SliderLabel} ref={this.maxLabelRef}>
-          {this.state.labelMax}
+          <input value={this.state.labelMax} />
         </div>
       </div>
     );
