@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import classes from './MultiRangeSlider.module.scss';
 import InputContext from '../../../context/InputContext';
+import Utils from '../../../Utils';
 
 class Slider extends Component {
   static contextType = InputContext;
@@ -37,6 +38,7 @@ class Slider extends Component {
   }
 
   moveSliderTo = (value) => {
+    console.log('MOVESLIDERTO: ', value);
     //if valueNow is higher
     if (value > this.props.max) {
       value = this.props.max;
@@ -148,11 +150,10 @@ class Slider extends Component {
 
   onMouseDownHandler = (event) => {
     console.log('MOUSE DOWN: ', this);
-
-    document.addEventListener('mousemove', this.onMouseMoveHandler);
-    document.addEventListener('mouseup', this.onMouseUpHandler);
     event.preventDefault();
     event.stopPropagation();
+    document.addEventListener('mousemove', this.onMouseMoveHandler);
+    document.addEventListener('mouseup', this.onMouseUpHandler);
   };
 
   render() {
@@ -160,13 +161,15 @@ class Slider extends Component {
       <div
         style={{ position: 'absolute', left: this.state.finalposition }}
         className={classes.Slider}
-        onMouseDown={this.onMouseDownHandler}>
+        onMouseDown={(event) => this.onMouseDownHandler(event)}>
         {/* {this.props.min}/{this.props.max}/{this.props.now} */}
       </div>
     );
   }
 }
 class MultiRangeSlider extends Component {
+  static contextType = InputContext;
+
   constructor(props) {
     super(props);
     this.minLabelRef = React.createRef();
@@ -188,13 +191,62 @@ class MultiRangeSlider extends Component {
     this.setState({ labelMax: value });
   };
 
+  onBlur = (event) => {
+    if (event.target.value <= this.props.elementconfig.min) {
+      this.context.changed(this.props.elementconfig.min, this.props.name);
+    }
+    if (event.target.value >= this.props.elementconfig.max) {
+      this.context.changed(this.props.elementconfig.max, this.props.name);
+    }
+  };
+
+  scrollClickHandler = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    // console.log('target:', event.target.classList);
+
+    let reg = new RegExp('Rail', 'g'); //check if we hit rail
+    let results = Array.from(event.target.classList).filter((each) => {
+      return reg.test(each);
+    });
+
+    if (results.length > 0) {
+      console.log('RAIL CLICK');
+      let getclosest = Utils.getClosestChildElement(event, '[class*="Slider"]');
+      let closestChild = getclosest.value;
+
+      let closestChildIndex = getclosest.index;
+
+      //manually trigger click
+      console.log('closestChild: ', closestChild);
+      console.log('closestChildIndex: ', closestChildIndex);
+
+      console.log('min: ', closestChild.min);
+    }
+  };
+
   render() {
     return (
       <div className={classes.MultiRangeSlider}>
         <div className={classes.SliderLabel} ref={this.minLabelRef}>
-          <input value={this.state.labelMin} />
+          <input
+            value={this.state.labelMin}
+            onChange={(event) => {
+              let testValue = parseInt(event.target.value);
+              if (isNaN(testValue)) {
+                testValue = '';
+              }
+              this.context.changed(testValue, this.props.name);
+            }}
+            onBlur={(event) => {
+              this.onBlur(event);
+            }}
+          />
         </div>
-        <div ref={this.railRef} className={classes.Rail}>
+        <div
+          ref={this.railRef}
+          className={classes.Rail}
+          onClick={(event) => this.scrollClickHandler(event)}>
           {this.props.value.map((each, index) => {
             return each.data ? (
               <Slider
@@ -225,7 +277,19 @@ class MultiRangeSlider extends Component {
           })}
         </div>
         <div className={classes.SliderLabel} ref={this.maxLabelRef}>
-          <input value={this.state.labelMax} />
+          <input
+            value={this.state.labelMax}
+            onChange={(event) => {
+              let testValue = parseInt(event.target.value);
+              if (isNaN(testValue)) {
+                testValue = '';
+              }
+              this.context.changed(testValue, this.props.name);
+            }}
+            onBlur={(event) => {
+              this.onBlur(event);
+            }}
+          />
         </div>
       </div>
     );
