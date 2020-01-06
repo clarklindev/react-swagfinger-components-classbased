@@ -189,10 +189,45 @@ class MultiRangeSlider extends Component {
       max = this.props.value[this.state.currentindex + 1].data;
     }
 
+    console.log('DIFFX:', diffX);
     //calculate slider values - in relation to current values ranges...
     let temp = parseInt(min + ((max - min) * diffX) / this.state.railWidth);
     //keep within bounds of limits
     temp = this.restrictBoundaries(temp);
+
+    //bounds check
+    let finalVal = diffX - this.state.thumbWidth * 0.5;
+    if (finalVal - this.state.thumbWidth * 0.5 < 0) {
+      finalVal = 0;
+    }
+    if (finalVal > this.state.railWidth - this.state.thumbWidth) {
+      finalVal = this.state.railWidth - this.state.thumbWidth;
+    }
+    //sibling overlap check
+    //left
+    if (
+      this.state.currentindex === 0 &&
+      finalVal + this.state.thumbWidth * 0.5 > this.state.displayvalues[1]
+    ) {
+      finalVal = this.state.displayvalues[1] - this.state.thumbWidth;
+    }
+    // //right
+    if (
+      this.state.currentindex === 1 &&
+      finalVal - this.state.thumbWidth * 0.5 <
+        this.state.displayvalues[0] + this.state.thumbWidth
+    ) {
+      finalVal = this.state.displayvalues[0] + this.state.thumbWidth;
+    }
+
+    this.setState((prevState) => {
+      let updatedDisplayValues = [...prevState.displayvalues];
+      updatedDisplayValues[this.state.currentindex] = finalVal;
+
+      return {
+        displayvalues: updatedDisplayValues
+      };
+    });
 
     //set left label
     if (this.state.currentindex < this.props.value.length - 1) {
@@ -209,11 +244,6 @@ class MultiRangeSlider extends Component {
     //we want to still store the actual values in the database, the display values should be converted from the actual values
     this.context.changed(temp, this.props.name, this.state.currentindex);
     //console.log('SLIDER VALUE: ', temp);
-
-    //==========================================================
-    //up till now the values are relative to the range,
-    //we need to convert values relative to width of rail
-    this.convertToDisplayValues(temp, this.state.currentindex);
   };
 
   convertToDisplayValues = (value, index = this.state.currentindex) => {
