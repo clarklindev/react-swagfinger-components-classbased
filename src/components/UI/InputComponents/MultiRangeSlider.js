@@ -60,6 +60,9 @@ class MultiRangeSlider extends Component {
       //update positions on screen
       this.convertToDisplayValues(tempLabelMin, 0);
       this.convertToDisplayValues(tempLabelMax, 1);
+
+      //actual values
+      //update database
       this.setLabelMinHandler(tempLabelMin);
       this.setLabelMaxHandler(tempLabelMax);
     }
@@ -68,14 +71,17 @@ class MultiRangeSlider extends Component {
   setLabelMinHandler = (value) => {
     // console.log('SETLABELMIN...');
     this.setState({ labelMin: value });
+    //update database
     this.context.changed(value, this.props.name, 0);
   };
   setLabelMaxHandler = (value) => {
     // console.log('SETLABELMAX...');
     this.setState({ labelMax: value });
+    //update database
     this.context.changed(value, this.props.name, 1);
   };
 
+  //updates state and context changed() call
   labelUpdate = (index, event) => {
     let testValue = parseInt(event.target.value);
 
@@ -97,26 +103,18 @@ class MultiRangeSlider extends Component {
     //console.log('restricted val: ', temp);
 
     if (temp < this.props.elementconfig.min) {
-      this.context.changed(
-        this.props.elementconfig.min,
-        this.props.name,
-        index
-      );
       this.setLabelMinHandler(this.props.elementconfig.min);
     }
     if (temp > this.props.elementconfig.max) {
-      this.context.changed(
-        this.props.elementconfig.max,
-        this.props.name,
-        index
-      );
       this.setLabelMaxHandler(this.props.elementconfig.max);
     }
 
     //update label again
     index === 0 ? this.setLabelMinHandler(temp) : this.setLabelMaxHandler(temp);
 
+    //update positions on screen
     this.convertToDisplayValues(temp, index);
+    //update database
     this.context.changed(temp, this.props.name, index);
   };
 
