@@ -64,6 +64,9 @@ class MultiRangeSlider extends Component {
       //update positions on screen
       this.convertToDisplayValues(tempLabelMin, 0);
       this.convertToDisplayValues(tempLabelMax, 1);
+      //we want to still store the actual values in the database, the display values should be converted from the actual values
+      this.context.changed(tempLabelMin, this.props.name, 0);
+      this.context.changed(tempLabelMax, this.props.name, 1);
     }
   }
 
@@ -78,6 +81,7 @@ class MultiRangeSlider extends Component {
 
   labelUpdate = (index, event) => {
     let testValue = parseInt(event.target.value);
+
     if (isNaN(testValue)) {
       testValue = '';
     }
@@ -85,7 +89,6 @@ class MultiRangeSlider extends Component {
     index === 0
       ? this.setLabelMinHandler(testValue)
       : this.setLabelMaxHandler(testValue);
-    this.context.changed(testValue, this.props.name, index);
   };
 
   onBlur = (event, index) => {
@@ -93,8 +96,8 @@ class MultiRangeSlider extends Component {
     //check if incoming is a number
 
     let val = parseInt(event.target.value);
-    let temp = this.restrictBoundaries(val);
-    console.log('restricted: ', temp);
+    let temp = this.restrictBoundaries(val, index);
+    console.log('restricted val: ', temp);
 
     if (temp < this.props.elementconfig.min) {
       this.context.changed(
@@ -150,6 +153,7 @@ class MultiRangeSlider extends Component {
   };
 
   onMouseMoveHandler = (event) => {
+    console.log('MOUSEMOVE');
     // console.log('MOVING');
     event.preventDefault();
     event.stopPropagation();
