@@ -56,26 +56,24 @@ class MultiRangeSlider extends Component {
       let tempLabelMin = this.restrictBoundaries(min.data, 0);
       let tempLabelMax = this.restrictBoundaries(max.data, 1);
 
-      this.setState({
-        labelMin: tempLabelMin,
-        labelMax: tempLabelMax
-      });
       //we want to still store the actual values in the database, the display values should be converted from the actual values
-      this.context.changed(tempLabelMin, this.props.name, 0);
-      this.context.changed(tempLabelMax, this.props.name, 1);
       //update positions on screen
       this.convertToDisplayValues(tempLabelMin, 0);
       this.convertToDisplayValues(tempLabelMax, 1);
+      this.setLabelMinHandler(tempLabelMin);
+      this.setLabelMaxHandler(tempLabelMax);
     }
   }
 
   setLabelMinHandler = (value) => {
     // console.log('SETLABELMIN...');
     this.setState({ labelMin: value });
+    this.context.changed(value, this.props.name, 0);
   };
   setLabelMaxHandler = (value) => {
     // console.log('SETLABELMAX...');
     this.setState({ labelMax: value });
+    this.context.changed(value, this.props.name, 1);
   };
 
   labelUpdate = (index, event) => {
