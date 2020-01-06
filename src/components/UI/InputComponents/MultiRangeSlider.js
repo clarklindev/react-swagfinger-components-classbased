@@ -53,14 +53,17 @@ class MultiRangeSlider extends Component {
       max.data &&
       max.data !== this.state.labelMax
     ) {
+      let tempLabelMin = this.restrictBoundaries(min.data, 0);
+      let tempLabelMax = this.restrictBoundaries(max.data, 1);
+
       this.setState({
-        labelMin: min.data,
-        labelMax: max.data
+        labelMin: tempLabelMin,
+        labelMax: tempLabelMax
       });
 
       //update positions on screen
-      this.convertToDisplayValues(min.data, 0);
-      this.convertToDisplayValues(max.data, 1);
+      this.convertToDisplayValues(tempLabelMin, 0);
+      this.convertToDisplayValues(tempLabelMax, 1);
     }
   }
 
@@ -117,7 +120,7 @@ class MultiRangeSlider extends Component {
     this.context.changed(temp, this.props.name, index);
   };
 
-  restrictBoundaries = (value) => {
+  restrictBoundaries = (value, index = this.state.currentindex) => {
     let min = this.props.elementconfig.min;
     let max = this.props.elementconfig.max;
     let updatedValue = 0;
@@ -125,14 +128,14 @@ class MultiRangeSlider extends Component {
       value = 0;
     }
     //has a previous node...set min to previous nodes' slider value
-    if (this.state.currentindex > 0) {
-      min = this.props.value[this.state.currentindex - 1].data;
+    if (index > 0) {
+      min = this.props.value[index - 1].data;
       console.log('SETTING MIN...', min);
     }
     //has a next node...set max to next nodes' slider value
-    if (this.state.currentindex < this.props.value.length - 1) {
+    if (index < this.props.value.length - 1) {
       console.log('SETTING MAX...', max);
-      max = this.props.value[this.state.currentindex + 1].data;
+      max = this.props.value[index + 1].data;
     }
     //keep within bounds of chosen values
     updatedValue = value;
@@ -216,11 +219,14 @@ class MultiRangeSlider extends Component {
 
     let correctedVal =
       index > 0
-        ? ((parseInt(value) + this.state.thumbWidth) /
-            this.props.elementconfig.max) *
+        ? //right
+          ((parseInt(value) - this.props.elementconfig.min) /
+            (this.props.elementconfig.max - this.props.elementconfig.min)) *
             (this.state.railWidth - 2 * this.state.thumbWidth) +
           this.state.thumbWidth
-        : (parseInt(value) / this.props.elementconfig.max) *
+        : //left
+          ((parseInt(value) - this.props.elementconfig.min) /
+            (this.props.elementconfig.max - this.props.elementconfig.min)) *
           (this.state.railWidth - 2 * this.state.thumbWidth);
 
     //update the state (DOM position depends on this...)

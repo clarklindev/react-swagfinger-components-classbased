@@ -96,7 +96,7 @@ class ContactUpdate extends Component {
         name: 'salary',
         label: 'Salary',
         validation: {},
-        elementconfig: { min: 0, max: 10000 },
+        elementconfig: { min: 100, max: 5000 },
         value: [{ data: null, valid: true, touched: false, pristine: true }]
       },
 
