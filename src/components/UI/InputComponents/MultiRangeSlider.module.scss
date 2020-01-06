@@ -35,6 +35,7 @@
     position: relative;
     border-radius: 50%;
     border: 1px solid var(--colorborder);
+    transform-origin: center center;
     cursor: ew-resize;
     box-sizing: border-box;
   }

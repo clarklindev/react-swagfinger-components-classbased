@@ -40,7 +40,10 @@ class Utils {
       closestIndex
     ];
     console.log('closestElement: ', closestElement);
-    return { value: closestElement, index: closestIndex };
+    return {
+      value: closestElement,
+      index: closestIndex
+    };
   };
 }
 export default Utils;
