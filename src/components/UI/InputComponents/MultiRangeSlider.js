@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import classes from './MultiRangeSlider.module.scss';
 import InputContext from '../../../context/InputContext';
-// import Utils from '../../../Utils';
+import Utils from '../../../Utils';
 
 class MultiRangeSlider extends Component {
   static contextType = InputContext;
@@ -92,12 +92,12 @@ class MultiRangeSlider extends Component {
   };
 
   onBlur = (event, index) => {
-    console.log('ONBLUR: ', index);
+    //console.log('ONBLUR: ', index);
     //check if incoming is a number
 
     let val = parseInt(event.target.value);
     let temp = this.restrictBoundaries(val, index);
-    console.log('restricted val: ', temp);
+    //console.log('restricted val: ', temp);
 
     if (temp < this.props.elementconfig.min) {
       this.context.changed(
@@ -133,11 +133,11 @@ class MultiRangeSlider extends Component {
     //has a previous node...set min to previous nodes' slider value
     if (index > 0) {
       min = this.props.value[index - 1].data;
-      console.log('SETTING MIN...', min);
+      //console.log('SETTING MIN...', min);
     }
     //has a next node...set max to next nodes' slider value
     if (index < this.props.value.length - 1) {
-      console.log('SETTING MAX...', max);
+      //console.log('SETTING MAX...', max);
       max = this.props.value[index + 1].data;
     }
     //keep within bounds of chosen values
@@ -148,12 +148,12 @@ class MultiRangeSlider extends Component {
     if (value > max) {
       updatedValue = max;
     }
-    console.log('updated value: ', updatedValue);
+    //console.log('updated value: ', updatedValue);
     return updatedValue;
   };
 
   onMouseMoveHandler = (event) => {
-    console.log('MOUSEMOVE');
+    //console.log('MOUSEMOVE');
     // console.log('MOVING');
     event.preventDefault();
     event.stopPropagation();
@@ -172,9 +172,9 @@ class MultiRangeSlider extends Component {
     if (diffX >= this.state.railWidth) {
       diffX = this.state.railWidth;
     }
-    console.log(
-      `pageX:${event.pageX}, railOffset: ${this.railRef.current.offsetLeft}, diffX: ${diffX}`
-    );
+    // console.log(
+    //   `pageX:${event.pageX}, railOffset: ${this.railRef.current.offsetLeft}, diffX: ${diffX}`
+    // );
     //-----------------------------------------------------------------
     //slider relationship bounds of values
     //range values eg. 0, 10000
@@ -197,19 +197,19 @@ class MultiRangeSlider extends Component {
 
     //set left label
     if (this.state.currentindex < this.props.value.length - 1) {
-      console.log('LEFT LABEL: ', temp);
+      //console.log('LEFT LABEL: ', temp);
       this.setLabelMinHandler(temp);
     }
 
     //set right label
     if (this.state.currentindex > 0) {
-      console.log('RIGHT LABEL: ', temp);
+      //console.log('RIGHT LABEL: ', temp);
       this.setLabelMaxHandler(temp);
     }
 
     //we want to still store the actual values in the database, the display values should be converted from the actual values
     this.context.changed(temp, this.props.name, this.state.currentindex);
-    console.log('SLIDER VALUE: ', temp);
+    //console.log('SLIDER VALUE: ', temp);
 
     //==========================================================
     //up till now the values are relative to the range,
@@ -255,16 +255,46 @@ class MultiRangeSlider extends Component {
 
     if (results.length > 0) {
       console.log('RAIL CLICK');
-      //     let getclosest = Utils.getClosestChildElement(event, '[class*="Slider"]');
-      //     let closestChild = getclosest.value;
+      let getclosest = Utils.getClosestChildElement(event, '[class*="Slider"]');
+      let closestChildIndex = getclosest.index;
+      this.setState({
+        currentindex: closestChildIndex
+      });
+      //manually trigger click
+      console.log('closestChildIndex: ', closestChildIndex);
 
-      //     let closestChildIndex = getclosest.index;
+      //max / min bounds for current node
+      let min = this.props.elementconfig.min;
+      let max = this.props.elementconfig.max;
+      //has a previous node...set min to previous nodes' slider value
+      if (closestChildIndex > 0) {
+        min = this.props.value[closestChildIndex - 1].data;
+      }
+      //has a next node...set max to next nodes' slider value
+      if (closestChildIndex < this.props.value.length - 1) {
+        max = this.props.value[closestChildIndex + 1].data;
+      }
 
-      //     //manually trigger click
-      //     console.log('closestChild: ', closestChild);
-      //     console.log('closestChildIndex: ', closestChildIndex);
+      var diffX = event.pageX - this.railRef.current.offsetLeft;
+      //keep within limits of rail width min
+      if (diffX <= 0) {
+        diffX = 0;
+      }
+      //keep within limits of rail width max
+      if (diffX >= this.state.railWidth) {
+        diffX = this.state.railWidth;
+      }
+      //calculate slider values - in relation to current values ranges...
+      let temp = parseInt(min + ((max - min) * diffX) / this.state.railWidth);
+      //keep within bounds of limits
+      temp = this.restrictBoundaries(temp);
+      this.convertToDisplayValues(temp, closestChildIndex);
+      //update label again
+      closestChildIndex === 0
+        ? this.setLabelMinHandler(temp)
+        : this.setLabelMaxHandler(temp);
 
-      //     console.log('min: ', closestChild.min);
+      this.context.changed(temp, this.props.name, closestChildIndex);
     }
   };
 
