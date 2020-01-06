@@ -19,6 +19,17 @@ class RangeSlider extends Component {
     if (event.target.value >= this.props.elementconfig.max) {
       this.context.changed(this.props.elementconfig.max, this.props.name);
     }
+    let tempValue = parseInt(event.target.value);
+    if (isNaN(tempValue)) {
+      tempValue = '';
+    }
+    if (tempValue < this.props.elementconfig.min) {
+      tempValue = this.props.elementconfig.min;
+    }
+    if (tempValue > this.props.elementconfig.max) {
+      tempValue = this.props.elementconfig.max;
+    }
+    this.context.changed(tempValue, this.props.name);
   };
 
   render() {
