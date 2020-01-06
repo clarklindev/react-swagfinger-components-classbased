@@ -96,6 +96,7 @@ class ContactUpdate extends Component {
         name: 'salary',
         label: 'Salary',
         validation: {},
+        elementconfig: { min: 0, max: 10000 },
         value: [{ data: null, valid: true, touched: false, pristine: true }]
       },
 
@@ -211,7 +212,7 @@ class ContactUpdate extends Component {
 
     if (id) {
       axios.get(`/contacts/${id}.json`).then((response) => {
-        console.log('response: ', response.data); //returns a single contact
+        //console.log('response: ', response.data); //returns a single contact
 
         this.setState({
           loadedContact: true,
@@ -243,7 +244,7 @@ class ContactUpdate extends Component {
                 pristine: true
               }; //return single value
 
-          console.log('key:', item, ' | val: ', val);
+          //console.log('key:', item, ' | val: ', val);
 
           //update the current key with its value from firebase
           return this.setState((prevState) => {
@@ -279,7 +280,7 @@ class ContactUpdate extends Component {
     if (rules.required) {
       isValid = value !== '' && isValid;
     }
-    console.log('validation check: ', isValid);
+    //console.log('validation check: ', isValid);
     //---------------------------------
     return isValid;
   }
@@ -385,7 +386,7 @@ class ContactUpdate extends Component {
   //checks the .valid property of each input in array or individual input
   //returns true/false if form object is valid/invalid
   checkInputValidProperty = (form) => {
-    console.log('IS FORM VALID CHECK');
+    // console.log('IS FORM VALID CHECK');
     let formIsValid = true;
 
     //each prop in contact
@@ -405,7 +406,7 @@ class ContactUpdate extends Component {
 
   // ------------------------------------
   inputChangedHandler = (newval, inputIdentifier, index = null) => {
-    console.log('inputChangedHandler: ', inputIdentifier);
+    // console.log('inputChangedHandler: ', inputIdentifier);
     //single contact
     const updatedForm = {
       ...this.state.form
@@ -439,7 +440,7 @@ class ContactUpdate extends Component {
     updatedForm[inputIdentifier] = updatedFormElement; //update form's input element state as that or 'updatedFormElement'
 
     const formValidCheck = this.checkInputValidProperty(updatedForm);
-    console.log('FORM VALIDITY: ', formValidCheck);
+    // console.log('FORM VALIDITY: ', formValidCheck);
     this.setState({ form: updatedForm, formIsValid: formValidCheck });
   };
 

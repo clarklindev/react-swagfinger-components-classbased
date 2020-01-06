@@ -11,10 +11,16 @@ class Counter extends Component {
     this.counterRef = React.createRef();
   }
 
+  state = {
+    prop: null,
+    min: null,
+    max: null
+  };
+
   decrement = () => {
     let current = Number(this.counterRef.current.value);
     let tempVal = Number(current - this.props.elementconfig.step).toFixed(2);
-    console.log('current:', current, ' | DECREMENT: ', tempVal);
+    //console.log('current:', current, ' | DECREMENT: ', tempVal);
     this.counterRef.current.value = tempVal;
     var event = new Event('input', { bubbles: true });
     this.counterRef.current.dispatchEvent(event);
@@ -23,7 +29,7 @@ class Counter extends Component {
   increment = () => {
     let current = Number(this.counterRef.current.value);
     let tempVal = Number(current + this.props.elementconfig.step).toFixed(2);
-    console.log('current:', current, ' | INCREMENT: ', tempVal);
+    //console.log('current:', current, ' | INCREMENT: ', tempVal);
     this.counterRef.current.value = tempVal;
     var event = new Event('input', { bubbles: true });
     this.counterRef.current.dispatchEvent(event);
@@ -47,14 +53,14 @@ class Counter extends Component {
   };
 
   render() {
-    console.log('PROP: ', this.props.value.data);
-    console.log('MIN: ', Number(this.props.elementconfig.min.toFixed(2)));
-    console.log('MAX: ', Number(this.props.elementconfig.max.toFixed(2)));
+    //console.log('PROP: ', this.props.value.data);
+    //console.log('MIN: ', Number(this.props.elementconfig.min.toFixed(2)));
+    //console.log('MAX: ', Number(this.props.elementconfig.max.toFixed(2)));
     let isMinBound =
       this.props.value.data <= this.props.elementconfig.min ? true : false;
     let isMaxBound =
       this.props.value.data >= this.props.elementconfig.max ? true : false;
-    console.log('min bound: ', isMinBound, ' | max bound: ', isMaxBound);
+    //console.log('min bound: ', isMinBound, ' | max bound: ', isMaxBound);
     return (
       <div className={classes.Counter}>
         <button disabled={isMinBound} onClick={this.decrement}>

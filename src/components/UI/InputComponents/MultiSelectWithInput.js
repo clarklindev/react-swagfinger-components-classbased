@@ -25,8 +25,8 @@ class MultiSelectWithInput extends Component {
       <div className={this.className}>
         {this.props.value.map((val, index) => {
           let tempKey = val.data === null ? '' : val.data.key;
-          console.log('val', val);
-          console.log('tempKey: ', tempKey);
+          //console.log('val', val);
+          //console.log('tempKey: ', tempKey);
 
           let tempVal = val.data === null ? '' : val.data.value;
 

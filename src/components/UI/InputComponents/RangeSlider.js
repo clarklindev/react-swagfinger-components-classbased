@@ -4,9 +4,6 @@ import InputContext from '../../../context/InputContext';
 
 class RangeSlider extends Component {
   static contextType = InputContext;
-  constructor(props) {
-    super(props);
-  }
 
   onChange = (event) => {
     let testValue = parseInt(event.target.value);
