@@ -121,6 +121,9 @@ class MultiRangeSlider extends Component {
     let min = this.props.elementconfig.min;
     let max = this.props.elementconfig.max;
     let updatedValue = 0;
+    if (isNaN(value)) {
+      value = 0;
+    }
     //has a previous node...set min to previous nodes' slider value
     if (this.state.currentindex > 0) {
       min = this.props.value[this.state.currentindex - 1].data;
