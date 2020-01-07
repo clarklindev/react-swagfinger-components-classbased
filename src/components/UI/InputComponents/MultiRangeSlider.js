@@ -306,7 +306,7 @@ class MultiRangeSlider extends Component {
           className={classes.Rail}
           onClick={(event) => this.scrollClickHandler(event)}>
           {/* Sliders */}
-          {this.props.value.map((each, index) => {
+          {(Array.from(this.props.value) || []).map((each, index) => {
             return (
               <div
                 className={classes.Slider}
