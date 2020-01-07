@@ -182,13 +182,9 @@ class MultiRangeSlider extends Component {
     //offsetLeft - offset within current element
     let offset =
       this.state.currentindex > 0
-        ? -this.state.thumbwidth
-        : this.state.thumbwidth * 0.5;
-    var positionOnRail =
-      event.pageX -
-      this.railRef.current.offsetLeft -
-      this.state.thumbwidth +
-      offset;
+        ? -this.state.thumbwidth * 2
+        : -this.state.thumbwidth * 0.5;
+    var positionOnRail = event.pageX - this.railRef.current.offsetLeft + offset;
     //keep within limits of rail width min
     if (positionOnRail <= 0) {
       positionOnRail = 0;
@@ -223,13 +219,10 @@ class MultiRangeSlider extends Component {
       //---------------------------------------------------------
       let offset =
         closestChildIndex === 1
-          ? -this.state.thumbwidth * 0.5
-          : this.state.thumbwidth * 0.5;
+          ? -this.state.thumbwidth * 1.5
+          : -this.state.thumbwidth * 0.5;
       var positionOnRail =
-        event.pageX -
-        this.railRef.current.offsetLeft -
-        this.state.thumbwidth +
-        offset;
+        event.pageX - this.railRef.current.offsetLeft + offset;
       //keep within limits of rail width min
       if (positionOnRail <= 0) {
         positionOnRail = 0;
