@@ -88,31 +88,6 @@ class MultiRangeSlider extends Component {
     }
     //console.log('updated value: ', updatedValue);
     return updatedValue;
-
-    //bounds check
-    // let finalVal = positionOnRail - this.state.thumbwidth * 0.5;
-    // if (finalVal - this.state.thumbwidth * 0.5 < 0) {
-    //   finalVal = 0;
-    // }
-    // if (finalVal > this.state.railwidth - this.state.thumbwidth) {
-    //   finalVal = this.state.railwidth - this.state.thumbwidth;
-    // }
-    //sibling overlap check
-    //left
-    // if (
-    //   this.state.currentindex === 0 &&
-    //   finalVal + this.state.thumbwidth * 0.5 > this.state.displayvalues[1]
-    // ) {
-    //   finalVal = this.state.displayvalues[1] - this.state.thumbwidth;
-    // }
-    // // //right
-    // if (
-    //   this.state.currentindex === 1 &&
-    //   finalVal - this.state.thumbwidth * 0.5 <
-    //     this.state.displayvalues[0] + this.state.thumbwidth
-    // ) {
-    //   finalVal = this.state.displayvalues[0] + this.state.thumbwidth;
-    // }
   };
 
   // converts ACTUAL value to DISPLAY value
@@ -216,126 +191,72 @@ class MultiRangeSlider extends Component {
     }
     console.log('positionOnRail:', positionOnRail);
     //---------------------------------------------------------
+    this.populateSlider(positionOnRail, this.state.currentindex);
+  };
+
+  scrollClickHandler = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    // console.log('target:', event.target.classList);
+    let reg = new RegExp('Rail', 'g');
+    let results = Array.from(event.target.classList).filter((each) => {
+      return reg.test(each);
+    });
+
+    if (results.length > 0) {
+      console.log('RAIL CLICK');
+      let getclosest = Utils.getClosestChildElement(event, '[class*="Slider"]');
+      console.log('x clicked:', Utils.getClickPosition(event));
+      let closestChildIndex = getclosest.index;
+      this.setState({
+        currentindex: closestChildIndex
+      });
+      console.log('closestChildIndex: ', closestChildIndex);
+      //---------------------------------------------------------
+      let offset =
+        closestChildIndex === 1
+          ? -this.state.thumbwidth * 0.5
+          : this.state.thumbwidth * 0.5;
+      var positionOnRail =
+        event.pageX -
+        this.railRef.current.offsetLeft -
+        this.state.thumbwidth +
+        offset;
+      //keep within limits of rail width min
+      if (positionOnRail <= 0) {
+        positionOnRail = 0;
+      }
+      //keep within limits of rail width max
+      if (positionOnRail >= this.state.railwidth) {
+        positionOnRail = this.state.railwidth;
+      }
+      this.populateSlider(positionOnRail, closestChildIndex);
+    }
+  };
+
+  populateSlider = (positionOnRail, index = this.state.currentindex) => {
     //calculate slider values - in relation to current values ranges...
-    let tempActual = this.convertToActualValue(
-      positionOnRail,
-      this.state.currentindex
-    );
+    let tempActual = this.convertToActualValue(positionOnRail, index);
     console.log('ACTUAL: ', tempActual);
     //keep within bounds of limits
     let tempActualRestricted = this.restrictActualBoundaries(tempActual);
 
     //set left label
-    if (this.state.currentindex < this.props.value.length - 1) {
+    if (index < this.props.value.length - 1) {
       //console.log('LEFT LABEL: ', tempActual);
       this.stateMinHandler(tempActualRestricted);
     }
     //set right label
-    if (this.state.currentindex > 0) {
+    if (index > 0) {
       //console.log('RIGHT LABEL: ', tempActual);
       this.stateMaxHandler(tempActualRestricted);
     }
     //---------------------------------------------------------
 
-    let tempConverted = this.convertToDisplayValue(
-      tempActualRestricted,
-      this.state.currentindex
-    );
+    let tempConverted = this.convertToDisplayValue(tempActualRestricted, index);
     console.log('DISPLAY: ', tempConverted);
-    this.stateDisplayValuesHandler(tempConverted, this.state.currentindex);
+    this.stateDisplayValuesHandler(tempConverted, index);
   };
-
-  // scrollClickHandler = (event) => {
-  //   event.preventDefault();
-  //   event.stopPropagation();
-  //   // console.log('target:', event.target.classList);
-  //   let reg = new RegExp('Rail', 'g');
-  //   let results = Array.from(event.target.classList).filter((each) => {
-  //     return reg.test(each);
-  //   });
-
-  //   if (results.length > 0) {
-  //     console.log('RAIL CLICK');
-  //     let getclosest = Utils.getClosestChildElement(event, '[class*="Slider"]');
-  //     console.log('x clicked:', Utils.getClickPosition(event));
-  //     let closestChildIndex = getclosest.index;
-  //     this.setState({
-  //       currentindex: closestChildIndex
-  //     });
-  //     //console.log('closestChildIndex: ', closestChildIndex);
-
-  //     //max / min bounds for current node
-  //     let min = this.props.elementconfig.min;
-  //     let max = this.props.elementconfig.max;
-  //     //has a previous node...set min to previous nodes' slider value
-  //     if (closestChildIndex > 0) {
-  //       min = this.props.value[closestChildIndex - 1].data;
-  //     }
-  //     //has a next node...set max to next nodes' slider value
-  //     if (closestChildIndex < this.props.value.length - 1) {
-  //       max = this.props.value[closestChildIndex + 1].data;
-  //     }
-
-  //     var positionOnRail = event.pageX - this.railRef.current.offsetLeft;
-
-  //     //keep within limits of rail width min
-  //     if (positionOnRail <= 0) {
-  //       positionOnRail = 0;
-  //     }
-  //     //keep within limits of rail width max
-  //     if (positionOnRail >= this.state.railwidth) {
-  //       positionOnRail = this.state.railwidth;
-  //     }
-  //     console.log('DIFFX:', positionOnRail);
-  //     //calculate slider values - in relation to current values ranges...
-  //     let temp = parseInt(
-  //       min + ((max - min) * positionOnRail) / this.state.railwidth
-  //     );
-  //     //keep within bounds of limits
-  //     temp = this.restrictActualBoundaries(temp);
-
-  //     //bounds check
-  //     let finalVal = positionOnRail - this.state.thumbwidth * 0.5;
-  //     if (finalVal - this.state.thumbwidth * 0.5 < 0) {
-  //       finalVal = 0;
-  //     }
-  //     if (finalVal > this.state.railwidth - this.state.thumbwidth) {
-  //       finalVal = this.state.railwidth - this.state.thumbwidth;
-  //     }
-  //     //sibling overlap check
-  //     //left
-  //     if (
-  //       closestChildIndex === 0 &&
-  //       finalVal + this.state.thumbwidth * 0.5 > this.state.displayvalues[1]
-  //     ) {
-  //       finalVal = this.state.displayvalues[1] - this.state.thumbwidth;
-  //     }
-  //     // //right
-  //     if (
-  //       closestChildIndex === 1 &&
-  //       finalVal - this.state.thumbwidth * 0.5 <
-  //         this.state.displayvalues[0] + this.state.thumbwidth
-  //     ) {
-  //       finalVal = this.state.displayvalues[0] + this.state.thumbwidth;
-  //     }
-
-  //     this.setState((prevState) => {
-  //       let updatedDisplayValues = [...prevState.displayvalues];
-  //       updatedDisplayValues[closestChildIndex] = finalVal;
-
-  //       return {
-  //         displayvalues: updatedDisplayValues
-  //       };
-  //     });
-  //     // console.log('DISPLAYTEMP: ', displayTemp);
-  //     //update label again
-  //     closestChildIndex === 0
-  //       ? this.stateMinHandler(temp)
-  //       : this.stateMaxHandler(temp);
-
-  //     this.context.changed(temp, this.props.name, closestChildIndex);
-  //   }
-  // };
 
   onMouseUpHandler = (event) => {
     console.log('UP');
@@ -349,11 +270,11 @@ class MultiRangeSlider extends Component {
     this.setState({ currentindex: index });
   };
 
-  onClickHandler = (index, event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    this.setState({ currentindex: index });
-  };
+  // onClickHandler = (index, event) => {
+  //   event.preventDefault();
+  //   event.stopPropagation();
+  //   this.setState({ currentindex: index });
+  // };
 
   render() {
     return (
@@ -363,7 +284,7 @@ class MultiRangeSlider extends Component {
           <input
             type='text'
             value={this.state.labelmin}
-            onClick={(event) => this.onClickHandler(0, event)}
+            // onClick={(event) => this.onClickHandler(0, event)}
             onChange={(event) => this.labelUpdateHandler(0, event)}
             onBlur={(event) => {
               this.onBlurHandler(event, 0);
@@ -375,8 +296,7 @@ class MultiRangeSlider extends Component {
         <div
           ref={this.railRef}
           className={classes.Rail}
-          // onClick={(event) => this.scrollClickHandler(event)}
-        >
+          onClick={(event) => this.scrollClickHandler(event)}>
           {/* Sliders */}
           {this.props.value.map((each, index) => {
             return (
@@ -388,7 +308,7 @@ class MultiRangeSlider extends Component {
                   position: 'relative',
                   left: this.state.displayvalues[index] + 'px'
                 }}
-                onClick={(event) => this.onClickHandler(index, event)}
+                // onClick={(event) => this.onClickHandler(index, event)}
                 onMouseDown={(event) => {
                   this.onMouseDownHandler(index, event);
                 }}></div>
@@ -401,7 +321,7 @@ class MultiRangeSlider extends Component {
           <input
             type='text'
             value={this.state.labelmax}
-            onClick={(event) => this.onClickHandler(1, event)}
+            // onClick={(event) => this.onClickHandler(1, event)}
             onChange={(event) => this.labelUpdateHandler(1, event)}
             onBlur={(event) => {
               this.onBlurHandler(event, 1);
