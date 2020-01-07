@@ -184,7 +184,7 @@ class MultiRangeSlider extends Component {
     //offsetLeft - offset within current element
     let offset =
       this.state.currentindex > 0
-        ? -this.state.thumbwidth * 2
+        ? -this.state.thumbwidth * 1.5
         : -this.state.thumbwidth * 0.5;
     var positionOnRail = event.pageX - this.railRef.current.offsetLeft + offset;
     //keep within limits of rail width min
