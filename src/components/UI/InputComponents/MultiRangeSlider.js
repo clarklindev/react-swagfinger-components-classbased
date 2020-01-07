@@ -115,29 +115,28 @@ class MultiRangeSlider extends Component {
     // }
   };
 
+  // converts ACTUAL value to DISPLAY value
   convertToDisplayValue = (value, index = this.state.currentindex) => {
-    //corrected to rail offset values
-    //set the registration point of slider
-
-    let correctedVal =
-      //overlapping sliders
-      // ((parseInt(value) - this.props.elementconfig.min) /
-      //   (this.props.elementconfig.max - this.props.elementconfig.min)) *
-      // (this.state.railwidth - this.state.thumbwidth);
-
-      //non-overlapping sliders
-      index > 0
-        ? ((parseInt(value) - this.props.elementconfig.min) /
-            (this.props.elementconfig.max - this.props.elementconfig.min)) *
-            (this.state.railwidth - 2 * this.state.thumbwidth) +
-          this.state.thumbwidth
-        : ((parseInt(value) - this.props.elementconfig.min) /
-            (this.props.elementconfig.max - this.props.elementconfig.min)) *
-          (this.state.railwidth - 2 * this.state.thumbwidth);
-
-    return correctedVal;
+    let min = this.props.elementconfig.min;
+    let max = this.props.elementconfig.max;
+    return parseInt(
+      ((value - min) / (max - min)) *
+        (this.state.railwidth - 2 * this.state.thumbwidth)
+    );
   };
 
+  //converts DISPLAY value to ACTUAL value
+  convertToActualValue = (value, index = this.state.currentindex) => {
+    let min = this.props.elementconfig.min;
+    let max = this.props.elementconfig.max;
+    return parseInt(
+      (value / (this.state.railwidth - 2 * this.state.thumbwidth)) *
+        (max - min) +
+        min
+    );
+  };
+
+  //state save DISPLAY value
   stateDisplayValuesHandler = (newValue, index = this.state.currentindex) => {
     //update the state (DOM position depends on this...)
     this.setState((prevState) => {
@@ -215,46 +214,35 @@ class MultiRangeSlider extends Component {
     if (positionOnRail >= this.state.railwidth) {
       positionOnRail = this.state.railwidth;
     }
-    // console.log(
-    //   `pageX:${event.pageX}, railOffset: ${this.railRef.current.offsetLeft}, positionOnRail: ${railPos}`
-    // );
-    //-----------------------------------------------------------------
-    //slider relationship bounds of values
-    //range values eg. 0, 10000
-    //max / min bounds for current node
-    let min = this.props.elementconfig.min;
-    let max = this.props.elementconfig.max;
-    //current index
-    //has a previous node...set min to previous nodes' slider value
-    if (this.state.currentindex > 0) {
-      min = this.props.value[this.state.currentindex - 1].data;
-    }
-    //has a next node...set max to next nodes' slider value
-    if (this.state.currentindex < this.props.value.length - 1) {
-      max = this.props.value[this.state.currentindex + 1].data;
-    }
-
     console.log('positionOnRail:', positionOnRail);
+    //---------------------------------------------------------
     //calculate slider values - in relation to current values ranges...
-    let tempActual = parseInt(
-      min + ((max - min) * positionOnRail) / this.state.railwidth
+    let tempActual = this.convertToActualValue(
+      positionOnRail,
+      this.state.currentindex
     );
     console.log('ACTUAL: ', tempActual);
     //keep within bounds of limits
     let tempActualRestricted = this.restrictActualBoundaries(tempActual);
-    let converted = this.convertToDisplayValue(tempActualRestricted);
-    this.stateDisplayValuesHandler(converted, this.state.currentindex);
 
     //set left label
     if (this.state.currentindex < this.props.value.length - 1) {
       //console.log('LEFT LABEL: ', tempActual);
-      this.stateMinHandler(tempActual);
+      this.stateMinHandler(tempActualRestricted);
     }
     //set right label
     if (this.state.currentindex > 0) {
       //console.log('RIGHT LABEL: ', tempActual);
-      this.stateMaxHandler(tempActual);
+      this.stateMaxHandler(tempActualRestricted);
     }
+    //---------------------------------------------------------
+
+    let tempConverted = this.convertToDisplayValue(
+      tempActualRestricted,
+      this.state.currentindex
+    );
+    console.log('DISPLAY: ', tempConverted);
+    this.stateDisplayValuesHandler(tempConverted, this.state.currentindex);
   };
 
   // scrollClickHandler = (event) => {
@@ -397,7 +385,7 @@ class MultiRangeSlider extends Component {
                 ref={this.sliderRef}
                 key={index}
                 style={{
-                  position: 'absolute',
+                  position: 'relative',
                   left: this.state.displayvalues[index] + 'px'
                 }}
                 onClick={(event) => this.onClickHandler(index, event)}
