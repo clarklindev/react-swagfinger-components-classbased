@@ -180,7 +180,15 @@ class MultiRangeSlider extends Component {
     //= the difference between these values gives you the position on the rail
     //pageX - mouse position relative to left of document - goes out of bounds...
     //offsetLeft - offset within current element
-    var positionOnRail = event.pageX - this.railRef.current.offsetLeft;
+    let offset =
+      this.state.currentindex > 0
+        ? -this.state.thumbwidth
+        : this.state.thumbwidth * 0.5;
+    var positionOnRail =
+      event.pageX -
+      this.railRef.current.offsetLeft -
+      this.state.thumbwidth +
+      offset;
     //keep within limits of rail width min
     if (positionOnRail <= 0) {
       positionOnRail = 0;
