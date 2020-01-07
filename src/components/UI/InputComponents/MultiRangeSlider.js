@@ -246,22 +246,6 @@ class MultiRangeSlider extends Component {
     let tempActualRestricted = this.restrictActualBoundaries(tempActual, index);
 
     //---------------------------------------------------------
-    // //sibling overlap check
-    // //left
-    // if (
-    //   this.state.currentindex === 0 &&
-    //   tempActualRestricted + this.state.thumbwidth > this.state.displayvalues[1]
-    // ) {
-    //   tempActualRestricted = this.state.displayvalues[1];
-    // }
-    // // //right
-    // if (
-    //   this.state.currentindex === 1 &&
-    //   tempActualRestricted - this.state.thumbwidth < this.state.displayvalues[0]
-    // ) {
-    //   tempActualRestricted = this.state.displayvalues[0];
-    // }
-
     //set left label
     if (index < this.props.value.length - 1) {
       //console.log('LEFT LABEL: ', tempActual);
