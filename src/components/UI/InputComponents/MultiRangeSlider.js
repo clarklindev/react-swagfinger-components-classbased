@@ -78,6 +78,7 @@ class MultiRangeSlider extends Component {
       //console.log('SETTING MAX...', max);
       max = this.props.value[index + 1].data;
     }
+
     //keep within bounds of chosen values
     updatedValue = value;
     if (value < min) {
@@ -94,6 +95,7 @@ class MultiRangeSlider extends Component {
   convertToDisplayValue = (value, index = this.state.currentindex) => {
     let min = this.props.elementconfig.min;
     let max = this.props.elementconfig.max;
+
     return parseInt(
       ((value - min) / (max - min)) *
         (this.state.railwidth - 2 * this.state.thumbwidth)
@@ -231,6 +233,7 @@ class MultiRangeSlider extends Component {
       if (positionOnRail >= this.state.railwidth) {
         positionOnRail = this.state.railwidth;
       }
+
       this.populateSlider(positionOnRail, closestChildIndex);
     }
   };
@@ -240,7 +243,24 @@ class MultiRangeSlider extends Component {
     let tempActual = this.convertToActualValue(positionOnRail, index);
     console.log('ACTUAL: ', tempActual);
     //keep within bounds of limits
-    let tempActualRestricted = this.restrictActualBoundaries(tempActual);
+    let tempActualRestricted = this.restrictActualBoundaries(tempActual, index);
+
+    //---------------------------------------------------------
+    // //sibling overlap check
+    // //left
+    // if (
+    //   this.state.currentindex === 0 &&
+    //   tempActualRestricted + this.state.thumbwidth > this.state.displayvalues[1]
+    // ) {
+    //   tempActualRestricted = this.state.displayvalues[1];
+    // }
+    // // //right
+    // if (
+    //   this.state.currentindex === 1 &&
+    //   tempActualRestricted - this.state.thumbwidth < this.state.displayvalues[0]
+    // ) {
+    //   tempActualRestricted = this.state.displayvalues[0];
+    // }
 
     //set left label
     if (index < this.props.value.length - 1) {
@@ -252,8 +272,6 @@ class MultiRangeSlider extends Component {
       //console.log('RIGHT LABEL: ', tempActual);
       this.stateMaxHandler(tempActualRestricted);
     }
-    //---------------------------------------------------------
-
     let tempConverted = this.convertToDisplayValue(tempActualRestricted, index);
     console.log('DISPLAY: ', tempConverted);
     this.stateDisplayValuesHandler(tempConverted, index);
