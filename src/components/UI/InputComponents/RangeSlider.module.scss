@@ -42,19 +42,19 @@
 
   .SliderValue {
     box-sizing: border-box;
-    width: 60px;
     margin-left: var(--paddingdefault);
     line-height: 20px;
-    padding: 15px 15px;
+    padding: 15px;
     border: 1px solid var(--colorborder);
     border-radius: var(--borderradius);
-
+    flex-grow: 1;
     input {
-      width: 100%;
+      width: 60px;
       height: 20px;
       border: 0px;
       text-align: center;
       font: inherit;
+      font-size: 0.9em;
       color: var(--colordefault);
       &:focus {
         outline: none;

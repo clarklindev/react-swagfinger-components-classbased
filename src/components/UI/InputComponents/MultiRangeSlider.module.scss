@@ -42,11 +42,11 @@
 
   .SliderLabel {
     box-sizing: border-box;
-    width: 60px;
+
     flex-grow: 0;
     flex-basis: 1;
     line-height: 20px;
-    padding: 15px 5px;
+    padding: 15px;
     border: 1px solid var(--colorborder);
     border-radius: var(--borderradius);
     &:first-child {
@@ -57,12 +57,13 @@
     }
 
     input {
-      width: 100%;
+      width: 65px;
       height: 20px;
       border: 0px;
       text-align: center;
       color: var(--colordefault);
       font: inherit;
+      font-size: 0.9em;
       &:focus {
         outline: none;
       }
