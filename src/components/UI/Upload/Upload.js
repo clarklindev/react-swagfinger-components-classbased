@@ -149,7 +149,6 @@ class Upload extends Component {
           <button onClick={() => this.uploadRef.current.click()}>
             Choose a file
           </button>
-          &nbsp; or drag it here...
         </div>
         <ul className={classes.UploadList}>{filelist}</ul>
       </div>

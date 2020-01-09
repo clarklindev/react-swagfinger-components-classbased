@@ -9,12 +9,14 @@
     display: flex;
     box-sizing: border-box;
     align-items: center;
+    text-align: left;
     color: var(--colordefault);
     input {
       display: none;
     }
     button {
       margin-left: 5px;
+      text-align: left;
 
       &.Hidden {
         display: none;
