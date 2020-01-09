@@ -54,7 +54,8 @@
       height: 20px;
       border: 0px;
       text-align: center;
-
+      font: inherit;
+      color: var(--colordefault);
       &:focus {
         outline: none;
       }

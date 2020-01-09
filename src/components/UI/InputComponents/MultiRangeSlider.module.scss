@@ -61,7 +61,8 @@
       height: 20px;
       border: 0px;
       text-align: center;
-
+      color: var(--colordefault);
+      font: inherit;
       &:focus {
         outline: none;
       }

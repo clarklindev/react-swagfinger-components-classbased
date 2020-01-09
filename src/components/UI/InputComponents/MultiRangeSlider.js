@@ -48,6 +48,10 @@ class MultiRangeSlider extends Component {
     let tempLabelMax = this.restrictActualBoundaries(this.state.labelmax, 1);
     let convertedMax = this.convertToDisplayValue(tempLabelMax, 1);
     this.stateDisplayValuesHandler(convertedMax, 1); //set state
+    //actual values
+    //set state
+    this.stateMinHandler(tempLabelMin);
+    this.stateMaxHandler(tempLabelMax);
   };
 
   //props or state updates...

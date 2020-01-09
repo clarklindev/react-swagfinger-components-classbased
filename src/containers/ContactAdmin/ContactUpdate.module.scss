@@ -15,5 +15,7 @@
 
   input {
     cursor: text;
+    font: inherit;
+    color: var(--colordefault);
   }
 }

@@ -6,7 +6,9 @@
   .RemoveButton {
     margin-left: 10px;
   }
-
+  button {
+    color: var(--colordefault);
+  }
   .InputElement {
     outline: none;
     border: 1px solid var(--colorborder);

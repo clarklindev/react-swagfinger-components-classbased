@@ -33,7 +33,7 @@ class MultiInput extends Component {
           return (
             <div className={classes.FlexGroupRow} key={this.props.name + index}>
               <input
-                className={tempClasses.join(' ')}
+                className={[...tempClasses].join(' ')}
                 placeholder={this.props.placeholder}
                 value={val.data}
                 {...this.props.elementconfig}
