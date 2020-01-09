@@ -27,6 +27,8 @@
     display: flex;
     flex-direction: row;
     margin-bottom: 10px;
+    flex-basis: 1;
+    box-sizing: border-box;
   }
 
   .divider {
