@@ -21,7 +21,8 @@ class MultiSelectWithInput extends Component {
   }
 
   state = {
-    isOpenList: {}
+    isOpenList: {},
+    socialSelectedList: {}
   };
 
   componenDidUpdate() {
@@ -29,32 +30,61 @@ class MultiSelectWithInput extends Component {
   }
 
   onClickHandler = (index, event) => {
-    console.log(index, event.target);
-    let stateList = { ...this.state.isOpenList };
+    //console.log(index, event.target);
+    let isOpenList = { ...this.state.isOpenList };
     this.setState((prevState) => {
       let updatedState =
         prevState.isOpenList[index] === undefined
           ? true
           : !this.state.isOpenList[index];
-      console.log('upated: ', updatedState);
-      stateList[index] = updatedState;
+      // console.log('upated: ', updatedState);
+      isOpenList[index] = updatedState;
       return {
-        isOpenList: stateList
+        isOpenList: isOpenList
       };
     });
   };
 
   onBlurHandler = (index, event) => {
     console.log(index, event.target);
-    let stateList = { ...this.state.isOpenList };
+    let isOpenList = { ...this.state.isOpenList };
     this.setState((prevState) => {
       let updatedState = false;
-      console.log('upated: ', updatedState);
-      stateList[index] = updatedState;
+      //console.log('upated: ', updatedState);
+      isOpenList[index] = updatedState;
       return {
-        isOpenList: stateList
+        isOpenList: isOpenList
       };
     });
+  };
+
+  onChangeHandler = (index, event) => {
+    //val is the selector value...
+    let val = event.target.value;
+
+    let socialSelectedList = { ...this.state.socialSelectedList };
+    this.setState((prevState) => {
+      let updatedState = false;
+      if (val !== '') {
+        console.log('UPDATED STATE = true');
+        updatedState = true;
+      }
+      console.log('index: ', index, ', socialSelected: ', updatedState);
+      socialSelectedList[index] = updatedState;
+      return {
+        socialSelectedList: socialSelectedList
+      };
+    });
+
+    this.context.changed(
+      {
+        key: val,
+        value: ''
+      },
+      this.props.name,
+      index
+    );
+    console.log('--------------------------------state: ', this.state);
   };
 
   render() {
@@ -70,6 +100,15 @@ class MultiSelectWithInput extends Component {
           if (this.state.isOpenList[index] === true) {
             tempClasses.push(classes.IsOpen);
           }
+          let socialClasses = [];
+          if (
+            this.state.socialSelectedList[index] === true ||
+            (tempKey !== '' && tempKey !== undefined && tempKey !== null)
+          ) {
+            console.log('tempVal:,', tempVal, 'tempKey:', tempKey);
+            socialClasses.push(classes.ShowSocial);
+          }
+
           return (
             <div className={classes.FlexGroupRow} key={this.props.name + index}>
               <div className={classes.SelectAndInputWrapper}>
@@ -77,21 +116,12 @@ class MultiSelectWithInput extends Component {
                   multiple={false}
                   name={this.props.name}
                   value={tempKey}
-                  className={[...tempClasses].join('')}
+                  className={[...tempClasses, ...socialClasses].join(' ')}
                   onClick={(event) => this.onClickHandler(index, event)}
                   onBlur={(event) => {
                     this.onBlurHandler(index, event);
                   }}
-                  onChange={(event) =>
-                    this.context.changed(
-                      {
-                        key: event.target.value,
-                        value: ''
-                      },
-                      this.props.name,
-                      index
-                    )
-                  }>
+                  onChange={(event) => this.onChangeHandler(index, event)}>
                   {this.props.elementconfig.options.map((option, index) => (
                     <option key={option.value} value={option.value}>
                       {option.displaytext}

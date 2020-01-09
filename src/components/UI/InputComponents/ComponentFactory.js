@@ -38,120 +38,55 @@ class ComponentFactory extends Component {
 
     switch (this.props.data.elementtype) {
       case 'input':
-        this.inputElement = (
-          <div className={this.className}>
-            {this.label}
-            <Input {...this.props.data} />
-          </div>
-        );
+        this.inputElement = <Input {...this.props.data} />;
         break;
 
       case 'textarea':
-        this.inputElement = (
-          <div className={this.className}>
-            {this.label}
-            <Textarea {...this.props.data} />
-          </div>
-        );
+        this.inputElement = <Textarea {...this.props.data} />;
         break;
 
       case 'datepicker':
-        this.inputElement = (
-          <div className={this.className}>
-            {this.label}
-            <Datepicker {...this.props.data} />
-          </div>
-        );
+        this.inputElement = <Datepicker {...this.props.data} />;
         break;
 
       case 'radio':
-        this.inputElement = (
-          <div className={this.className}>
-            {this.label}
-            <RadioCollection {...this.props.data} />
-          </div>
-        );
+        this.inputElement = <RadioCollection {...this.props.data} />;
         break;
 
       case 'select':
-        this.inputElement = (
-          <div className={this.className}>
-            {this.label}
-            <Select {...this.props.data} />
-          </div>
-        );
+        this.inputElement = <Select {...this.props.data} />;
         break;
 
       case 'selectwithinput':
-        this.inputElement = (
-          <div className={this.className}>
-            {this.label}
-            <MultiSelectWithInput {...this.props.data} />
-          </div>
-        );
+        this.inputElement = <MultiSelectWithInput {...this.props.data} />;
         break;
 
       case 'multiinput':
-        this.inputElement = (
-          <div className={this.className}>
-            {this.label}
-            <MultiInput {...this.props.data} />
-          </div>
-        );
+        this.inputElement = <MultiInput {...this.props.data} />;
         break;
 
       case 'checkbox':
-        this.inputElement = (
-          <div className={this.className}>
-            {this.label}
-            <CheckboxCollection {...this.props.data} />
-          </div>
-        );
+        this.inputElement = <CheckboxCollection {...this.props.data} />;
         break;
 
       case 'counter':
-        this.inputElement = (
-          <div className={this.className}>
-            {this.label}
-            <Counter {...this.props.data} />
-          </div>
-        );
+        this.inputElement = <Counter {...this.props.data} />;
         break;
 
       case 'rangeslider':
-        this.inputElement = (
-          <div className={this.className}>
-            {this.label}
-            <RangeSlider {...this.props.data} />
-          </div>
-        );
+        this.inputElement = <RangeSlider {...this.props.data} />;
         break;
 
       case 'multirangeslider':
-        this.inputElement = (
-          <div className={this.className}>
-            {this.label}
-            <MultiRangeSlider {...this.props.data} />
-          </div>
-        );
+        this.inputElement = <MultiRangeSlider {...this.props.data} />;
         break;
 
       case 'toggle':
-        this.inputElement = (
-          <div className={this.className}>
-            {this.label}
-            <Toggle {...this.props.data} />
-          </div>
-        );
+        this.inputElement = <Toggle {...this.props.data} />;
         break;
 
       case 'upload':
-        this.inputElement = (
-          <div className={this.className}>
-            {this.label}
-            <Upload {...this.props.data} />
-          </div>
-        );
+        this.inputElement = <Upload {...this.props.data} />;
         break;
 
       default:
@@ -163,7 +98,12 @@ class ComponentFactory extends Component {
       <label className={classes.Label}>{this.props.data.label}</label>
     ) : null;
 
-    return this.inputElement;
+    return (
+      <div className={this.className}>
+        {this.label}
+        <div className={classes.Component}>{this.inputElement}</div>
+      </div>
+    );
   }
 }
 

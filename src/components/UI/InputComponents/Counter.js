@@ -68,7 +68,6 @@ class Counter extends Component {
           <FontAwesomeIcon icon={['fas', 'minus']} />
         </button>
         <input
-          type='number'
           min={Number(this.props.elementconfig.min.toFixed(2))}
           max={Number(this.props.elementconfig.max.toFixed(2))}
           step={Number(this.props.elementconfig.step).toFixed(2)}
