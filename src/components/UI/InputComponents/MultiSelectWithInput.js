@@ -88,22 +88,27 @@ class MultiSelectWithInput extends Component {
   };
 
   render() {
+    let tempKey;
+    let tempVal;
+    let tempClasses;
+    let socialClasses;
     return (
       <div className={this.className}>
         {this.props.value.map((val, index) => {
-          let tempKey = val.data === null ? '' : val.data.key;
+          tempKey = val.data === null ? '' : val.data.key;
           //console.log('val', val);
           //console.log('tempKey: ', tempKey);
 
-          let tempVal = val.data === null ? '' : val.data.value;
-          let tempClasses = [];
+          tempVal = val.data === null ? '' : val.data.value;
+          tempClasses = [];
           if (this.state.isOpenList[index] === true) {
             tempClasses.push(classes.IsOpen);
           }
-          let socialClasses = [];
+          socialClasses = [];
           if (
             this.state.socialSelectedList[index] === true ||
-            (tempKey !== '' && tempKey !== undefined && tempKey !== null)
+            (tempKey !== '' && tempKey !== undefined && tempKey !== null) ||
+            (tempVal !== undefined && tempVal !== '')
           ) {
             console.log('tempVal:,', tempVal, 'tempKey:', tempKey);
             socialClasses.push(classes.ShowSocial);
@@ -156,9 +161,24 @@ class MultiSelectWithInput extends Component {
                 title='Delete'
                 type='button'
                 className={classes.RemoveButton}
-                onClick={(event) =>
-                  this.context.removeinput(event, this.props.name, index)
-                }>
+                onClick={(event) => {
+                  this.setState((prevState) => {
+                    let open = Object.keys(prevState.isOpenList).filter(
+                      (item, j) => {
+                        return index !== j;
+                      }
+                    );
+
+                    let social = Object.keys(
+                      prevState.socialSelectedList
+                    ).filter((item, k) => {
+                      return index !== k;
+                    });
+                    return { isOpenList: open, socialSelectedList: social };
+                  });
+
+                  this.context.removeinput(event, this.props.name, index);
+                }}>
                 <FontAwesomeIcon icon={['far', 'trash-alt']} />
               </button>
             </div>
