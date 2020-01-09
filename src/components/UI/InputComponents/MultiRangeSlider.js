@@ -39,8 +39,7 @@ class MultiRangeSlider extends Component {
   updateDimensions = () => {
     console.log('update DIMENSIONS');
     this.setState({
-      railwidth: parseInt(this.railRef.current.offsetWidth),
-      thumbwidth: parseInt(this.sliderRef.current.offsetWidth)
+      railwidth: parseInt(this.railRef.current.offsetWidth)
     });
     let tempLabelMin = this.restrictActualBoundaries(this.state.labelmin, 0);
     let convertedMin = this.convertToDisplayValue(tempLabelMin, 0);
