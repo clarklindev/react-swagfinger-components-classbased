@@ -8,32 +8,32 @@ class Auth extends Component {
   state = {
     controls: {
       email: {
-        elementType: 'input',
-        elementConfig: {
+        elementtype: 'input',
+        elementconfig: {
           type: 'email',
           placeholder: 'Mail Address'
         },
-        value: '',
         validation: {
           required: true,
           isEmail: true
         },
         valid: false,
-        touched: false
+        touched: false,
+        value: ''
       },
       password: {
-        elementType: 'input',
-        elementConfig: {
+        elementtype: 'input',
+        elementconfig: {
           type: 'password',
           placeholder: 'Password'
         },
-        value: '',
         validation: {
           required: true,
           minLength: 6
         },
         valid: false,
-        touched: false
+        touched: false,
+        value: ''
       }
     }
     //,isSignUp: true
@@ -103,25 +103,22 @@ class Auth extends Component {
 
   render() {
     const formElementsArray = [];
-    const form = formElementsArray.map((formElement) => (
-      <ComponentFactory
-        key={formElement.id}
-        elementType={formElement.config.elementType}
-        elementConfig={formElement.config.elementConfig}
-        value={formElement.config.value}
-        invalid={!formElement.config.valid}
-        shouldValidate={formElement.config.validation}
-        touched={formElement.config.touched}
-        changed={(event) => this.inputChangedHandler(event, formElement.id)}
-      />
-    ));
-
     for (let key in this.state.controls) {
       formElementsArray.push({
         id: key,
-        config: this.state.controls[key]
+        data: this.state.controls[key]
       });
     }
+
+    const form = formElementsArray.map((item) => (
+      <ComponentFactory
+        key={item.id}
+        id={item.id}
+        data={item.data}
+        changed={(event) => this.inputChangedHandler(event, item.id)}
+      />
+    ));
+
     return (
       <div className={classes.Auth}>
         <form onSubmit={this.submitHandler}>

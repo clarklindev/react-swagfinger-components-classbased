@@ -88,29 +88,26 @@ class MultiSelectWithInput extends Component {
   };
 
   render() {
-    let tempKey;
-    let tempVal;
-    let tempClasses;
-    let socialClasses;
     return (
       <div className={this.className}>
         {this.props.value.map((val, index) => {
-          tempKey = val.data === null ? '' : val.data.key;
+          let tempKey = val.data === null ? '' : val.data.key;
           //console.log('val', val);
           //console.log('tempKey: ', tempKey);
+          console.log('index', index);
 
-          tempVal = val.data === null ? '' : val.data.value;
-          tempClasses = [];
+          let tempVal = val.data === null ? '' : val.data.value;
+          let tempClasses = [];
           if (this.state.isOpenList[index] === true) {
             tempClasses.push(classes.IsOpen);
           }
-          socialClasses = [];
+          let socialClasses = [];
           if (
             this.state.socialSelectedList[index] === true ||
             (tempKey !== '' && tempKey !== undefined && tempKey !== null) ||
             (tempVal !== undefined && tempVal !== '')
           ) {
-            console.log('tempVal:,', tempVal, 'tempKey:', tempKey);
+            console.log('tempKey:', tempKey, ',tempVal:', tempVal);
             socialClasses.push(classes.ShowSocial);
           }
 
@@ -144,14 +141,15 @@ class MultiSelectWithInput extends Component {
                       value={tempVal}
                       name={this.props.name}
                       // disabled={tempKey === (undefined || null)}
-                      onChange={(event) =>
+                      onChange={(event) => {
+                        console.log('Key: ', tempKey, ' val: ', tempVal);
                         //pass in the name of the prop, and the index (if array item)
                         this.context.changed(
                           { key: tempKey, value: event.target.value },
                           this.props.name,
                           index
-                        )
-                      }
+                        );
+                      }}
                     />
                   </React.Fragment>
                 )}
@@ -176,7 +174,6 @@ class MultiSelectWithInput extends Component {
                     });
                     return { isOpenList: open, socialSelectedList: social };
                   });
-
                   this.context.removeinput(event, this.props.name, index);
                 }}>
                 <FontAwesomeIcon icon={['far', 'trash-alt']} />

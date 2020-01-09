@@ -1,9 +1,10 @@
 .ComponentFactory {
   margin: 0 0 30px 0;
   box-sizing: border-box;
-  .Component {
-    //filter: var(--dropshadowdefault);
-  }
+  // .Component {
+  //   //drop shadow css filter should be applied at each components level
+  //   // filter: var(--dropshadowdefault);
+  // }
   .Label {
     color: var(--colorheader);
     font-weight: bold;
