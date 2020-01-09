@@ -681,7 +681,6 @@ class Datepicker extends Component {
           <div className={classes.CalendarHeader}>
             {this.state[this.state.viewstate].arrows ? (
               <button
-                className={[classes.Chevron, classes.Decrease].join(' ')}
                 onClick={(event) => {
                   this.decrease(event);
                 }}
@@ -743,7 +742,6 @@ class Datepicker extends Component {
             </div>
             {this.state[this.state.viewstate].arrows ? (
               <button
-                className={[classes.Chevron, classes.Increase].join(' ')}
                 onClick={(event) => {
                   this.increase(event);
                 }}

@@ -25,11 +25,31 @@ class MultiRangeSlider extends Component {
   };
 
   componentDidMount() {
+    window.addEventListener('resize', this.updateDimensions);
     this.setState({
       railwidth: parseInt(this.railRef.current.offsetWidth),
       thumbwidth: parseInt(this.sliderRef.current.offsetWidth)
     });
   }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateDimensions);
+  }
+
+  updateDimensions = () => {
+    console.log('update DIMENSIONS');
+    this.setState({
+      railwidth: parseInt(this.railRef.current.offsetWidth),
+      thumbwidth: parseInt(this.sliderRef.current.offsetWidth)
+    });
+    let tempLabelMin = this.restrictActualBoundaries(this.state.labelmin, 0);
+    let convertedMin = this.convertToDisplayValue(tempLabelMin, 0);
+    this.stateDisplayValuesHandler(convertedMin, 0); //set state
+
+    let tempLabelMax = this.restrictActualBoundaries(this.state.labelmax, 1);
+    let convertedMax = this.convertToDisplayValue(tempLabelMax, 1);
+    this.stateDisplayValuesHandler(convertedMax, 1); //set state
+  };
 
   //props or state updates...
   componentDidUpdate() {
