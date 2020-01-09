@@ -337,7 +337,7 @@ class ContactUpdate extends Component {
           [key]: {
             ...prevState.form[key],
             value: prevState.form[key].value.concat({
-              data: null,
+              data: '',
               valid: false,
               touched: false,
               pristine: true
