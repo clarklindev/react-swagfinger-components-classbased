@@ -65,7 +65,7 @@ class Counter extends Component {
     return (
       <div className={classes.Counter}>
         <button disabled={isMinBound} onClick={this.decrement}>
-          <FontAwesomeIcon icon={['fas', 'plus']} />
+          <FontAwesomeIcon icon={['fas', 'minus']} />
         </button>
         <input
           type='number'
@@ -79,7 +79,7 @@ class Counter extends Component {
           onBlur={(event) => this.onBlur(event)}
         />
         <button disabled={isMaxBound} onClick={this.increment}>
-          <FontAwesomeIcon icon={['fas', 'minus']} />
+          <FontAwesomeIcon icon={['fas', 'plus']} />
         </button>
       </div>
     );
