@@ -6,7 +6,8 @@ import {
   faBars,
   faTimes,
   faChevronLeft,
-  faChevronRight
+  faChevronRight,
+  faChevronDown
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faEdit,
@@ -43,7 +44,8 @@ library.add(
   faPlus,
   faMinus,
   faBars,
-  faCalendarAlt
+  faCalendarAlt,
+  faChevronDown
 );
 
 class App extends Component {

@@ -20,6 +20,43 @@ class MultiSelectWithInput extends Component {
     this.inputClasses = [classes.InputElement];
   }
 
+  state = {
+    isOpenList: {}
+  };
+
+  componenDidUpdate() {
+    console.log('state:', this.state);
+  }
+
+  onClickHandler = (index, event) => {
+    console.log(index, event.target);
+    let stateList = { ...this.state.isOpenList };
+    this.setState((prevState) => {
+      let updatedState =
+        prevState.isOpenList[index] === undefined
+          ? true
+          : !this.state.isOpenList[index];
+      console.log('upated: ', updatedState);
+      stateList[index] = updatedState;
+      return {
+        isOpenList: stateList
+      };
+    });
+  };
+
+  onBlurHandler = (index, event) => {
+    console.log(index, event.target);
+    let stateList = { ...this.state.isOpenList };
+    this.setState((prevState) => {
+      let updatedState = false;
+      console.log('upated: ', updatedState);
+      stateList[index] = updatedState;
+      return {
+        isOpenList: stateList
+      };
+    });
+  };
+
   render() {
     return (
       <div className={this.className}>
@@ -29,7 +66,10 @@ class MultiSelectWithInput extends Component {
           //console.log('tempKey: ', tempKey);
 
           let tempVal = val.data === null ? '' : val.data.value;
-
+          let tempClasses = [];
+          if (this.state.isOpenList[index] === true) {
+            tempClasses.push(classes.IsOpen);
+          }
           return (
             <div className={classes.FlexGroupRow} key={this.props.name + index}>
               <div className={classes.SelectAndInputWrapper}>
@@ -37,6 +77,11 @@ class MultiSelectWithInput extends Component {
                   multiple={false}
                   name={this.props.name}
                   value={tempKey}
+                  className={[...tempClasses].join('')}
+                  onClick={(event) => this.onClickHandler(index, event)}
+                  onBlur={(event) => {
+                    this.onBlurHandler(index, event);
+                  }}
                   onChange={(event) =>
                     this.context.changed(
                       {
