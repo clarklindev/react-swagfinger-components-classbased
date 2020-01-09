@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import classes from './Datepicker.module.scss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { ReactComponent as CalendarIcon } from '../Icons/CalendarIcon.svg';
+// import { ReactComponent as CalendarIcon } from '../Icons/CalendarIcon.svg';
 
 class Datepicker extends Component {
   constructor(props) {
@@ -52,8 +53,8 @@ class Datepicker extends Component {
     format: 'full', //'iso' (default) eg. '2000-10-13' || 'full' eg. 'Thursday, 12 December 2019'
     position: 'absolute', //'absolute' | 'relative'
     daypicker: { arrows: true, month: true, year: true },
-    monthpicker: { arrows: false, month: false, year: false },
-    yearpicker: { arrows: true, month: false, year: false }
+    monthpicker: { arrows: false, month: true, year: false },
+    yearpicker: { arrows: true, month: false, year: true }
   };
 
   //here because date is passed as prop, done intially only once...
@@ -136,6 +137,8 @@ class Datepicker extends Component {
     //format decade range to yyyy-yyyy (decade is 10 years, counting from 0-9 years)
     return `${decadeString}-${decadeString + 9}`;
   };
+
+  //-----------------------------------------------------------
   //-----------------------------------------------------------
 
   //returns table rows with years.
@@ -144,7 +147,7 @@ class Datepicker extends Component {
     let rows = 4;
     let cols = 3;
     return (
-      <table className='CalendarTable'>
+      <table className={classes.CalendarTable}>
         <tbody>
           {[...Array(rows)].map((_, i) => {
             return (
@@ -153,7 +156,7 @@ class Datepicker extends Component {
                   let output = (
                     <td key={'year' + counter}>
                       <div
-                        className='year'
+                        className={classes.Year}
                         onClick={(event) => this.clickHandler(event)}
                         onMouseOver={(event) => {
                           this.onMouseOver(event);
@@ -180,14 +183,15 @@ class Datepicker extends Component {
       </table>
     );
   };
-
+  //-----------------------------------------------------------
+  //-----------------------------------------------------------
   //month picker
   monthpicker = () => {
     const rows = 4;
     const cols = 3;
     let counter = 0;
     return (
-      <table className='CalendarTable'>
+      <table className={classes.CalendarTable}>
         <tbody>
           {[...Array(rows)].map((_, i) => {
             return (
@@ -203,7 +207,7 @@ class Datepicker extends Component {
                   return (
                     <td key={'month' + counter}>
                       <div
-                        className='month'
+                        className={classes.Month}
                         onClick={(event) => this.clickHandler(event)}
                         onMouseOver={(event) => {
                           this.onMouseOver(event);
@@ -226,7 +230,8 @@ class Datepicker extends Component {
       </table>
     );
   };
-
+  //-----------------------------------------------------------
+  //-----------------------------------------------------------
   daypicker = (
     monthIndex = this.state.currentdate.getMonth(), //zero-indexed
     year = this.state.currentdate.getFullYear()
@@ -246,7 +251,9 @@ class Datepicker extends Component {
               console.log('.startOfWeek not set');
           }
           return (
-            <th key={'dayheader' + i}>{this.daysOfWeekLabels[posInArray]}</th>
+            <th className={classes.DaysOfWeekLabel} key={'dayheader' + i}>
+              {this.daysOfWeekLabels[posInArray]}
+            </th>
           );
         })}
       </tr>
@@ -337,13 +344,14 @@ class Datepicker extends Component {
     });
 
     return (
-      <table className='CalendarTable'>
+      <table className={classes.CalendarTable}>
         <thead>{tableHead}</thead>
         <tbody>{tableBody}</tbody>
       </table>
     );
   };
-
+  //-----------------------------------------------------------
+  //-----------------------------------------------------------
   switchState = (newviewstate) => {
     console.log('viewstate: ', newviewstate);
     if (this.state.viewstate !== newviewstate) {
@@ -418,7 +426,8 @@ class Datepicker extends Component {
       return { isInteracting: false };
     });
   };
-
+  //-----------------------------------------------------------
+  //-----------------------------------------------------------
   decrease = (event) => {
     Array.from(
       this.calendarBodyRef.current.querySelectorAll('.active')
@@ -463,6 +472,8 @@ class Datepicker extends Component {
         break;
     }
   };
+  //-----------------------------------------------------------
+  //-----------------------------------------------------------
   increase = (event) => {
     Array.from(
       this.calendarBodyRef.current.querySelectorAll('.active')
@@ -506,6 +517,8 @@ class Datepicker extends Component {
         break;
     }
   };
+  //-----------------------------------------------------------
+  //-----------------------------------------------------------
 
   clickHandler = (event) => {
     // event.preventDefault();
@@ -520,7 +533,7 @@ class Datepicker extends Component {
     let target = event.target;
 
     switch (target.className) {
-      case 'year':
+      case classes.Year:
         this.setState((prevState) => {
           return {
             currentdate: new Date(
@@ -533,7 +546,7 @@ class Datepicker extends Component {
         });
         break;
 
-      case 'month':
+      case classes.Month:
         this.setState((prevState) => {
           let newdate = new Date(
             prevState.currentdate.getFullYear(),
@@ -550,6 +563,8 @@ class Datepicker extends Component {
         console.log('target.className does not exist');
     }
   };
+  //-----------------------------------------------------------
+  //-----------------------------------------------------------
 
   dayClickHandler = (event) => {
     event.preventDefault();
@@ -584,6 +599,8 @@ class Datepicker extends Component {
       };
     });
   };
+  //-----------------------------------------------------------
+  //-----------------------------------------------------------
 
   render() {
     let tempClasses = [];
@@ -598,7 +615,8 @@ class Datepicker extends Component {
       console.log('pushing invalid: ');
       tempClasses.push(classes.Invalid);
     }
-
+    //-----------------------------------------------------------
+    //-----------------------------------------------------------
     let dateinput = (
       <div
         className={[classes.Dateinput, ...tempClasses].join(' ')}
@@ -641,94 +659,115 @@ class Datepicker extends Component {
           onMouseOut={(event) => {
             this.onMouseOut(event);
           }}>
-          <CalendarIcon />
+          {/* <CalendarIcon /> */}
+          <FontAwesomeIcon icon={['far', 'calendar-alt']} />
         </button>
       </div>
     );
-    let displayposition =
-      this.state.position === 'relative' ? 'relative' : null;
+    //-----------------------------------------------------------
+    //-----------------------------------------------------------
+    let viewPosition = this.state.position === 'relative' ? 'relative' : null;
 
     let calendar = this.state.showCalendar ? (
       <div
-        className={[classes.Calendar, displayposition].join(' ')}
+        className={[classes.Calendar].join(' ')}
         onMouseOver={(event) => {
           this.onMouseOver(event);
         }}
         onMouseOut={(event) => {
           this.onMouseOut(event);
         }}>
-        <div className={classes.CalendarHeader}>
-          {this.state[this.state.viewstate].arrows ? (
-            <button
-              className={[classes.Chevron, classes.Decrease].join(' ')}
-              onClick={(event) => {
-                this.decrease(event);
-              }}
-              onMouseOver={(event) => {
-                this.onMouseOver(event);
-              }}
-              onMouseOut={(event) => {
-                this.onMouseOut(event);
-              }}
-              onBlur={(event) => {
-                this.onBlurHandler(event);
-              }}>
-              left
-            </button>
-          ) : null}
-          <div className='StateButtons'>
-            {this.state[this.state.viewstate].year ? (
+        <div className={[classes.CalendarContent, viewPosition].join(' ')}>
+          <div className={classes.CalendarHeader}>
+            {this.state[this.state.viewstate].arrows ? (
               <button
-                className={classes.Year}
-                onClick={() => this.switchState('yearpicker')}
+                className={[classes.Chevron, classes.Decrease].join(' ')}
+                onClick={(event) => {
+                  this.decrease(event);
+                }}
                 onMouseOver={(event) => {
                   this.onMouseOver(event);
                 }}
                 onMouseOut={(event) => {
                   this.onMouseOut(event);
+                }}
+                onBlur={(event) => {
+                  this.onBlurHandler(event);
                 }}>
-                {this.state.currentdate.getFullYear()}
+                <FontAwesomeIcon icon={['fas', 'chevron-left']} />
               </button>
             ) : null}
-            {this.state[this.state.viewstate].month ? (
+            <div className={classes.StateButtons}>
+              {this.state[this.state.viewstate].year ? (
+                this.state.viewstate === 'yearpicker' ? (
+                  <div className={[classes.Label, classes.Year].join(' ')}>
+                    Year
+                  </div>
+                ) : (
+                  <button
+                    className={classes.Year}
+                    onClick={() => this.switchState('yearpicker')}
+                    onMouseOver={(event) => {
+                      this.onMouseOver(event);
+                    }}
+                    onMouseOut={(event) => {
+                      this.onMouseOut(event);
+                    }}>
+                    {this.printYear(this.state.currentdate.getFullYear())}
+                  </button>
+                )
+              ) : null}
+
+              {this.state[this.state.viewstate].month ? (
+                this.state.viewstate === 'monthpicker' ? (
+                  <div className={[classes.Label, classes.Month].join(' ')}>
+                    Month
+                  </div>
+                ) : (
+                  <button
+                    className={classes.Month}
+                    onClick={() => this.switchState('monthpicker')}
+                    onMouseOver={(event) => {
+                      this.onMouseOver(event);
+                    }}
+                    onMouseOut={(event) => {
+                      this.onMouseOut(event);
+                    }}>
+                    {console.log('currentdate: ', this.state.currentdate)}
+                    {this.state.viewstate === 'monthpicker'
+                      ? 'Month'
+                      : this.printMonth(this.state.currentdate.getMonth())}
+                  </button>
+                )
+              ) : null}
+            </div>
+            {this.state[this.state.viewstate].arrows ? (
               <button
-                className={classes.Month}
-                onClick={() => this.switchState('monthpicker')}
+                className={[classes.Chevron, classes.Increase].join(' ')}
+                onClick={(event) => {
+                  this.increase(event);
+                }}
                 onMouseOver={(event) => {
                   this.onMouseOver(event);
                 }}
                 onMouseOut={(event) => {
                   this.onMouseOut(event);
+                }}
+                onBlur={(event) => {
+                  this.onBlurHandler(event);
                 }}>
-                {console.log('currentdate: ', this.state.currentdate)}
-                {this.printMonth(this.state.currentdate.getMonth())}
+                <FontAwesomeIcon icon={['fas', 'chevron-right']} />
               </button>
             ) : null}
           </div>
-          {this.state[this.state.viewstate].arrows ? (
-            <button
-              className={[classes.Chevron, classes.Increase].join(' ')}
-              onClick={(event) => {
-                this.increase(event);
-              }}
-              onMouseOver={(event) => {
-                this.onMouseOver(event);
-              }}
-              onMouseOut={(event) => {
-                this.onMouseOut(event);
-              }}
-              onBlur={(event) => {
-                this.onBlurHandler(event);
-              }}>
-              right
-            </button>
-          ) : null}
-        </div>
-        <div className={classes.CalendarBody} ref={this.calendarBodyRef}>
-          {this[this.state.viewstate]()}
+          <div className={classes.CalendarBody} ref={this.calendarBodyRef}>
+            {this[this.state.viewstate]()}
+          </div>
         </div>
       </div>
     ) : null;
+    //-----------------------------------------------------------
+    //-----------------------------------------------------------
 
     return (
       <div className={classes.Datepicker} ref={this.datepickerRef}>

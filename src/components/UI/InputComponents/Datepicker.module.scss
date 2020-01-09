@@ -7,6 +7,8 @@
     border: 1px solid var(--colorborder);
     border-radius: var(--borderradius);
     button {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
       border: none;
       padding: 15px;
     }
@@ -22,6 +24,7 @@
       color: var(--colordefault);
       flex-grow: 1;
       flex-basis: 1;
+      cursor: pointer;
       // &:focus {
       //   // background-color: red;
       // }
@@ -33,239 +36,126 @@
   }
 
   .Calendar {
-    margin-top: 5px;
+    color: var(--colordefault);
+    display: flex;
+    flex-direction: row;
+    flex-basis: 1;
     box-sizing: border-box;
-    background-color: green;
-    display: block;
+    background-color: white;
 
-    position: absolute;
-    height: 250px;
-    width: calc(var(--maxwidth) - var(--paddingdefault));
-    background-color: none;
-    border: 1px solid black;
-    border-radius: var(--borderradius);
-    padding: var(--default-padding);
-    &[class~='relative'] {
-      position: relative;
-    }
-
-    .CalendarHeader {
+    .CalendarContent {
+      &[class~='relative'] {
+        position: relative;
+      }
+      width: calc(
+        min(
+          calc(100% - 2 * var(--paddingdefault)),
+          calc(var(--maxwidth) - var(--paddingdefault))
+        )
+      );
+      position: absolute;
+      margin-top: 5px;
+      background-color: white;
       display: flex;
-      justify-content: space-between;
-    }
+      flex-flow: column;
+      flex-grow: 1;
+      flex-shrink: 1;
+      flex-basis: 1;
+      border: 1px solid var(--colorborder);
+      border-radius: var(--borderradius);
+      padding: var(--default-padding);
 
-    .Day {
-      text-align: center;
-      cursor: pointer;
-      padding: 0px;
-      width: 100%;
-      height: 100%;
-      box-sizing: border-box;
-    }
-    .Day:hover {
-      background-color: rgba(0, 0, 0, 0.2);
-      color: white;
-    }
-    [class*='Day'][class~='active'] {
-      background-color: red;
-      color: white;
+      .CalendarHeader {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        height: 90px;
+        button {
+          color: var(--colorheader);
+          border: none;
+          padding: var(--paddingdefault);
+        }
+        .StateButtons {
+          display: flex;
+          padding: var(--paddingdefault);
+          min-width: 180px;
+          justify-content: space-around;
+          button {
+            padding: 10px;
+          }
+          .Label {
+            padding: 10px;
+          }
+          .Year {
+            font-size: 1em;
+            align-self: center;
+          }
+          .Month {
+            font-size: 1em;
+            align-self: center;
+          }
+        }
+      }
+
+      .CalendarBody {
+        display: flex;
+
+        .CalendarTable {
+          width: 100%;
+          height: 100%;
+          display: table;
+          position: relative;
+          text-align: center;
+
+          .DaysOfWeekLabel {
+            font-size: 0.7em;
+            font-weight: 600;
+            color: var(--colordefault);
+            text-transform: uppercase;
+          }
+          /* //days of month */
+          .Day {
+            text-align: center;
+            cursor: pointer;
+            padding: 10px 2px;
+            width: 22px;
+            @media (min-width: 300px) {
+              padding: 10px 5px;
+              width: auto;
+            }
+            height: 100%;
+            box-sizing: border-box;
+          }
+          .Day:hover {
+            background-color: rgba(0, 0, 0, 0.2);
+            color: white;
+          }
+          [class*='Day'][class~='active'] {
+            background-color: rgba(0, 0, 0, 0.2);
+            color: white;
+          }
+
+          //year
+          .Year {
+            background-color: white;
+            padding: 5px;
+            cursor: pointer;
+            &:hover {
+              background-color: rgba(0, 0, 0, 0.2);
+              color: white;
+            }
+          }
+          .Month {
+            background-color: white;
+            padding: 5px;
+            cursor: pointer;
+            &:hover {
+              background-color: rgba(0, 0, 0, 0.2);
+              color: white;
+            }
+          }
+        }
+      }
     }
   }
-
-  // /* //change year section */
-  // .calendarheader {
-  //   display: -webkit-box;
-  //   display: -moz-box;
-  //   display: -webkit-flex;
-  //   display: -ms-flexbox;
-  //   display: flex;
-  //   justify-content: space-between;
-  //   background-color: blue;
-  // }
-
-  // .calendarheader .yearandmonth {
-  //   display: -webkit-box;
-  //   display: -moz-box;
-  //   display: -webkit-flex;
-  //   display: -ms-flexbox;
-  //   display: flex;
-  //   cursor: pointer;
-  //   align-items: center;
-  //   color: var(--default-color);
-  //   height: 35px;
-  // }
-
-  // .calendar-header .year {
-  //   padding: 0 5px;
-  // }
-  // .calendar-header .month {
-  //   padding: 0 5px;
-  // }
-
-  // .calendar-header .arrows {
-  //   /* padding: 0 5px; */
-  //   display: flex;
-  // }
-  // .calendar-header .chevron {
-  //   cursor: pointer;
-  //   padding: 0 10px;
-  //   user-select: none;
-  // }
-
-  // .chevron::before {
-  //   border-width: 2px 2px 0 0;
-  //   width: 5px;
-  //   height: 5px;
-  //   border-style: solid;
-  //   content: '';
-  //   display: inline-block;
-  //   position: relative;
-  //   vertical-align: middle;
-  // }
-
-  // .chevron.top:before {
-  //   top: 0.25em;
-  //   /* top: 0em; */
-  //   transform: rotate(-45deg);
-  // }
-
-  // .chevron.right:before {
-  //   left: 0;
-  //   transform: rotate(45deg);
-  // }
-
-  // .chevron.bottom:before {
-  //   top: 0;
-  //   transform: rotate(135deg);
-  // }
-
-  // .chevron.left:before {
-  //   left: 0.25em;
-  //   transform: rotate(-135deg);
-  // }
-
-  // /* //day view */
-  // .calendar-dayview {
-  //   display: -webkit-box;
-  //   display: -moz-box;
-  //   display: -webkit-flex;
-  //   display: -ms-flexbox;
-  //   display: flex;
-  //   flex-direction: column;
-  //   padding: 0px;
-  // }
-
-  // /* year view */
-  // /* month view */
-  // /* //days of month */
-  // .calendar-yearview {
-  //   display: flex;
-  // }
-
-  // .calendar-yearview {
-  //   display: table;
-  //   width: 100%;
-  // }
-
-  // .calendar-yearview td {
-  //   width: 75px;
-  //   height: 35px;
-  //   padding: 0px;
-  //   border: 1px solid red;
-  //   box-sizing: content-box;
-  //   color: var(--default-color);
-  //   text-align: center;
-  // }
-
-  // .calendar-yearview .year {
-  //   text-align: center;
-  //   cursor: pointer;
-  //   padding: 0px;
-  //   width: 100%;
-  //   height: 100%;
-  //   box-sizing: border-box;
-  //   display: flex;
-  //   justify-content: center;
-  //   align-items: center;
-  // }
-  // .calendar-yearview .year:hover {
-  //   background-color: rgba(0, 0, 0, 0.2);
-  //   color: white;
-  // }
-
-  // .calendar-yearview .year.active {
-  //   background-color: rgba(0, 0, 0, 0.3);
-  //   color: white;
-  // }
-
-  // /* month view */
-  // /* //days of month */
-  // .calendar-monthview {
-  //   display: flex;
-  // }
-
-  // .calendar-monthsofyear {
-  //   display: table;
-  //   width: 100%;
-  // }
-
-  // .calendar-monthsofyear td {
-  //   width: 75px;
-  //   height: 45px;
-  //   padding: 0px;
-  //   border: 1px solid red;
-  //   box-sizing: content-box;
-  //   color: var(--default-color);
-  //   text-align: center;
-  // }
-
-  // .calendar-monthsofyear .month {
-  //   text-align: center;
-  //   cursor: pointer;
-  //   padding: 0px;
-  //   width: 100%;
-  //   height: 100%;
-  //   box-sizing: border-box;
-  //   display: flex;
-  //   justify-content: center;
-  //   align-items: center;
-  // }
-  // .calendar-monthsofyear .month:hover {
-  //   background-color: rgba(0, 0, 0, 0.2);
-  //   color: white;
-  // }
-
-  // .calendar-monthsofyear .month.active {
-  //   background-color: rgba(0, 0, 0, 0.3);
-  //   color: white;
-  // }
-
-  // /* //days of the week */
-  // .calendar-daysofweek {
-  //   font-size: 0.8em;
-  //   display: table;
-  //   width: 100%;
-  // }
-  // .calendar-daysofweek th {
-  //   width: 33px;
-  //   height: 25px;
-  //   padding: 0px;
-  //   box-sizing: border-box;
-  //   cursor: default;
-  //   user-select: none;
-  // }
-
-  /* //days of month */
-  .CalendarBody {
-    display: table;
-  }
-
-  // .CalendarBody td {
-  //   width: 33px;
-  //   height: 25px;
-  //   padding: 0px;
-  //   border: 1px solid red;
-  //   box-sizing: content-box;
-  //   color: var(--default-color);
-  // }
 }
