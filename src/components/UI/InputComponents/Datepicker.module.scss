@@ -111,8 +111,10 @@
         display: flex;
         flex-basis: 1;
         padding: 0px;
+        box-sizing: border-box;
         @media (min-width: 420px) {
           padding: 30px;
+          min-width: 370px;
         }
         .CalendarTable {
           width: 100%;
@@ -134,7 +136,7 @@
             padding: 10px 5px;
             width: 100%;
             @media (min-width: 420px) {
-              padding: 10px 5px;
+              padding: 10px;
               width: auto;
             }
             height: 100%;
@@ -152,7 +154,8 @@
           //year
           .Year {
             background-color: white;
-            padding: 10px;
+            padding: 15px;
+
             cursor: pointer;
             &:hover {
               background-color: rgba(0, 0, 0, 0.2);
@@ -161,7 +164,7 @@
           }
           .Month {
             background-color: white;
-            padding: 10px;
+            padding: 15px;
             cursor: pointer;
             &:hover {
               background-color: rgba(0, 0, 0, 0.2);
