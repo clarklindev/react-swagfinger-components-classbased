@@ -635,10 +635,10 @@ class Datepicker extends Component {
               ? this.state.format === 'full'
                 ? // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString
                   new Date(this.state.pickeddate).toLocaleDateString('en-GB', {
-                    weekday: 'long',
+                    // weekday: 'long',
                     year: 'numeric',
                     month: 'long', //long | 2-digit
-                    day: '2-digit'
+                    day: 'numeric' //'2-digit'
                   })
                 : new Date(this.state.pickeddate).toISOString().substr(0, 10)
               : ''
