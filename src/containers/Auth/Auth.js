@@ -1,16 +1,21 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import * as actions from '../../store/actions/index';
+
 import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
+
 import Button from '../../components/UI/Button/Button';
 import classes from './Auth.module.scss';
-import * as actions from '../../store/actions/index';
-import { connect } from 'react-redux';
+
 class Auth extends Component {
   state = {
     controls: {
       email: {
         elementtype: 'input',
+        name: 'email',
+        label: 'Email',
         elementconfig: {
-          type: 'email',
+          type: 'text',
           placeholder: 'Mail Address'
         },
         validation: {
@@ -23,6 +28,8 @@ class Auth extends Component {
       },
       password: {
         elementtype: 'input',
+        name: 'password',
+        label: 'Password',
         elementconfig: {
           type: 'password',
           placeholder: 'Password'

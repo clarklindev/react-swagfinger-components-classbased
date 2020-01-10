@@ -12,6 +12,7 @@
       border-bottom-left-radius: 0;
       border: none;
       padding: 15px;
+      flex-basis: 1;
       color: var(--colordefault);
     }
     input {
@@ -26,6 +27,7 @@
       color: var(--colordefault);
       flex-grow: 1;
       flex-basis: 1;
+      flex-shrink: 1;
       cursor: pointer;
       // &:focus {
       //   // background-color: red;

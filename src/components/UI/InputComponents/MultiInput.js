@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Utils from '../../../Utils';
 import classes from './MultiInput.module.scss';
 import InputContext from '../../../context/InputContext';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Icon from '../InputComponents/Icon';
 import PropTypes from 'prop-types';
 
 class MultiInput extends Component {
@@ -54,7 +54,7 @@ class MultiInput extends Component {
                   onClick={(event) =>
                     this.context.removeinput(event, this.props.name, index)
                   }>
-                  <FontAwesomeIcon icon={['far', 'trash-alt']} />
+                  <Icon iconstyle='far' code='trash-alt' size='sm' />
                 </button>
               ) : null}
             </div>
@@ -64,7 +64,8 @@ class MultiInput extends Component {
           title='Add'
           className={classes.AddButton}
           onClick={(event) => this.context.addinput(event, this.props.name)}>
-          <FontAwesomeIcon icon={['fas', 'plus']} /> Add
+          <Icon iconstyle='fas' code='plus' size='sm' />
+          <p>Add</p>
         </button>
       </div>
     );

@@ -4,7 +4,7 @@ import Utils from '../../../Utils';
 import classes from './MultiSelectWithInput.module.scss';
 import InputContext from '../../../context/InputContext';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Icon from './Icon';
 
 class MultiSelectWithInput extends Component {
   static contextType = InputContext;
@@ -176,7 +176,7 @@ class MultiSelectWithInput extends Component {
                   });
                   this.context.removeinput(event, this.props.name, index);
                 }}>
-                <FontAwesomeIcon icon={['far', 'trash-alt']} />
+                <Icon iconstyle='far' code='trash-alt' size='sm' />
               </button>
             </div>
           ); //return
@@ -188,7 +188,8 @@ class MultiSelectWithInput extends Component {
           onClick={(event) => {
             this.context.addinput(event, this.props.name);
           }}>
-          <FontAwesomeIcon icon={['fas', 'plus']} /> Add
+          <Icon iconstyle='fas' code='plus' size='sm' />
+          <p>Add</p>
         </button>
       </div>
     );

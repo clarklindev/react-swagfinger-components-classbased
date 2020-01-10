@@ -81,6 +81,11 @@
 
   .AddButton {
     color: var(--colordefault);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    line-height: 1em;
+    margin: 0;
   }
 
   .RemoveButton {

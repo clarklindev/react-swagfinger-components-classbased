@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classes from './Counter.module.scss';
 import InputContext from '../../../context/InputContext';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Icon from '../InputComponents/Icon';
 
 class Counter extends Component {
   static contextType = InputContext;
@@ -65,7 +65,7 @@ class Counter extends Component {
     return (
       <div className={classes.Counter}>
         <button disabled={isMinBound} onClick={this.decrement}>
-          <FontAwesomeIcon icon={['fas', 'minus']} />
+          <Icon iconstyle='fas' code='minus' size='sm' />
         </button>
         <input
           min={Number(this.props.elementconfig.min.toFixed(2))}
@@ -78,7 +78,7 @@ class Counter extends Component {
           onBlur={(event) => this.onBlur(event)}
         />
         <button disabled={isMaxBound} onClick={this.increment}>
-          <FontAwesomeIcon icon={['fas', 'plus']} />
+          <Icon iconstyle='fas' code='plus' size='sm' />
         </button>
       </div>
     );

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import classes from './Datepicker.module.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import Icon from './Icon';
 // import { ReactComponent as CalendarIcon } from '../Icons/CalendarIcon.svg';
 
 class Datepicker extends Component {
@@ -660,7 +659,7 @@ class Datepicker extends Component {
             this.onMouseOut(event);
           }}>
           {/* <CalendarIcon /> */}
-          <FontAwesomeIcon icon={['far', 'calendar-alt']} />
+          <Icon iconstyle='far' code='calendar-alt' size='sm' />
         </button>
       </div>
     );
@@ -693,7 +692,7 @@ class Datepicker extends Component {
                 onBlur={(event) => {
                   this.onBlurHandler(event);
                 }}>
-                <FontAwesomeIcon icon={['fas', 'chevron-left']} />
+                <Icon iconstyle='fas' code='chevron-left' size='sm' />
               </button>
             ) : null}
             <div className={classes.StateButtons}>
@@ -754,7 +753,7 @@ class Datepicker extends Component {
                 onBlur={(event) => {
                   this.onBlurHandler(event);
                 }}>
-                <FontAwesomeIcon icon={['fas', 'chevron-right']} />
+                <Icon iconstyle='fas' code='chevron-right' size='sm' />
               </button>
             ) : null}
           </div>
