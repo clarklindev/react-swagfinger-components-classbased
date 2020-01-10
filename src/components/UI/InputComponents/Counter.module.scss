@@ -14,7 +14,7 @@
     min-width: 0;
     color: var(--colordefault);
     font: inherit;
-    padding: 6px 15px;
+    padding: var(--paddinginput);
 
     &:focus {
       border: none;

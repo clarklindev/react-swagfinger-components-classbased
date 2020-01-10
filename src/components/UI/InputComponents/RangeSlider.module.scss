@@ -47,7 +47,7 @@
     input {
       width: 65px;
       height: 36px;
-      padding: 6px 15px;
+      padding: var(--paddinginput);
       border: 1px solid var(--colorborder);
       border-radius: var(--borderradius);
       text-align: center;

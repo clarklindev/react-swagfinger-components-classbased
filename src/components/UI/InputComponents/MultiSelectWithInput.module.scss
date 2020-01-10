@@ -86,6 +86,9 @@
     justify-content: space-around;
     line-height: 1em;
     margin: 0;
+    p {
+      margin-left: 5px;
+    }
   }
 
   .RemoveButton {
@@ -104,7 +107,7 @@
     border-top-right-radius: var(--borderradius);
     border-bottom-right-radius: var(--borderradius);
     font: inherit;
-    padding: 6px 10px;
+    padding: var(--paddinginput);
     box-sizing: border-box;
     color: var(--colordefault);
     flex-basis: 1;

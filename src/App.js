@@ -1,20 +1,3 @@
-// font awesome
-import { library } from '@fortawesome/fontawesome-svg-core';
-import {
-  faPlus,
-  faMinus,
-  faBars,
-  faTimes,
-  faChevronLeft,
-  faChevronRight,
-  faChevronDown
-} from '@fortawesome/free-solid-svg-icons';
-import {
-  faEdit,
-  faTrashAlt as farFaTrashAlt,
-  faCalendarAlt
-} from '@fortawesome/free-regular-svg-icons';
-
 //react
 import React, { Component } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
@@ -33,20 +16,6 @@ import ContactUpdate from './containers/ContactAdmin/ContactUpdate';
 //scss
 import './App.scss';
 import './sass-flexbox-grid.scss';
-
-//add to fontawesome lib so we can reuse icons
-library.add(
-  faChevronLeft,
-  faChevronRight,
-  faEdit,
-  faTimes,
-  farFaTrashAlt,
-  faPlus,
-  faMinus,
-  faBars,
-  faCalendarAlt,
-  faChevronDown
-);
 
 class App extends Component {
   render() {

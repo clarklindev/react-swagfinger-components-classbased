@@ -6,19 +6,23 @@
   .RemoveButton {
     margin-left: 10px;
   }
-  button {
+  .AddButton {
     color: var(--colordefault);
     display: flex;
     flex-direction: row;
     align-items: center;
+    p {
+      margin-left: 5px;
+    }
   }
+
   .InputElement {
     outline: none;
     border: 1px solid var(--colorborder);
     background-color: white;
     border-radius: var(--borderradius);
     font: inherit;
-    padding: 6px 15px;
+    padding: var(--paddinginput);
     box-sizing: border-box;
     color: var(--colordefault);
     flex-basis: 1;

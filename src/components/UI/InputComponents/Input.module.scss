@@ -4,7 +4,7 @@
   border: 1px solid var(--colorborder);
   border-radius: var(--borderradius);
   font: inherit;
-  padding: 6px 15px;
+  padding: var(--paddinginput);
   box-sizing: border-box;
   color: var(--colordefault);
   flex-grow: 1;

@@ -1,9 +1,8 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classes from './HamburgerButton.module.scss';
 import Utils from '../../../Utils';
-
-const hamburgerButton = props => {
+import Icon from '../../UI/InputComponents/Icon';
+const hamburgerButton = (props) => {
   let classList = Utils.getClassNameString([
     props.className,
     'HamburgerButton',
@@ -12,7 +11,7 @@ const hamburgerButton = props => {
 
   return (
     <div className={classList} onClick={props.clicked}>
-      <FontAwesomeIcon icon={['fas', 'bars']} />
+      <Icon iconstyle='fas' code='bars' size='sm'></Icon>
     </div>
   );
 };

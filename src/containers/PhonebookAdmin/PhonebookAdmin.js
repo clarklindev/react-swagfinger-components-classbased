@@ -8,7 +8,7 @@ import classes from './PhonebookAdmin.module.scss';
 import Utils from '../../Utils';
 import SearchFilter from '../SearchFilter/SearchFilter';
 import SectionHeader from '../../components/UI/Headers/SectionHeader';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Icon from '../../components/UI/InputComponents/Icon';
 
 class PhonebookAdmin extends Component {
   constructor(props) {
@@ -19,7 +19,7 @@ class PhonebookAdmin extends Component {
       this.props.className
     ]);
   }
-  
+
   state = {
     filterText: ''
   };
@@ -128,13 +128,13 @@ class PhonebookAdmin extends Component {
                     <button
                       title='Edit'
                       onClick={this.editContactHandler.bind(this, id)}>
-                      <FontAwesomeIcon icon={['far', 'edit']} />
+                      <Icon iconstyle='far' code='edit' size='sm' />
                     </button>
 
                     <button
                       title='Delete'
                       onClick={this.props.onContactDeleted.bind(this, id)}>
-                      <FontAwesomeIcon icon={['far', 'trash-alt']} />
+                      <Icon iconstyle='far' code='trash-alt' size='sm' />
                     </button>
                   </div>
                 </li>
@@ -164,13 +164,6 @@ class PhonebookAdmin extends Component {
                 <div className={classes.Labeledgroup}>
                   <label>Contacts</label>
                   {/* react 16.8+, react-router 5, no need for withRouter*/}
-                  <button
-                    title='Add'
-                    onClick={() => {
-                      this.props.history.push('contactcreate');
-                    }}>
-                    <FontAwesomeIcon icon={['fas', 'plus']} /> Add Contact
-                  </button>
                 </div>
               </div>
             </div>
@@ -179,6 +172,15 @@ class PhonebookAdmin extends Component {
                 <ul>{filtered}</ul>
               </div>
             </div>
+            <button
+              title='Add'
+              onClick={() => {
+                this.props.history.push('contactcreate');
+              }}
+              className={classes.AddButton}>
+              <Icon iconstyle='fas' code='plus' size='sm' />
+              <p>Add Contact</p>
+            </button>
           </div>
         </div>
       </div>
@@ -194,11 +196,11 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onContactDeleted: (id) => {
       dispatch(actions.processContactDelete(id));
-    },    
+    },
     onFetchContacts: () => {
       dispatch(actions.fetchContacts());
     }
-  }
-}
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(PhonebookAdmin);
