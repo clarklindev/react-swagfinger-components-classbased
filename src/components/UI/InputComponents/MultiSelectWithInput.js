@@ -22,7 +22,7 @@ class MultiSelectWithInput extends Component {
 
   state = {
     isOpenList: {},
-    socialSelectedList: {}
+    dropdownSelectedList: {}
   };
 
   componenDidUpdate() {
@@ -62,17 +62,17 @@ class MultiSelectWithInput extends Component {
     //val is the selector value...
     let val = event.target.value;
 
-    let socialSelectedList = { ...this.state.socialSelectedList };
+    let dropdownSelectedList = { ...this.state.dropdownSelectedList };
     this.setState((prevState) => {
       let updatedState = false;
       if (val !== '') {
         console.log('UPDATED STATE = true');
         updatedState = true;
       }
-      console.log('index: ', index, ', socialSelected: ', updatedState);
-      socialSelectedList[index] = updatedState;
+      console.log('index: ', index, ', dropdownSelected: ', updatedState);
+      dropdownSelectedList[index] = updatedState;
       return {
-        socialSelectedList: socialSelectedList
+        dropdownSelectedList: dropdownSelectedList
       };
     });
 
@@ -101,14 +101,14 @@ class MultiSelectWithInput extends Component {
           if (this.state.isOpenList[index] === true) {
             tempClasses.push(classes.IsOpen);
           }
-          let socialClasses = [];
+          let dropdownClasses = [];
           if (
-            this.state.socialSelectedList[index] === true ||
+            this.state.dropdownSelectedList[index] === true ||
             (tempKey !== '' && tempKey !== undefined && tempKey !== null) ||
             (tempVal !== undefined && tempVal !== '')
           ) {
             console.log('tempKey:', tempKey, 'tempVal:', tempVal);
-            socialClasses.push(classes.ShowSocial);
+            dropdownClasses.push(classes.ShowSocial);
           }
 
           return (
@@ -118,7 +118,7 @@ class MultiSelectWithInput extends Component {
                   multiple={false}
                   name={this.props.name}
                   value={tempKey}
-                  className={[...tempClasses, ...socialClasses].join(' ')}
+                  className={[...tempClasses, ...dropdownClasses].join(' ')}
                   onClick={(event) => this.onClickHandler(index, event)}
                   onBlur={(event) => {
                     this.onBlurHandler(index, event);
@@ -167,12 +167,12 @@ class MultiSelectWithInput extends Component {
                       }
                     );
 
-                    let social = Object.keys(
-                      prevState.socialSelectedList
+                    let dropdown = Object.keys(
+                      prevState.dropdownSelectedList
                     ).filter((item, k) => {
                       return index !== k;
                     });
-                    return { isOpenList: open, socialSelectedList: social };
+                    return { isOpenList: open, dropdownSelectedList: dropdown };
                   });
                   this.context.removeinput(event, this.props.name, index);
                 }}>
