@@ -207,9 +207,10 @@ class MultiRangeSlider extends Component {
     //offsetLeft - offset within current element
     let offset =
       this.state.currentindex > 0
-        ? -this.state.thumbwidth * 1.5
-        : -this.state.thumbwidth * 0.5;
-    var positionOnRail = event.pageX - this.railRef.current.offsetLeft + offset;
+        ? this.state.thumbwidth * 1.5
+        : this.state.thumbwidth * 0.5;
+
+    var positionOnRail = event.pageX - this.railRef.current.offsetLeft - offset;
     //keep within limits of rail width min
     if (positionOnRail <= 0) {
       positionOnRail = 0;
@@ -244,10 +245,12 @@ class MultiRangeSlider extends Component {
       //---------------------------------------------------------
       let offset =
         closestChildIndex === 1
-          ? -this.state.thumbwidth * 1.5
-          : -this.state.thumbwidth * 0.5;
-      var positionOnRail =
-        event.pageX - this.railRef.current.offsetLeft + offset;
+          ? this.state.thumbwidth * 1.5
+          : this.state.thumbwidth * 0.5;
+
+      //offsets
+      let positionOnRail =
+        event.pageX - this.railRef.current.offsetLeft - offset;
       //keep within limits of rail width min
       if (positionOnRail <= 0) {
         positionOnRail = 0;
@@ -317,31 +320,32 @@ class MultiRangeSlider extends Component {
             }}
           />
         </div>
-
-        {/* rail */}
-        <div
-          ref={this.railRef}
-          className={classes.Rail}
-          onClick={(event) => this.scrollClickHandler(event)}>
-          {/* Sliders */}
-          {(Array.from(this.props.value) || []).map((each, index) => {
-            return (
-              <div
-                className={classes.Slider}
-                ref={this.sliderRef}
-                key={index}
-                style={{
-                  position: 'relative',
-                  left: this.state.displayvalues[index] + 'px'
-                }}
-                // onClick={(event) => this.onClickHandler(index, event)}
-                onMouseDown={(event) => {
-                  this.onMouseDownHandler(index, event);
-                }}></div>
-            );
-          })}
+        {/* wrapper for rail to show padding/margin*/}
+        <div className={classes.RailWrapper}>
+          {/* rail - item of which calculations are based on*/}
+          <div
+            ref={this.railRef}
+            className={classes.Rail}
+            onClick={(event) => this.scrollClickHandler(event)}>
+            {/* Sliders */}
+            {(Array.from(this.props.value) || []).map((each, index) => {
+              return (
+                <div
+                  className={classes.Slider}
+                  ref={this.sliderRef}
+                  key={index}
+                  style={{
+                    position: 'relative',
+                    left: this.state.displayvalues[index] + 'px'
+                  }}
+                  // onClick={(event) => this.onClickHandler(index, event)}
+                  onMouseDown={(event) => {
+                    this.onMouseDownHandler(index, event);
+                  }}></div>
+              );
+            })}
+          </div>
         </div>
-
         {/* max label */}
         <div className={classes.SliderLabel} ref={this.maxLabelRef}>
           <input

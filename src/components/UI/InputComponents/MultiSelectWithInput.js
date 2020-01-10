@@ -107,7 +107,7 @@ class MultiSelectWithInput extends Component {
             (tempKey !== '' && tempKey !== undefined && tempKey !== null) ||
             (tempVal !== undefined && tempVal !== '')
           ) {
-            console.log('tempKey:', tempKey, ',tempVal:', tempVal);
+            console.log('tempKey:', tempKey, 'tempVal:', tempVal);
             socialClasses.push(classes.ShowSocial);
           }
 

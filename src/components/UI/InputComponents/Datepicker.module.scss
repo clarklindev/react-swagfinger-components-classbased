@@ -48,12 +48,14 @@
       &[class~='relative'] {
         position: relative;
       }
+      width: 400px;
       width: calc(
         min(
           calc(100% - 2 * var(--paddingdefault)),
           calc(var(--maxwidth) - var(--paddingdefault))
         )
       );
+
       position: absolute;
       margin-top: 5px;
       background-color: white;
