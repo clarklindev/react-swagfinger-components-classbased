@@ -14,7 +14,7 @@
     display: flex;
     flex-basis: 1;
     flex-grow: 1;
-    padding: 0 10px; //whatever the padding offset is, the margin-right of the last scroller is 3x this...
+    padding: 0 10px; //whatever the padding offset is, the margin-right of the .Slider (last scroller) is 3x this...
     &:active {
       border: 1px solid var(--colorborder);
       background-color: var(--colorborder);
@@ -57,9 +57,6 @@
     flex-grow: 0;
     flex-basis: 1;
     line-height: 20px;
-    padding: 15px;
-    border: 1px solid var(--colorborder);
-    border-radius: var(--borderradius);
     &:first-child {
       margin-right: var(--paddingdefault);
     }
@@ -69,8 +66,10 @@
 
     input {
       width: 65px;
-      height: 20px;
-      border: 0px;
+      height: 36px;
+      padding: 6px 15px;
+      border: 1px solid var(--colorborder);
+      border-radius: var(--borderradius);
       text-align: center;
       color: var(--colordefault);
       font: inherit;
