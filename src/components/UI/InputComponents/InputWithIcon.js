@@ -42,6 +42,7 @@ class InputWithIcon extends Component {
           </React.Fragment>
         ) : null}
         <input
+          className={classes['icon-' + this.props.elementconfig.iconposition]}
           placeholder={this.props.placeholder}
           readOnly={this.props.readOnly}
           {...this.props.elementconfig}
