@@ -1,0 +1,58 @@
+.InputWithIcon {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  flex-basis: 1;
+  border: 1px solid var(--colorborder);
+  border-radius: var(--borderradius);
+  //   background-color: red;
+
+  input {
+    flex-grow: 1;
+    flex-basis: 1;
+    flex-shrink: 1;
+    border: none;
+    font: inherit;
+    padding: var(--paddinginput);
+    color: var(--colordefault);
+    &:focus {
+      outline: none;
+    }
+  }
+  svg {
+    padding: var(--paddingdefault);
+  }
+
+  &.Invalid {
+    border: 1px solid red;
+    background-color: white;
+  }
+
+  .Divider {
+    height: inherit;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    width: 1px;
+    background-color: var(--colorborder);
+    flex-shrink: 0;
+    flex-basis: 1;
+    &.Invalid {
+      background-color: red;
+    }
+  }
+  &:focus {
+    outline: none;
+    // background-color: #e6e6e6;
+  }
+
+  :disabled {
+    color: #e6e6e6;
+    background-color: #858585;
+    cursor: not-allowed;
+  }
+
+  .NoStyle {
+    border: none;
+  }
+}

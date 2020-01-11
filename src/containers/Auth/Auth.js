@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../../store/actions/index';
 
-import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
-
-import Button from '../../components/UI/Button/Button';
 import classes from './Auth.module.scss';
+import axios from '../../axios-contacts';
+
+import * as actions from '../../store/actions/index';
+import Button from '../../components/UI/Button/Button';
+import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
+import InputContext from '../../context/InputContext';
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 
 class Auth extends Component {
   state = {
-    controls: {
+    form: {
       email: {
         elementtype: 'input',
         name: 'email',
@@ -22,9 +25,7 @@ class Auth extends Component {
           required: true,
           isEmail: true
         },
-        valid: false,
-        touched: false,
-        value: ''
+        value: { data: '', valid: false, touched: false, pristine: true }
       },
       password: {
         elementtype: 'input',
@@ -38,15 +39,15 @@ class Auth extends Component {
           required: true,
           minLength: 6
         },
-        valid: false,
-        touched: false,
-        value: ''
+        value: { data: '', valid: false, touched: false, pristine: true }
       }
-    }
+    },
+    formIsValid: false
     //,isSignUp: true
   };
-
-  checkValidity(value, rules) {
+  //------------------------------------------------------
+  //------------------------------------------------------
+  validationCheck(value, rules) {
     let isValid = true;
     if (!rules) {
       return true;
@@ -76,28 +77,75 @@ class Auth extends Component {
 
     return isValid;
   }
+  //------------------------------------------------------
+  //------------------------------------------------------
+  //checks the .valid property of each input in array or individual input
+  //returns true/false if form object is valid/invalid
+  checkInputValidProperty = (form) => {
+    // console.log('IS FORM VALID CHECK');
+    let formIsValid = true;
 
-  inputChangedHandler = (event, controlName) => {
-    const updatedControls = {
-      ...this.state.controls,
-      [controlName]: {
-        ...this.state.controls[controlName],
-        value: event.target.value,
-        valid: this.checkValidity(
-          event.target.value,
-          this.state.controls[controlName].validation
-        ),
-        touched: true
+    //each prop in contact
+    for (let inputIdentifier in form) {
+      //if the prop of contact has an element type of...
+      if (form[inputIdentifier].elementtype === 'multiinput') {
+        for (let each of form[inputIdentifier].value) {
+          formIsValid = each.valid && formIsValid;
+        }
+      } else {
+        formIsValid = form[inputIdentifier].value.valid && formIsValid;
       }
+    }
+
+    return formIsValid;
+  };
+
+  //------------------------------------------------------
+  //------------------------------------------------------
+  inputChangedHandler = (newval, inputIdentifier, index = null) => {
+    // console.log('inputChangedHandler: ', inputIdentifier);
+    //single contact
+    const updatedForm = {
+      ...this.state.form
     };
-    this.setState({ controls: updatedControls });
+
+    //single prop of form
+    const updatedFormElement = {
+      ...updatedForm[inputIdentifier]
+    };
+
+    //if array
+    if (index !== null) {
+      updatedFormElement.value[index].data = newval;
+      updatedFormElement.value[index].touched = true;
+      updatedFormElement.value[index].pristine = false;
+      updatedFormElement.value[index].valid = this.validationCheck(
+        updatedFormElement.value[index].data,
+        updatedFormElement.validation
+      );
+    } else {
+      //if single value
+      updatedFormElement.value.data = newval;
+      updatedFormElement.value.touched = true;
+      updatedFormElement.value.pristine = false;
+      updatedFormElement.value.valid = this.validationCheck(
+        updatedFormElement.value.data,
+        updatedFormElement.validation
+      );
+    }
+
+    updatedForm[inputIdentifier] = updatedFormElement; //update form's input element state as that or 'updatedFormElement'
+
+    const formValidCheck = this.checkInputValidProperty(updatedForm);
+    // console.log('FORM VALIDITY: ', formValidCheck);
+    this.setState({ form: updatedForm, formIsValid: formValidCheck });
   };
 
   submitHandler = (event) => {
     event.preventDefault(); //prevents reloading of page and event bubbling
     this.props.onAuth(
-      this.state.controls.email.value,
-      this.state.controls.password.value,
+      this.state.form.email.value,
+      this.state.form.password.value,
       this.state.isSignUp
     );
   };
@@ -110,26 +158,26 @@ class Auth extends Component {
 
   render() {
     const formElementsArray = [];
-    for (let key in this.state.controls) {
+    for (let key in this.state.form) {
       formElementsArray.push({
         id: key,
-        data: this.state.controls[key]
+        data: this.state.form[key]
       });
     }
 
     const form = formElementsArray.map((item) => (
-      <ComponentFactory
-        key={item.id}
-        id={item.id}
-        data={item.data}
-        changed={(event) => this.inputChangedHandler(event, item.id)}
-      />
+      <ComponentFactory key={item.id} id={item.id} data={item.data} />
     ));
 
     return (
       <div className={classes.Auth}>
-        <form onSubmit={this.submitHandler}>
-          {form}
+        <form onSubmit={this.submitHandler} autoComplete='off'>
+          <InputContext.Provider
+            value={{
+              changed: this.inputChangedHandler
+            }}>
+            {form}
+          </InputContext.Provider>
           <Button btnType='Success'>Submit</Button>
         </form>
         <Button btnType='Danger' onClick={this.switchAuthModeHandler}>
@@ -146,4 +194,4 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actions.auth(email, password, isSignup))
   };
 };
-export default connect(null, mapDispatchToProps)(Auth);
+export default connect(null, mapDispatchToProps)(withErrorHandler(Auth, axios));

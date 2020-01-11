@@ -202,7 +202,8 @@ class ContactUpdate extends Component {
     saving: false,
     formIsValid: null //for form validation
   };
-
+  //------------------------------------------------------
+  //------------------------------------------------------
   //pull data from firebase, generated form is dependant on whats inside the database in firebase
   //key in database needs to exist to be associated with state,
   componentDidMount() {
@@ -265,25 +266,52 @@ class ContactUpdate extends Component {
       });
     }
   }
+  //------------------------------------------------------
+  //------------------------------------------------------
 
   redirect = () => {
     this.props.history.push('/phonebookadmin');
   };
+
+  //------------------------------------------------------
+  //------------------------------------------------------
 
   //WHEN INPUT CHANGES...
   // STARTS OFF AS TRUE, THE RULES "TRY" FALSIFY THE FUNCTION CALL
   // RETURN TRUE if isValid / FALSE if NOT isValid
   validationCheck(value, rules) {
     let isValid = true;
-
+    if (!rules) {
+      return true;
+    }
     //add validation rules below
     if (rules.required) {
       isValid = value !== '' && isValid;
     }
-    //console.log('validation check: ', isValid);
-    //---------------------------------
+
+    if (rules.minLength) {
+      isValid = value.length >= rules.minLength && isValid;
+    }
+
+    if (rules.maxLength) {
+      isValid = value.length <= rules.maxLength && isValid;
+    }
+
+    if (rules.isEmail) {
+      const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+      isValid = pattern.test(value) && isValid;
+    }
+
+    if (rules.isNumeric) {
+      const pattern = /^\d+$/;
+      isValid = pattern.test(value) && isValid;
+    }
+
     return isValid;
   }
+
+  //------------------------------------------------------
+  //------------------------------------------------------
 
   //function gets called when submit button is clicked
   contactUpdateHandler = (event) => {

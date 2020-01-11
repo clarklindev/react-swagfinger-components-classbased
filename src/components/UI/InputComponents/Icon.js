@@ -10,7 +10,8 @@ import {
   faTimes,
   faChevronLeft,
   faChevronRight,
-  faChevronDown
+  faChevronDown,
+  faSearch
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faEdit,
@@ -30,12 +31,17 @@ library.add(
   faMinus,
   faBars,
   faCalendarAlt,
-  faChevronDown
+  faChevronDown,
+  faSearch
 );
 
 class Icon extends Component {
   render() {
-    let classList = Utils.getClassNameString([classes.Icon, Icon.name]);
+    let classList = Utils.getClassNameString([
+      classes.Icon,
+      Icon.name,
+      this.props.className
+    ]);
     return (
       <div className={classList}>
         <FontAwesomeIcon

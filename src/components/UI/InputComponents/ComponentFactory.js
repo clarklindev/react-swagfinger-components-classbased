@@ -18,6 +18,7 @@ import Upload from '../Upload/Upload';
 import Counter from './Counter';
 import RangeSlider from './RangeSlider';
 import MultiRangeSlider from './MultiRangeSlider';
+import InputWithIcon from './InputWithIcon';
 
 class ComponentFactory extends Component {
   static contextType = InputContext;
@@ -39,6 +40,10 @@ class ComponentFactory extends Component {
     switch (this.props.data.elementtype) {
       case 'input':
         this.inputElement = <Input {...this.props.data} />;
+        break;
+
+      case 'inputwithicon':
+        this.inputElement = <InputWithIcon {...this.props.data} />;
         break;
 
       case 'textarea':
