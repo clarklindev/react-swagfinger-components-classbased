@@ -42,8 +42,8 @@ class Auth extends Component {
         value: { data: '', valid: false, touched: false, pristine: true }
       }
     },
-    formIsValid: false
-    //,isSignUp: true
+    formIsValid: false,
+    isSignUp: true
   };
   //------------------------------------------------------
   //------------------------------------------------------
@@ -151,6 +151,7 @@ class Auth extends Component {
   };
 
   switchAuthModeHandler = () => {
+    console.log('switchAuthModeHandler!');
     this.setState((prevState) => {
       return { isSignUp: !prevState.isSignUp };
     });
@@ -171,18 +172,22 @@ class Auth extends Component {
 
     return (
       <div className={classes.Auth}>
-        <form onSubmit={this.submitHandler} autoComplete='off'>
-          <InputContext.Provider
-            value={{
-              changed: this.inputChangedHandler
-            }}>
-            {form}
-          </InputContext.Provider>
-          <Button btnType='Success'>Submit</Button>
-        </form>
-        <Button btnType='Danger' onClick={this.switchAuthModeHandler}>
-          Switch to {this.state.isSignUp ? 'SIGN-IN' : 'SIGN-UP'}
-        </Button>
+        <div className='container'>
+          <div className={[classes.Wrapper, 'container'].join(' ')}>
+            <form onSubmit={this.submitHandler} autoComplete='off'>
+              <InputContext.Provider
+                value={{
+                  changed: this.inputChangedHandler
+                }}>
+                {form}
+              </InputContext.Provider>
+              <Button btnType='Success'>Submit</Button>
+            </form>
+            <Button btnType='Danger' onClick={this.switchAuthModeHandler}>
+              Switch to {this.state.isSignUp ? 'SIGN-IN' : 'SIGN-UP'}
+            </Button>
+          </div>
+        </div>
       </div>
     );
   }

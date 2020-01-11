@@ -15,7 +15,7 @@ const button = (props) => {
     <button
       disabled={props.disabled}
       className={classList}
-      onClick={props.clicked}
+      onClick={props.onClick}
       onBlur={props.onBlur}
       onMouseOver={props.onMouseOver}>
       {props.children}

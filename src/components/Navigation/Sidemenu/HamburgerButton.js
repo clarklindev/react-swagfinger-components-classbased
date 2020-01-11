@@ -10,7 +10,7 @@ const hamburgerButton = (props) => {
   ]);
 
   return (
-    <div className={classList} onClick={props.clicked}>
+    <div className={classList} onClick={props.onClick}>
       <Icon iconstyle='fas' code='bars' size='sm'></Icon>
     </div>
   );
