@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import SearchFilter from '../../containers/SearchFilter/SearchFilter';
 import SectionHeader from '../UI/Headers/SectionHeader';
 import PropTypes from 'prop-types';
+import InputContext from '../../context/InputContext';
 
 class Phonebook extends Component {
   constructor(props) {
@@ -23,8 +24,11 @@ class Phonebook extends Component {
   state = {
     filterText: ''
   };
+  inputClearHandler = () => {
+    this.setState({ filterText: '' });
+  };
 
-  searchChangedHandler = (event) => {
+  inputChangedHandler = (event) => {
     //match string
     console.log('input:', event.target.value);
     this.setState({ filterText: event.target.value });
@@ -122,7 +126,13 @@ class Phonebook extends Component {
             </div>
             <div className='row'>
               <div className='col'>
-                <SearchFilter changed={this.searchChangedHandler} />
+                <InputContext.Provider
+                  value={{
+                    changed: (event) => this.inputChangedHandler(event),
+                    clear: this.inputClearHandler
+                  }}>
+                  <SearchFilter value={this.state.filterText} />
+                </InputContext.Provider>
               </div>
             </div>
             <div className='row'>

@@ -4,6 +4,7 @@ import classes from './InputWithIcon.module.scss';
 import Utils from '../../../Utils';
 import InputContext from '../../../context/InputContext';
 import Icon from './Icon';
+import Button from '../Button/Button';
 class InputWithIcon extends Component {
   static contextType = InputContext;
 
@@ -15,6 +16,16 @@ class InputWithIcon extends Component {
       InputWithIcon.name
     ]);
   }
+
+  changeHandler = (event) => {
+    console.log('props.name: ', this.props.name, 'value: ', event.target.value);
+    this.context.changed(event, this.props.name);
+  };
+
+  onClickHandler = (event) => {
+    this.context.clear();
+  };
+
   render() {
     let tempClasses = [];
     if (
@@ -28,6 +39,7 @@ class InputWithIcon extends Component {
       console.log('pushing invalid: ');
       tempClasses.push(classes.Invalid);
     }
+    console.log('this.props.value: ', this.props.value);
 
     return (
       <div className={[this.className, tempClasses].join(' ')}>
@@ -47,11 +59,19 @@ class InputWithIcon extends Component {
           readOnly={this.props.readOnly}
           {...this.props.elementconfig}
           value={this.props.value.data}
-          onChange={(event) => {
-            console.log('props.name: ', this.props.name);
-            this.context.changed(event.target.value, this.props.name);
-          }}
+          onChange={(event) => this.changeHandler(event)}
         />
+        {this.props.elementconfig.iconposition === 'left' &&
+        this.props.elementconfig.type === 'search' &&
+        this.props.value.data !== '' ? (
+          <Button className={classes.NoStyle} onClick={this.onClickHandler}>
+            <Icon
+              iconstyle='fas'
+              code='times'
+              size={this.props.elementconfig.iconsize}
+            />
+          </Button>
+        ) : null}
         {this.props.elementconfig.iconposition === 'right' ? (
           <React.Fragment>
             <div className={classes.Divider} />
