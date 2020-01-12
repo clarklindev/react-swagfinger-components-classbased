@@ -32,7 +32,7 @@ class App extends Component {
 
             <Route path='/login' component={Auth} />
             {/* <Route path="/" exact component={Auth} /> */}
-            <Redirect from='/' to='/phonebookadmin' />
+            <Redirect from='/' to='/phonebook' />
           </Switch>
         </div>
       </Layout>
