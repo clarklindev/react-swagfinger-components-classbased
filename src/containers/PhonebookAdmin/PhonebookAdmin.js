@@ -9,6 +9,7 @@ import Utils from '../../Utils';
 import SearchFilter from '../SearchFilter/SearchFilter';
 import SectionHeader from '../../components/UI/Headers/SectionHeader';
 import Icon from '../../components/UI/InputComponents/Icon';
+import InputContext from '../../context/InputContext';
 
 class PhonebookAdmin extends Component {
   constructor(props) {
@@ -27,7 +28,9 @@ class PhonebookAdmin extends Component {
   componentDidMount() {
     this.props.onFetchContacts();
   }
-
+  searchClearHandler = () => {
+    this.setState({ filterText: '' });
+  };
   searchChangedHandler = (event) => {
     //match string
     console.log('input:', event.target.value);
@@ -153,10 +156,13 @@ class PhonebookAdmin extends Component {
             </div>
             <div className='row'>
               <div className='col'>
-                <SearchFilter
-                  value={this.state.filterText}
-                  changed={this.searchChangedHandler}
-                />
+                <InputContext.Provider
+                  value={{
+                    changed: (event) => this.searchChangedHandler(event),
+                    clear: this.searchClearHandler
+                  }}>
+                  <SearchFilter value={this.state.filterText} />
+                </InputContext.Provider>
               </div>
             </div>
             <div className='row'>

@@ -29,11 +29,11 @@ class Phonebook extends Component {
     this.props.onFetchContacts();
   }
 
-  inputClearHandler = () => {
+  searchClearHandler = () => {
     this.setState({ filterText: '' });
   };
 
-  inputChangedHandler = (event) => {
+  searchChangedHandler = (event) => {
     //match string
     console.log('input:', event.target.value);
     this.setState({ filterText: event.target.value });
@@ -133,8 +133,8 @@ class Phonebook extends Component {
               <div className='col'>
                 <InputContext.Provider
                   value={{
-                    changed: (event) => this.inputChangedHandler(event),
-                    clear: this.inputClearHandler
+                    changed: (event) => this.searchChangedHandler(event),
+                    clear: this.searchClearHandler
                   }}>
                   <SearchFilter value={this.state.filterText} />
                 </InputContext.Provider>
