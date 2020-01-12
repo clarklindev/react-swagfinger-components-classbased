@@ -32,6 +32,12 @@
       border-bottom-right-radius: 0;
     }
   }
+  //search 'x' clear button
+  input[type='search']::-webkit-search-cancel-button {
+    /* Remove default */
+    -webkit-appearance: none;
+  }
+
   svg {
     padding: var(--paddingdefault);
   }

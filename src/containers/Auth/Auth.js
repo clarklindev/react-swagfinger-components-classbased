@@ -141,11 +141,11 @@ class Auth extends Component {
     this.setState({ form: updatedForm, formIsValid: formValidCheck });
   };
 
-  submitHandler = (event) => {
-    event.preventDefault(); //prevents reloading of page and event bubbling
+  onSubmitHandler = (event) => {
+    event.preventDefault(); //prevents reloading of page
     this.props.onAuth(
-      this.state.form.email.value,
-      this.state.form.password.value,
+      this.state.form.email.value.data,
+      this.state.form.password.value.data,
       this.state.isSignUp
     );
   };
@@ -174,7 +174,7 @@ class Auth extends Component {
       <div className={classes.Auth}>
         <div className='container'>
           <div className={[classes.Wrapper, 'container'].join(' ')}>
-            <form onSubmit={this.submitHandler} autoComplete='off'>
+            <form onSubmit={this.onSubmitHandler} autoComplete='off'>
               <InputContext.Provider
                 value={{
                   changed: this.inputChangedHandler

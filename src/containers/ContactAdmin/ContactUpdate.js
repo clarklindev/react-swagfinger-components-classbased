@@ -314,7 +314,7 @@ class ContactUpdate extends Component {
   //------------------------------------------------------
 
   //function gets called when submit button is clicked
-  contactUpdateHandler = (event) => {
+  onSubmitHandler = (event) => {
     event.preventDefault();
 
     //checks valid property of each input of form, if returns true, it means it is a valid form
@@ -529,7 +529,7 @@ class ContactUpdate extends Component {
         <div className={this.className}>
           <div className='container'>
             <div className={[classes.Wrapper, 'container'].join(' ')}>
-              <form onSubmit={this.contactUpdateHandler} autoComplete='off'>
+              <form onSubmit={this.onSubmitHandler} autoComplete='off'>
                 <div className='row'>
                   <div className='col'>
                     <SectionHeader>Contact Update</SectionHeader>
