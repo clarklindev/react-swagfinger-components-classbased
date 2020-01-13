@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 import classes from './Auth.module.scss';
 import axios from '../../axios-contacts';
@@ -10,7 +11,6 @@ import ComponentFactory from '../../components/UI/InputComponents/ComponentFacto
 import InputContext from '../../context/InputContext';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import Spinner from '../../components/UI/Spinner/Spinner';
-
 class Auth extends Component {
   state = {
     form: {
@@ -181,26 +181,35 @@ class Auth extends Component {
       errorMessage = <p>{this.props.error.message}</p>;
     }
 
+    let authRedirect = null;
+    if (this.props.isAuthenticated) {
+      authRedirect = <Redirect to='/' />;
+    }
+
     return (
-      <div className={classes.Auth}>
-        <div className='container'>
-          <div className={[classes.Wrapper, 'container'].join(' ')}>
-            {errorMessage}
-            <form onSubmit={this.onSubmitHandler} autoComplete='off'>
-              <InputContext.Provider
-                value={{
-                  changed: this.inputChangedHandler
-                }}>
-                {form}
-              </InputContext.Provider>
-              <Button btnType='Success'>Submit</Button>
-              <Button btnType='Danger' onClick={this.switchAuthModeHandler}>
-                Switch to {this.state.isSignUp ? 'SIGN-IN' : 'SIGN-UP'}
-              </Button>
-            </form>
+      <React.Fragment>
+        {authRedirect}
+        <div className={classes.Auth}>
+          <div className='container'>
+            <div className={[classes.Wrapper, 'container'].join(' ')}>
+              {authRedirect}
+              {errorMessage}
+              <form onSubmit={this.onSubmitHandler} autoComplete='off'>
+                <InputContext.Provider
+                  value={{
+                    changed: this.inputChangedHandler
+                  }}>
+                  {form}
+                </InputContext.Provider>
+                <Button btnType='Success'>Submit</Button>
+                <Button btnType='Danger' onClick={this.switchAuthModeHandler}>
+                  Switch to {this.state.isSignUp ? 'SIGN-IN' : 'SIGN-UP'}
+                </Button>
+              </form>
+            </div>
           </div>
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 }
@@ -208,7 +217,8 @@ class Auth extends Component {
 const mapStateToProps = (state) => {
   return {
     loading: state.auth.loading,
-    error: state.auth.error
+    error: state.auth.error,
+    isAuthenticated: state.auth.token !== null
   };
 };
 
