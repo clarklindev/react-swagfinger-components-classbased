@@ -160,7 +160,7 @@ Phonebook.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  return { storedPhonebook: state.phoneBook };
+  return { storedPhonebook: state.contact.phoneBook };
 };
 const mapDispatchToProps = (dispatch) => {
   return {

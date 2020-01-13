@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import classes from './Layout.module.scss';
 import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
 import SideMenu from '../../components/Navigation/Sidemenu/SideMenu';
-
 class Layout extends Component {
   state = {
     showSideMenu: false
@@ -18,8 +18,12 @@ class Layout extends Component {
   render() {
     return (
       <React.Fragment>
-        <Toolbar hamburgerButtonClicked={this.sideMenuOpenHandler} />
+        <Toolbar
+          isAuth={this.props.isAuthenticated}
+          hamburgerButtonClicked={this.sideMenuOpenHandler}
+        />
         <SideMenu
+          isAuth={this.props.isAuthenticated}
           open={this.state.showSideMenu}
           closed={this.sideMenuCloseHandler}
         />
@@ -29,4 +33,10 @@ class Layout extends Component {
   }
 }
 
-export default Layout;
+const mapStateToProps = (state) => {
+  return {
+    isAuthenticated: state.auth.token !== null
+  };
+};
+
+export default connect(mapStateToProps)(Layout);

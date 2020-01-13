@@ -12,7 +12,7 @@ import Auth from './containers/Auth/Auth';
 import PhonebookAdmin from './containers/PhonebookAdmin/PhonebookAdmin';
 import ContactCreate from './containers/ContactAdmin/ContactCreate';
 import ContactUpdate from './containers/ContactAdmin/ContactUpdate';
-
+import Logout from './containers/Auth/Logout/Logout';
 //scss
 import './App.scss';
 import './sass-flexbox-grid.scss';
@@ -31,6 +31,7 @@ class App extends Component {
             <Route path='/contactcreate' component={ContactCreate} />
 
             <Route path='/login' component={Auth} />
+            <Route path='/logout' component={Logout} />
             {/* <Route path="/" exact component={Auth} /> */}
             <Redirect from='/' to='/phonebook' />
           </Switch>

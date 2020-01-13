@@ -9,6 +9,7 @@ import Button from '../../components/UI/Button/Button';
 import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
 import InputContext from '../../context/InputContext';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 class Auth extends Component {
   state = {
@@ -43,7 +44,7 @@ class Auth extends Component {
       }
     },
     formIsValid: false,
-    isSignUp: true
+    isSignUp: false
   };
   //------------------------------------------------------
   //------------------------------------------------------
@@ -166,14 +167,25 @@ class Auth extends Component {
       });
     }
 
-    const form = formElementsArray.map((item) => (
+    let form = formElementsArray.map((item) => (
       <ComponentFactory key={item.id} id={item.id} data={item.data} />
     ));
+
+    if (this.props.loading) {
+      form = <Spinner />;
+    }
+
+    let errorMessage = null;
+
+    if (this.props.error) {
+      errorMessage = <p>{this.props.error.message}</p>;
+    }
 
     return (
       <div className={classes.Auth}>
         <div className='container'>
           <div className={[classes.Wrapper, 'container'].join(' ')}>
+            {errorMessage}
             <form onSubmit={this.onSubmitHandler} autoComplete='off'>
               <InputContext.Provider
                 value={{
@@ -182,10 +194,10 @@ class Auth extends Component {
                 {form}
               </InputContext.Provider>
               <Button btnType='Success'>Submit</Button>
+              <Button btnType='Danger' onClick={this.switchAuthModeHandler}>
+                Switch to {this.state.isSignUp ? 'SIGN-IN' : 'SIGN-UP'}
+              </Button>
             </form>
-            <Button btnType='Danger' onClick={this.switchAuthModeHandler}>
-              Switch to {this.state.isSignUp ? 'SIGN-IN' : 'SIGN-UP'}
-            </Button>
           </div>
         </div>
       </div>
@@ -193,10 +205,20 @@ class Auth extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    loading: state.auth.loading,
+    error: state.auth.error
+  };
+};
+
 const mapDispatchToProps = (dispatch) => {
   return {
     onAuth: (email, password, isSignup) =>
       dispatch(actions.auth(email, password, isSignup))
   };
 };
-export default connect(null, mapDispatchToProps)(withErrorHandler(Auth, axios));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withErrorHandler(Auth, axios));

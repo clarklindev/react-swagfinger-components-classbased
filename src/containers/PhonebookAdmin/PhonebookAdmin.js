@@ -195,7 +195,7 @@ class PhonebookAdmin extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return { storedPhonebook: state.phoneBook };
+  return { storedPhonebook: state.contact.phoneBook };
 };
 
 const mapDispatchToProps = (dispatch) => {

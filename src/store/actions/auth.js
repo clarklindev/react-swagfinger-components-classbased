@@ -1,15 +1,31 @@
 import * as actionTypes from './actionsTypes';
 import axios from 'axios';
 
+export const logout = () => {
+  return {
+    type: actionTypes.AUTH_LOGOUT
+  };
+};
+
+//starts with authSuccess
+export const checkAuthTimeout = (expirationTime) => {
+  return (dispatch) => {
+    setTimeout(() => {
+      dispatch(logout());
+    }, expirationTime * 1000); //*1000 to convert from milliseconds
+  };
+};
+
 export const authStart = () => {
   return {
     type: actionTypes.AUTH_START
   };
 };
-export const authSuccess = (authData) => {
+export const authSuccess = (token, userId) => {
   return {
     type: actionTypes.AUTH_SUCCESS,
-    authData: authData
+    idToken: token,
+    userId: userId
   };
 };
 
@@ -41,11 +57,13 @@ export const auth = (email, password, isSignUp) => {
       .post(url, authData)
       .then((response) => {
         console.log('SUCCESS: ', response);
-        dispatch(authSuccess(response.data));
+        dispatch(authSuccess(response.data.idToken, response.data.localId));
+        //start timer for token
+        dispatch(checkAuthTimeout(response.data.expiresIn));
       })
       .catch((err) => {
         console.log('ERROR: ', err);
-        dispatch(authFail(err));
+        dispatch(authFail(err.response.data.error));
       });
   };
 };

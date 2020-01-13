@@ -2,20 +2,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware, compose } from 'redux';
+import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
 import { BrowserRouter } from 'react-router-dom';
 //reducer
-import reducer from './store/reducers/contact';
+import contactReducer from './store/reducers/contact';
+import authReducer from './store/reducers/auth';
 
 //app
 import App from './App';
 import './index.scss';
 import * as serviceWorker from './serviceWorker';
 
-const logger = store => {
-  return next => {
-    return action => {
+const logger = (store) => {
+  return (next) => {
+    return (action) => {
       console.log('[Middleware] Dispatching action: ', action);
       console.log('[Middleware] state: ', store.getState());
       return next(action);
@@ -23,9 +24,16 @@ const logger = store => {
   };
 };
 
+const rootReducer = combineReducers({
+  contact: contactReducer,
+  auth: authReducer
+});
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const store = createStore( reducer, composeEnhancers(applyMiddleware(logger, thunk)) );
+const store = createStore(
+  rootReducer,
+  composeEnhancers(applyMiddleware(logger, thunk))
+);
 
 ReactDOM.render(
   <Provider store={store}>
