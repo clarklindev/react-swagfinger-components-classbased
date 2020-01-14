@@ -35,10 +35,8 @@ class Contact extends Component {
 
     return (
       <div className={this.className}>
-        <div className={classes.Labeledgroup}>
-          <p ref={this.displayTextRef}></p>
-          {hasExtraText}
-        </div>
+        <p ref={this.displayTextRef}></p>
+        {hasExtraText}
       </div>
     );
   }

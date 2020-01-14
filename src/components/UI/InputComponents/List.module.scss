@@ -1,0 +1,34 @@
+.List {
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  li {
+    box-sizing: border-box;
+    color: var(--colordefault);
+    cursor: default;
+    flex-basis: 1;
+    flex-grow: 1;
+    width: 100%;
+    padding: var(--paddinginput);
+    background-color: white;
+    border: 1px solid var(--colorborder);
+    border-radius: var(--borderradius);
+    font: inherit;
+    box-sizing: border-box;
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
+    line-height: 36px;
+  }
+
+  a {
+    width: 100%;
+    text-decoration: none;
+    color: var(--colordefault);
+    &:focus {
+      outline: 0;
+    }
+  }
+}

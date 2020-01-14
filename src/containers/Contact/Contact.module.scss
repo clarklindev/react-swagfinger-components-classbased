@@ -1,12 +1,13 @@
 .Contact {
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: content-box;
 
   p {
-    align-self: center;
     margin: 0px;
   }
   span {
-    // border: 1px solid red;
     padding: 0px;
     font-weight: bold;
     color: var(--colorhighlight);

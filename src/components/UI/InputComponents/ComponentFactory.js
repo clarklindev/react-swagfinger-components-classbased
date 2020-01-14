@@ -19,6 +19,7 @@ import Counter from './Counter';
 import RangeSlider from './RangeSlider';
 import MultiRangeSlider from './MultiRangeSlider';
 import InputWithIcon from './InputWithIcon';
+import List from './List';
 
 class ComponentFactory extends Component {
   static contextType = InputContext;
@@ -93,7 +94,9 @@ class ComponentFactory extends Component {
       case 'upload':
         this.inputElement = <Upload {...this.props.data} />;
         break;
-
+      case 'list':
+        this.inputElement = <List {...this.props.data} />;
+        break;
       default:
         this.inputElement = <p>specify input type</p>;
         break;
