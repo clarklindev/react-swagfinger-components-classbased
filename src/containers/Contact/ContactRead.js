@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import classes from './ContactRead.module.scss';
-import Utils from '../../../Utils';
-import axios from '../../../axios-contacts';
-import SectionHeader from '../../UI/Headers/SectionHeader';
+import Utils from '../../Utils';
+import axios from '../../axios-contacts';
+import SectionHeader from '../../components/UI/Headers/SectionHeader';
+import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
 
 class ContactRead extends Component {
   constructor(props) {
@@ -83,18 +84,7 @@ class ContactRead extends Component {
 
     return (
       <div className={this.className}>
-        <div className='container'>
-          <div className={[classes.Wrapper, 'container'].join(' ')}>
-            <div className='row'>
-              <div className='col'>
-                <SectionHeader>Contact Read</SectionHeader>
-              </div>
-            </div>
-            <div className='row'>
-              <div className='col'>{contact}</div>
-            </div>
-          </div>
-        </div>
+        <DefaultPageLayout label='Contact Read'>{contact}</DefaultPageLayout>
       </div>
     );
   }

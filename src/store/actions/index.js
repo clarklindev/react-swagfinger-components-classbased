@@ -5,4 +5,4 @@ export {
   fetchContacts
 } from './contact';
 
-export { auth, logout } from './auth';
+export { auth, logout, setAuthRedirectPath, authCheckState } from './auth';

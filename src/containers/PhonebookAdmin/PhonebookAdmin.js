@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import Contact from '../../components/Phonebook/Contact/Contact';
+import Contact from '../Contact/Contact';
 import * as actions from '../../store/actions/index';
 
 import classes from './PhonebookAdmin.module.scss';
@@ -10,7 +10,7 @@ import SearchFilter from '../SearchFilter/SearchFilter';
 import SectionHeader from '../../components/UI/Headers/SectionHeader';
 import Icon from '../../components/UI/InputComponents/Icon';
 import InputContext from '../../context/InputContext';
-
+import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
 class PhonebookAdmin extends Component {
   constructor(props) {
     super(props);
@@ -146,49 +146,30 @@ class PhonebookAdmin extends Component {
         : null;
 
     return (
-      <div className={this.className}>
-        <div className='container'>
-          <div className={[classes.Wrapper, 'container'].join(' ')}>
-            <div className='row'>
-              <div className='col'>
-                <SectionHeader>Phonebook Admin</SectionHeader>
-              </div>
-            </div>
-            <div className='row'>
-              <div className='col'>
-                <InputContext.Provider
-                  value={{
-                    changed: (event) => this.searchChangedHandler(event),
-                    clear: this.searchClearHandler
-                  }}>
-                  <SearchFilter value={this.state.filterText} />
-                </InputContext.Provider>
-              </div>
-            </div>
-            <div className='row'>
-              <div className='col'>
-                <div className={classes.Labeledgroup}>
-                  <label>Contacts</label>
-                  {/* react 16.8+, react-router 5, no need for withRouter*/}
-                </div>
-              </div>
-            </div>
-            <div className='row'>
-              <div className='col'>
-                <ul>{filtered}</ul>
-              </div>
-            </div>
-            <button
-              title='Add'
-              onClick={() => {
-                this.props.history.push('contactcreate');
-              }}
-              className={classes.AddButton}>
-              <Icon iconstyle='fas' code='plus' size='sm' />
-              <p>Add Contact</p>
-            </button>
+      <div className={classes.PhonebookAdmin}>
+        <DefaultPageLayout label='Phonebook Admin'>
+          <InputContext.Provider
+            value={{
+              changed: (event) => this.searchChangedHandler(event),
+              clear: this.searchClearHandler
+            }}>
+            <SearchFilter value={this.state.filterText} />
+          </InputContext.Provider>
+          <div className={classes.Labeledgroup}>
+            <label>Contacts</label>
+            {/* react 16.8+, react-router 5, no need for withRouter*/}
           </div>
-        </div>
+          <ul>{filtered}</ul>
+          <button
+            className={classes.AddButton}
+            title='Add'
+            onClick={() => {
+              this.props.history.push('contactcreate');
+            }}>
+            <Icon iconstyle='fas' code='plus' size='sm' />
+            <p>Add Contact</p>
+          </button>
+        </DefaultPageLayout>
       </div>
     );
   }

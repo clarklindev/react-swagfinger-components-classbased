@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classes from './Contact.module.scss';
-import Utils from '../../../Utils';
+import Utils from '../../Utils';
 class Contact extends Component {
   constructor(props) {
     super(props);

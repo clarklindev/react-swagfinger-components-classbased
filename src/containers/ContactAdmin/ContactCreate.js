@@ -11,6 +11,7 @@ import SectionHeader from '../../components/UI/Headers/SectionHeader';
 import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
 
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
 
 class ContactCreate extends Component {
   constructor(props) {
@@ -335,46 +336,28 @@ class ContactCreate extends Component {
     });
 
     return (
-      <React.Fragment>
+      <div className={this.className}>
         {/* add modal just in-case needed, show binds to state of true/false */}
         <Modal show={this.state.saving}>
           <p>Saving</p>
         </Modal>
-
-        <div className={this.className}>
-          <div className='container'>
-            <div className={[classes.Wrapper, 'container'].join(' ')}>
-              <form onSubmit={this.contactCreateHandler}>
-                <div className='row'>
-                  <div className='col'>
-                    <SectionHeader>Contact Create</SectionHeader>
-                  </div>
-                </div>
-
-                <div className='row'>
-                  <div className='col'>{formInputs}</div>
-                </div>
-
-                <div className='row'>
-                  <div className='col'>
-                    <input
-                      type='submit'
-                      value='Submit'
-                      onMouseOver={() => {
-                        this.onSubmitTest(true);
-                      }}
-                      onMouseOut={() => {
-                        this.onSubmitTest(false);
-                      }}
-                      //disabled={!this.state.formIsValid}//dont disable just handle with valid
-                    />
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </React.Fragment>
+        <DefaultPageLayout label='Contact Create'>
+          <form onSubmit={this.contactCreateHandler}>
+            {formInputs}
+            <input
+              type='submit'
+              value='Submit'
+              onMouseOver={() => {
+                this.onSubmitTest(true);
+              }}
+              onMouseOut={() => {
+                this.onSubmitTest(false);
+              }}
+              //disabled={!this.state.formIsValid}//dont disable just handle with valid
+            />
+          </form>
+        </DefaultPageLayout>
+      </div>
     );
   }
 }

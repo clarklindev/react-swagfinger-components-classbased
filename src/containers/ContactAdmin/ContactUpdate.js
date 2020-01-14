@@ -11,6 +11,7 @@ import SectionHeader from '../../components/UI/Headers/SectionHeader';
 import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
 import InputContext from '../../context/InputContext';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
 
 class ContactUpdate extends Component {
   constructor(props) {
@@ -527,37 +528,25 @@ class ContactUpdate extends Component {
         </Modal>
 
         <div className={this.className}>
-          <div className='container'>
-            <div className={[classes.Wrapper, 'container'].join(' ')}>
-              <form onSubmit={this.onSubmitHandler} autoComplete='off'>
-                <div className='row'>
-                  <div className='col'>
-                    <SectionHeader>Contact Update</SectionHeader>
-
-                    {/* input context provides context state/functions to formInputs */}
-                    <InputContext.Provider
-                      value={{
-                        addinput: this.addInputHandler,
-                        removeinput: this.removeInputHandler,
-                        changed: this.inputChangedHandler
-                      }}>
-                      {formInputs}
-                    </InputContext.Provider>
-                  </div>
-                </div>
-                <div className='row'>
-                  <div className='col'>
-                    <input
-                      type='submit'
-                      value='Submit'
-                      onMouseOver={(event) => this.onSubmitTest(event)}
-                      // disabled={!this.state.formIsValid} //dont disable just handle with validation
-                    />
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
+          <DefaultPageLayout label='Contact Update'>
+            <form onSubmit={this.onSubmitHandler} autoComplete='off'>
+              {/* input context provides context state/functions to formInputs */}
+              <InputContext.Provider
+                value={{
+                  addinput: this.addInputHandler,
+                  removeinput: this.removeInputHandler,
+                  changed: this.inputChangedHandler
+                }}>
+                {formInputs}
+              </InputContext.Provider>
+              <input
+                type='submit'
+                value='Submit'
+                onMouseOver={(event) => this.onSubmitTest(event)}
+                // disabled={!this.state.formIsValid} //dont disable just handle with validation
+              />
+            </form>
+          </DefaultPageLayout>
         </div>
       </React.Fragment>
     );

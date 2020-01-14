@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
-import Contact from './Contact/Contact';
+import Contact from '../Contact/Contact';
 import classes from './Phonebook.module.scss';
 import { connect } from 'react-redux';
 
 import Utils from '../../Utils';
 import { Link } from 'react-router-dom';
-import SearchFilter from '../../containers/SearchFilter/SearchFilter';
-import SectionHeader from '../UI/Headers/SectionHeader';
+import SearchFilter from '../SearchFilter/SearchFilter';
+import SectionHeader from '../../components/UI/Headers/SectionHeader';
 import PropTypes from 'prop-types';
 import InputContext from '../../context/InputContext';
 import * as actions from '../../store/actions/index';
+import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
 
 class Phonebook extends Component {
   constructor(props) {
@@ -121,35 +122,20 @@ class Phonebook extends Component {
       });
 
     return (
-      <div className={this.className}>
-        <div className='container'>
-          <div className={[classes.Wrapper, 'container'].join(' ')}>
-            <div className='row'>
-              <div className='col'>
-                <SectionHeader>Phonebook</SectionHeader>
-              </div>
-            </div>
-            <div className='row'>
-              <div className='col'>
-                <InputContext.Provider
-                  value={{
-                    changed: (event) => this.searchChangedHandler(event),
-                    clear: this.searchClearHandler
-                  }}>
-                  <SearchFilter value={this.state.filterText} />
-                </InputContext.Provider>
-              </div>
-            </div>
-            <div className='row'>
-              <div className='col'>
-                <div className={classes.Labeledgroup}>
-                  <label>Contacts</label>
-                  <ul>{filtered}</ul>
-                </div>
-              </div>
-            </div>
+      <div className={classes.Phonebook}>
+        <DefaultPageLayout label='Phonebook'>
+          <InputContext.Provider
+            value={{
+              changed: (event) => this.searchChangedHandler(event),
+              clear: this.searchClearHandler
+            }}>
+            <SearchFilter value={this.state.filterText} />
+          </InputContext.Provider>
+          <div className={classes.Labeledgroup}>
+            <label>Contacts</label>
+            <ul>{filtered}</ul>
           </div>
-        </div>
+        </DefaultPageLayout>
       </div>
     );
   }

@@ -11,6 +11,9 @@ import ComponentFactory from '../../components/UI/InputComponents/ComponentFacto
 import InputContext from '../../context/InputContext';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import SectionHeader from '../../components/UI/Headers/SectionHeader';
+import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
+
 class Auth extends Component {
   state = {
     form: {
@@ -46,6 +49,16 @@ class Auth extends Component {
     formIsValid: false,
     isSignUp: false
   };
+  //------------------------------------------------------
+  //------------------------------------------------------
+  componentDidMount() {
+    //check we reset path if not busy before authenticate
+    if (
+      /*!this.props.buildingBurger && */ this.props.authRedirectPath !== '/'
+    ) {
+      this.props.onSetAuthRedirectPath(); //always passes /
+    }
+  }
   //------------------------------------------------------
   //------------------------------------------------------
   validationCheck(value, rules) {
@@ -151,7 +164,8 @@ class Auth extends Component {
     );
   };
 
-  switchAuthModeHandler = () => {
+  switchAuthModeHandler = (event) => {
+    event.preventDefault();
     console.log('switchAuthModeHandler!');
     this.setState((prevState) => {
       return { isSignUp: !prevState.isSignUp };
@@ -183,31 +197,29 @@ class Auth extends Component {
 
     let authRedirect = null;
     if (this.props.isAuthenticated) {
-      authRedirect = <Redirect to='/' />;
+      authRedirect = <Redirect to={this.props.authRedirectPath} />;
     }
 
     return (
       <React.Fragment>
         {authRedirect}
         <div className={classes.Auth}>
-          <div className='container'>
-            <div className={[classes.Wrapper, 'container'].join(' ')}>
-              {authRedirect}
-              {errorMessage}
-              <form onSubmit={this.onSubmitHandler} autoComplete='off'>
-                <InputContext.Provider
-                  value={{
-                    changed: this.inputChangedHandler
-                  }}>
-                  {form}
-                </InputContext.Provider>
-                <Button btnType='Success'>Submit</Button>
-                <Button btnType='Danger' onClick={this.switchAuthModeHandler}>
-                  Switch to {this.state.isSignUp ? 'SIGN-IN' : 'SIGN-UP'}
-                </Button>
-              </form>
-            </div>
-          </div>
+          <DefaultPageLayout label='Login'>
+            {authRedirect}
+            {errorMessage}
+            <form onSubmit={this.onSubmitHandler} autoComplete='off'>
+              <InputContext.Provider
+                value={{
+                  changed: this.inputChangedHandler
+                }}>
+                {form}
+              </InputContext.Provider>
+              <Button btnType='Success'>Submit</Button>
+              <Button btnType='Danger' onClick={this.switchAuthModeHandler}>
+                Switch to {this.state.isSignUp ? 'SIGN-IN' : 'SIGN-UP'}
+              </Button>
+            </form>
+          </DefaultPageLayout>
         </div>
       </React.Fragment>
     );
@@ -218,14 +230,16 @@ const mapStateToProps = (state) => {
   return {
     loading: state.auth.loading,
     error: state.auth.error,
-    isAuthenticated: state.auth.token !== null
+    isAuthenticated: state.auth.token !== null,
+    authRedirectPath: state.auth.authRedirectPath
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onAuth: (email, password, isSignup) =>
-      dispatch(actions.auth(email, password, isSignup))
+      dispatch(actions.auth(email, password, isSignup)),
+    onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath('/'))
   };
 };
 export default connect(
