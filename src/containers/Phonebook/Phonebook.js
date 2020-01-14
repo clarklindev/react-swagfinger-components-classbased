@@ -5,11 +5,12 @@ import { connect } from 'react-redux';
 
 import Utils from '../../Utils';
 import { Link } from 'react-router-dom';
-import SearchFilter from '../SearchFilter/SearchFilter';
+import SearchFilter from '../../components/UI/InputComponents/SearchFilter';
 import PropTypes from 'prop-types';
 import InputContext from '../../context/InputContext';
 import * as actions from '../../store/actions/index';
 import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
+import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
 
 class Phonebook extends Component {
   constructor(props) {
@@ -108,15 +109,19 @@ class Phonebook extends Component {
           extra = matchedEmail;
         }
         return (
-          <li key={`${id}`}>
+          <div className={classes.ContactWrapper}>
             <Link
+              key={`${id}`}
               to={{
                 pathname: '/contactread',
                 search: `?id=${id}`
               }}>
-              <Contact id={`${id}`} displayText={entry} extraText={extra} />
+              <Contact
+                id={`${id}`}
+                displayText={entry}
+                extraText={extra}></Contact>
             </Link>
-          </li>
+          </div>
         );
       });
 
@@ -130,10 +135,13 @@ class Phonebook extends Component {
             }}>
             <SearchFilter value={this.state.filterText} />
           </InputContext.Provider>
-          <div className={classes.Labeledgroup}>
-            <label>Contacts</label>
-            <ul>{filtered}</ul>
-          </div>
+          <ComponentFactory
+            data={{
+              label: 'Contacts',
+              elementtype: 'list',
+              value: { data: filtered }
+            }}
+          />
         </DefaultPageLayout>
       </div>
     );

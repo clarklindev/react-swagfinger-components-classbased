@@ -6,10 +6,12 @@ import * as actions from '../../store/actions/index';
 
 import classes from './PhonebookAdmin.module.scss';
 import Utils from '../../Utils';
-import SearchFilter from '../SearchFilter/SearchFilter';
+import SearchFilter from '../../components/UI/InputComponents/SearchFilter';
 import Icon from '../../components/UI/InputComponents/Icon';
 import InputContext from '../../context/InputContext';
 import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
+import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
+
 class PhonebookAdmin extends Component {
   constructor(props) {
     super(props);
@@ -123,8 +125,14 @@ class PhonebookAdmin extends Component {
               }
 
               return (
-                <li key={id}>
-                  <Contact id={id} displayText={entry} extraText={extra} />
+                // ContactWrapper wraps each item in this.props.storedPhonebook
+                <div className={classes.ContactWrapper}>
+                  <Contact
+                    key={id}
+                    id={id}
+                    displayText={entry}
+                    extraText={extra}
+                  />
 
                   <div className={classes.ContactButtons}>
                     <button
@@ -139,7 +147,7 @@ class PhonebookAdmin extends Component {
                       <Icon iconstyle='far' code='trash-alt' size='sm' />
                     </button>
                   </div>
-                </li>
+                </div>
               );
             })
         : null;
@@ -154,11 +162,14 @@ class PhonebookAdmin extends Component {
             }}>
             <SearchFilter value={this.state.filterText} />
           </InputContext.Provider>
-          <div className={classes.Labeledgroup}>
-            <label>Contacts</label>
-            {/* react 16.8+, react-router 5, no need for withRouter*/}
-          </div>
-          <ul>{filtered}</ul>
+
+          <ComponentFactory
+            data={{
+              elementtype: 'list',
+              label: 'Contacts',
+              value: { data: filtered }
+            }}
+          />
           <button
             className={classes.AddButton}
             title='Add'
