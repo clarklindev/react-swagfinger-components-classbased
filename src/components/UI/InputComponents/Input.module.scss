@@ -1,4 +1,6 @@
 .Input {
+  height: var(--inputheight);
+  line-height: 38px; //50px - (6px x2)
   width: 100%;
   display: flex;
   border: 1px solid var(--colorborder);
@@ -9,10 +11,15 @@
   color: var(--colordefault);
   flex-grow: 1;
   flex-basis: 1;
+  cursor: default;
 
   &.Invalid {
     border: 1px solid red;
     background-color: white;
+  }
+
+  &.ReadOnly {
+    cursor: default;
   }
 
   &:focus {

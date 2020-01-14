@@ -25,6 +25,9 @@ class Input extends Component {
       console.log('pushing invalid: ');
       tempClasses.push(classes.Invalid);
     }
+    if (this.props.readOnly) {
+      tempClasses.push(classes.ReadOnly);
+    }
     return (
       <input
         className={[this.className, tempClasses].join(' ')}

@@ -25,10 +25,14 @@ class Textarea extends Component {
       console.log('pushing invalid: ');
       tempClasses.push(classes.Invalid);
     }
+    if (this.props.readOnly) {
+      tempClasses.push(classes.ReadOnly);
+    }
     return (
       <textarea
         className={[this.className, ...tempClasses].join(' ')}
         placeholder={this.props.placeholder}
+        readOnly={this.props.readOnly}
         {...this.props.elementconfig}
         value={this.props.value.data}
         onChange={(event) =>
