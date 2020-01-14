@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import classes from './ContactRead.module.scss';
 import Utils from '../../Utils';
 import axios from '../../axios-contacts';
-import SectionHeader from '../../components/UI/Headers/SectionHeader';
 import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
 
 class ContactRead extends Component {

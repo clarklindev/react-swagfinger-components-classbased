@@ -7,7 +7,6 @@ import * as actions from '../../store/actions/index';
 import classes from './PhonebookAdmin.module.scss';
 import Utils from '../../Utils';
 import SearchFilter from '../SearchFilter/SearchFilter';
-import SectionHeader from '../../components/UI/Headers/SectionHeader';
 import Icon from '../../components/UI/InputComponents/Icon';
 import InputContext from '../../context/InputContext';
 import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';

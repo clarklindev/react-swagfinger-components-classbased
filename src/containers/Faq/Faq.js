@@ -6,7 +6,7 @@ class Faq extends Component {
   render() {
     return (
       <div className={classes.Faq}>
-        <DefaultPageLayout label={'hi'}>poo</DefaultPageLayout>
+        <DefaultPageLayout label={'FAQ'}>poo</DefaultPageLayout>
       </div>
     );
   }

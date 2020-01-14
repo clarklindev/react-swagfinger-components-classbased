@@ -7,7 +7,6 @@ import axios from '../../axios-contacts';
 import Modal from '../../components/UI/Modal/Modal';
 import * as actions from '../../store/actions/contact';
 
-import SectionHeader from '../../components/UI/Headers/SectionHeader';
 import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
 import InputContext from '../../context/InputContext';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';

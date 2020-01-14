@@ -7,7 +7,6 @@ import Utils from '../../Utils';
 import axios from '../../axios-contacts';
 import Modal from '../../components/UI/Modal/Modal';
 
-import SectionHeader from '../../components/UI/Headers/SectionHeader';
 import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
 
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';

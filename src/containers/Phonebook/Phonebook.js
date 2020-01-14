@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import Utils from '../../Utils';
 import { Link } from 'react-router-dom';
 import SearchFilter from '../SearchFilter/SearchFilter';
-import SectionHeader from '../../components/UI/Headers/SectionHeader';
 import PropTypes from 'prop-types';
 import InputContext from '../../context/InputContext';
 import * as actions from '../../store/actions/index';

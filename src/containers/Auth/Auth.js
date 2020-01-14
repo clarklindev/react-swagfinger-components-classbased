@@ -11,7 +11,6 @@ import ComponentFactory from '../../components/UI/InputComponents/ComponentFacto
 import InputContext from '../../context/InputContext';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import Spinner from '../../components/UI/Spinner/Spinner';
-import SectionHeader from '../../components/UI/Headers/SectionHeader';
 import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
 
 class Auth extends Component {
