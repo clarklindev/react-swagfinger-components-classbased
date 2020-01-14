@@ -9,14 +9,8 @@ class DefaultPageLayout extends Component {
       <div className={classes.DefaultPageLayout}>
         <div className='container'>
           <div className={[classes.Wrapper, 'container'].join(' ')}>
-            <div className='row'>
-              <div className='col'>
-                <SectionHeader>{this.props.label}</SectionHeader>
-              </div>
-            </div>
-            <div className='row'>
-              <div className='col'>{this.props.children}</div>
-            </div>
+            <SectionHeader>{this.props.label}</SectionHeader>
+            {this.props.children}
           </div>
         </div>
       </div>
