@@ -8,6 +8,7 @@ import {
   faMinus,
   faBars,
   faTimes,
+  faChevronUp,
   faChevronLeft,
   faChevronRight,
   faChevronDown,
@@ -31,6 +32,7 @@ library.add(
   faMinus,
   faBars,
   faCalendarAlt,
+  faChevronUp,
   faChevronDown,
   faSearch
 );
@@ -42,8 +44,11 @@ class Icon extends Component {
       Icon.name,
       this.props.className
     ]);
+
+    let additionalClasses = this.props.nostyle ? classes.NoStyle : null;
+
     return (
-      <div className={classList}>
+      <div className={[classList, additionalClasses].join(' ')}>
         <FontAwesomeIcon
           icon={[this.props.iconstyle, this.props.code]}
           size={this.props.size}

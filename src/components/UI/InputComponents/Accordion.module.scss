@@ -1,0 +1,28 @@
+.Accordion {
+  .AccordionItem {
+    overflow-y: hidden;
+    border-top: 1px solid var(--colorborder);
+    &:last-child {
+      border-bottom: 1px solid var(--colorborder);
+    }
+  }
+  .AccordionTitle {
+    padding: var(--paddingdefault);
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+  }
+  .AccordionContent {
+    padding: 0 var(--paddingdefault);
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    max-height: 0px;
+    transition: all 0.5s, opacity 0.5s;
+    &.Active {
+      padding: 0 var(--paddingdefault) var(--paddingdefault);
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+}
