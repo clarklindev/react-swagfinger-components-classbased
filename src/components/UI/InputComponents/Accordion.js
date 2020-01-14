@@ -8,7 +8,8 @@ class Accordion extends Component {
       { title: 'question2', content: 'content2', isActive: false },
       { title: 'question3', content: 'content3', isActive: false }
     ],
-    startIndex: 0
+    startIndex: 0,
+    allowMultiOpen: false
   };
 
   constructor(props) {
@@ -40,13 +41,14 @@ class Accordion extends Component {
         if (i === index) {
           return {
             ...item,
-            isActive: true
+            isActive: this.state.allowMultiOpen ? !item.isActive : true
           };
         } else {
-          return {
-            ...item,
-            isActive: false
-          };
+          return this.state.allowMultiOpen
+            ? {
+                ...item
+              }
+            : { ...item, isActive: false };
         }
       });
 
