@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
+import ComponentFactory from './ComponentFactory';
 
 class SearchFilter extends Component {
   render() {
