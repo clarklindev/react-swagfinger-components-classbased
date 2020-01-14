@@ -6,8 +6,8 @@ class List extends Component {
     return (
       <div className={classes.List}>
         <ul>
-          {this.props.value.data.map((item) => {
-            return <li>{item}</li>;
+          {this.props.value.data.map((item, index) => {
+            return <li key={'list' + index}>{item}</li>;
           })}
         </ul>
       </div>

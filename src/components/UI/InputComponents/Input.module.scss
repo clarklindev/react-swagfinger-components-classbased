@@ -1,6 +1,6 @@
 .Input {
   height: var(--inputheight);
-  line-height: 38px; //50px - (6px x2)
+  line-height: var(--inputheight); //50px - (6px x2)
   width: 100%;
   display: flex;
   border: 1px solid var(--colorborder);
