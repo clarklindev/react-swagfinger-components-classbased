@@ -21,15 +21,15 @@ class Accordion extends Component {
     console.log(this.state);
     let accordion = this.accordionRef.current;
 
-    Array.from(accordion.querySelectorAll("[class*='AccordionContent']")).map(
-      (item, index) => {
-        if (this.state.data[index].isActive) {
-          item.style.maxHeight = item.scrollHeight + 'px';
-        } else {
-          item.style.maxHeight = 0;
-        }
+    Array.from(
+      accordion.querySelectorAll("[class*='AccordionContent']")
+    ).forEach((item, index) => {
+      if (this.state.data[index].isActive) {
+        item.style.maxHeight = item.scrollHeight + 'px';
+      } else {
+        item.style.maxHeight = 0;
       }
-    );
+    });
   }
 
   onClickHandler = (index, event) => {
