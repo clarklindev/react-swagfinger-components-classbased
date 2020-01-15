@@ -180,12 +180,20 @@ class Auth extends Component {
       });
     }
 
-    let form = formElementsArray.map((item) => (
-      <ComponentFactory key={item.id} id={item.id} data={item.data} />
-    ));
+    let formAll = (
+      <React.Fragment>
+        {formElementsArray.map((item) => (
+          <ComponentFactory key={item.id} id={item.id} data={item.data} />
+        ))}
+        <Button btnType='Success'>Submit</Button>
+        <Button btnType='Danger' onClick={this.switchAuthModeHandler}>
+          Switch to {this.state.isSignUp ? 'SIGN-IN' : 'SIGN-UP'}
+        </Button>
+      </React.Fragment>
+    );
 
     if (this.props.loading) {
-      form = <Spinner />;
+      formAll = <Spinner />;
     }
 
     let errorMessage = null;
@@ -202,21 +210,16 @@ class Auth extends Component {
     return (
       <React.Fragment>
         {authRedirect}
+        {errorMessage}
         <div className={classes.Auth}>
-          <DefaultPageLayout label='Login'>
-            {authRedirect}
-            {errorMessage}
+          <DefaultPageLayout label={this.props.loading ? '' : 'Login'}>
             <form onSubmit={this.onSubmitHandler} autoComplete='off'>
               <InputContext.Provider
                 value={{
                   changed: this.inputChangedHandler
                 }}>
-                {form}
+                {formAll}
               </InputContext.Provider>
-              <Button btnType='Success'>Submit</Button>
-              <Button btnType='Danger' onClick={this.switchAuthModeHandler}>
-                Switch to {this.state.isSignUp ? 'SIGN-IN' : 'SIGN-UP'}
-              </Button>
             </form>
           </DefaultPageLayout>
         </div>
