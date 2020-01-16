@@ -100,8 +100,8 @@ export const authCheckState = () => {
       console.log('LOCAL STORAGE: ', localStorage);
       const expirationDate = new Date(localStorage.getItem('expirationdate'));
       console.log('EXPIRATIONDATE: ', expirationDate);
-      //login if expirationDate is further ahead of current date
-      if (expirationDate <= new Date()) {
+      //login ONLY if expirationDate is further ahead of current date
+      if (expirationDate.getTime() <= new Date().getTime()) {
         console.log('LOGGGING OUT');
         dispatch(logout());
       } else {
