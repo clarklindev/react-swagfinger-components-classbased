@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Contact from '../Contact/Contact';
+import ListItem from '../../components/UI/InputComponents/ListItem';
 import classes from './Phonebook.module.scss';
 import { connect } from 'react-redux';
 
@@ -32,6 +32,14 @@ class Phonebook extends Component {
 
   searchClearHandler = () => {
     this.setState({ filterText: '' });
+  };
+
+  contactClickHandler = (id, event) => {
+    //navigate programatically
+    this.props.history.push({
+      pathname: `/contactread`,
+      search: `?id=${id}`
+    });
   };
 
   searchChangedHandler = (event) => {
@@ -109,19 +117,13 @@ class Phonebook extends Component {
           extra = matchedEmail;
         }
         return (
-          <div className={classes.ContactWrapper}>
-            <Link
-              key={`${id}`}
-              to={{
-                pathname: '/contactread',
-                search: `?id=${id}`
-              }}>
-              <Contact
-                id={`${id}`}
-                displayText={entry}
-                extraText={extra}></Contact>
-            </Link>
-          </div>
+          <ListItem
+            className={classes.ListItem}
+            key={`${id}`}
+            id={`${id}`}
+            displayText={entry}
+            extraText={extra}
+            onClick={this.contactClickHandler.bind(this, id)}></ListItem>
         );
       });
 

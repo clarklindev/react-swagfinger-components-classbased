@@ -1,0 +1,30 @@
+.ListItem {
+  flex-basis: 1;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+
+  .ListItemWrapper {
+    display: flex;
+    flex-basis: 1;
+    flex-grow: 1;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    font: inherit;
+    box-sizing: border-box;
+    color: var(--colordefault);
+    padding: var(--paddinginput);
+    min-height: var(--inputheight);
+  }
+  p {
+    margin: 0;
+  }
+  span {
+    padding: 0px;
+    font-weight: bold;
+    color: var(--colorhighlight);
+  }
+}

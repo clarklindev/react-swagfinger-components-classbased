@@ -1,18 +1,8 @@
 .Phonebook {
-  .ContactWrapper {
-    display: flex;
-    flex-basis: 1;
-    flex-grow: 1;
-    align-items: center;
-    flex-direction: row;
-    justify-content: space-between;
-    font: inherit;
-    box-sizing: content-box;
-    color: var(--colordefault);
-    cursor: default;
-    height: calc(var(--inputheight) - 14px);
-  }
   p {
     line-height: 18px;
+  }
+  .ListItem {
+    cursor: pointer;
   }
 }

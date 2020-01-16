@@ -6,12 +6,12 @@ import { connect } from 'react-redux';
 import Layout from './hoc/Layout/Layout';
 //components
 import Phonebook from './containers/Phonebook/Phonebook';
-import ContactRead from './containers/Contact/ContactRead';
 //containers
 import Auth from './containers/Auth/Auth';
-import PhonebookAdmin from './containers/PhonebookAdmin/PhonebookAdmin';
-import ContactCreate from './containers/ContactAdmin/ContactCreate';
-import ContactUpdate from './containers/ContactAdmin/ContactUpdate';
+import PhonebookAdmin from './containers/Phonebook/PhonebookAdmin';
+import ContactRead from './containers/Contact/ContactRead';
+import ContactCreate from './containers/Contact/ContactCreate';
+import ContactUpdate from './containers/Contact/ContactUpdate';
 import Logout from './containers/Auth/Logout/Logout';
 import Faq from './containers/Faq/Faq';
 //actions

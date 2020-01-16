@@ -4,6 +4,7 @@ import Utils from '../../Utils';
 import axios from '../../axios-contacts';
 import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
 import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
+import ListItem from '../../components/UI/InputComponents/ListItem';
 class ContactRead extends Component {
   constructor(props) {
     super(props);
@@ -35,11 +36,19 @@ class ContactRead extends Component {
     if (this.state.loadedContact) {
       let contactnumbers = this.state.loadedContact['contactnumbers'].map(
         (each, index) => {
-          return each !== '' ? each : undefined;
+          return each !== '' ? (
+            <ListItem displayText={each}></ListItem>
+          ) : (
+            undefined
+          );
         }
       );
       let emails = this.state.loadedContact['emails'].map((each, index) => {
-        return each !== '' ? each : undefined;
+        return each !== '' ? (
+          <ListItem displayText={each}></ListItem>
+        ) : (
+          undefined
+        );
       });
 
       // note the order of the render is important hence why manually setting the content order

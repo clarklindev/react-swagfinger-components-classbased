@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import Contact from '../Contact/Contact';
+import ListItem from '../../components/UI/InputComponents/ListItem';
 import * as actions from '../../store/actions/index';
 
 import classes from './PhonebookAdmin.module.scss';
@@ -126,14 +126,11 @@ class PhonebookAdmin extends Component {
 
               return (
                 // ContactWrapper wraps each item in this.props.storedPhonebook
-                <div className={classes.ContactWrapper}>
-                  <Contact
-                    key={id}
-                    id={id}
-                    displayText={entry}
-                    extraText={extra}
-                  />
-
+                <ListItem
+                  key={id}
+                  id={id}
+                  displayText={entry}
+                  extraText={extra}>
                   <div className={classes.ContactButtons}>
                     <button
                       title='Edit'
@@ -147,7 +144,7 @@ class PhonebookAdmin extends Component {
                       <Icon iconstyle='far' code='trash-alt' size='sm' />
                     </button>
                   </div>
-                </div>
+                </ListItem>
               );
             })
         : null;
@@ -162,7 +159,6 @@ class PhonebookAdmin extends Component {
             }}>
             <SearchFilter value={this.state.filterText} />
           </InputContext.Provider>
-
           <ComponentFactory
             data={{
               elementtype: 'list',

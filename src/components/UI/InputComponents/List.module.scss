@@ -3,6 +3,7 @@
     list-style-type: none;
     margin: 0;
     padding: 0;
+    display: flex;
   }
   li {
     box-sizing: border-box;
@@ -11,16 +12,17 @@
     flex-basis: 1;
     flex-grow: 1;
     width: 100%;
-    padding: var(--paddinginput);
+    padding: none;
     background-color: white;
     border: 1px solid var(--colorborder);
     border-radius: var(--borderradius);
     font: inherit;
-    box-sizing: border-box;
+    box-sizing: content-box;
     &:not(:last-child) {
       margin-bottom: 10px;
     }
-    line-height: 36px;
+    align-items: center;
+    display: flex;
   }
 
   a {
@@ -30,5 +32,6 @@
     &:focus {
       outline: 0;
     }
+    cursor: default;
   }
 }
