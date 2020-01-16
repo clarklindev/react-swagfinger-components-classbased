@@ -50,14 +50,14 @@ class Auth extends Component {
   };
   //------------------------------------------------------
   //------------------------------------------------------
-  componentDidMount() {
-    //check we reset path if not busy before authenticate
-    if (
-      /*!this.props.buildingBurger && */ this.props.authRedirectPath !== '/'
-    ) {
-      this.props.onSetAuthRedirectPath(); //always passes /
-    }
-  }
+  // componentDidMount() {
+  //   //check we reset path if not busy before authenticate
+  //   // if (
+  //   //   /*!this.props.buildingBurger && */ this.props.authRedirectPath !== '/'
+  //   // ) {
+  //   //   this.props.onSetAuthRedirectPath(); //always passes /
+  //   // }
+  // }
   //------------------------------------------------------
   //------------------------------------------------------
   validationCheck(value, rules) {

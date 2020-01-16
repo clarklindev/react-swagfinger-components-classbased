@@ -50,26 +50,31 @@ export const auth = (email, password, isSignUp) => {
         const expirationDate = new Date(
           new Date().getTime() + response.data.expiresIn * 1000
         );
+        console.log('SAVING EXPIRATION DATE: ', expirationDate);
         //store in local storage
         localStorage.setItem('token', response.data.idToken);
-        localStorage.setItem('expirationDate:', expirationDate);
-        localStorage.setItem('userId', response.data.localId);
+        localStorage.setItem('expirationdate', expirationDate);
+        localStorage.setItem('userid', response.data.localId);
+
         dispatch(authSuccess(response.data.idToken, response.data.localId));
+        //invalidate token if timedout
         //start timer for token
-        //amount of seconds until expires...
+        //expiresIn - amount of seconds until expires...
         dispatch(checkAuthTimeout(response.data.expiresIn));
       })
       .catch((err) => {
         console.log('ERROR: ', err);
         dispatch(authFail(err.response.data.error));
+        //error codes
+        //https://firebase.google.com/docs/reference/rest/auth#section-sign-in-email-password
       });
   };
 };
 export const logout = () => {
   //remove data in local storage
   localStorage.removeItem('token');
-  localStorage.removeItem('expirationDate');
-  localStorage.removeItem('userId');
+  localStorage.removeItem('expirationdate');
+  localStorage.removeItem('userid');
 
   return {
     type: actionTypes.AUTH_LOGOUT
@@ -80,23 +85,27 @@ export const logout = () => {
 export const checkAuthTimeout = (expirationTime) => {
   return (dispatch) => {
     setTimeout(() => {
-      dispatch(logout());
-    }, expirationTime * 1000); //*1000 to convert from milliseconds
+      dispatch(logout()); //note: execute logout()
+    }, expirationTime * 1000); //*1000 to convert from milliseconds (setTimeout units)
   };
 };
 
 export const authCheckState = () => {
   return (dispatch) => {
     const token = localStorage.getItem('token');
+    console.log('TOKEN:', token);
     if (!token) {
       dispatch(logout());
     } else {
-      const expirationDate = new Date(localStorage.getItem('expirationDate'));
+      console.log('LOCAL STORAGE: ', localStorage);
+      const expirationDate = new Date(localStorage.getItem('expirationdate'));
+      console.log('EXPIRATIONDATE: ', expirationDate);
       //login if expirationDate is further ahead of current date
       if (expirationDate <= new Date()) {
+        console.log('LOGGGING OUT');
         dispatch(logout());
       } else {
-        const userId = localStorage.getItem('userId');
+        const userId = localStorage.getItem('userid');
         dispatch(authSuccess(token, userId));
         dispatch(
           checkAuthTimeout(

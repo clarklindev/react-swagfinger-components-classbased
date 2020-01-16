@@ -49,7 +49,7 @@ class App extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onTryAutoSignup: () => dispatch(actions.authCheckState)
+    onTryAutoSignup: () => dispatch(actions.authCheckState())
   };
 };
 export default withRouter(connect(null, mapDispatchToProps)(App));
