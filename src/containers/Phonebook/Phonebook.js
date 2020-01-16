@@ -4,7 +4,6 @@ import classes from './Phonebook.module.scss';
 import { connect } from 'react-redux';
 
 import Utils from '../../Utils';
-import { Link } from 'react-router-dom';
 import SearchFilter from '../../components/UI/InputComponents/SearchFilter';
 import PropTypes from 'prop-types';
 import InputContext from '../../context/InputContext';
