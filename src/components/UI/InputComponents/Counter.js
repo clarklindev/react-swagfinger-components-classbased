@@ -47,10 +47,12 @@ class Counter extends Component {
 
   onChangeHandler = (event) => {
     console.log('CHANGED: ', this.props.name);
-    this.context.changed(
-      Number(event.target.value).toFixed(2),
-      this.props.name
-    );
+    if (!isNaN(event.target.value)) {
+      this.context.changed(
+        Number(event.target.value).toFixed(2),
+        this.props.name
+      );
+    }
   };
 
   render() {
@@ -68,11 +70,11 @@ class Counter extends Component {
           <Icon iconstyle='fas' code='minus' size='sm' />
         </button>
         <input
-          min={Number(this.props.elementconfig.min.toFixed(2))}
-          max={Number(this.props.elementconfig.max.toFixed(2))}
+          min={Number(this.props.elementconfig.min).toFixed(2)}
+          max={Number(this.props.elementconfig.max).toFixed(2)}
           step={Number(this.props.elementconfig.step).toFixed(2)}
           ref={this.counterRef}
-          value={Number(this.props.value.data).toFixed(2)}
+          value={Number(this.props.value.data)}
           onChange={(event) => this.onChangeHandler(event)}
           onInput={(event) => this.onChangeHandler(event)}
           onBlur={(event) => this.onBlur(event)}
