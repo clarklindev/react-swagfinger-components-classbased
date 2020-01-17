@@ -19,12 +19,12 @@ const sideMenu = (props) => {
       <Backdrop
         className={classes.Backdrop}
         show={props.open}
-        clicked={props.closed}
+        onClick={props.closed}
       />
       <div className={classList}>
         <div className={classes.SideMenuHeader}>
           <h2>Menu</h2>
-          <Button className='CloseBtn' clicked={props.closed}>
+          <Button className='CloseBtn' onClick={props.closed}>
             <Icon iconstyle='fas' code='times' size='sm'></Icon>
           </Button>
         </div>

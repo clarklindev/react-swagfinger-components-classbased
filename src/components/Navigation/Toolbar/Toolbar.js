@@ -6,7 +6,7 @@ import HamburgerButton from '../Sidemenu/HamburgerButton';
 
 const toolbar = (props) => (
   <header className={classes.Toolbar}>
-    <HamburgerButton clicked={props.hamburgerButtonClicked} />
+    <HamburgerButton onClick={props.hamburgerButtonClicked} />
     <nav className={classes.DesktopOnly}>
       <NavigationItems isAuthenticated={props.isAuth} />
     </nav>

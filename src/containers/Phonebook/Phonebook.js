@@ -122,7 +122,7 @@ class Phonebook extends Component {
             id={`${id}`}
             displayText={entry}
             extraText={extra}
-            onClick={this.contactClickHandler.bind(this, id)}></ListItem>
+            onClick={(event) => this.contactClickHandler(id, event)}></ListItem>
         );
       });
 
