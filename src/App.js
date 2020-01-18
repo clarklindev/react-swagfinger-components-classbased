@@ -27,7 +27,9 @@ class App extends Component {
   }
 
   componentWillUnmount() {
-    this.props.onFetchContactsCancel();
+    if (this.props.isLoading === true) {
+      this.props.onFetchContactsCancel();
+    }
   }
 
   render() {
@@ -67,7 +69,8 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    isAuthenticated: state.auth.token !== null
+    isAuthenticated: state.auth.token !== null,
+    isLoading: state.contact.loading
   };
 };
 
