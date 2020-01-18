@@ -9,7 +9,7 @@ class Accordion extends Component {
       { title: 'question3', content: 'content3', isActive: false }
     ],
     startIndex: 0,
-    allowMultiOpen: false
+    allowMultiOpen: true
   };
 
   constructor(props) {
