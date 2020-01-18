@@ -1,6 +1,6 @@
 // reducer
 import * as actionTypes from '../actions/actionsTypes';
-import { updateObject } from '../utility';
+import { updateObject } from '../../shared/utility';
 const initialState = {
   phoneBook: [],
   loading: false
