@@ -48,6 +48,8 @@
     background-color: white;
 
     .CalendarContent {
+      z-index: 300;
+
       &[class~='relative'] {
         position: relative;
       }
