@@ -23,7 +23,13 @@ import './sass-flexbox-grid.scss';
 class App extends Component {
   componentDidMount() {
     this.props.onTryAutoSignup();
+    this.props.onFetchContacts();
   }
+
+  componentWillUnmount() {
+    this.props.onFetchContactsCancel();
+  }
+
   render() {
     let routes = (
       <Switch>
@@ -67,7 +73,13 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onTryAutoSignup: () => dispatch(actions.authCheckState())
+    onTryAutoSignup: () => dispatch(actions.authCheckState()),
+    onFetchContacts: () => {
+      dispatch(actions.fetchContacts());
+    },
+    onFetchContactsCancel: () => {
+      dispatch(actions.fetchContactsCancel());
+    }
   };
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

@@ -7,7 +7,6 @@ import Utils from '../../Utils';
 import SearchFilter from '../../components/UI/InputComponents/SearchFilter';
 import PropTypes from 'prop-types';
 import InputContext from '../../context/InputContext';
-import * as actions from '../../store/actions/index';
 import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
 import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
 
@@ -25,9 +24,6 @@ class Phonebook extends Component {
   state = {
     filterText: ''
   };
-  componentDidMount() {
-    this.props.onFetchContacts();
-  }
 
   searchClearHandler = () => {
     this.setState({ filterText: '' });
@@ -154,14 +150,10 @@ Phonebook.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  return { storedPhonebook: state.contact.phoneBook };
-};
-const mapDispatchToProps = (dispatch) => {
   return {
-    onFetchContacts: () => {
-      dispatch(actions.fetchContacts());
-    }
+    storedPhonebook: state.contact.phoneBook,
+    isLoading: state.contact.loading
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Phonebook);
+export default connect(mapStateToProps)(Phonebook);

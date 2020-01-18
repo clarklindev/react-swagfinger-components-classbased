@@ -26,9 +26,6 @@ class PhonebookAdmin extends Component {
     filterText: ''
   };
 
-  componentDidMount() {
-    this.props.onFetchContacts();
-  }
   searchClearHandler = () => {
     this.setState({ filterText: '' });
   };
@@ -189,9 +186,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onContactDeleted: (id) => {
       dispatch(actions.processContactDelete(id));
-    },
-    onFetchContacts: () => {
-      dispatch(actions.fetchContacts());
     }
   };
 };
