@@ -12,7 +12,7 @@ import InputContext from '../../context/InputContext';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
-
+import { CheckValidity as validationCheck } from '../../shared/validation';
 class Auth extends Component {
   state = {
     form: {
@@ -58,38 +58,7 @@ class Auth extends Component {
   //   //   this.props.onSetAuthRedirectPath(); //always passes /
   //   // }
   // }
-  //------------------------------------------------------
-  //------------------------------------------------------
-  validationCheck(value, rules) {
-    let isValid = true;
-    if (!rules) {
-      return true;
-    }
 
-    if (rules.required) {
-      isValid = value.trim() !== '' && isValid;
-    }
-
-    if (rules.minLength) {
-      isValid = value.length >= rules.minLength && isValid;
-    }
-
-    if (rules.maxLength) {
-      isValid = value.length <= rules.maxLength && isValid;
-    }
-
-    if (rules.isEmail) {
-      const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-      isValid = pattern.test(value) && isValid;
-    }
-
-    if (rules.isNumeric) {
-      const pattern = /^\d+$/;
-      isValid = pattern.test(value) && isValid;
-    }
-
-    return isValid;
-  }
   //------------------------------------------------------
   //------------------------------------------------------
   //checks the .valid property of each input in array or individual input
@@ -132,7 +101,7 @@ class Auth extends Component {
       updatedFormElement.value[index].data = newval;
       updatedFormElement.value[index].touched = true;
       updatedFormElement.value[index].pristine = false;
-      updatedFormElement.value[index].valid = this.validationCheck(
+      updatedFormElement.value[index].valid = validationCheck(
         updatedFormElement.value[index].data,
         updatedFormElement.validation
       );
@@ -141,7 +110,7 @@ class Auth extends Component {
       updatedFormElement.value.data = newval;
       updatedFormElement.value.touched = true;
       updatedFormElement.value.pristine = false;
-      updatedFormElement.value.valid = this.validationCheck(
+      updatedFormElement.value.valid = validationCheck(
         updatedFormElement.value.data,
         updatedFormElement.validation
       );

@@ -12,6 +12,8 @@ import InputContext from '../../context/InputContext';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
 
+import { CheckValidity as validationCheck } from '../../shared/validation';
+
 class ContactUpdate extends Component {
   constructor(props) {
     super(props);
@@ -227,7 +229,7 @@ class ContactUpdate extends Component {
             ? response.data[item].map((each) => {
                 return {
                   data: each,
-                  valid: this.validationCheck(
+                  valid: validationCheck(
                     each,
                     this.state.form[item].validation
                   ),
@@ -237,7 +239,7 @@ class ContactUpdate extends Component {
               }) //return array of values
             : {
                 data: response.data[item], //value at the key
-                valid: this.validationCheck(
+                valid: validationCheck(
                   response.data[item],
                   this.state.form[item].validation
                 ),
@@ -272,43 +274,6 @@ class ContactUpdate extends Component {
   redirect = () => {
     this.props.history.push('/phonebookadmin');
   };
-
-  //------------------------------------------------------
-  //------------------------------------------------------
-
-  //WHEN INPUT CHANGES...
-  // STARTS OFF AS TRUE, THE RULES "TRY" FALSIFY THE FUNCTION CALL
-  // RETURN TRUE if isValid / FALSE if NOT isValid
-  validationCheck(value, rules) {
-    let isValid = true;
-    if (!rules) {
-      return true;
-    }
-    //add validation rules below
-    if (rules.required) {
-      isValid = value !== '' && isValid;
-    }
-
-    if (rules.minLength) {
-      isValid = value.length >= rules.minLength && isValid;
-    }
-
-    if (rules.maxLength) {
-      isValid = value.length <= rules.maxLength && isValid;
-    }
-
-    if (rules.isEmail) {
-      const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-      isValid = pattern.test(value) && isValid;
-    }
-
-    if (rules.isNumeric) {
-      const pattern = /^\d+$/;
-      isValid = pattern.test(value) && isValid;
-    }
-
-    return isValid;
-  }
 
   //------------------------------------------------------
   //------------------------------------------------------
@@ -450,7 +415,7 @@ class ContactUpdate extends Component {
       updatedFormElement.value[index].data = newval;
       updatedFormElement.value[index].touched = true;
       updatedFormElement.value[index].pristine = false;
-      updatedFormElement.value[index].valid = this.validationCheck(
+      updatedFormElement.value[index].valid = validationCheck(
         updatedFormElement.value[index].data,
         updatedFormElement.validation
       );
@@ -459,7 +424,7 @@ class ContactUpdate extends Component {
       updatedFormElement.value.data = newval;
       updatedFormElement.value.touched = true;
       updatedFormElement.value.pristine = false;
-      updatedFormElement.value.valid = this.validationCheck(
+      updatedFormElement.value.valid = validationCheck(
         updatedFormElement.value.data,
         updatedFormElement.validation
       );
