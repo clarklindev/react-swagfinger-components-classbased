@@ -1,6 +1,8 @@
 // actions
 import * as actionTypes from './actionsTypes';
-import axios from '../../axios-contacts';
+import axios from 'axios';
+import axiosInstance from '../../axios-contacts';
+const source = axios.CancelToken.source();
 
 export const contactCreate = (contact) => {
   return {
@@ -12,7 +14,7 @@ export const contactCreate = (contact) => {
 //async
 export const processContactCreate = (contact, callback) => {
   return (dispatch) => {
-    axios
+    axiosInstance
       .post('/contacts.json', contact)
       .then((response) => {
         dispatch(
@@ -39,7 +41,7 @@ export const contactDelete = (id) => {
 //async
 export const processContactDelete = (id) => {
   return (dispatch) => {
-    axios.delete(`/contacts/${id}.json`).then((response) => {
+    axiosInstance.delete(`/contacts/${id}.json`).then((response) => {
       console.log(response);
       dispatch(contactDelete(id));
     });
@@ -65,7 +67,7 @@ export const contactUpdate = (
 export const processContactUpdate = (contact, id, callback) => {
   console.log('UPDATTTTTTING: ', contact);
   return (dispatch) => {
-    axios
+    axiosInstance
       .put(`/contacts/${id}.json`, contact)
       .then((response) => {
         console.log('UPDATTTTTTING THEN...: ', contact);
@@ -101,11 +103,20 @@ export const fetchContactsFail = (error) => {
   };
 };
 
+export const fetchContactsCancel = () => {
+  source.cancel('Operation cancelled by the user.');
+  console.log('REQUEST CANCELLED!!!');
+  return {
+    type: actionTypes.FETCH_CONTACTS_CANCEL
+  };
+};
+
 // async constant
-export const fetchContacts = (signal) => {
+export const fetchContacts = () => {
   return (dispatch) => {
-    axios
-      .get('/contacts.json')
+    dispatch(fetchContactsStart());
+    axiosInstance
+      .get('/contacts.json', { cancelToken: source.token })
       .then((response) => {
         console.log('RESPONSE', response);
 
@@ -118,6 +129,9 @@ export const fetchContacts = (signal) => {
         dispatch(fetchContactsSuccess(fetchedContacts));
       })
       .catch((err) => {
+        if (axios.isCancel(err)) {
+          console.log('Request canceled ', err.message);
+        }
         dispatch(fetchContactsFail(err));
       });
   };
