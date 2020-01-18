@@ -216,7 +216,7 @@ class Auth extends Component {
             <form onSubmit={this.onSubmitHandler} autoComplete='off'>
               <InputContext.Provider
                 value={{
-                  changed: this.inputChangedHandler
+                  changed: this.inputChangedHandler.bind(this)
                 }}>
                 {formAll}
               </InputContext.Provider>
