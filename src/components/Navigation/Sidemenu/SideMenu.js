@@ -5,6 +5,10 @@ import Backdrop from '../../UI/Backdrop/Backdrop';
 import Utils from '../../../Utils';
 import Button from '../../UI/Button/Button';
 import Icon from '../../UI/InputComponents/Icon';
+
+//context
+import MenuContext from '../../../context/MenuContext';
+
 const sideMenu = (props) => {
   let classList = Utils.getClassNameString([
     classes.SideMenuBack,
@@ -30,7 +34,12 @@ const sideMenu = (props) => {
         </div>
 
         <nav>
-          <NavigationItems isAuthenticated={props.isAuth} />
+          <MenuContext.Provider
+            value={{
+              closeMenu: props.closed
+            }}>
+            <NavigationItems isAuthenticated={props.isAuth} />
+          </MenuContext.Provider>
         </nav>
       </div>
     </div>
