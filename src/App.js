@@ -27,9 +27,7 @@ class App extends Component {
   }
 
   componentWillUnmount() {
-    if (this.props.isLoading === true) {
-      this.props.onFetchContactsCancel();
-    }
+    this.props.onFetchContactsCancel();
   }
 
   render() {
