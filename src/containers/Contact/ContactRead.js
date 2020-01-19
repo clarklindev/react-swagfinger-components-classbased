@@ -5,6 +5,8 @@ import axios from '../../axios-contacts';
 import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
 import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
 import ListItem from '../../components/UI/InputComponents/ListItem';
+import Spinner from '../../components/UI/Spinner/Spinner';
+
 class ContactRead extends Component {
   constructor(props) {
     super(props);
@@ -109,7 +111,11 @@ class ContactRead extends Component {
 
     return (
       <div className={this.className}>
-        <DefaultPageLayout label='Contact Read'>{contact}</DefaultPageLayout>
+        {this.state.loadedContact ? (
+          <DefaultPageLayout label='Contact Read'>{contact}</DefaultPageLayout>
+        ) : (
+          <Spinner />
+        )}
       </div>
     );
   }
