@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import classes from './ContactUpdate.module.scss';
+import classes from './ContactCreateOrUpdate.module.scss';
 import Utils from '../../Utils';
 import axios from '../../axios-contacts';
 import Modal from '../../components/UI/Modal/Modal';
@@ -14,12 +14,12 @@ import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
 
 import { CheckValidity as validationCheck } from '../../shared/validation';
 
-class ContactUpdate extends Component {
+class ContactCreateOrUpdate extends Component {
   constructor(props) {
     super(props);
     this.className = Utils.getClassNameString([
-      classes.ContactUpdate, //css module
-      ContactUpdate.name
+      classes.ContactCreateOrUpdate, //css module
+      ContactCreateOrUpdate.name
     ]);
   }
 
@@ -307,11 +307,21 @@ class ContactUpdate extends Component {
           ].value.data;
         }
       }
-      return this.props.onContactUpdated(formData, this.state.id, () => {
-        console.log('CONTACT UPDATED: ', formData);
-        this.setState({ saving: false });
-        this.redirect();
-      });
+      if (this.state.id !== null) {
+        return this.props.onContactChanged(formData, this.state.id, () => {
+          console.log('CONTACT UPDATED: ', formData);
+          this.setState({ saving: false });
+          this.redirect();
+        });
+      }
+      //id is null...create mode
+      else {
+        return this.props.onContactCreated(formData, () => {
+          console.log('CONTACT CREATED', formData);
+          this.setState({ saving: false });
+          this.props.history.push('/phonebookadmin');
+        });
+      }
     }
   };
 
@@ -519,7 +529,10 @@ class ContactUpdate extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onContactUpdated: (form, id, callback) => {
+    onContactCreated: (form, callback) => {
+      dispatch(actions.processContactCreate(form, callback));
+    },
+    onContactChanged: (form, id, callback) => {
       dispatch(actions.processContactUpdate(form, id, callback));
     }
   };
@@ -527,4 +540,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   null,
   mapDispatchToProps
-)(withErrorHandler(ContactUpdate, axios));
+)(withErrorHandler(ContactCreateOrUpdate, axios));

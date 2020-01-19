@@ -10,8 +10,7 @@ import Phonebook from './containers/Phonebook/Phonebook';
 import Auth from './containers/Auth/Auth';
 import PhonebookAdmin from './containers/Phonebook/PhonebookAdmin';
 import ContactRead from './containers/Contact/ContactRead';
-import ContactCreate from './containers/Contact/ContactCreate';
-import ContactUpdate from './containers/Contact/ContactUpdate';
+import ContactCreateOrUpdate from './containers/Contact/ContactCreateOrUpdate';
 import Logout from './containers/Auth/Logout/Logout';
 import Faq from './containers/Faq/Faq';
 //actions
@@ -50,8 +49,8 @@ class App extends Component {
           <Route path='/phonebook' component={Phonebook} />
           <Route path='/contactread' component={ContactRead} />
           <Route path='/phonebookadmin' component={PhonebookAdmin} />
-          <Route path='/contactupdate' component={ContactUpdate} />
-          <Route path='/contactcreate' component={ContactCreate} />
+          <Route path='/contactupdate' component={ContactCreateOrUpdate} />
+          <Route path='/contactcreate' component={ContactCreateOrUpdate} />
           <Route path='/' exact component={PhonebookAdmin} />
           <Redirect to='/' />
         </Switch>
