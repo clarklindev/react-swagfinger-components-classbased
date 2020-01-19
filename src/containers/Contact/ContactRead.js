@@ -18,7 +18,8 @@ class ContactRead extends Component {
   }
 
   state = {
-    loadedContact: null
+    loadedContact: null,
+    id: null
   };
 
   componentDidMount() {
@@ -28,7 +29,7 @@ class ContactRead extends Component {
     if (id) {
       axios.get(`/contacts/${id}.json`).then((response) => {
         console.log(response);
-        this.setState({ loadedContact: response.data });
+        this.setState({ loadedContact: response.data, id: id });
       });
     }
   }

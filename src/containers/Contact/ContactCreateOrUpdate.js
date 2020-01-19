@@ -493,7 +493,7 @@ class ContactCreateOrUpdate extends Component {
     let formInputs = formElementsArray.map((each) => {
       return <ComponentFactory key={each.id} id={each.id} data={each.data} />;
     });
-
+    let query = new URLSearchParams(this.props.location.search).get('id');
     return (
       <React.Fragment>
         {/* add modal just in-case needed, show binds to state of true/false */}
@@ -502,7 +502,9 @@ class ContactCreateOrUpdate extends Component {
         </Modal>
 
         <div className={this.className}>
-          {this.state.loadedContact ? (
+          {(this.state.loadedContact && this.state.id !== null) ||
+          //if id does not exist
+          query === null ? (
             <DefaultPageLayout
               label={this.state.id ? 'Update Contact' : 'Create Contact'}>
               <form onSubmit={this.onSubmitHandler} autoComplete='off'>
