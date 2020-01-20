@@ -13,7 +13,6 @@ class Select extends Component {
   }
 
   state = {
-    selected: this.props.value.data,
     isOpen: false
   };
 
@@ -37,13 +36,8 @@ class Select extends Component {
   };
 
   onChangeHandler = (event) => {
-    // console.log('onChange:', event.target.value);
-    this.setState({
-      selected: event.target.value
-    });
-
     // The selected option element
-    this.context.changed(event, this.props.name);
+    this.context.changed(event.target.value, this.props.name);
   };
 
   //the 'value' prop on <select> element instead of 'selected' on <option>
@@ -53,12 +47,14 @@ class Select extends Component {
       tempClasses.push(classes.IsOpen);
     }
 
-    return (
+    console.log('FLU: ', this.props.value.data);
+
+    return this.props.value ? (
       <div className={this.className}>
         <select
           name={this.props.name}
           className={[...tempClasses].join('')}
-          value={this.state.selected} //default value / selected value
+          value={this.props.value.data}
           onChange={this.onChangeHandler}
           onClick={this.onClickHandler}
           onBlur={this.onBlurHandler}>
@@ -71,7 +67,7 @@ class Select extends Component {
           ))}
         </select>
       </div>
-    );
+    ) : null;
   }
 }
 
