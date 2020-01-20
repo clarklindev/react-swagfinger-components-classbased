@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import classes from './ContactRead.module.scss';
 import Utils from '../../Utils';
-import axios from '../../axios-contacts';
+import * as actions from '../../store/actions/index';
+
 import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
 import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
 import ListItem from '../../components/UI/InputComponents/ListItem';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import { connect } from 'react-redux';
 
 class ContactRead extends Component {
   constructor(props) {
@@ -18,7 +20,6 @@ class ContactRead extends Component {
   }
 
   state = {
-    loadedContact: null,
     id: null
   };
 
@@ -27,17 +28,14 @@ class ContactRead extends Component {
     //get id in url query params
     const id = query.get('id');
     if (id) {
-      axios.get(`/contacts/${id}.json`).then((response) => {
-        console.log(response);
-        this.setState({ loadedContact: response.data, id: id });
-      });
+      this.props.onFetchContact(id);
     }
   }
   render() {
     /* full contact details */
     let contact = '';
-    if (this.state.loadedContact) {
-      let contactnumbers = this.state.loadedContact['contactnumbers'].map(
+    if (this.props.activeContact) {
+      let contactnumbers = this.props.activeContact['contactnumbers'].map(
         (each, index) => {
           return each !== '' ? (
             <ListItem displayText={each}></ListItem>
@@ -46,7 +44,7 @@ class ContactRead extends Component {
           );
         }
       );
-      let emails = this.state.loadedContact['emails'].map((each, index) => {
+      let emails = this.props.activeContact['emails'].map((each, index) => {
         return each !== '' ? (
           <ListItem displayText={each}></ListItem>
         ) : (
@@ -61,7 +59,7 @@ class ContactRead extends Component {
             data={{
               label: 'Name',
               elementtype: 'input',
-              value: { data: this.state.loadedContact['name'] },
+              value: { data: this.props.activeContact['name'] },
               readOnly: true
             }}
           />
@@ -69,7 +67,7 @@ class ContactRead extends Component {
             data={{
               label: 'Last name',
               elementtype: 'input',
-              value: { data: this.state.loadedContact['lastname'] },
+              value: { data: this.props.activeContact['lastname'] },
               readOnly: true
             }}
           />
@@ -93,7 +91,7 @@ class ContactRead extends Component {
             data={{
               label: 'Contact Preference',
               elementtype: 'input',
-              value: { data: this.state.loadedContact['contactpreference'] },
+              value: { data: this.props.activeContact['contactpreference'] },
               readOnly: true
             }}
           />
@@ -102,7 +100,7 @@ class ContactRead extends Component {
             data={{
               label: 'Notes',
               elementtype: 'input',
-              value: { data: this.state.loadedContact['notes'] },
+              value: { data: this.props.activeContact['notes'] },
               readOnly: true
             }}
           />
@@ -112,7 +110,7 @@ class ContactRead extends Component {
 
     return (
       <div className={this.className}>
-        {this.state.loadedContact ? (
+        {this.props.activeContact ? (
           <DefaultPageLayout label='Contact Read'>{contact}</DefaultPageLayout>
         ) : (
           <Spinner />
@@ -122,4 +120,20 @@ class ContactRead extends Component {
   }
 }
 
-export default ContactRead;
+const mapStateToProps = (state) => {
+  return {
+    storedPhonebook: state.contact.phoneBook,
+    isLoading: state.contact.loading,
+    activeContact: state.contact.activeContact
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onFetchContact: (id) => {
+      dispatch(actions.processFetchSingleContact(id));
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactRead);

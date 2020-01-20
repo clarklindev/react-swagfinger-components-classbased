@@ -1,8 +1,10 @@
 // reducer
 import * as actionTypes from '../actions/actionsTypes';
 import { updateObject } from '../../shared/utility';
+
 const initialState = {
   phoneBook: [],
+  activeContact: null,
   loading: false
 };
 const addContact = (state, action) => {
@@ -39,6 +41,38 @@ const removeContact = (state, action) => {
   return updateObject(state, { phoneBook: updatedArray });
 };
 
+//contacts
+const fetchContactsStart = (state, action) => {
+  return updateObject(state, { loading: true });
+};
+
+const fetchContactsFail = (state, action) => {
+  return updateObject(state, { loading: false });
+};
+
+const fetchContactsSuccess = (state, action) => {
+  return updateObject(state, { phoneBook: action.contacts, loading: false });
+};
+
+//single contact
+const fetchSingleContactStart = (state, action) => {
+  return updateObject(state, { loading: true });
+};
+
+const fetchSingleContactSuccess = (state, action) => {
+  return updateObject(state, {
+    loading: false,
+    activeContact: action.contactData
+  });
+};
+
+const fetchSingleContactFail = (state, action) => {
+  return updateObject(state, {
+    state,
+    loading: false
+  });
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     //add
@@ -51,25 +85,25 @@ const reducer = (state = initialState, action) => {
     case actionTypes.CONTACT_DELETE:
       return removeContact(state, action);
 
-    //start
+    //CONTACTS
     case actionTypes.FETCH_CONTACTS_START:
-      return {
-        ...state,
-        loading: true
-      };
+      return fetchContactsStart(state, action);
 
     case actionTypes.FETCH_CONTACTS_FAIL:
-      return {
-        ...state,
-        loading: false
-      };
+      return fetchContactsFail(state, action);
 
     case actionTypes.FETCH_CONTACTS_SUCCESS:
-      return {
-        ...state,
-        phoneBook: action.contacts,
-        loading: false
-      };
+      return fetchContactsSuccess(state, action);
+
+    //SINGLE CONTACT
+    case actionTypes.FETCH_SINGLECONTACT_START:
+      return fetchSingleContactStart(state, action);
+
+    case actionTypes.FETCH_SINGLECONTACT_SUCCESS:
+      return fetchSingleContactSuccess(state, action);
+
+    case actionTypes.FETCH_SINGLECONTACT_FAIL:
+      return fetchSingleContactFail(state, action);
     default:
       return state;
   }

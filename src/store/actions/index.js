@@ -2,7 +2,8 @@ export {
   processContactCreate,
   processContactDelete,
   processContactUpdate,
-  fetchContacts,
+  processFetchContacts,
+  processFetchSingleContact,
   fetchContactsCancel
 } from './contact';
 

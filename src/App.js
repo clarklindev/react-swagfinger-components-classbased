@@ -75,7 +75,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onTryAutoSignup: () => dispatch(actions.authCheckState()),
     onFetchContacts: () => {
-      dispatch(actions.fetchContacts());
+      dispatch(actions.processFetchContacts());
     },
     onFetchContactsCancel: () => {
       dispatch(actions.fetchContactsCancel());

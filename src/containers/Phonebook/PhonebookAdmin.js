@@ -11,6 +11,7 @@ import Icon from '../../components/UI/InputComponents/Icon';
 import InputContext from '../../context/InputContext';
 import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
 import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 class PhonebookAdmin extends Component {
   constructor(props) {
@@ -148,38 +149,45 @@ class PhonebookAdmin extends Component {
 
     return (
       <div className={classes.PhonebookAdmin}>
-        <DefaultPageLayout label='Phonebook Admin'>
-          <InputContext.Provider
-            value={{
-              changed: (event) => this.searchChangedHandler(event),
-              clear: this.searchClearHandler
-            }}>
-            <SearchFilter value={this.state.filterText} />
-          </InputContext.Provider>
-          <ComponentFactory
-            data={{
-              elementtype: 'list',
-              label: 'Contacts',
-              value: { data: filtered }
-            }}
-          />
-          <button
-            className={classes.AddButton}
-            title='Add'
-            onClick={() => {
-              this.props.history.push('contactcreate');
-            }}>
-            <Icon iconstyle='fas' code='plus' size='sm' />
-            <p>Add Contact</p>
-          </button>
-        </DefaultPageLayout>
+        {this.props.isLoading ? (
+          <Spinner />
+        ) : (
+          <DefaultPageLayout label='Phonebook Admin'>
+            <InputContext.Provider
+              value={{
+                changed: (event) => this.searchChangedHandler(event),
+                clear: this.searchClearHandler
+              }}>
+              <SearchFilter value={this.state.filterText} />
+            </InputContext.Provider>
+            <ComponentFactory
+              data={{
+                elementtype: 'list',
+                label: 'Contacts',
+                value: { data: filtered }
+              }}
+            />
+            <button
+              className={classes.AddButton}
+              title='Add'
+              onClick={() => {
+                this.props.history.push('contactcreate');
+              }}>
+              <Icon iconstyle='fas' code='plus' size='sm' />
+              <p>Add Contact</p>
+            </button>
+          </DefaultPageLayout>
+        )}
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => {
-  return { storedPhonebook: state.contact.phoneBook };
+  return {
+    storedPhonebook: state.contact.phoneBook,
+    isLoading: state.contact.loading
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {

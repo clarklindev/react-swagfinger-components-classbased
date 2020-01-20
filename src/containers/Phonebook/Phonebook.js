@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import InputContext from '../../context/InputContext';
 import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
 import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
-
+import Spinner from '../../components/UI/Spinner/Spinner';
 class Phonebook extends Component {
   constructor(props) {
     super(props);
@@ -124,22 +124,26 @@ class Phonebook extends Component {
 
     return (
       <div className={classes.Phonebook}>
-        <DefaultPageLayout label='Phonebook'>
-          <InputContext.Provider
-            value={{
-              changed: (event) => this.searchChangedHandler(event),
-              clear: this.searchClearHandler
-            }}>
-            <SearchFilter value={this.state.filterText} />
-          </InputContext.Provider>
-          <ComponentFactory
-            data={{
-              label: 'Contacts',
-              elementtype: 'list',
-              value: { data: filtered }
-            }}
-          />
-        </DefaultPageLayout>
+        {this.props.isLoading ? (
+          <Spinner />
+        ) : (
+          <DefaultPageLayout label='Phonebook'>
+            <InputContext.Provider
+              value={{
+                changed: (event) => this.searchChangedHandler(event),
+                clear: this.searchClearHandler
+              }}>
+              <SearchFilter value={this.state.filterText} />
+            </InputContext.Provider>
+            <ComponentFactory
+              data={{
+                label: 'Contacts',
+                elementtype: 'list',
+                value: { data: filtered }
+              }}
+            />
+          </DefaultPageLayout>
+        )}
       </div>
     );
   }

@@ -112,7 +112,7 @@ export const fetchContactsCancel = () => {
 };
 
 // async constant
-export const fetchContacts = () => {
+export const processFetchContacts = () => {
   return (dispatch) => {
     dispatch(fetchContactsStart());
     axiosInstance
@@ -133,6 +133,48 @@ export const fetchContacts = () => {
           console.log('Request canceled ', err.message);
         }
         dispatch(fetchContactsFail(err));
+      });
+  };
+};
+//=======================================================
+//fetching single contact
+
+export const fetchSingleContactStart = () => {
+  return {
+    type: actionTypes.FETCH_SINGLECONTACT_START
+  };
+};
+
+export const fetchSingleContactSuccess = (contact) => {
+  return {
+    type: actionTypes.FETCH_SINGLECONTACT_SUCCESS,
+    contactData: contact
+  };
+};
+
+export const fetchSingleContactFail = (error) => {
+  return {
+    type: actionTypes.FETCH_SINGLECONTACT_FAIL,
+    error: error
+  };
+};
+
+// async constant
+export const processFetchSingleContact = (id) => {
+  return (dispatch) => {
+    dispatch(fetchSingleContactStart());
+    axiosInstance
+      .get(`/contacts/${id}.json`, { cancelToken: source.token })
+      .then((response) => {
+        console.log('RESPONSE', response);
+        //add id
+        dispatch(fetchSingleContactSuccess({ ...response.data, id: id }));
+      })
+      .catch((err) => {
+        if (axios.isCancel(err)) {
+          console.log('Request canceled ', err.message);
+        }
+        dispatch(fetchSingleContactFail(err));
       });
   };
 };
