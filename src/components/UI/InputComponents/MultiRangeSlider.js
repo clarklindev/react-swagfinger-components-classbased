@@ -177,7 +177,7 @@ class MultiRangeSlider extends Component {
       : this.stateMaxHandler(testValue);
   };
 
-  onBlurHandler = (event, index) => {
+  onBlurHandler = (index, event) => {
     //console.log('ONBLUR: ', index);
     //check if incoming is a number
 
@@ -316,7 +316,7 @@ class MultiRangeSlider extends Component {
             // onClick={(event) => this.onClickHandler(0, event)}
             onChange={(event) => this.labelUpdateHandler(0, event)}
             onBlur={(event) => {
-              this.onBlurHandler(event, 0);
+              this.onBlurHandler(0, event);
             }}
           />
         </div>
@@ -354,7 +354,7 @@ class MultiRangeSlider extends Component {
             // onClick={(event) => this.onClickHandler(1, event)}
             onChange={(event) => this.labelUpdateHandler(1, event)}
             onBlur={(event) => {
-              this.onBlurHandler(event, 1);
+              this.onBlurHandler(1, event);
             }}
           />
         </div>
