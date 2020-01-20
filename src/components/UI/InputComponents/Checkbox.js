@@ -6,7 +6,13 @@ class Checkbox extends Component {
     return (
       <div className={classes.Checkbox}>
         <label className={classes.Container}>
-          <input type='checkbox' />
+          <input
+            type='checkbox'
+            defaultChecked={this.props.checked}
+            onChange={(event) =>
+              this.props.onChange(this.props.index, event.target.checked, event)
+            }
+          />
           <span className={classes.Checkmark}></span>
           {this.props.label}
         </label>

@@ -1,12 +1,22 @@
 import React, { Component } from 'react';
 import classes from './Toggle.module.scss';
+import InputContext from '../../../context/InputContext';
 
 class Toggle extends Component {
+  static contextType = InputContext;
+
   render() {
     return (
       <div className={classes.Toggle}>
         <label className={classes.Switch}>
-          <input type='checkbox' />
+          <input
+            name={this.props.name}
+            type='checkbox'
+            defaultChecked={this.props.value.data}
+            onChange={(event) => {
+              this.context.changed(event.target.checked, this.props.name);
+            }}
+          />
           <span className={[classes.Slider, classes.Round].join(' ')}></span>
         </label>
       </div>
