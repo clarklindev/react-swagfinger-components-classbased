@@ -52,7 +52,7 @@
       border-radius: var(--borderradius);
       text-align: center;
       font: inherit;
-      font-size: 0.9em;
+      font-size: var(--fontsizedefault);
       color: var(--colordefault);
       &:focus {
         outline: none;

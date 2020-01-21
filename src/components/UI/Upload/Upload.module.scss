@@ -19,6 +19,7 @@
       text-align: left;
       color: var(--colordefault);
       font: inherit;
+      font-size: var(--fontsizedefault);
       &.Hidden {
         display: none;
       }

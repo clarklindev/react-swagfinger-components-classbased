@@ -1,5 +1,6 @@
 .RadioButton {
   /* Customize the label (the Container) */
+
   .Container {
     display: flex;
     align-items: center;
@@ -7,6 +8,8 @@
     margin-bottom: 5px;
     color: var(--colordefault);
     cursor: pointer;
+    font: inherit;
+    font-size: var(--fontsizedefault);
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;

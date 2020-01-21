@@ -13,6 +13,8 @@
     display: flex;
     justify-content: space-between;
     cursor: pointer;
+    font: inherit;
+    font-size: var(--fontsizedefault);
   }
   .AccordionContent {
     padding: 0 var(--paddingdefault);
@@ -21,6 +23,8 @@
     visibility: hidden;
     max-height: 0px;
     transition: all 0.5s, opacity 0.5s;
+    font: inherit;
+    font-size: var(--fontsizedefault);
     &.Active {
       padding: 0 var(--paddingdefault) var(--paddingdefault);
       visibility: visible;

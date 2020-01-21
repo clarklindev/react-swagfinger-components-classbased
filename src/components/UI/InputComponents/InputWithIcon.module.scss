@@ -14,6 +14,7 @@
     flex-shrink: 1;
     border: none;
     font: inherit;
+    font-size: var(--fontsizedefault);
     padding: var(--paddinginput);
     color: var(--colordefault);
     &:focus {
