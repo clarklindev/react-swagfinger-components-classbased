@@ -159,7 +159,10 @@ class ContactCreateOrUpdate extends Component {
             { value: 'monthly', displaytext: 'Monthly' }
           ]
         },
-        value: { data: '', valid: true, touched: false, pristine: true }
+        value: [
+          { data: 'weekly', valid: true, touched: false, pristine: true },
+          { data: 'monthly', valid: true, touched: false, pristine: true }
+        ]
       },
 
       socialmedia: {
