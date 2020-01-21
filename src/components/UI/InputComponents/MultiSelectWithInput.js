@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Utils from '../../../Utils';
 import classes from './MultiSelectWithInput.module.scss';
 import InputContext from '../../../context/InputContext';
-
+import Button from '../../UI/Button/Button';
 import Icon from './Icon';
 
 class MultiSelectWithInput extends Component {
@@ -69,7 +69,6 @@ class MultiSelectWithInput extends Component {
         console.log('UPDATED STATE = true');
         updatedState = true;
       }
-      console.log('index: ', index, ', dropdownSelected: ', updatedState);
       dropdownSelectedList[index] = updatedState;
       return {
         dropdownSelectedList: dropdownSelectedList
@@ -94,8 +93,6 @@ class MultiSelectWithInput extends Component {
           let tempKey = val.data === null ? '' : val.data.key;
           //console.log('val', val);
           //console.log('tempKey: ', tempKey);
-          console.log('index', index);
-
           let tempVal = val.data === null ? '' : val.data.value;
           let tempClasses = [];
           if (this.state.isOpenList[index] === true) {
@@ -107,7 +104,6 @@ class MultiSelectWithInput extends Component {
             (tempKey !== '' && tempKey !== undefined && tempKey !== null) ||
             (tempVal !== undefined && tempVal !== '')
           ) {
-            console.log('tempKey:', tempKey, 'tempVal:', tempVal);
             dropdownClasses.push(classes.ShowSocial);
           }
 
@@ -142,7 +138,6 @@ class MultiSelectWithInput extends Component {
                       name={this.props.name}
                       // disabled={tempKey === (undefined || null)}
                       onChange={(event) => {
-                        console.log('Key: ', tempKey, ' val: ', tempVal);
                         //pass in the name of the prop, and the index (if array item)
                         this.context.changed(
                           { key: tempKey, value: event.target.value },
@@ -182,7 +177,7 @@ class MultiSelectWithInput extends Component {
           ); //return
         })}
 
-        <button
+        <Button
           title='Add'
           className={classes.AddButton}
           onClick={(event) => {
@@ -190,7 +185,7 @@ class MultiSelectWithInput extends Component {
           }}>
           <Icon iconstyle='fas' code='plus' size='sm' />
           <p>Add</p>
-        </button>
+        </Button>
       </div>
     );
   }

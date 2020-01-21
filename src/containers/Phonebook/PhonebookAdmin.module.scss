@@ -1,25 +1,7 @@
 .PhonebookAdmin {
-  .AddButton {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    p {
-      margin-left: 5px;
-    }
-  }
-
   .ContactButtons {
     button {
       margin-left: 5px;
     }
-  }
-
-  a {
-    text-decoration: 'none';
-    color: 'black';
-  }
-
-  p {
-    line-height: 18px;
   }
 }

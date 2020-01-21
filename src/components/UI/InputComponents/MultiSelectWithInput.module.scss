@@ -79,18 +79,6 @@
     }
   }
 
-  .AddButton {
-    color: var(--colordefault);
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    line-height: 1em;
-    margin: 0;
-    p {
-      margin-left: 5px;
-    }
-  }
-
   .RemoveButton {
     box-sizing: border-box;
     margin-left: 10px;

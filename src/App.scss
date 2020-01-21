@@ -9,6 +9,7 @@
   --colorborder: #dedede;
   --borderradius: 5px;
   --borderwidth: 1px;
+  --fontsizedefault: 1em;
   --paddingdefault: 20px;
   --paddinginput: 10px 10px;
   --dropshadowdefault: drop-shadow(0 1px 1px #f3f3f3);
@@ -21,7 +22,6 @@ select {
 input[type='checkbox'] {
   height: 20px;
   padding: 15px;
-  border: 1px solid red;
 }
 ::placeholder {
   color: var(--colorplaceholder);

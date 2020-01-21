@@ -4,6 +4,7 @@ import classes from './MultiInput.module.scss';
 import InputContext from '../../../context/InputContext';
 import Icon from '../InputComponents/Icon';
 import PropTypes from 'prop-types';
+import Button from '../../UI/Button/Button';
 
 class MultiInput extends Component {
   static contextType = InputContext;
@@ -47,7 +48,7 @@ class MultiInput extends Component {
                 }
               />
               {this.props.value.length > 1 ? (
-                <button
+                <Button
                   title='Delete'
                   type='button'
                   className={classes.RemoveButton}
@@ -55,18 +56,17 @@ class MultiInput extends Component {
                     this.context.removeinput(event, this.props.name, index)
                   }>
                   <Icon iconstyle='far' code='trash-alt' size='sm' />
-                </button>
+                </Button>
               ) : null}
             </div>
           );
         })}
-        <button
+        <Button
           title='Add'
-          className={classes.AddButton}
           onClick={(event) => this.context.addinput(event, this.props.name)}>
           <Icon iconstyle='fas' code='plus' size='sm' />
           <p>Add</p>
-        </button>
+        </Button>
       </div>
     );
   }

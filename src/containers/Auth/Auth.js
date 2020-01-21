@@ -154,10 +154,12 @@ class Auth extends Component {
         {formElementsArray.map((item) => (
           <ComponentFactory key={item.id} id={item.id} data={item.data} />
         ))}
-        <Button btnType='Success'>Submit</Button>
-        <Button btnType='Danger' onClick={this.switchAuthModeHandler}>
-          Switch to {this.state.isSignUp ? 'SIGN-IN' : 'SIGN-UP'}
-        </Button>
+        <div className={classes.ButtonWrapper}>
+          <Button btnType='NoStyle' onClick={this.switchAuthModeHandler}>
+            switch to {this.state.isSignUp ? 'Login' : 'Sign-up'}
+          </Button>
+          <Button>Submit</Button>
+        </div>
       </React.Fragment>
     );
 
@@ -181,7 +183,14 @@ class Auth extends Component {
         {authRedirect}
         {errorMessage}
         <div className={classes.Auth}>
-          <DefaultPageLayout label={this.props.loading ? '' : 'Login'}>
+          <DefaultPageLayout
+            label={
+              this.props.loading
+                ? ''
+                : this.state.isSignUp
+                ? 'Sign-up'
+                : 'Login'
+            }>
             <form onSubmit={this.onSubmitHandler} autoComplete='off'>
               <InputContext.Provider
                 value={{

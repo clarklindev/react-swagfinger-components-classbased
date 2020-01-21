@@ -12,7 +12,7 @@ import InputContext from '../../context/InputContext';
 import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
 import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
 import Spinner from '../../components/UI/Spinner/Spinner';
-
+import Button from '../../components/UI/Button/Button';
 class PhonebookAdmin extends Component {
   constructor(props) {
     super(props);
@@ -167,7 +167,7 @@ class PhonebookAdmin extends Component {
                 value: { data: filtered }
               }}
             />
-            <button
+            <Button
               className={classes.AddButton}
               title='Add'
               onClick={() => {
@@ -175,7 +175,7 @@ class PhonebookAdmin extends Component {
               }}>
               <Icon iconstyle='fas' code='plus' size='sm' />
               <p>Add Contact</p>
-            </button>
+            </Button>
           </DefaultPageLayout>
         )}
       </div>
