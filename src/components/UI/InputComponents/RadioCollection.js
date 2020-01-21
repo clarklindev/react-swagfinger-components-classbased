@@ -11,11 +11,9 @@ class RadioCollection extends Component {
   };
 
   render() {
-    console.log('poo: ', this.props.value.data);
     return (
       <div className={classes.RadioCollection}>
         {this.props.elementconfig.options.map((each, index) => {
-          console.log('bombo: ', each.value, this.props.value.data);
           return this.props.value.data !== undefined ? (
             <RadioButton
               {...this.props}

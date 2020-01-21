@@ -47,8 +47,6 @@ class Select extends Component {
       tempClasses.push(classes.IsOpen);
     }
 
-    console.log('FLU: ', this.props.value.data);
-
     return this.props.value ? (
       <div className={this.className}>
         <select
