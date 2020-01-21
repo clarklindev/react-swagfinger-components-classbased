@@ -73,6 +73,48 @@ class ContactRead extends Component {
           />
           <ComponentFactory
             data={{
+              label: 'Gender',
+              elementtype: 'input',
+              value: { data: this.props.activeContact['gender'] },
+              readOnly: true
+            }}
+          />
+          <ComponentFactory
+            data={{
+              label: 'Height',
+              elementtype: 'input',
+              value: { data: this.props.activeContact['height'] },
+              readOnly: true
+            }}
+          />
+          <ComponentFactory
+            data={{
+              label: 'Weight',
+              elementtype: 'input',
+              value: { data: this.props.activeContact['weight'] },
+              readOnly: true
+            }}
+          />
+          <ComponentFactory
+            data={{
+              label: 'Salary',
+              elementtype: 'input',
+              value: { data: this.props.activeContact['salary'].join('-') },
+              readOnly: true
+            }}
+          />
+          <ComponentFactory
+            data={{
+              label: 'Date of birth',
+              elementtype: 'input',
+              value: {
+                data: this.props.activeContact['dateofbirth']
+              },
+              readOnly: true
+            }}
+          />
+          <ComponentFactory
+            data={{
               label: 'Contact number',
               elementtype: 'list',
               value: { data: contactnumbers }
@@ -95,12 +137,51 @@ class ContactRead extends Component {
               readOnly: true
             }}
           />
-
+          <ComponentFactory
+            data={{
+              label: 'Newsletter',
+              elementtype: 'input',
+              value: {
+                data: this.props.activeContact['newsletter']
+                  .map((each) => {
+                    if (each.value === true) {
+                      return each.key;
+                    }
+                  })
+                  .join(', ')
+              },
+              readOnly: true
+            }}
+          />
+          <ComponentFactory
+            data={{
+              label: 'Social Media',
+              elementtype: 'list',
+              value: {
+                data: this.props.activeContact['socialmedia'].map((each) => {
+                  return (
+                    <ListItem
+                      className={classes.ListItem}
+                      displayText={`${each.key}|${each.value}`}></ListItem>
+                  );
+                })
+              },
+              readOnly: true
+            }}
+          />
           <ComponentFactory
             data={{
               label: 'Notes',
               elementtype: 'input',
               value: { data: this.props.activeContact['notes'] },
+              readOnly: true
+            }}
+          />
+          <ComponentFactory
+            data={{
+              label: 'Hide profile',
+              elementtype: 'input',
+              value: { data: this.props.activeContact['privateprofile'] },
               readOnly: true
             }}
           />
