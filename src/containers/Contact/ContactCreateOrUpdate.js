@@ -99,7 +99,10 @@ class ContactCreateOrUpdate extends Component {
         label: 'Salary',
         validation: {},
         elementconfig: { min: 0, max: 15000 },
-        value: [{ data: null, valid: true, touched: false, pristine: true }]
+        value: [
+          { data: null, valid: true, touched: false, pristine: true },
+          { data: null, valid: true, touched: false, pristine: true }
+        ]
       },
 
       dateofbirth: {

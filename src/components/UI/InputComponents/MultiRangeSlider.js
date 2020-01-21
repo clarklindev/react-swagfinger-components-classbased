@@ -69,12 +69,18 @@ class MultiRangeSlider extends Component {
     ) {
       //we want to still store the actual values in the database, the display values should be converted from the actual values
       //update positions on screen
-      let tempLabelMin = this.restrictActualBoundaries(min.data, 0);
+      let findMin = min.data === null ? this.props.elementconfig.min : min.data;
+      let tempLabelMin = this.restrictActualBoundaries(findMin, 0);
       let convertedMin = this.convertToDisplayValue(tempLabelMin, 0);
+      this.populateSlider(convertedMin, 0);
+
       this.stateDisplayValuesHandler(convertedMin, 0); //set state
 
-      let tempLabelMax = this.restrictActualBoundaries(max.data, 1);
+      let findMax = max.data === null ? this.props.elementconfig.max : max.data;
+      let tempLabelMax = this.restrictActualBoundaries(findMax, 1);
       let convertedMax = this.convertToDisplayValue(tempLabelMax, 1);
+      this.populateSlider(convertedMax, 1);
+
       this.stateDisplayValuesHandler(convertedMax, 1); //set state
 
       //actual values
@@ -267,7 +273,6 @@ class MultiRangeSlider extends Component {
   populateSlider = (positionOnRail, index = this.state.currentindex) => {
     //calculate slider values - in relation to current values ranges...
     let tempActual = this.convertToActualValue(positionOnRail, index);
-    console.log('ACTUAL: ', tempActual);
     //keep within bounds of limits
     let tempActualRestricted = this.restrictActualBoundaries(tempActual, index);
 
@@ -283,12 +288,10 @@ class MultiRangeSlider extends Component {
       this.stateMaxHandler(tempActualRestricted);
     }
     let tempConverted = this.convertToDisplayValue(tempActualRestricted, index);
-    console.log('DISPLAY: ', tempConverted);
     this.stateDisplayValuesHandler(tempConverted, index);
   };
 
   onMouseUpHandler = (event) => {
-    console.log('UP');
     document.removeEventListener('mouseup', this.onMouseUpHandler);
     document.removeEventListener('mousemove', this.onMouseMoveHandler);
   };
