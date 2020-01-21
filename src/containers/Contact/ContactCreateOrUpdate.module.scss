@@ -13,9 +13,11 @@
     text-align: left;
   }
 
+  // submit input element
   input {
     cursor: text;
     font: inherit;
+    font-size: var(--fontsizedefault);
     color: var(--colordefault);
   }
 }
