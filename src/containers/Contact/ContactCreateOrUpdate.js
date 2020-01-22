@@ -31,7 +31,13 @@ class ContactCreateOrUpdate extends Component {
         label: 'Name',
         validation: { required: true },
         elementconfig: { type: 'text', placeholder: 'your name' },
-        value: { data: '', valid: false, touched: false, pristine: true }
+        value: {
+          data: '',
+          valid: false,
+          touched: false,
+          pristine: true,
+          errors: null
+        }
       },
 
       lastname: {
@@ -40,7 +46,13 @@ class ContactCreateOrUpdate extends Component {
         label: 'Last name',
         validation: { required: true },
         elementconfig: { type: 'text', placeholder: 'your lastname' },
-        value: { data: '', valid: false, touched: false, pristine: true }
+        value: {
+          data: '',
+          valid: false,
+          touched: false,
+          pristine: true,
+          errors: null
+        }
       },
 
       upload: {
@@ -49,7 +61,13 @@ class ContactCreateOrUpdate extends Component {
         label: 'Upload',
         validation: {},
         elementconfig: {},
-        value: { data: '', valid: true, touced: false, pristine: true }
+        value: {
+          data: '',
+          valid: true,
+          touced: false,
+          pristine: true,
+          errors: null
+        }
       },
 
       gender: {
@@ -64,7 +82,13 @@ class ContactCreateOrUpdate extends Component {
             { value: 'female', displaytext: 'Female' }
           ]
         },
-        value: { data: '', valid: false, touched: false, pristine: true }
+        value: {
+          data: '',
+          valid: false,
+          touched: false,
+          pristine: true,
+          errors: null
+        }
       },
 
       height: {
@@ -77,7 +101,13 @@ class ContactCreateOrUpdate extends Component {
           min: 1.4,
           max: 1.7
         },
-        value: { data: '', valid: false, touched: false, pristine: true }
+        value: {
+          data: '',
+          valid: false,
+          touched: false,
+          pristine: true,
+          errors: null
+        }
       },
 
       weight: {
@@ -90,7 +120,13 @@ class ContactCreateOrUpdate extends Component {
           min: 40,
           max: 150
         },
-        value: { data: '', valid: false, touched: false, pristine: true }
+        value: {
+          data: '',
+          valid: false,
+          touched: false,
+          pristine: true,
+          errors: null
+        }
       },
 
       salary: {
@@ -100,8 +136,20 @@ class ContactCreateOrUpdate extends Component {
         validation: {},
         elementconfig: { min: 0, max: 15000 },
         value: [
-          { data: null, valid: true, touched: false, pristine: true },
-          { data: null, valid: true, touched: false, pristine: true }
+          {
+            data: null,
+            valid: true,
+            touched: false,
+            pristine: true,
+            errors: null
+          },
+          {
+            data: null,
+            valid: true,
+            touched: false,
+            pristine: true,
+            errors: null
+          }
         ]
       },
 
@@ -111,7 +159,13 @@ class ContactCreateOrUpdate extends Component {
         label: 'Date of birth',
         validation: { required: true },
         elementconfig: { type: 'text', placeholder: 'Enter date of birth' },
-        value: { data: '', valid: false, touched: false, pristine: true }
+        value: {
+          data: '',
+          valid: false,
+          touched: false,
+          pristine: true,
+          errors: null
+        }
       },
 
       contactnumbers: {
@@ -120,7 +174,15 @@ class ContactCreateOrUpdate extends Component {
         label: 'Contact',
         validation: { required: true },
         elementconfig: { type: 'text', placeholder: 'your number' },
-        value: [{ data: '', valid: false, touched: false, pristine: true }]
+        value: [
+          {
+            data: '',
+            valid: false,
+            touched: false,
+            pristine: true,
+            errors: null
+          }
+        ]
       },
 
       emails: {
@@ -129,7 +191,15 @@ class ContactCreateOrUpdate extends Component {
         label: 'Email',
         validation: { required: true },
         elementconfig: { type: 'text', placeholder: 'your email' },
-        value: [{ data: '', valid: false, touched: false, pristine: true }]
+        value: [
+          {
+            data: '',
+            valid: false,
+            touched: false,
+            pristine: true,
+            errors: null
+          }
+        ]
       },
 
       contactpreference: {
@@ -145,7 +215,13 @@ class ContactCreateOrUpdate extends Component {
             { value: 'phone', displaytext: 'Phone' }
           ]
         },
-        value: { data: '', valid: true, touched: false, pristine: true }
+        value: {
+          data: '',
+          valid: true,
+          touched: false,
+          pristine: true,
+          errors: null
+        }
       },
 
       newsletter: {
@@ -160,8 +236,20 @@ class ContactCreateOrUpdate extends Component {
           ]
         },
         value: [
-          { data: 'weekly', valid: true, touched: false, pristine: true },
-          { data: 'monthly', valid: true, touched: false, pristine: true }
+          {
+            data: 'weekly',
+            valid: true,
+            touched: false,
+            pristine: true,
+            errors: null
+          },
+          {
+            data: 'monthly',
+            valid: true,
+            touched: false,
+            pristine: true,
+            errors: null
+          }
         ]
       },
 
@@ -183,7 +271,15 @@ class ContactCreateOrUpdate extends Component {
             { value: 'pinterest', displaytext: 'Pinterest' }
           ]
         },
-        value: [{ data: null, valid: true, touched: false, pristine: true }]
+        value: [
+          {
+            data: null,
+            valid: true,
+            touched: false,
+            pristine: true,
+            errors: null
+          }
+        ]
       },
 
       notes: {
@@ -192,7 +288,13 @@ class ContactCreateOrUpdate extends Component {
         label: 'Notes',
         validation: { required: false },
         elementconfig: { type: 'text', placeholder: 'your notes' },
-        value: { data: '', valid: false, touched: false, pristine: true }
+        value: {
+          data: '',
+          valid: false,
+          touched: false,
+          pristine: true,
+          errors: null
+        }
       },
 
       privateprofile: {
@@ -201,7 +303,13 @@ class ContactCreateOrUpdate extends Component {
         label: 'Hide profile',
         validation: {},
         elementconfig: {},
-        value: { data: null, valid: false, touched: false, pristine: true }
+        value: {
+          data: null,
+          valid: false,
+          touched: false,
+          pristine: true,
+          errors: null
+        }
       }
     },
 
@@ -230,29 +338,35 @@ class ContactCreateOrUpdate extends Component {
 
         //map each key of contact (there are inputs/ input sets)
         Object.keys(response.data).map((item) => {
+          let val = null;
           //check if whats coming back from firebase is an array...
-          let val = Array.isArray(response.data[item])
-            ? response.data[item].map((each) => {
-                return {
-                  data: each,
-                  valid: validationCheck(
-                    each,
-                    this.state.form[item].validation
-                  ),
-                  touched: false,
-                  pristine: true
-                };
-              }) //return array of values
-            : {
-                data: response.data[item], //value at the key
-                valid: validationCheck(
-                  response.data[item],
-                  this.state.form[item].validation
-                ),
+          if (Array.isArray(response.data[item])) {
+            val = response.data[item].map((each) => {
+              let validation = validationCheck(
+                each,
+                this.state.form[item].validation
+              );
+              return {
+                data: each,
+                valid: validation.isValid,
+                errors: validation.errors,
                 touched: false,
                 pristine: true
-              }; //return single value
-
+              };
+            }); //return array of values
+          } else {
+            let validation = validationCheck(
+              response.data[item],
+              this.state.form[item].validation
+            );
+            val = {
+              data: response.data[item], //value at the key
+              valid: validation.isValid,
+              errors: validation.errors,
+              touched: false,
+              pristine: true
+            }; //return single value
+          }
           //console.log('key:', item, ' | val: ', val);
 
           //update the current key with its value from firebase
@@ -349,7 +463,8 @@ class ContactCreateOrUpdate extends Component {
               data: '',
               valid: false,
               touched: false,
-              pristine: true
+              pristine: true,
+              errors: null
             })
           }
         }
@@ -426,24 +541,21 @@ class ContactCreateOrUpdate extends Component {
       ...updatedForm[inputIdentifier]
     };
 
+    let validation = validationCheck(newval, updatedFormElement.validation);
     //if array
     if (index !== null) {
       updatedFormElement.value[index].data = newval;
       updatedFormElement.value[index].touched = true;
       updatedFormElement.value[index].pristine = false;
-      updatedFormElement.value[index].valid = validationCheck(
-        updatedFormElement.value[index].data,
-        updatedFormElement.validation
-      );
+      updatedFormElement.value[index].valid = validation.isValid;
+      updatedFormElement.value[index].errors = validation.errors;
     } else {
       //if single value
       updatedFormElement.value.data = newval;
       updatedFormElement.value.touched = true;
       updatedFormElement.value.pristine = false;
-      updatedFormElement.value.valid = validationCheck(
-        updatedFormElement.value.data,
-        updatedFormElement.validation
-      );
+      updatedFormElement.value.valid = validation.isValid;
+      updatedFormElement.value.errors = validation.errors;
     }
 
     updatedForm[inputIdentifier] = updatedFormElement; //update form's input element state as that or 'updatedFormElement'

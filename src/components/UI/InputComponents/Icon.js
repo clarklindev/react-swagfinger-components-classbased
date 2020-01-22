@@ -12,7 +12,8 @@ import {
   faChevronLeft,
   faChevronRight,
   faChevronDown,
-  faSearch
+  faSearch,
+  faExclamationCircle
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faEdit,
@@ -26,15 +27,16 @@ library.add(
   faChevronLeft,
   faChevronRight,
   faEdit,
-  faTimes,
-  farFaTrashAlt,
+  faTimes, //close
+  farFaTrashAlt, //delete
   faPlus,
   faMinus,
-  faBars,
-  faCalendarAlt,
+  faBars, //show side menu
+  faCalendarAlt, //date picker
   faChevronUp,
   faChevronDown,
-  faSearch
+  faSearch, //magnifying glass
+  faExclamationCircle //input error
 );
 
 class Icon extends Component {

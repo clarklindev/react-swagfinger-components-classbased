@@ -21,7 +21,7 @@ import MultiRangeSlider from './MultiRangeSlider';
 import InputWithIcon from './InputWithIcon';
 import List from './List';
 import InputWithInput from './InputWithInput';
-
+import ErrorList from './ErrorList';
 class ComponentFactory extends Component {
   static contextType = InputContext;
 
@@ -101,6 +101,9 @@ class ComponentFactory extends Component {
         break;
       case 'list':
         this.inputElement = <List {...this.props.data} />;
+        break;
+      case 'errorlist':
+        this.inputElement = <ErrorList {...this.props.data} />;
         break;
       default:
         this.inputElement = <p>specify input type</p>;

@@ -1,0 +1,42 @@
+.ErrorList {
+  margin-top: var(--margindefault);
+
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  li {
+    box-sizing: border-box;
+    color: red;
+    cursor: default;
+    flex-basis: 1;
+    flex-grow: 1;
+    width: 100%;
+    padding: none;
+    background-color: white;
+    font: inherit;
+    font-size: var(--fontsizedefault);
+    box-sizing: content-box;
+    &:not(:last-child) {
+      margin-bottom: calc(var(--margindefault) * 0.5);
+    }
+    align-items: center;
+    display: flex;
+  }
+
+  a {
+    width: 100%;
+    text-decoration: none;
+    color: var(--colordefault);
+    &:focus {
+      outline: 0;
+    }
+    cursor: default;
+  }
+  .Icon {
+    margin-right: calc(var(--margindefault) * 0.5);
+  }
+}

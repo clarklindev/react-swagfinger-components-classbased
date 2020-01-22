@@ -28,7 +28,13 @@ class Auth extends Component {
           required: true,
           isEmail: true
         },
-        value: { data: '', valid: false, touched: false, pristine: true }
+        value: {
+          data: '',
+          valid: false,
+          touched: false,
+          pristine: true,
+          errors: null
+        }
       },
       password: {
         elementtype: 'input',
@@ -42,7 +48,13 @@ class Auth extends Component {
           required: true,
           minLength: 6
         },
-        value: { data: '', valid: false, touched: false, pristine: true }
+        value: {
+          data: '',
+          valid: false,
+          touched: false,
+          pristine: true,
+          errors: null
+        }
       }
     },
     formIsValid: false,
@@ -96,24 +108,21 @@ class Auth extends Component {
       ...updatedForm[inputIdentifier]
     };
 
+    let validation = validationCheck(newval, updatedFormElement.validation);
     //if array
     if (index !== null) {
       updatedFormElement.value[index].data = newval;
       updatedFormElement.value[index].touched = true;
       updatedFormElement.value[index].pristine = false;
-      updatedFormElement.value[index].valid = validationCheck(
-        updatedFormElement.value[index].data,
-        updatedFormElement.validation
-      );
+      updatedFormElement.value[index].valid = validation.isValid;
+      updatedFormElement.value[index].errors = validation.errors;
     } else {
       //if single value
       updatedFormElement.value.data = newval;
       updatedFormElement.value.touched = true;
       updatedFormElement.value.pristine = false;
-      updatedFormElement.value.valid = validationCheck(
-        updatedFormElement.value.data,
-        updatedFormElement.validation
-      );
+      updatedFormElement.value.valid = validation.isValid;
+      updatedFormElement.value.errors = validation.errors;
     }
 
     updatedForm[inputIdentifier] = updatedFormElement; //update form's input element state as that or 'updatedFormElement'
