@@ -15,8 +15,6 @@
     width: 100%;
     padding: none;
     background-color: white;
-    border: 1px solid var(--colorborder);
-    border-radius: var(--borderradius);
     font: inherit;
     box-sizing: content-box;
     &:not(:last-child) {
