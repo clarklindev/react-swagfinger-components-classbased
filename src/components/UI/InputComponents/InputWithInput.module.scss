@@ -1,0 +1,59 @@
+.InputWithInput {
+  height: var(--inputheight);
+  box-sizing: border-box;
+  display: flex;
+  flex-basis: 1;
+  flex-grow: 1;
+  flex-direction: row;
+  .InputAndInputWrapper {
+    display: flex;
+    flex-direction: row;
+    flex-basis: 1;
+    flex-grow: 1;
+    box-sizing: border-box;
+  }
+  .Divider {
+    height: inherit;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    width: 1px;
+    background-color: var(--colorborder);
+    flex-shrink: 0;
+    flex-basis: 1;
+    &.Invalid {
+      background-color: red;
+    }
+  }
+  input {
+    padding: var(--paddinginput);
+    border: none;
+    &:focus {
+      outline: 0;
+    }
+    &.ReadOnly {
+      cursor: default;
+    }
+    outline: none;
+    background-color: white;
+    font: inherit;
+    font-size: var(--fontsizedefault);
+    box-sizing: border-box;
+    color: var(--colordefault);
+    flex-grow: 1;
+    flex-basis: 1;
+    width: inherit;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    &:first-child {
+      width: 150px;
+      border-top-left-radius: var(--borderradius);
+      border-bottom-left-radius: var(--borderradius);
+    }
+    &:last-of-type {
+      width: 100%;
+      border-top-right-radius: var(--borderradius);
+      border-bottom-right-radius: var(--borderradius);
+    }
+  }
+}

@@ -20,6 +20,7 @@ import RangeSlider from './RangeSlider';
 import MultiRangeSlider from './MultiRangeSlider';
 import InputWithIcon from './InputWithIcon';
 import List from './List';
+import InputWithInput from './InputWithInput';
 
 class ComponentFactory extends Component {
   static contextType = InputContext;
@@ -65,6 +66,10 @@ class ComponentFactory extends Component {
 
       case 'selectwithinput':
         this.inputElement = <MultiSelectWithInput {...this.props.data} />;
+        break;
+
+      case 'inputwithinput':
+        this.inputElement = <InputWithInput {...this.props.data} />;
         break;
 
       case 'multiinput':

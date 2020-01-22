@@ -6,6 +6,7 @@ import * as actions from '../../store/actions/index';
 import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
 import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
 import ListItem from '../../components/UI/InputComponents/ListItem';
+import InputWithInput from '../../components/UI/InputComponents/InputWithInput';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import { connect } from 'react-redux';
 
@@ -143,10 +144,11 @@ class ContactRead extends Component {
               elementtype: 'input',
               value: {
                 data: this.props.activeContact['newsletter']
-                  .map((each) => {
-                    if (each.value === true) {
-                      return each.key;
-                    }
+                  .filter((each) => {
+                    return each.value === true;
+                  })
+                  .map((item) => {
+                    return item.key;
                   })
                   .join(', ')
               },
@@ -160,9 +162,10 @@ class ContactRead extends Component {
               value: {
                 data: this.props.activeContact['socialmedia'].map((each) => {
                   return (
-                    <ListItem
-                      className={classes.ListItem}
-                      displayText={`${each.key}|${each.value}`}></ListItem>
+                    <InputWithInput
+                      attribute={each.key}
+                      value={each.value}
+                      readOnly></InputWithInput>
                   );
                 })
               },
