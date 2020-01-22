@@ -34,6 +34,7 @@ input[type='submit'] {
   padding: 0px 15px;
   border-radius: var(--borderradius);
   height: var(--inputheight);
+  color: var(--colordefault);
   cursor: pointer;
   &:focus {
     outline: 0;

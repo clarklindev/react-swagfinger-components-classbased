@@ -155,13 +155,13 @@ class Auth extends Component {
           <ComponentFactory key={item.id} id={item.id} data={item.data} />
         ))}
         <div className={classes.ButtonWrapper}>
+          <input type='submit' />
           <Button
             btnType='NoStyle'
             tabindex='-1'
             onClick={this.switchAuthModeHandler}>
             switch to {this.state.isSignUp ? 'Login' : 'Sign-up'}
           </Button>
-          <input type='submit' />
         </div>
       </React.Fragment>
     );

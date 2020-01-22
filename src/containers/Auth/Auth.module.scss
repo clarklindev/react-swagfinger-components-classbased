@@ -1,5 +1,8 @@
 .Auth {
   display: block;
+  input[type='submit'] {
+    color: var(--colordefault);
+  }
   .ButtonWrapper {
     display: flex;
     flex-direction: row;
