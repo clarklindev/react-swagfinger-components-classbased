@@ -14,6 +14,9 @@ import App from './App';
 import './index.scss';
 import * as serviceWorker from './serviceWorker';
 
+//axios
+// import axios from 'axios';
+
 const logger = (store) => {
   return (next) => {
     return (action) => {
@@ -37,6 +40,28 @@ const store = createStore(
   rootReducer,
   composeEnhancers(applyMiddleware(logger, thunk))
 );
+
+//intercepting request/response
+// axios.interceptors.request.use(
+//   (request) => {
+//     console.log('REQUEST CONFIG: ', request);
+//     return request; //return else it is blocked..
+//   },
+//   (error) => {
+//     console.log('ERROR: ', error);
+//     return Promise.reject(error); //reject to also be able to handle with catch()
+//   }
+// );
+// axios.interceptors.response.use(
+//   (response) => {
+//     console.log('Response', response);
+//     return response; //return else it is blocked..
+//   },
+//   (error) => {
+//     console.log('ERROR: ', error);
+//     return Promise.reject(error); //reject to also be able to handle with catch()
+//   }
+// );
 
 ReactDOM.render(
   <Provider store={store}>
