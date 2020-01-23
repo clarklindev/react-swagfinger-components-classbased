@@ -6,6 +6,7 @@ const withErrorHandler = (WrappedComponent, axios) => {
     state = {
       error: null
     };
+
     componentDidMount() {
       this.reqInterceptor = axios.interceptors.request.use((req) => {
         this.setState({ error: null });
@@ -29,12 +30,43 @@ const withErrorHandler = (WrappedComponent, axios) => {
     };
 
     render() {
+      let errorMessage = null;
+      if (this.state.error) {
+        switch (this.state.error.response.data.error.message) {
+          case 'INVALID_EMAIL':
+            errorMessage = 'Invalid email';
+            break;
+          case 'EMAIL_NOT_FOUND':
+            errorMessage = 'Email not found';
+            break;
+          case 'EMAIL_EXISTS':
+            errorMessage =
+              'The email address is already in use by another account.';
+            break;
+          case 'MISSING_PASSWORD':
+            errorMessage = 'Missing password';
+            break;
+          case 'INVALID_PASSWORD':
+            errorMessage = 'Password is invalid';
+            break;
+          case 'TOO_MANY_ATTEMPTS_TRY_LATER':
+            errorMessage =
+              'Too many unsuccessful login attempts. Please try again later.';
+            break;
+          default:
+            errorMessage = this.state.error.response.data.error.message;
+            break;
+        }
+      }
       return (
         <React.Fragment>
           <Modal
             show={this.state.error}
             modalClosed={this.errorConfirmedHandler}>
-            {this.state.error ? this.state.error.message : null}
+            {this.state.error
+              ? /* https://firebase.google.com/docs/reference/rest/auth#section-error-format */
+                errorMessage
+              : null}
           </Modal>
           <WrappedComponent {...this.props} />
         </React.Fragment>

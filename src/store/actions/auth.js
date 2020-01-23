@@ -64,7 +64,7 @@ export const auth = (email, password, isSignUp) => {
       })
       .catch((err) => {
         console.log('ERROR: ', err);
-        dispatch(authFail(err.response.data.error));
+        dispatch(authFail(err));
         //error codes
         //https://firebase.google.com/docs/reference/rest/auth#section-sign-in-email-password
       });
