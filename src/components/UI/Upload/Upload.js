@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import classes from './Upload.module.scss';
 import Utils from '../../../Utils';
 import axios from 'axios';
-
+import Icon from '../InputComponents/Icon';
 class Upload extends Component {
   constructor(props) {
     super(props);
@@ -146,8 +146,17 @@ class Upload extends Component {
             multiple
             onChange={this.fileChangedHandler}
           />
+          <div className={classes.UploadLabel}>
+            <Icon
+              className={classes.Icon}
+              iconstyle='fas'
+              code='arrow-circle-up'
+              size={this.props.elementconfig.iconsize}
+            />
+            <p>Drag and drop files here</p>
+          </div>
           <button onClick={() => this.uploadRef.current.click()}>
-            Choose a file
+            Browse files
           </button>
         </div>
         <ul className={classes.UploadList}>{filelist}</ul>

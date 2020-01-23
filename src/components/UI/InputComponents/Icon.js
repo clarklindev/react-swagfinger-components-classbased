@@ -13,7 +13,8 @@ import {
   faChevronRight,
   faChevronDown,
   faSearch,
-  faExclamationCircle
+  faExclamationCircle,
+  faArrowCircleUp
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faEdit,
@@ -36,7 +37,8 @@ library.add(
   faChevronUp,
   faChevronDown,
   faSearch, //magnifying glass
-  faExclamationCircle //input error
+  faExclamationCircle, //input error
+  faArrowCircleUp //upload
 );
 
 class Icon extends Component {

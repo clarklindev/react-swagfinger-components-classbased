@@ -1,14 +1,15 @@
 .Upload {
-  display: block;
-
   .DropWrapper {
     position: relative;
     padding: 15px;
     border: 1px dashed var(--colorborder);
     border-radius: var(--borderradius);
     display: flex;
+    flex-grow: 1;
+    flex-basis: 1;
     box-sizing: border-box;
     align-items: center;
+    justify-content: space-between;
     text-align: left;
     color: var(--colordefault);
     input {
@@ -27,6 +28,16 @@
     &.Dragging {
       background-color: var(--colorplaceholder);
       color: white;
+    }
+  }
+  .UploadLabel {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: var(--colordefault);
+    font-size: var(--fontsizedefault);
+    .Icon {
+      margin-right: calc(var(--margindefault) * 0.5);
     }
   }
 }

@@ -60,7 +60,9 @@ class ContactCreateOrUpdate extends Component {
         name: 'upload',
         label: 'Upload',
         validation: {},
-        elementconfig: {},
+        elementconfig: {
+          iconsize: 'lg'
+        },
         value: {
           data: '',
           valid: true,
