@@ -1,20 +1,17 @@
 .Modal {
-  position: fixed;
-  z-index: 500;
+  position: absolute;
+  top: 50%;
+  z-index: var(--modalzindex);
   background-color: white;
   width: 70%;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 30px;
-  left: 15%;
-  top: 30%;
+  max-width: var(--maxwidth);
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  color: var(--colordefault);
+  border: 1px solid var(--colorborder);
+  border-radius: var(--borderradius);
+  padding: var(--paddingdefault);
   box-sizing: border-box;
   transition: all 0.3s ease-out;
-}
-
-@media (min-width: 600px) {
-  .Modal {
-    width: 500px;
-    left: calc(50% - 250px);
-  }
 }
