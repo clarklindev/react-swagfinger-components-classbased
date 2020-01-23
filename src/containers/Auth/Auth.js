@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import classes from './Auth.module.scss';
-import axios from '../../axios-contacts';
+import axios from 'axios';
 
 import * as actions from '../../store/actions/index';
 import Button from '../../components/UI/Button/Button';
@@ -165,10 +165,7 @@ class Auth extends Component {
         ))}
         <div className={classes.ButtonWrapper}>
           <input type='submit' />
-          <Button
-            btnType='NoStyle'
-            tabindex='-1'
-            onClick={this.switchAuthModeHandler}>
+          <Button btnType='NoStyle' onClick={this.switchAuthModeHandler}>
             switch to {this.state.isSignUp ? 'Login' : 'Sign-up'}
           </Button>
         </div>
@@ -179,12 +176,6 @@ class Auth extends Component {
       formAll = <Spinner />;
     }
 
-    let errorMessage = null;
-
-    if (this.props.error) {
-      errorMessage = <p>{this.props.error.message}</p>;
-    }
-
     let authRedirect = null;
     if (this.props.isAuthenticated) {
       authRedirect = <Redirect to={this.props.authRedirectPath} />;
@@ -193,7 +184,6 @@ class Auth extends Component {
     return (
       <React.Fragment>
         {authRedirect}
-        {errorMessage}
         <div className={classes.Auth}>
           <DefaultPageLayout
             label={
