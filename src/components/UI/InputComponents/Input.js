@@ -23,6 +23,16 @@ class Input extends Component {
   componentDidUpdate() {
     console.log('updated...', this.props.value.data);
   }
+
+  inputChangeHandler = (event) => {
+    if (this.props.onChange) {
+      console.log('CALL PARENT ONCHANGE...');
+      this.props.onChange(event);
+    } else {
+      console.log('props.name: ', this.props.name);
+      this.context.changed(event.target.value, this.props.name);
+    }
+  };
   render() {
     let tempClasses = [];
     let error = null;
@@ -50,10 +60,7 @@ class Input extends Component {
           ref={this.props.reference}
           {...this.props.elementconfig}
           value={this.props.value.data}
-          onChange={(event) => {
-            console.log('props.name: ', this.props.name);
-            this.context.changed(event.target.value, this.props.name);
-          }}
+          onChange={this.inputChangeHandler}
         />
         {error}
       </React.Fragment>

@@ -8,6 +8,7 @@
   }
 
   .InputElement {
+    line-height: var(--inputheight); //50px - (6px x2)
     outline: none;
     border: 1px solid var(--colorborder);
     background-color: white;

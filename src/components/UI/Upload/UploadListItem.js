@@ -16,7 +16,7 @@ class UploadListItem extends Component {
         <div className={classes.UploadProgress}>progress</div>
         <div className={classes.Divider} />
         <div className={classes.UploadDelete}>
-          <Button type='NoStyle'>
+          <Button>
             <Icon iconstyle='far' code='trash-alt' size='sm' />
           </Button>
         </div>

@@ -5,6 +5,7 @@ import InputContext from '../../../context/InputContext';
 import Icon from '../InputComponents/Icon';
 import PropTypes from 'prop-types';
 import Button from '../../UI/Button/Button';
+import Input from '../../UI/InputComponents/Input';
 
 class MultiInput extends Component {
   static contextType = InputContext;
@@ -33,10 +34,10 @@ class MultiInput extends Component {
           }
           return (
             <div className={classes.FlexGroupRow} key={this.props.name + index}>
-              <input
+              <Input
                 className={[...tempClasses].join(' ')}
                 placeholder={this.props.placeholder}
-                value={val.data}
+                value={{ data: val.data }}
                 {...this.props.elementconfig}
                 onChange={(event) =>
                   //pass in the name of the prop, and the index (if array item)
