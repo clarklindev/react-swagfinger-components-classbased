@@ -176,7 +176,10 @@ class Auth extends Component {
             }}>
             Submit
           </Button>
-          <Button type='NoStyle' onClick={this.switchAuthModeHandler}>
+          <Button
+            type='NoStyle'
+            className={classes.SwitchButton}
+            onClick={this.switchAuthModeHandler}>
             switch to {this.state.isSignUp ? 'Login' : 'Sign-up'}
           </Button>
         </div>

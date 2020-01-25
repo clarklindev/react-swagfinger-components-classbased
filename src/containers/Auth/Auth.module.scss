@@ -6,6 +6,8 @@
   .ButtonWrapper {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+  }
+  .SwitchButton {
+    margin-left: var(--margindefault);
   }
 }
