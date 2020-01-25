@@ -130,17 +130,19 @@ class PhonebookAdmin extends Component {
                   displayText={entry}
                   extraText={extra}>
                   <div className={classes.ContactButtons}>
-                    <button
+                    <Button
+                      type='WithBorder'
                       title='Edit'
                       onClick={this.editContactHandler.bind(this, id)}>
                       <Icon iconstyle='far' code='edit' size='sm' />
-                    </button>
+                    </Button>
 
-                    <button
+                    <Button
+                      type='WithBorder'
                       title='Delete'
                       onClick={this.props.onContactDeleted.bind(this, id)}>
                       <Icon iconstyle='far' code='trash-alt' size='sm' />
-                    </button>
+                    </Button>
                   </div>
                 </ListItem>
               );
@@ -168,7 +170,7 @@ class PhonebookAdmin extends Component {
               }}
             />
             <Button
-              className={classes.AddButton}
+              type='WithBorder'
               title='Add'
               onClick={() => {
                 this.props.history.push('contactcreate');

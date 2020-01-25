@@ -1,0 +1,31 @@
+.UploadListItem {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+.UploadDetails {
+  padding: var(--paddinginput);
+  display: flex;
+  flex-grow: 1;
+  flex-basis: 1;
+  flex-direction: column;
+  .Label {
+    font-size: var(--fontsizedefault);
+  }
+  .FileSize {
+    color: var(--colorplaceholder);
+    font-size: var(--fontsizedefault);
+  }
+}
+
+.UploadProgress {
+  background-color: red;
+}
+
+.Divider {
+  background-color: var(--colorborder);
+  align-self: stretch;
+  width: 1px;
+  margin-left: var(--margindefault);
+}

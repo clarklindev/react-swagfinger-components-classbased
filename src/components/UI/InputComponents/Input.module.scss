@@ -13,6 +13,7 @@
   flex-grow: 1;
   flex-basis: 1;
   cursor: default;
+  outline: none;
 
   &.Invalid {
     border: 1px solid red;
@@ -34,6 +35,12 @@
   }
 
   .NoStyle {
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .NoBorder {
     border: none;
   }
 }

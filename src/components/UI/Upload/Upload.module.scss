@@ -37,7 +37,32 @@
     color: var(--colordefault);
     font-size: var(--fontsizedefault);
     .Icon {
-      margin-right: calc(var(--margindefault) * 0.5);
+      margin-right: var(--margindefault); //calc(var(--margindefault) * 0.5);
+    }
+  }
+
+  .UploadList {
+    ul {
+      margin-top: var(--margindefault);
+    }
+    li {
+      box-sizing: border-box;
+      display: block;
+      border-radius: 0;
+      border: 1px solid var(--colorborder);
+      border-top: none;
+      border-bottom: 1px solid var(--colorborder);
+      background-color: white;
+      margin-bottom: 0px;
+      &:first-of-type {
+        border-top: 1px solid var(--colorborder);
+        border-top-left-radius: var(--borderradius);
+        border-top-right-radius: var(--borderradius);
+      }
+      &:last-of-type {
+        border-bottom-left-radius: var(--borderradius);
+        border-bottom-right-radius: var(--borderradius);
+      }
     }
   }
 }

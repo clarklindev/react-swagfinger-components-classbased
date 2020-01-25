@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import classes from './Datepicker.module.scss';
 import Icon from './Icon';
+import Button from '../Button/Button';
+import Input from './Input';
+
 // import { ReactComponent as CalendarIcon } from '../Icons/CalendarIcon.svg';
 
 class Datepicker extends Component {
@@ -623,14 +626,14 @@ class Datepicker extends Component {
         onBlur={(event) => {
           this.onBlurHandler(event);
         }}>
-        <input
+        <Input
           {...this.props}
           placeholder={this.props.placeholder}
           readOnly
           {...this.props.elementconfig}
-          ref={this.inputRef}
-          value={
-            this.state.pickeddate
+          reference={this.inputRef}
+          value={{
+            data: this.state.pickeddate
               ? this.state.format === 'full'
                 ? // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString
                   new Date(this.state.pickeddate).toLocaleDateString('en-GB', {
@@ -641,7 +644,7 @@ class Datepicker extends Component {
                   })
                 : new Date(this.state.pickeddate).toISOString().substr(0, 10)
               : ''
-          }
+          }}
           onChange={(event) => {
             console.log('props.name: ', this.props.name);
             this.context.changed(event.target.name, this.props.name);
@@ -651,7 +654,7 @@ class Datepicker extends Component {
           }}
         />
 
-        <button
+        <Button
           onMouseOver={(event) => {
             this.onMouseOver(event);
           }}
@@ -660,7 +663,7 @@ class Datepicker extends Component {
           }}>
           {/* <CalendarIcon /> */}
           <Icon iconstyle='far' code='calendar-alt' size='sm' />
-        </button>
+        </Button>
       </div>
     );
     //-----------------------------------------------------------
@@ -679,7 +682,7 @@ class Datepicker extends Component {
         <div className={[classes.CalendarContent, viewPosition].join(' ')}>
           <div className={classes.CalendarHeader}>
             {this.state[this.state.viewstate].arrows ? (
-              <button
+              <Button
                 onClick={(event) => {
                   this.decrease(event);
                 }}
@@ -693,7 +696,7 @@ class Datepicker extends Component {
                   this.onBlurHandler(event);
                 }}>
                 <Icon iconstyle='fas' code='chevron-left' size='sm' />
-              </button>
+              </Button>
             ) : null}
             <div className={classes.StateButtons}>
               {this.state[this.state.viewstate].year ? (
@@ -702,7 +705,7 @@ class Datepicker extends Component {
                     Year
                   </div>
                 ) : (
-                  <button
+                  <Button
                     className={classes.Year}
                     onClick={() => this.switchState('yearpicker')}
                     onMouseOver={(event) => {
@@ -712,7 +715,7 @@ class Datepicker extends Component {
                       this.onMouseOut(event);
                     }}>
                     {this.printYear(this.state.currentdate.getFullYear())}
-                  </button>
+                  </Button>
                 )
               ) : null}
 
@@ -722,7 +725,7 @@ class Datepicker extends Component {
                     Month
                   </div>
                 ) : (
-                  <button
+                  <Button
                     className={classes.Month}
                     onClick={() => this.switchState('monthpicker')}
                     onMouseOver={(event) => {
@@ -735,12 +738,12 @@ class Datepicker extends Component {
                     {this.state.viewstate === 'monthpicker'
                       ? 'Month'
                       : this.printMonth(this.state.currentdate.getMonth())}
-                  </button>
+                  </Button>
                 )
               ) : null}
             </div>
             {this.state[this.state.viewstate].arrows ? (
-              <button
+              <Button
                 onClick={(event) => {
                   this.increase(event);
                 }}
@@ -754,7 +757,7 @@ class Datepicker extends Component {
                   this.onBlurHandler(event);
                 }}>
                 <Icon iconstyle='fas' code='chevron-right' size='sm' />
-              </button>
+              </Button>
             ) : null}
           </div>
           <div className={classes.CalendarBody} ref={this.calendarBodyRef}>

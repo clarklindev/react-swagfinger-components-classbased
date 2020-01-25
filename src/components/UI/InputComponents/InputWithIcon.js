@@ -64,7 +64,7 @@ class InputWithIcon extends Component {
         {this.props.elementconfig.iconposition === 'left' &&
         this.props.elementconfig.type === 'search' &&
         this.props.value.data !== '' ? (
-          <Button className={classes.NoStyle} onClick={this.onClickHandler}>
+          <Button type='NoStyle' onClick={this.onClickHandler}>
             <Icon
               iconstyle='fas'
               code='times'

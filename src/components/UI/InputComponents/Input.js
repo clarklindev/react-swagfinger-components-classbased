@@ -11,7 +11,13 @@ class Input extends Component {
   constructor(props) {
     super(props);
 
-    this.className = Utils.getClassNameString([classes.Input, Input.name]);
+    this.className = Utils.getClassNameString([
+      classes.Input,
+      Input.name,
+      classes[props.type],
+      'Input',
+      props.className
+    ]);
   }
 
   componentDidUpdate() {
@@ -41,6 +47,7 @@ class Input extends Component {
           className={[this.className, tempClasses].join(' ')}
           placeholder={this.props.placeholder}
           readOnly={this.props.readOnly}
+          ref={this.props.reference}
           {...this.props.elementconfig}
           value={this.props.value.data}
           onChange={(event) => {

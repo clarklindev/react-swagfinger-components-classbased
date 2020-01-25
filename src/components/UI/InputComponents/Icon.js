@@ -14,7 +14,8 @@ import {
   faChevronDown,
   faSearch,
   faExclamationCircle,
-  faArrowCircleUp
+  faArrowCircleUp,
+  faCloudUploadAlt
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faEdit,
@@ -38,7 +39,8 @@ library.add(
   faChevronDown,
   faSearch, //magnifying glass
   faExclamationCircle, //input error
-  faArrowCircleUp //upload
+  faArrowCircleUp, //uploaded
+  faCloudUploadAlt //upload
 );
 
 class Icon extends Component {
@@ -46,13 +48,12 @@ class Icon extends Component {
     let classList = Utils.getClassNameString([
       classes.Icon,
       Icon.name,
+      classes[this.props.type],
       this.props.className
     ]);
 
-    let additionalClasses = this.props.nostyle ? classes.NoStyle : null;
-
     return (
-      <div className={[classList, additionalClasses].join(' ')}>
+      <div className={[classList].join(' ')}>
         <FontAwesomeIcon
           icon={[this.props.iconstyle, this.props.code]}
           size={this.props.size}

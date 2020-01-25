@@ -10,10 +10,9 @@
     button {
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
+      border-top-right-radius: var(--borderradius);
+      border-bottom-right-radius: var(--borderradius);
       border: none;
-      padding: 15px;
-      flex-basis: 1;
-      color: var(--colordefault);
     }
     input {
       border: none;

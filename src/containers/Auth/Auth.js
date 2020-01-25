@@ -14,6 +14,10 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
 import { CheckValidity as validationCheck } from '../../shared/validation';
 class Auth extends Component {
+  constructor(props) {
+    super(props);
+    this.submitInputRef = React.createRef();
+  }
   state = {
     form: {
       email: {
@@ -164,8 +168,15 @@ class Auth extends Component {
           <ComponentFactory key={item.id} id={item.id} data={item.data} />
         ))}
         <div className={classes.ButtonWrapper}>
-          <input type='submit' />
-          <Button btnType='NoStyle' onClick={this.switchAuthModeHandler}>
+          <input ref={this.submitInputRef} type='submit' />
+          <Button
+            type='WithBorder'
+            onClick={() => {
+              this.submitInputRef.current.click();
+            }}>
+            Submit
+          </Button>
+          <Button type='NoStyle' onClick={this.switchAuthModeHandler}>
             switch to {this.state.isSignUp ? 'Login' : 'Sign-up'}
           </Button>
         </div>

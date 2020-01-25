@@ -50,7 +50,7 @@ class MultiInput extends Component {
               {this.props.value.length > 1 ? (
                 <Button
                   title='Delete'
-                  type='button'
+                  type='WithBorder'
                   className={classes.RemoveButton}
                   onClick={(event) =>
                     this.context.removeinput(event, this.props.name, index)
@@ -63,6 +63,7 @@ class MultiInput extends Component {
         })}
         <Button
           title='Add'
+          type='WithBorder'
           onClick={(event) => this.context.addinput(event, this.props.name)}>
           <Icon iconstyle='fas' code='plus' size='sm' />
           <p>Add</p>

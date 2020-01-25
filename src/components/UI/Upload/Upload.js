@@ -3,6 +3,9 @@ import classes from './Upload.module.scss';
 import Utils from '../../../Utils';
 import axios from 'axios';
 import Icon from '../InputComponents/Icon';
+import List from '../../UI/InputComponents/List';
+import UploadListItem from './UploadListItem';
+import Button from '../Button/Button';
 class Upload extends Component {
   constructor(props) {
     super(props);
@@ -78,13 +81,37 @@ class Upload extends Component {
     }
   };
 
+  findDuplicateFile = (file) => {
+    return this.state.selectedFiles.find((existingFile) => {
+      const isDuplicate =
+        existingFile.name === file.name &&
+        existingFile.lastModified === file.lastModified &&
+        existingFile.size === file.size &&
+        existingFile.type === file.type;
+      console.log('IS DUPLICATE? ', isDuplicate);
+      return isDuplicate;
+    });
+  };
+
   //function called when input button clicked
   fileChangedHandler = (event) => {
     const files = event.target.files;
+
+    let existingFiles = [];
+
+    Array.from(files).forEach((file) => {
+      const existingFile = this.findDuplicateFile(file);
+      if (existingFile) {
+        console.error('Existing file:', existingFile);
+        return;
+      }
+      existingFiles.push(file);
+      console.warn('Added file:', file);
+    });
     this.setState(
       (prevState) => {
         return {
-          selectedFiles: [...prevState.selectedFiles, ...files]
+          selectedFiles: [...prevState.selectedFiles, ...existingFiles]
         };
       },
       () => this.uploadHandler()
@@ -131,7 +158,12 @@ class Upload extends Component {
         if (!this.state.selectedFiles[i].name) {
           return;
         }
-        filelist.push(<li key={i}>{this.state.selectedFiles[i].name}</li>);
+        filelist.push(
+          <UploadListItem
+            key={i}
+            name={this.state.selectedFiles[i].name}
+            size={this.state.selectedFiles[i].size}></UploadListItem>
+        );
       }
     }
     return (
@@ -150,16 +182,18 @@ class Upload extends Component {
             <Icon
               className={classes.Icon}
               iconstyle='fas'
-              code='arrow-circle-up'
+              code='cloud-upload-alt'
               size={this.props.elementconfig.iconsize}
             />
             <p>Drag and drop files here</p>
           </div>
-          <button onClick={() => this.uploadRef.current.click()}>
+          <Button
+            type='WithBorder'
+            onClick={() => this.uploadRef.current.click()}>
             Browse files
-          </button>
+          </Button>
         </div>
-        <ul className={classes.UploadList}>{filelist}</ul>
+        <List className={classes.UploadList} value={{ data: filelist }}></List>
       </div>
     );
   }

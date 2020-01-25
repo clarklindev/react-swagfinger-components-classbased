@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import classes from './Counter.module.scss';
 import InputContext from '../../../context/InputContext';
 import Icon from '../InputComponents/Icon';
-
+import Button from '../Button/Button';
 class Counter extends Component {
   static contextType = InputContext;
 
@@ -66,9 +66,9 @@ class Counter extends Component {
     //console.log('min bound: ', isMinBound, ' | max bound: ', isMaxBound);
     return (
       <div className={classes.Counter}>
-        <button disabled={isMinBound} onClick={this.decrement}>
+        <Button disabled={isMinBound} onClick={this.decrement}>
           <Icon iconstyle='fas' code='minus' size='sm' />
-        </button>
+        </Button>
         <input
           min={Number(this.props.elementconfig.min).toFixed(2)}
           max={Number(this.props.elementconfig.max).toFixed(2)}
@@ -79,9 +79,9 @@ class Counter extends Component {
           onInput={(event) => this.onChangeHandler(event)}
           onBlur={(event) => this.onBlur(event)}
         />
-        <button disabled={isMaxBound} onClick={this.increment}>
+        <Button disabled={isMaxBound} onClick={this.increment}>
           <Icon iconstyle='fas' code='plus' size='sm' />
-        </button>
+        </Button>
       </div>
     );
   }

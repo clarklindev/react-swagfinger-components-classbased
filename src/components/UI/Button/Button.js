@@ -7,7 +7,7 @@ const button = (props) => {
   let classList = Utils.getClassNameString([
     classes.Button,
     'Button',
-    classes[props.btnType],
+    classes[props.type],
     props.className
   ]);
 
@@ -17,7 +17,9 @@ const button = (props) => {
       className={classList}
       onClick={props.onClick}
       onBlur={props.onBlur}
-      onMouseOver={props.onMouseOver}>
+      title={props.title}
+      onMouseOver={props.onMouseOver}
+      onMouseOut={props.onMouseOut}>
       {props.children}
     </button>
   );

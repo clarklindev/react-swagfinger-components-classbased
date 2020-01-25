@@ -54,6 +54,8 @@ const fetchContactsSuccess = (state, action) => {
   return updateObject(state, { phoneBook: action.contacts, loading: false });
 };
 
+const fetchContactsCancel = (state, action) => {};
+
 //single contact
 const fetchSingleContactStart = (state, action) => {
   return updateObject(state, { loading: true });
@@ -94,6 +96,9 @@ const reducer = (state = initialState, action) => {
 
     case actionTypes.FETCH_CONTACTS_SUCCESS:
       return fetchContactsSuccess(state, action);
+
+    case actionTypes.FETCH_CONTACTS_CANCEL:
+      return fetchContactsCancel(state, action);
 
     //SINGLE CONTACT
     case actionTypes.FETCH_SINGLECONTACT_START:

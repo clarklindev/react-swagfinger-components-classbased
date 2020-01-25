@@ -150,9 +150,9 @@ class MultiSelectWithInput extends Component {
                 )}
               </div>
 
-              <button
+              <Button
                 title='Delete'
-                type='button'
+                type='WithBorder'
                 className={classes.RemoveButton}
                 onClick={(event) => {
                   this.setState((prevState) => {
@@ -172,13 +172,14 @@ class MultiSelectWithInput extends Component {
                   this.context.removeinput(event, this.props.name, index);
                 }}>
                 <Icon iconstyle='far' code='trash-alt' size='sm' />
-              </button>
+              </Button>
             </div>
           ); //return
         })}
 
         <Button
           title='Add'
+          type='WithBorder'
           className={classes.AddButton}
           onClick={(event) => {
             this.context.addinput(event, this.props.name);

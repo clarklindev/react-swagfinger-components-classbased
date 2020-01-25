@@ -5,41 +5,48 @@
   font-size: var(--fontsizedefault);
   padding: 10px 15px;
   color: var(--colordefault);
+  background-color: white;
+  height: var(--inputheight);
 
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
   p {
     margin-left: 5px;
     margin-top: 0px;
     margin-bottom: 0px;
   }
-}
 
-// .Button:first-of-type {
-// 	margin-left: 0;
-// 	padding-left: 0;
-// }
+  &:focus {
+    outline: 0;
+  }
 
-.NoStyle {
-  background-color: transparent;
-  border: none;
-  color: var(--colordefault);
-  font-weight: normal;
-  margin: 10px;
-  padding: 0;
-  margin: 0;
-}
+  &:disabled {
+    color: #ccc;
+    cursor: not-allowed;
+  }
 
-.Button:disabled {
-  color: #ccc;
-  cursor: not-allowed;
-}
+  &.NoStyle {
+    background-color: transparent;
+    border: none;
+    color: var(--colordefault);
+    font-weight: normal;
+    margin: 0;
+    padding: 0;
+    height: auto;
+  }
 
-.Success {
-  color: #5c9210;
-}
+  &.WithBorder {
+    border: 1px solid var(--colorborder);
+    border-radius: var(--borderradius);
+    background-color: white;
+  }
 
-.Danger {
-  color: #944317;
+  &.Success {
+    color: #5c9210;
+  }
+  &.Danger {
+    color: #944317;
+  }
 }

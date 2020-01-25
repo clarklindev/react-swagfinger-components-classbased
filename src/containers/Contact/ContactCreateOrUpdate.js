@@ -12,8 +12,8 @@ import InputContext from '../../context/InputContext';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import Button from '../../components/UI/Button/Button';
 import { CheckValidity as validationCheck } from '../../shared/validation';
-
 class ContactCreateOrUpdate extends Component {
   constructor(props) {
     super(props);
@@ -21,6 +21,8 @@ class ContactCreateOrUpdate extends Component {
       classes.ContactCreateOrUpdate, //css module
       ContactCreateOrUpdate.name
     ]);
+
+    this.submitInputRef = React.createRef();
   }
 
   state = {
@@ -638,11 +640,17 @@ class ContactCreateOrUpdate extends Component {
                   {formInputs}
                 </InputContext.Provider>
                 <input
+                  ref={this.submitInputRef}
                   type='submit'
                   value='Submit'
                   onMouseOver={(event) => this.onSubmitTest(event)}
                   // disabled={!this.state.formIsValid} //dont disable just handle with validation
                 />
+                <Button
+                  type='WithBorder'
+                  onClick={() => this.submitInputRef.current.click()}>
+                  Submit
+                </Button>
               </form>
             </DefaultPageLayout>
           ) : (

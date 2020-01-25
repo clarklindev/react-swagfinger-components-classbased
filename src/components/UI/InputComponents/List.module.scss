@@ -17,9 +17,6 @@
     background-color: white;
     font: inherit;
     box-sizing: content-box;
-    &:not(:last-child) {
-      margin-bottom: 10px;
-    }
     align-items: center;
     display: flex;
   }
