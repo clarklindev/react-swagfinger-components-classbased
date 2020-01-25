@@ -32,7 +32,7 @@
     border-bottom-right-radius: var(--borderradius);
     font: inherit;
     font-size: var(--fontsizedefault);
-    padding: 6px 30px 6px 15px;
+    padding: var(--paddinginput) 30px var(--paddinginput) var(--paddinginput);
     box-sizing: border-box;
     color: var(--colordefault);
     flex-grow: 1;
