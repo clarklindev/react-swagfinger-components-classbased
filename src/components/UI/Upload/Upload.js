@@ -16,7 +16,8 @@ class Upload extends Component {
 
   state = {
     selectedFiles: [],
-    dragging: false
+    dragging: false,
+    uploadProgress: []
   };
 
   componentDidMount() {
@@ -65,17 +66,28 @@ class Upload extends Component {
     if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
       //callback handleDrop
       // this.props.handleDrop(e.dataTransfer.files);
+      let existingFiles = [];
+
+      Array.from(event.dataTransfer.files).forEach((file) => {
+        const existingFile = this.findDuplicateFile(file);
+        if (existingFile) {
+          console.error('Existing file:', existingFile);
+          return;
+        }
+        existingFiles.push(file);
+        console.warn('Added file:', file);
+      });
       this.setState(
         (prevState) => {
           return {
-            selectedFiles: [
-              ...prevState.selectedFiles,
-              ...event.dataTransfer.files
-            ]
+            selectedFiles: [...prevState.selectedFiles, ...existingFiles]
           };
         },
-        () => this.uploadHandler()
+        () => {
+          this.uploadHandler();
+        }
       );
+
       event.dataTransfer.clearData();
       this.dragCounter = 0;
     }
@@ -131,10 +143,13 @@ class Upload extends Component {
         axios
           .post('react-crud-1db4b.appspot.com', formData, {
             onUploadProgress: (progressEvent) => {
-              console.log(
-                Math.round((progressEvent.loaded / progressEvent.total) * 100) +
-                  '%'
+              let uploadAll = [...this.state.uploadProgress];
+              let uploadCurrent = Math.round(
+                (progressEvent.loaded / progressEvent.total) * 100
               );
+              console.log('uploadCurrent: ', uploadCurrent);
+              uploadAll[i] = uploadCurrent;
+              this.setState({ uploadProgress: uploadAll });
             }
           })
           .then((result) => {
@@ -162,7 +177,8 @@ class Upload extends Component {
           <UploadListItem
             key={i}
             name={this.state.selectedFiles[i].name}
-            size={this.state.selectedFiles[i].size}></UploadListItem>
+            size={this.state.selectedFiles[i].size}
+            progress={this.state.uploadProgress[i]}></UploadListItem>
         );
       }
     }

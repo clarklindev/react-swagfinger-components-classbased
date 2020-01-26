@@ -15,7 +15,8 @@ import {
   faSearch,
   faExclamationCircle,
   faArrowCircleUp,
-  faCloudUploadAlt
+  faCloudUploadAlt,
+  faCheck
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faEdit,
@@ -40,7 +41,8 @@ library.add(
   faSearch, //magnifying glass
   faExclamationCircle, //input error
   faArrowCircleUp, //uploaded
-  faCloudUploadAlt //upload
+  faCloudUploadAlt, //upload
+  faCheck //check icon
 );
 
 class Icon extends Component {

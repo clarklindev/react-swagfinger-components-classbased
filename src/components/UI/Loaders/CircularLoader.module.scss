@@ -1,5 +1,8 @@
 .CircularLoader {
   box-sizing: border-box;
+  display: flex;
+  align-content: center;
+  justify-content: center;
 
   .PieWrapper {
     width: var(--preloadersize);
@@ -44,6 +47,7 @@
       color: var(--colordefault);
       border-radius: 50%;
       cursor: default;
+      font-size: 0.7em;
       position: absolute;
       left: 0;
       top: 0;
