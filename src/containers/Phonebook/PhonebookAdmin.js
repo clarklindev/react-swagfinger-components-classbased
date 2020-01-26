@@ -11,7 +11,7 @@ import Icon from '../../components/UI/InputComponents/Icon';
 import InputContext from '../../context/InputContext';
 import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
 import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
-import Spinner from '../../components/UI/Spinner/Spinner';
+import Spinner from '../../components/UI/Loaders/Spinner';
 import Button from '../../components/UI/Button/Button';
 class PhonebookAdmin extends Component {
   constructor(props) {

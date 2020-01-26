@@ -11,7 +11,7 @@ import ComponentFactory from '../../components/UI/InputComponents/ComponentFacto
 import InputContext from '../../context/InputContext';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
-import Spinner from '../../components/UI/Spinner/Spinner';
+import Spinner from '../../components/UI/Loaders/Spinner';
 import Button from '../../components/UI/Button/Button';
 import { CheckValidity as validationCheck } from '../../shared/validation';
 class ContactCreateOrUpdate extends Component {

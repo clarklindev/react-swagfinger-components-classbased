@@ -7,7 +7,7 @@ import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
 import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
 import ListItem from '../../components/UI/InputComponents/ListItem';
 import InputWithInput from '../../components/UI/InputComponents/InputWithInput';
-import Spinner from '../../components/UI/Spinner/Spinner';
+import Spinner from '../../components/UI/Loaders/Spinner';
 import { connect } from 'react-redux';
 
 class ContactRead extends Component {

@@ -9,7 +9,8 @@ import PropTypes from 'prop-types';
 import InputContext from '../../context/InputContext';
 import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
 import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
-import Spinner from '../../components/UI/Spinner/Spinner';
+import Spinner from '../../components/UI/Loaders/Spinner';
+import CircularLoader from '../../components/UI/Loaders/CircularLoader';
 class Phonebook extends Component {
   constructor(props) {
     super(props);
@@ -142,6 +143,7 @@ class Phonebook extends Component {
                 value: { data: filtered }
               }}
             />
+            <CircularLoader hidepercentage progress='80' />
           </DefaultPageLayout>
         )}
       </div>

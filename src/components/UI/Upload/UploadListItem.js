@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import classes from './UploadListItem.module.scss';
 import Icon from '../InputComponents/Icon';
 import Button from '../Button/Button';
+import CircularLoader from '../Loaders/CircularLoader';
 class UploadListItem extends Component {
   render() {
     return (
@@ -13,7 +14,9 @@ class UploadListItem extends Component {
             {Number(this.props.size / 1024).toFixed(2)}KB
           </div>
         </div>
-        <div className={classes.UploadProgress}>progress</div>
+        <div className={classes.UploadProgress}>
+          <CircularLoader hidepercentage progress='80' />
+        </div>
         <div className={classes.Divider} />
         <div className={classes.UploadDelete}>
           <Button>

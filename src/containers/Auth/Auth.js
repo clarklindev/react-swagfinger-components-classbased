@@ -10,7 +10,7 @@ import Button from '../../components/UI/Button/Button';
 import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
 import InputContext from '../../context/InputContext';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
-import Spinner from '../../components/UI/Spinner/Spinner';
+import Spinner from '../../components/UI/Loaders/Spinner';
 import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
 import { CheckValidity as validationCheck } from '../../shared/validation';
 class Auth extends Component {
@@ -169,18 +169,15 @@ class Auth extends Component {
         ))}
         <div className={classes.ButtonWrapper}>
           <input ref={this.submitInputRef} type='submit' />
+          <Button type='NoStyle' onClick={this.switchAuthModeHandler}>
+            switch to {this.state.isSignUp ? 'Login' : 'Sign-up'}
+          </Button>
           <Button
             type='WithBorder'
             onClick={() => {
               this.submitInputRef.current.click();
             }}>
             Submit
-          </Button>
-          <Button
-            type='NoStyle'
-            className={classes.SwitchButton}
-            onClick={this.switchAuthModeHandler}>
-            switch to {this.state.isSignUp ? 'Login' : 'Sign-up'}
           </Button>
         </div>
       </React.Fragment>
