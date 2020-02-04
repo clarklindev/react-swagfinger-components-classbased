@@ -72,39 +72,39 @@ class ContactRead extends Component {
               readOnly: true
             }}
           />
-          <ComponentFactory
+          {/* <ComponentFactory
             data={{
               label: 'Gender',
               elementtype: 'input',
               value: { data: this.props.activeContact['gender'] },
               readOnly: true
             }}
-          />
-          <ComponentFactory
+          /> */}
+          {/* <ComponentFactory
             data={{
               label: 'Height',
               elementtype: 'input',
               value: { data: this.props.activeContact['height'] },
               readOnly: true
             }}
-          />
-          <ComponentFactory
+          /> */}
+          {/* <ComponentFactory
             data={{
               label: 'Weight',
               elementtype: 'input',
               value: { data: this.props.activeContact['weight'] },
               readOnly: true
             }}
-          />
-          <ComponentFactory
+          /> */}
+          {/* <ComponentFactory
             data={{
               label: 'Salary',
               elementtype: 'input',
               value: { data: this.props.activeContact['salary'].join('-') },
               readOnly: true
             }}
-          />
-          <ComponentFactory
+          /> */}
+          {/* <ComponentFactory
             data={{
               label: 'Date of birth',
               elementtype: 'input',
@@ -113,7 +113,7 @@ class ContactRead extends Component {
               },
               readOnly: true
             }}
-          />
+          /> */}
           <ComponentFactory
             data={{
               label: 'Contact number',
@@ -130,15 +130,15 @@ class ContactRead extends Component {
             }}
           />
 
-          <ComponentFactory
+          {/* <ComponentFactory
             data={{
               label: 'Contact Preference',
               elementtype: 'input',
               value: { data: this.props.activeContact['contactpreference'] },
               readOnly: true
             }}
-          />
-          <ComponentFactory
+          /> */}
+          {/* <ComponentFactory
             data={{
               label: 'Newsletter',
               elementtype: 'input',
@@ -154,8 +154,8 @@ class ContactRead extends Component {
               },
               readOnly: true
             }}
-          />
-          <ComponentFactory
+          /> */}
+          {/* <ComponentFactory
             data={{
               label: 'Social Media',
               elementtype: 'list',
@@ -171,23 +171,23 @@ class ContactRead extends Component {
               },
               readOnly: true
             }}
-          />
-          <ComponentFactory
+          /> */}
+          {/* <ComponentFactory
             data={{
               label: 'Notes',
               elementtype: 'input',
               value: { data: this.props.activeContact['notes'] },
               readOnly: true
             }}
-          />
-          <ComponentFactory
+          /> */}
+          {/* <ComponentFactory
             data={{
               label: 'Hide profile',
               elementtype: 'input',
               value: { data: this.props.activeContact['privateprofile'] },
               readOnly: true
             }}
-          />
+          /> */}
         </React.Fragment>
       );
     }

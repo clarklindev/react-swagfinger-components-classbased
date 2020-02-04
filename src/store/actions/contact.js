@@ -12,11 +12,12 @@ export const contactCreate = (contact) => {
 };
 
 //async
-export const processContactCreate = (contact, callback) => {
+export const processContactCreate = (token, contact, callback) => {
   return (dispatch) => {
     axiosInstance
-      .post('/contacts.json', contact)
+      .post('/contacts.json?auth=' + token, contact)
       .then((response) => {
+        console.log('response: ', response);
         dispatch(
           contactCreate({
             id: response.data.name,
@@ -39,12 +40,14 @@ export const contactDelete = (id) => {
 };
 
 //async
-export const processContactDelete = (id) => {
+export const processContactDelete = (token, id) => {
   return (dispatch) => {
-    axiosInstance.delete(`/contacts/${id}.json`).then((response) => {
-      console.log(response);
-      dispatch(contactDelete(id));
-    });
+    axiosInstance
+      .delete(`/contacts/${id}.json?auth=` + token)
+      .then((response) => {
+        console.log(response);
+        dispatch(contactDelete(id));
+      });
   };
 };
 
@@ -64,11 +67,11 @@ export const contactUpdate = (
   };
 };
 //async
-export const processContactUpdate = (contact, id, callback) => {
+export const processContactUpdate = (token, contact, id, callback) => {
   console.log('UPDATTTTTTING: ', contact);
   return (dispatch) => {
     axiosInstance
-      .put(`/contacts/${id}.json`, contact)
+      .put(`/contacts/${id}.json?auth=` + token, contact)
       .then((response) => {
         console.log('UPDATTTTTTING THEN...: ', contact);
         console.log(response);

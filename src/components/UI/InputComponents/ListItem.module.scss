@@ -7,7 +7,7 @@
   box-sizing: border-box;
   border: 1px solid var(--colorborder);
   border-radius: var(--borderradius);
-
+  margin-bottom: calc(var(--margindefault) * 0.5);
   .ListItemWrapper {
     display: flex;
     flex-basis: 1;

@@ -140,7 +140,11 @@ class PhonebookAdmin extends Component {
                     <Button
                       type='WithBorder'
                       title='Delete'
-                      onClick={this.props.onContactDeleted.bind(this, id)}>
+                      onClick={this.props.onContactDeleted.bind(
+                        this,
+                        this.props.token,
+                        id
+                      )}>
                       <Icon iconstyle='far' code='trash-alt' size='sm' />
                     </Button>
                   </div>
@@ -188,14 +192,15 @@ class PhonebookAdmin extends Component {
 const mapStateToProps = (state) => {
   return {
     storedPhonebook: state.contact.phoneBook,
-    isLoading: state.contact.loading
+    isLoading: state.contact.loading,
+    token: state.auth.token
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onContactDeleted: (id) => {
-      dispatch(actions.processContactDelete(id));
+    onContactDeleted: (token, id) => {
+      dispatch(actions.processContactDelete(token, id));
     }
   };
 };
