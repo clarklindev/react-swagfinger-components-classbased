@@ -5,12 +5,15 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp();
 
+//using google cloud storage
+const { Storage } = require('@google-cloud/storage');
+
 const os = require('os');
 const path = require('path');
+
+//'spawn' allows us to run tools installed on the server the cloud function runs in
+//imageMagic is already preinstalled,
 const spawn = require('child-process-promise').spawn;
-const fs = require('fs');
-//using google cloud storage
-//const { Storage } = require('@google-cloud/storage');
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
@@ -20,58 +23,51 @@ const fs = require('fs');
 // });
 
 //storage trigger .onFinalize() for create and rewrite existing
-//note: onChange is deprecated, using .onFinalize()
+//note: onChange() is deprecated, using .onFinalize()
 exports.onFileChange = functions.storage
-  .object()
+  .object() //default bucket
   .onFinalize(async (object, context) => {
     const fileBucket = object.bucket;
-    const filePath = object.name;
+    const filePath = object.name; //path+name
+    const fileName = path.basename(filePath); //get ONLY the file name.
+
     const contentType = object.contentType;
 
     if (!contentType.startsWith('image/')) {
       return console.log('This is not an image.');
     }
 
-    //get the file name.
-    const fileName = path.basename(filePath);
-
     //exit if image is already resized, prevent infinite loop
-    if (fileName.startsWith('renamed-')) {
+    if (fileName.startsWith('resized-')) {
       console.log('Already resized that file');
       return;
     }
 
-    // Download file from bucket.
-    console.log('File change detected, function execution started');
-    const bucket = admin.storage().bucket(fileBucket);
-    //temporary download to storage... gets cleaned up when function execution completes
+    //putting it back in the same bucket...
+    const storage = new Storage();
+
+    const destBucket = storage.bucket(fileBucket);
+
+    //using the temp directory
     const tempFilePath = path.join(os.tmpdir(), fileName);
     const metadata = {
       contentType: contentType
     };
 
-    await bucket.file(filePath).download({ destination: tempFilePath });
-    console.log('Image downloaded locally to: ', tempFilePath);
-
-    // Generate a thumbnail using ImageMagick.
-    await spawn('convert', [tempFilePath, '-resize', '500x500', tempFilePath]);
-    console.log('Image resized to', tempFilePath);
-
-    // We add a 'renamed-' prefix to file name. That's where we'll upload the renamed file.
-    const renamedFileName = `renamed-${fileName}`;
-    const renamedFilePath = path.join(
-      path.dirname(tempFilePath),
-      renamedFileName
-    );
-
-    //upload the resized/renamed file
-    await bucket.upload(tempFilePath, {
-      destination: renamedFilePath,
-      metadata: metadata
+    //bucket, operate on filePath, and download to name of tempFilePath
+    await destBucket.file(filePath).download({
+      destination: tempFilePath
     });
 
-    // Once the file has been uploaded, delete the local file to free up disk space.
-    return fs.unlinkSync(tempFilePath);
+    // // Generate using ImageMagick.
+    //convert() arguments: input filename, function, dimensions, output filename (here we are overriding)
+    await spawn('convert', [tempFilePath, '-resize', '500x500', tempFilePath]);
+
+    //changing the filename
+    return destBucket.upload(tempFilePath, {
+      destination: 'resized-' + fileName,
+      metadata: metadata
+    });
   });
 
 exports.onFileDelete = functions.storage

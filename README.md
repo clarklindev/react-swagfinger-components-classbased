@@ -36,6 +36,11 @@ Implement a web application where a user can manage an address book
 ## Assumptions
 
 - Login/logout is not required
+- c:\Users\clark\AppData\Roaming\npm\ is added to system path
+- npm install -g firebase-tools
+- user is logged-in to firebase for cloud functions (cmd: firebase login)
+- firebase init (has been called)
+- firebase deploy (functions have been deployed)
 
 ---
 
