@@ -123,7 +123,7 @@
 .FlexGroupRow {
   display: flex;
   flex-direction: row;
-  margin-bottom: 10px;
+  margin-bottom: calc(var(--margindefault) * 0.5);
   flex-basis: 1;
   box-sizing: border-box;
 }

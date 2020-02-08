@@ -1,3 +1,10 @@
+.FlexGroupColumn {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  flex-basis: 1;
+  flex-grow: 1;
+}
 .Input {
   height: var(--inputheight);
   line-height: var(--inputheight); //50px - (6px x2)
@@ -24,7 +31,7 @@
     cursor: default;
   }
 
-  &:focus {
+  input:focus {
     outline: none;
     // background-color: #e6e6e6;
   }

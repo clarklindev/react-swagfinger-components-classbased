@@ -35,10 +35,11 @@ class MultiInput extends Component {
           return (
             <div className={classes.FlexGroupRow} key={this.props.name + index}>
               <Input
-                className={[...tempClasses].join(' ')}
+                className={classes.tempClasses}
                 placeholder={this.props.placeholder}
-                value={{ data: val.data }}
                 {...this.props.elementconfig}
+                validation={this.props.validation}
+                value={val}
                 onChange={(event) =>
                   //pass in the name of the prop, and the index (if array item)
                   this.context.changed(

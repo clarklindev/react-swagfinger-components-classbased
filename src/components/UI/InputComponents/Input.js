@@ -37,8 +37,8 @@ class Input extends Component {
     let tempClasses = [];
     let error = null;
     if (
-      this.props.elementtype !== 'multiinput' &&
-      this.props.elementtype !== 'select' &&
+      this.props.component !== 'multiinput' &&
+      this.props.component !== 'select' &&
       this.props.validation &&
       !this.props.value.valid &&
       (this.props.value.touched ||
@@ -53,16 +53,17 @@ class Input extends Component {
     }
     return (
       <React.Fragment>
-        <input
-          className={[this.className, tempClasses].join(' ')}
-          placeholder={this.props.placeholder}
-          readOnly={this.props.readOnly}
-          ref={this.props.reference}
-          {...this.props.elementconfig}
-          value={this.props.value.data}
-          onChange={this.inputChangeHandler}
-        />
-        {error}
+        <div className={classes.FlexGroupColumn}>
+          <input
+            className={[this.className, tempClasses].join(' ')}
+            placeholder={this.props.placeholder}
+            readOnly={this.props.readOnly}
+            {...this.props.elementconfig}
+            value={this.props.value.data}
+            onChange={this.inputChangeHandler}
+          />
+          {error}
+        </div>
       </React.Fragment>
     );
   }

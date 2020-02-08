@@ -626,14 +626,14 @@ class Datepicker extends Component {
         onBlur={(event) => {
           this.onBlurHandler(event);
         }}>
-        <Input
+        <input
           {...this.props}
           placeholder={this.props.placeholder}
           readOnly
           {...this.props.elementconfig}
-          reference={this.inputRef}
-          value={{
-            data: this.state.pickeddate
+          ref={this.inputRef}
+          value={
+            this.state.pickeddate
               ? this.state.format === 'full'
                 ? // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString
                   new Date(this.state.pickeddate).toLocaleDateString('en-GB', {
@@ -644,7 +644,7 @@ class Datepicker extends Component {
                   })
                 : new Date(this.state.pickeddate).toISOString().substr(0, 10)
               : ''
-          }}
+          }
           onChange={(event) => {
             console.log('props.name: ', this.props.name);
             this.context.changed(event.target.name, this.props.name);

@@ -1,5 +1,5 @@
 .ErrorList {
-  margin-top: var(--margindefault);
+  margin-top: calc(var(--margindefault) * 0.5);
 
   ul {
     list-style-type: none;

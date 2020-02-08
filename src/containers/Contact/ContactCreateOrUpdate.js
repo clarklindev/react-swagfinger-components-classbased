@@ -14,6 +14,7 @@ import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
 import Spinner from '../../components/UI/Loaders/Spinner';
 import Button from '../../components/UI/Button/Button';
 import { CheckValidity as validationCheck } from '../../shared/validation';
+
 class ContactCreateOrUpdate extends Component {
   constructor(props) {
     super(props);
@@ -26,325 +27,61 @@ class ContactCreateOrUpdate extends Component {
   }
 
   state = {
-    form: {
-      name: {
-        elementtype: 'input',
-        name: 'name',
-        label: 'Name',
-        validation: { required: true },
-        elementconfig: { type: 'text', placeholder: 'your name' },
-        value: {
-          data: '',
-          valid: true,
-          touched: false,
-          pristine: true,
-          errors: null
-        }
-      },
-
-      lastname: {
-        elementtype: 'input',
-        name: 'lastname',
-        label: 'Last name',
-        validation: { required: true },
-        elementconfig: { type: 'text', placeholder: 'your lastname' },
-        value: {
-          data: '',
-          valid: true,
-          touched: false,
-          pristine: true,
-          errors: null
-        }
-      },
-
-      // upload: {
-      //   elementtype: 'upload',
-      //   name: 'upload',
-      //   label: 'Upload',
-      //   validation: {},
-      //   elementconfig: {
-      //     iconsize: 'lg'
-      //   },
-      //   value: {
-      //     data: '',
-      //     valid: true,
-      //     touced: false,
-      //     pristine: true,
-      //     errors: null
-      //   }
-      // },
-
-      // gender: {
-      //   elementtype: 'radio',
-      //   name: 'gender',
-      //   label: 'Gender',
-      //   validation: { required: true },
-      //   elementconfig: {
-      //     type: 'text',
-      //     options: [
-      //       { value: 'male', displaytext: 'Male' },
-      //       { value: 'female', displaytext: 'Female' }
-      //     ]
-      //   },
-      //   value: {
-      //     data: '',
-      //     valid: true,
-      //     touched: false,
-      //     pristine: true,
-      //     errors: null
-      //   }
-      // },
-
-      // height: {
-      //   elementtype: 'counter',
-      //   name: 'height',
-      //   label: 'Height',
-      //   validation: {},
-      //   elementconfig: {
-      //     step: 0.01,
-      //     min: 1.4,
-      //     max: 1.7
-      //   },
-      //   value: {
-      //     data: '',
-      //     valid: true,
-      //     touched: false,
-      //     pristine: true,
-      //     errors: null
-      //   }
-      // },
-
-      // weight: {
-      //   elementtype: 'rangeslider',
-      //   name: 'weight',
-      //   label: 'Weight',
-      //   validation: {},
-      //   elementconfig: {
-      //     increments: 10,
-      //     min: 40,
-      //     max: 150
-      //   },
-      //   value: {
-      //     data: '',
-      //     valid: true,
-      //     touched: false,
-      //     pristine: true,
-      //     errors: null
-      //   }
-      // },
-
-      // salary: {
-      //   elementtype: 'multirangeslider',
-      //   name: 'salary',
-      //   label: 'Salary',
-      //   validation: {},
-      //   elementconfig: { min: 0, max: 15000 },
-      //   value: [
-      //     {
-      //       data: null,
-      //       valid: true,
-      //       touched: false,
-      //       pristine: true,
-      //       errors: null
-      //     },
-      //     {
-      //       data: null,
-      //       valid: true,
-      //       touched: false,
-      //       pristine: true,
-      //       errors: null
-      //     }
-      //   ]
-      // },
-
-      // dateofbirth: {
-      //   elementtype: 'datepicker',
-      //   name: 'dateofbirth',
-      //   label: 'Date of birth',
-      //   validation: { required: true },
-      //   elementconfig: { type: 'text', placeholder: 'Enter date of birth' },
-      //   value: {
-      //     data: '',
-      //     valid: true,
-      //     touched: false,
-      //     pristine: true,
-      //     errors: null
-      //   }
-      // },
-
-      contactnumbers: {
-        elementtype: 'multiinput',
-        name: 'contactnumbers',
-        label: 'Contact',
-        validation: { required: true },
-        elementconfig: { type: 'text', placeholder: 'your number' },
-        value: [
-          {
-            data: '',
-            valid: true,
-            touched: false,
-            pristine: true,
-            errors: null
-          }
-        ]
-      },
-
-      emails: {
-        elementtype: 'multiinput',
-        name: 'emails',
-        label: 'Email',
-        validation: { required: true },
-        elementconfig: { type: 'text', placeholder: 'your email' },
-        value: [
-          {
-            data: '',
-            valid: true,
-            touched: false,
-            pristine: true,
-            errors: null
-          }
-        ]
-      }
-
-      // contactpreference: {
-      //   elementtype: 'select',
-      //   name: 'contactpreference',
-      //   label: 'Contact preference',
-      //   validation: {},
-      //   elementconfig: {
-      //     placeholder: 'Choose contact preference',
-      //     options: [
-      //       { value: '', displaytext: 'Select an option' },
-      //       { value: 'email', displaytext: 'Email' },
-      //       { value: 'phone', displaytext: 'Phone' }
-      //     ]
-      //   },
-      //   value: {
-      //     data: '',
-      //     valid: true,
-      //     touched: false,
-      //     pristine: true,
-      //     errors: null
-      //   }
-      // },
-
-      // newsletter: {
-      //   elementtype: 'checkbox',
-      //   name: 'newsletter',
-      //   label: 'Subscribe to newsletter',
-      //   validation: { required: false },
-      //   elementconfig: {
-      //     options: [
-      //       { value: 'weekly', displaytext: 'Weekly' },
-      //       { value: 'monthly', displaytext: 'Monthly' }
-      //     ]
-      //   },
-      //   value: [
-      //     {
-      //       data: 'weekly',
-      //       valid: true,
-      //       touched: false,
-      //       pristine: true,
-      //       errors: null
-      //     },
-      //     {
-      //       data: 'monthly',
-      //       valid: true,
-      //       touched: false,
-      //       pristine: true,
-      //       errors: null
-      //     }
-      //   ]
-      // },
-
-      // socialmedia: {
-      //   elementtype: 'selectwithinput',
-      //   name: 'socialmedia',
-      //   label: 'Social media',
-      //   validation: { required: true },
-      //   elementconfig: {
-      //     options: [
-      //       { value: '', displaytext: '' },
-      //       { value: 'facebook', displaytext: 'Facebook' },
-      //       { value: 'instagram', displaytext: 'Instagram' },
-      //       { value: 'twitter', displaytext: 'Twitter' },
-      //       { value: 'youtube', displaytext: 'Youtube' },
-      //       { value: 'snapchat', displaytext: 'Snapchat' },
-      //       { value: 'linkedin', displaytext: 'LinkedIn' },
-      //       { value: 'tiktok', displaytext: 'TikTok' },
-      //       { value: 'pinterest', displaytext: 'Pinterest' }
-      //     ]
-      //   },
-      //   value: [
-      //     {
-      //       data: null,
-      //       valid: true,
-      //       touched: false,
-      //       pristine: true,
-      //       errors: null
-      //     }
-      //   ]
-      // },
-
-      // notes: {
-      //   elementtype: 'textarea',
-      //   name: 'notes',
-      //   label: 'Notes',
-      //   validation: { required: false },
-      //   elementconfig: { type: 'text', placeholder: 'your notes' },
-      //   value: {
-      //     data: '',
-      //     valid: true,
-      //     touched: false,
-      //     pristine: true,
-      //     errors: null
-      //   }
-      // },
-
-      // privateprofile: {
-      //   elementtype: 'toggle',
-      //   name: 'privateprofile',
-      //   label: 'Hide profile',
-      //   validation: {},
-      //   elementconfig: {},
-      //   value: {
-      //     data: null,
-      //     valid: true,
-      //     touched: false,
-      //     pristine: true,
-      //     errors: null
-      //   }
-      // }
-    },
-
     id: null, //id of current item being updated
     loadedContact: null, //when axios call gives response
     saving: false,
-    formIsValid: null //for form validation
+    formIsValid: null, //for form validation
+    form: null
   };
   //------------------------------------------------------
   //------------------------------------------------------
   //pull data from firebase, generated form is dependant on whats inside the database in firebase
   //key in database needs to exist to be associated with state,
-  componentDidMount() {
-    const query = new URLSearchParams(this.props.location.search);
-    //get id in url query params
-    const id = query.get('id');
+  async componentDidMount() {
+    //generate form from firebase 'form'
+    try {
+      //get the structure of the form from firebase
+      let formstructure = await axios.get(`/form.json`);
+      console.log('formstructure:', formstructure.data);
 
-    if (id) {
-      axios.get(`/contacts/${id}.json`).then((response) => {
+      let clone = [...formstructure.data];
+      let formatted = {};
+
+      for (let i = 0; i < clone.length; i++) {
+        let tempObj = { ...clone[i] };
+        tempObj.value =
+          tempObj.elementconfig.valuetype === 'array'
+            ? [
+                {
+                  data: '',
+                  valid: true,
+                  errors: null,
+                  touched: false,
+                  pristine: true
+                }
+              ]
+            : {
+                data: '',
+                valid: true,
+                touched: false,
+                pristine: true,
+                errors: null
+              };
+        formatted[tempObj.name] = tempObj;
+      }
+
+      //check if there is 'id' in querystring
+      const query = new URLSearchParams(this.props.location.search);
+      const id = query.get('id'); //get id in url query params
+      if (id) {
+        let response = await axios.get(`/contacts/${id}.json`);
+
         //console.log('response: ', response.data); //returns a single contact
-
-        this.setState({
-          loadedContact: true,
-          id: id
-        });
-
         //map each key of contact (there are inputs/ input sets)
         Object.keys(response.data).map((item) => {
           let val = null;
-          //check if whats coming back from firebase is an array...
           if (this.state.form[item]) {
+            //check if whats coming back from firebase is an array...
             if (Array.isArray(response.data[item])) {
               val = response.data[item].map((each) => {
                 let validation = validationCheck(
@@ -372,28 +109,22 @@ class ContactCreateOrUpdate extends Component {
                 pristine: true
               }; //return single value
             }
-          }
-          //console.log('key:', item, ' | val: ', val);
 
-          //update the current key with its value from firebase
-          return this.setState((prevState) => {
-            const updatedState = {
-              form: {
-                ...prevState.form,
-                [item]: {
-                  ...prevState.form[item],
-                  //update just the value
-                  value: val
-                }
-              },
-              formIsValid: true //set formIsValid to true as default response from axios
-            };
-            return updatedState;
-          });
+            let updatedObj = { ...formatted[item] };
+            updatedObj.value = val;
+            formatted[item] = updatedObj;
+          }
+          return val;
         });
-      });
+      }
+
+      //upate state
+      this.setState({ form: formatted });
+    } catch (error) {
+      console.log(error);
     }
   }
+
   //------------------------------------------------------
   //------------------------------------------------------
 
@@ -416,22 +147,16 @@ class ContactCreateOrUpdate extends Component {
       this.setState({ saving: true }); //if form inputs are valid, then set saving to true
       const formData = {};
       //build formData object and save only the value of each key...
-      for (let formElementIdentifier in this.state.form) {
+      for (let key in this.state.form) {
         //array value, store just the value.data in formData
-        if (
-          this.state.form[formElementIdentifier].elementtype === 'multiinput'
-        ) {
-          formData[formElementIdentifier] = this.state.form[
-            formElementIdentifier
-          ].value.map((each) => {
+        if (this.state.form[key].component === 'multiinput') {
+          formData[key] = this.state.form[key].value.map((each) => {
             return each.data;
           });
         }
         //single value, store just the value.data in formData
         else {
-          formData[formElementIdentifier] = this.state.form[
-            formElementIdentifier
-          ].value.data;
+          formData[key] = this.state.form[key].value.data;
         }
       }
       if (this.state.id !== null) {
@@ -528,14 +253,14 @@ class ContactCreateOrUpdate extends Component {
     let formIsValid = true;
 
     //each prop in contact
-    for (let inputIdentifier in form) {
+    for (let key in form) {
       //if the prop of contact has an element type of...
-      if (form[inputIdentifier].elementtype === 'multiinput') {
-        for (let each of form[inputIdentifier].value) {
+      if (form[key].component === 'multiinput') {
+        for (let each of form[key].value) {
           formIsValid = each.valid && formIsValid;
         }
       } else {
-        formIsValid = form[inputIdentifier].value.valid && formIsValid;
+        formIsValid = form[key].value.valid && formIsValid;
       }
     }
 
@@ -543,8 +268,8 @@ class ContactCreateOrUpdate extends Component {
   };
 
   // ------------------------------------
-  inputChangedHandler = (newval, inputIdentifier, index = null) => {
-    // console.log('inputChangedHandler: ', inputIdentifier);
+  inputChangedHandler = (newval, key, index = null) => {
+    console.log('inputChangedHandler key: ', key);
     //single contact
     const updatedForm = {
       ...this.state.form
@@ -552,12 +277,14 @@ class ContactCreateOrUpdate extends Component {
 
     //single prop of form
     const updatedFormElement = {
-      ...updatedForm[inputIdentifier]
+      ...updatedForm[key]
     };
 
     let validation = validationCheck(newval, updatedFormElement.validation);
+    console.log('validation: ', validation);
     //if array
     if (index !== null) {
+      updatedFormElement.value[index] = {};
       updatedFormElement.value[index].data = newval;
       updatedFormElement.value[index].touched = true;
       updatedFormElement.value[index].pristine = false;
@@ -565,6 +292,7 @@ class ContactCreateOrUpdate extends Component {
       updatedFormElement.value[index].errors = validation.errors;
     } else {
       //if single value
+      updatedFormElement.value = {};
       updatedFormElement.value.data = newval;
       updatedFormElement.value.touched = true;
       updatedFormElement.value.pristine = false;
@@ -572,7 +300,7 @@ class ContactCreateOrUpdate extends Component {
       updatedFormElement.value.errors = validation.errors;
     }
 
-    updatedForm[inputIdentifier] = updatedFormElement; //update form's input element state as that or 'updatedFormElement'
+    updatedForm[key] = updatedFormElement; //update form's input element state as that or 'updatedFormElement'
 
     const formValidCheck = this.checkInputValidProperty(updatedForm);
     // console.log('FORM VALIDITY: ', formValidCheck);
@@ -585,28 +313,28 @@ class ContactCreateOrUpdate extends Component {
     console.log('onSubmitTest');
     //make all inputs pristine:false
     //each prop in contact
-    for (let inputIdentifier in this.state.form) {
+    for (let key in this.state.form) {
       let obj;
       if (
-        this.state.form[inputIdentifier].elementtype === 'multiinput' ||
-        this.state.form[inputIdentifier].elementtype === 'selectwithinput'
+        this.state.form[key].component === 'multiinput' ||
+        this.state.form[key].component === 'selectwithinput'
       ) {
-        obj = this.state.form[inputIdentifier].value.map((each) => {
+        obj = this.state.form[key].value.map((each) => {
           console.log('EACH: ', each);
           let val = { ...each };
           val.pristine = false;
           return val;
         });
       } else {
-        obj = { ...this.state.form[inputIdentifier].value };
+        obj = { ...this.state.form[key].value };
         obj.pristine = false;
       }
 
       this.setState((prevState) => ({
         form: {
           ...prevState.form,
-          [inputIdentifier]: {
-            ...prevState.form[inputIdentifier],
+          [key]: {
+            ...prevState.form[key],
             value: obj
           }
         }
@@ -624,6 +352,7 @@ class ContactCreateOrUpdate extends Component {
     }
 
     let formInputs = formElementsArray.map((each) => {
+      //key is unique because it uses the property 'name'
       return <ComponentFactory key={each.id} id={each.id} data={each.data} />;
     });
     let query = new URLSearchParams(this.props.location.search).get('id');

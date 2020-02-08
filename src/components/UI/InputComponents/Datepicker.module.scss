@@ -29,9 +29,10 @@
       flex-basis: 1;
       flex-shrink: 1;
       cursor: pointer;
-      // &:focus {
-      //   // background-color: red;
-      // }
+      &:focus {
+        border: none;
+        outline: none;
+      }
     }
     &.Invalid {
       border: 1px solid red;
