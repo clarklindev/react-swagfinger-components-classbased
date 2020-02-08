@@ -4,7 +4,7 @@ import ComponentFactory from './ComponentFactory';
 class SearchFilter extends Component {
   render() {
     let obj = {
-      elementtype: 'inputwithicon',
+      component: 'inputwithicon',
       elementconfig: {
         type: 'search',
         placeholder: 'Enter your search',

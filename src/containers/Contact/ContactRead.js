@@ -59,7 +59,7 @@ class ContactRead extends Component {
           <ComponentFactory
             data={{
               label: 'Name',
-              elementtype: 'input',
+              component: 'input',
               value: { data: this.props.activeContact['name'] },
               readOnly: true
             }}
@@ -67,7 +67,7 @@ class ContactRead extends Component {
           <ComponentFactory
             data={{
               label: 'Last name',
-              elementtype: 'input',
+              component: 'input',
               value: { data: this.props.activeContact['lastname'] },
               readOnly: true
             }}
@@ -117,7 +117,7 @@ class ContactRead extends Component {
           <ComponentFactory
             data={{
               label: 'Contact number',
-              elementtype: 'list',
+              component: 'list',
               value: { data: contactnumbers }
             }}
           />
@@ -125,7 +125,7 @@ class ContactRead extends Component {
           <ComponentFactory
             data={{
               label: 'Email',
-              elementtype: 'list',
+              component: 'list',
               value: { data: emails }
             }}
           />

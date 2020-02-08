@@ -39,7 +39,7 @@ class ComponentFactory extends Component {
   render() {
     //add Invalid class if...
 
-    switch (this.props.data.elementtype) {
+    switch (this.props.data.component) {
       case 'input':
         this.inputElement = <Input {...this.props.data} />;
         break;

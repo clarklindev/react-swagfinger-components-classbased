@@ -168,7 +168,7 @@ class PhonebookAdmin extends Component {
             </InputContext.Provider>
             <ComponentFactory
               data={{
-                elementtype: 'list',
+                component: 'list',
                 label: 'Contacts',
                 value: { data: filtered }
               }}

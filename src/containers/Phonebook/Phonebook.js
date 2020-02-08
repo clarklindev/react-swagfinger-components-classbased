@@ -138,7 +138,7 @@ class Phonebook extends Component {
             <ComponentFactory
               data={{
                 label: 'Contacts',
-                elementtype: 'list',
+                component: 'list',
                 value: { data: filtered }
               }}
             />

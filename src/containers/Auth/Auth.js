@@ -21,7 +21,7 @@ class Auth extends Component {
   state = {
     form: {
       email: {
-        elementtype: 'input',
+        component: 'input',
         name: 'email',
         label: 'Email',
         elementconfig: {
@@ -41,7 +41,7 @@ class Auth extends Component {
         }
       },
       password: {
-        elementtype: 'input',
+        component: 'input',
         name: 'password',
         label: 'Password',
         elementconfig: {
