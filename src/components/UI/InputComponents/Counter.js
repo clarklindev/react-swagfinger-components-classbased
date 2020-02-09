@@ -12,28 +12,28 @@ class Counter extends Component {
     this.counterRef = React.createRef();
   }
 
-  state = {
-    prop: null,
-    min: null,
-    max: null
-  };
-
   decrement = () => {
-    let current = Number(this.counterRef.current.value);
-    let tempVal = Number(current - this.props.elementconfig.step).toFixed(2);
-    //console.log('current:', current, ' | DECREMENT: ', tempVal);
-    this.counterRef.current.value = tempVal;
-    var event = new Event('input', { bubbles: true });
-    this.counterRef.current.dispatchEvent(event);
+    let tempVal =
+      this.props.value.data === ''
+        ? Number(this.props.elementconfig.default)
+        : Number(this.props.value.data) -
+          Number(this.props.elementconfig.increment);
+    if (tempVal < this.props.elementconfig.min) {
+      tempVal = this.props.elementconfig.min;
+    }
+    this.context.changed(tempVal.toFixed(2), this.props.name);
   };
 
   increment = () => {
-    let current = Number(this.counterRef.current.value);
-    let tempVal = Number(current + this.props.elementconfig.step).toFixed(2);
-    //console.log('current:', current, ' | INCREMENT: ', tempVal);
-    this.counterRef.current.value = tempVal;
-    var event = new Event('input', { bubbles: true });
-    this.counterRef.current.dispatchEvent(event);
+    let tempVal =
+      this.props.value.data === ''
+        ? Number(this.props.elementconfig.default)
+        : Number(this.props.value.data) +
+          Number(this.props.elementconfig.increment);
+    if (tempVal > this.props.elementconfig.max) {
+      tempVal = this.props.elementconfig.max;
+    }
+    this.context.changed(tempVal.toFixed(2), this.props.name);
   };
 
   onBlur = (event) => {
@@ -46,40 +46,37 @@ class Counter extends Component {
   };
 
   onChangeHandler = (event) => {
-    console.log('CHANGED: ', this.props.name);
-    if (!isNaN(event.target.value)) {
-      this.context.changed(
-        Number(event.target.value).toFixed(2),
-        this.props.name
-      );
-    }
+    console.log('CHANGED: ', event.target.value);
+    this.context.changed(event.target.value, this.props.name);
   };
 
   render() {
-    //console.log('PROP: ', this.props.value.data);
-    //console.log('MIN: ', Number(this.props.elementconfig.min.toFixed(2)));
-    //console.log('MAX: ', Number(this.props.elementconfig.max.toFixed(2)));
     let isMinBound =
-      this.props.value.data <= this.props.elementconfig.min ? true : false;
+      this.props.value.data !== '' &&
+      this.props.value.data <= this.props.elementconfig.min
+        ? true
+        : false;
     let isMaxBound =
-      this.props.value.data >= this.props.elementconfig.max ? true : false;
-    //console.log('min bound: ', isMinBound, ' | max bound: ', isMaxBound);
+      this.props.value.data !== '' &&
+      this.props.value.data >= this.props.elementconfig.max
+        ? true
+        : false;
+    let actual = this.props.value;
+    console.log('actual:', actual);
     return (
       <div className={classes.Counter}>
-        <Button disabled={isMinBound} onClick={this.decrement}>
+        <Button onClick={this.decrement} disabled={isMinBound}>
           <Icon iconstyle='fas' code='minus' size='sm' />
         </Button>
         <input
-          min={Number(this.props.elementconfig.min).toFixed(2)}
-          max={Number(this.props.elementconfig.max).toFixed(2)}
-          step={Number(this.props.elementconfig.step).toFixed(2)}
+          step={this.props.elementconfig.increment}
           ref={this.counterRef}
-          value={Number(this.props.value.data)}
+          value={this.props.value.data}
           onChange={(event) => this.onChangeHandler(event)}
           onInput={(event) => this.onChangeHandler(event)}
           onBlur={(event) => this.onBlur(event)}
         />
-        <Button disabled={isMaxBound} onClick={this.increment}>
+        <Button onClick={this.increment} disabled={isMaxBound}>
           <Icon iconstyle='fas' code='plus' size='sm' />
         </Button>
       </div>
