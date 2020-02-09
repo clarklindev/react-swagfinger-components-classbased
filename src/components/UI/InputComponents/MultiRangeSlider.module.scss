@@ -53,15 +53,16 @@
     flex-basis: 1;
     line-height: 20px;
     &:first-child {
-      margin-right: var(--paddingdefault);
+      margin-right: calc(var(--margindefault) * 0.5);
     }
     &:last-child {
-      margin-left: var(--paddingdefault);
+      margin-left: calc(var(--margindefault) * 0.5);
     }
 
     input {
       width: 65px;
-      height: 36px;
+      height: 50px;
+      box-sizing: border-box;
       padding: var(--paddinginput);
       border: 1px solid var(--colorborder);
       border-radius: var(--borderradius);

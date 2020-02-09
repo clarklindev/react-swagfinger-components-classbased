@@ -82,7 +82,7 @@
 
   .RemoveButton {
     box-sizing: border-box;
-    margin-left: 10px;
+    margin-left: calc(var(--margindefault) * 0.5);
     flex-basis: 1;
     color: var(--colordefault);
   }
