@@ -269,7 +269,7 @@ class ContactCreateOrUpdate extends Component {
 
   // ------------------------------------
   inputChangedHandler = (newval, key, index = null) => {
-    console.log('inputChangedHandler key: ', key);
+    console.log('inputChangedHandler key: ', key, ':', newval);
     //single contact
     const updatedForm = {
       ...this.state.form
@@ -284,20 +284,22 @@ class ContactCreateOrUpdate extends Component {
     console.log('validation: ', validation);
     //if array
     if (index !== null) {
-      updatedFormElement.value[index] = {};
-      updatedFormElement.value[index].data = newval;
-      updatedFormElement.value[index].touched = true;
-      updatedFormElement.value[index].pristine = false;
-      updatedFormElement.value[index].valid = validation.isValid;
-      updatedFormElement.value[index].errors = validation.errors;
+      updatedFormElement.value[index] = {
+        data: newval,
+        touched: true,
+        pristine: false,
+        valid: validation.isValid,
+        errors: validation.errors
+      };
     } else {
       //if single value
-      updatedFormElement.value = {};
-      updatedFormElement.value.data = newval;
-      updatedFormElement.value.touched = true;
-      updatedFormElement.value.pristine = false;
-      updatedFormElement.value.valid = validation.isValid;
-      updatedFormElement.value.errors = validation.errors;
+      updatedFormElement.value = {
+        data: newval,
+        touched: true,
+        pristine: false,
+        valid: validation.isValid,
+        errors: validation.errors
+      };
     }
 
     updatedForm[key] = updatedFormElement; //update form's input element state as that or 'updatedFormElement'
@@ -315,19 +317,30 @@ class ContactCreateOrUpdate extends Component {
     //each prop in contact
     for (let key in this.state.form) {
       let obj;
-      if (
-        this.state.form[key].component === 'multiinput' ||
-        this.state.form[key].component === 'selectwithinput'
-      ) {
+      if (this.state.form[key].elementconfig.valuetype === 'array') {
         obj = this.state.form[key].value.map((each) => {
+          let validation = validationCheck(
+            each.data,
+            this.state.form[key].validation
+          );
           console.log('EACH: ', each);
           let val = { ...each };
+          val.touched = true;
           val.pristine = false;
+          val.errors = validation.errors;
+          val.valid = validation.isValid;
           return val;
         });
       } else {
+        let validation = validationCheck(
+          this.state.form[key].value.data,
+          this.state.form[key].validation
+        );
         obj = { ...this.state.form[key].value };
+        obj.touched = true;
         obj.pristine = false;
+        obj.errors = validation.errors;
+        obj.valid = validation.isValid;
       }
 
       this.setState((prevState) => ({

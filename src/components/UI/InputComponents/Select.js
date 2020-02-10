@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import classes from './Select.module.scss';
 import Utils from '../../../Utils';
 import InputContext from '../../../context/InputContext';
-
+import ErrorList from './ErrorList';
 class Select extends Component {
   static contextType = InputContext;
 
@@ -47,6 +47,21 @@ class Select extends Component {
       tempClasses.push(classes.IsOpen);
     }
 
+    let error = null;
+    if (
+      this.props.validation &&
+      !this.props.value.valid &&
+      (this.props.value.touched ||
+        (!this.props.value.touched && !this.props.value.pristine))
+    ) {
+      console.log('pushing invalid: ');
+      tempClasses.push(classes.Invalid);
+      error = <ErrorList value={{ data: this.props.value.errors }} />;
+    }
+    if (this.props.readOnly) {
+      tempClasses.push(classes.ReadOnly);
+    }
+
     return this.props.value ? (
       <div className={this.className}>
         <select
@@ -64,6 +79,7 @@ class Select extends Component {
             </option>
           ))}
         </select>
+        {error}
       </div>
     ) : null;
   }

@@ -109,8 +109,8 @@
 
 .Divider {
   height: inherit;
-  margin-top: 5px;
-  margin-bottom: 5px;
+  margin-top: var(--paddinginput);
+  margin-bottom: var(--paddinginput);
   width: 1px;
   background-color: var(--colorborder);
   flex-shrink: 0;

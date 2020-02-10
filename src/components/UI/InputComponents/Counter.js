@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import classes from './Counter.module.scss';
 import InputContext from '../../../context/InputContext';
 import Icon from '../InputComponents/Icon';
 import Button from '../Button/Button';
-class Counter extends Component {
+class Counter extends PureComponent {
   static contextType = InputContext;
 
   constructor(props) {
@@ -62,7 +62,6 @@ class Counter extends Component {
         ? true
         : false;
     let actual = this.props.value;
-    console.log('actual:', actual);
     return (
       <div className={classes.Counter}>
         <Button onClick={this.decrement} disabled={isMinBound}>

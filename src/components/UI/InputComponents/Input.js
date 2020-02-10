@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 import classes from './Input.module.scss';
 import Utils from '../../../Utils';
 import InputContext from '../../../context/InputContext';
 import ErrorList from './ErrorList';
 
-class Input extends Component {
+class Input extends PureComponent {
   static contextType = InputContext;
 
   constructor(props) {
@@ -37,8 +37,6 @@ class Input extends Component {
     let tempClasses = [];
     let error = null;
     if (
-      this.props.component !== 'multiinput' &&
-      this.props.component !== 'select' &&
       this.props.validation &&
       !this.props.value.valid &&
       (this.props.value.touched ||
