@@ -1,54 +1,65 @@
 .Counter {
   display: flex;
-  flex-direction: row;
-  background: white;
-  border-radius: var(--borderradius);
-  border: 1px solid var(--colorborder);
+  flex-direction: column;
   overflow: hidden;
 
-  input {
-    border: none;
-    text-align: center;
-    flex-grow: 1;
-    flex-basis: 0;
-    min-width: 0;
-    color: var(--colordefault);
-    font: inherit;
-    font-size: var(--fontsizedefault);
-    padding: var(--paddinginput);
-
-    &:focus {
-      border: none;
-      outline: none;
-    }
+  .FlexGroupRow {
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
   }
+  .Wrapper {
+    background: white;
+    border-radius: var(--borderradius);
+    border: 1px solid var(--colorborder);
+    &.Invalid {
+      border: 1px solid var(--colorerror);
+    }
+    input {
+      border: none;
+      text-align: center;
+      flex-grow: 1;
+      flex-basis: 0;
+      min-width: 0;
+      color: var(--colordefault);
+      font: inherit;
+      font-size: var(--fontsizedefault);
+      padding: var(--paddinginput);
 
-  button {
-    border: none;
-    color: var(--colordefault);
-    padding: 0;
-    min-width: 35px;
-    max-width: 35px;
-
-    &:first-child {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-      border-right: 1px solid var(--colorborder);
+      &:focus {
+        border: none;
+        outline: none;
+      }
     }
 
-    &:last-child {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-      border-left: 1px solid var(--colorborder);
-    }
+    button {
+      border: none;
+      color: var(--colordefault);
+      padding: 0;
+      min-width: 35px;
+      max-width: 35px;
+      border-radius: var(--borderradius);
 
-    // &:hover {
-    //   background: var(--colordefault);
-    //   color: white;
-    // }
+      &:first-child {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        border-right: 1px solid var(--colorborder);
+      }
 
-    &:disabled {
-      color: var(--colorborder);
+      &:last-child {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        border-left: 1px solid var(--colorborder);
+      }
+
+      // &:hover {
+      //   background: var(--colordefault);
+      //   color: white;
+      // }
+
+      &:disabled {
+        color: var(--colorborder);
+      }
     }
   }
 }
