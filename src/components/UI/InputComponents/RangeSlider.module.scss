@@ -74,7 +74,6 @@
   .FlexGroupRow {
     display: flex;
     flex-direction: row;
-    margin-bottom: calc(var(--margindefault) * 0.5);
     flex-basis: 1;
     flex-grow: 1;
     align-items: center;
