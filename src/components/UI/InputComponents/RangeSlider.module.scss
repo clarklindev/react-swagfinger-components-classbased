@@ -1,8 +1,10 @@
 .RangeSlider {
   display: flex;
-  justify-content: center;
-  align-items: center;
   box-sizing: border-box;
+  flex-direction: column;
+  flex-basis: 1;
+  flex-grow: 1;
+  flex-shrink: 1;
 
   .Slider {
     -webkit-appearance: none;
@@ -16,6 +18,10 @@
     border-radius: 34px;
     &:active {
       background-color: var(--colorborder);
+    }
+    &.Invalid {
+      border: 1px solid var(--colorerror);
+      background-color: white;
     }
     box-sizing: content-box;
     padding: 5px;
@@ -55,9 +61,23 @@
       font: inherit;
       font-size: var(--fontsizedefault);
       color: var(--colordefault);
+      &.Invalid {
+        border: 1px solid var(--colorerror);
+        background-color: white;
+      }
       &:focus {
         outline: none;
       }
     }
+  }
+
+  .FlexGroupRow {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: calc(var(--margindefault) * 0.5);
+    flex-basis: 1;
+    flex-grow: 1;
+    align-items: center;
+    box-sizing: border-box;
   }
 }

@@ -67,6 +67,7 @@ class Select extends Component {
         <select
           name={this.props.name}
           className={[...tempClasses].join('')}
+          placeholder={this.props.elementconfig.placeholder}
           value={this.props.value.data}
           onChange={this.onChangeHandler}
           onClick={this.onClickHandler}

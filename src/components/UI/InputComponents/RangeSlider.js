@@ -1,60 +1,81 @@
 import React, { Component } from 'react';
 import classes from './RangeSlider.module.scss';
 import InputContext from '../../../context/InputContext';
+import ErrorList from './ErrorList';
 
 class RangeSlider extends Component {
   static contextType = InputContext;
 
   onChange = (event) => {
-    let testValue = parseInt(event.target.value);
+    let testValue = event.target.value;
     if (isNaN(testValue)) {
       testValue = '';
     }
+    console.log('onChange testValue: ', testValue);
     this.context.changed(testValue, this.props.name);
   };
   onBlur = (event) => {
-    if (event.target.value <= this.props.elementconfig.min) {
-      this.context.changed(this.props.elementconfig.min, this.props.name);
+    let tempValue = event.target.value;
+
+    if (tempValue < this.props.elementconfig.min && tempValue !== '') {
+      tempValue = this.props.elementconfig.min;
     }
-    if (event.target.value >= this.props.elementconfig.max) {
-      this.context.changed(this.props.elementconfig.max, this.props.name);
+    if (tempValue > this.props.elementconfig.max && tempValue !== '') {
+      tempValue = this.props.elementconfig.max;
     }
-    let tempValue = parseInt(event.target.value);
     if (isNaN(tempValue)) {
       tempValue = '';
     }
-    if (tempValue < this.props.elementconfig.min) {
-      tempValue = this.props.elementconfig.min;
+    if (tempValue === '') {
+      tempValue = '';
     }
-    if (tempValue > this.props.elementconfig.max) {
-      tempValue = this.props.elementconfig.max;
-    }
+    console.log('tempValue: ', tempValue);
     this.context.changed(tempValue, this.props.name);
   };
 
   render() {
+    let tempClasses = [];
+    let error = null;
+    if (
+      this.props.validation &&
+      !this.props.value.valid &&
+      (this.props.value.touched ||
+        (!this.props.value.touched && !this.props.value.pristine))
+    ) {
+      console.log('pushing invalid: ');
+      tempClasses.push(classes.Invalid);
+      error = <ErrorList value={{ data: this.props.value.errors }} />;
+    }
+    if (this.props.readOnly) {
+      tempClasses.push(classes.ReadOnly);
+    }
+
     return (
       <div className={classes.RangeSlider}>
-        <input
-          type='range'
-          className={classes.Slider}
-          min={this.props.elementconfig.min}
-          max={this.props.elementconfig.max}
-          step={this.props.elementconfig.step}
-          value={this.props.value.data}
-          onChange={(event) => this.onChange(event)}
-        />
-        <div className={classes.SliderValue}>
+        <div className={classes.FlexGroupRow}>
           <input
+            type='range'
+            className={[classes.Slider, ...tempClasses].join(' ')}
             min={this.props.elementconfig.min}
             max={this.props.elementconfig.max}
+            step={this.props.elementconfig.step}
             value={this.props.value.data}
             onChange={(event) => this.onChange(event)}
-            onBlur={(event) => {
-              this.onBlur(event);
-            }}
           />
+          <div className={classes.SliderValue}>
+            <input
+              className={[...tempClasses].join(' ')}
+              min={this.props.elementconfig.min}
+              max={this.props.elementconfig.max}
+              value={this.props.value.data}
+              onChange={(event) => this.onChange(event)}
+              onBlur={(event) => {
+                this.onBlur(event);
+              }}
+            />
+          </div>
         </div>
+        {error}
       </div>
     );
   }
