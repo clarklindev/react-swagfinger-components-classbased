@@ -37,6 +37,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
+    &.Invalid {
+      border: 1px solid var(--colorerror);
+      background-color: white;
+    }
   }
 
   /* On mouse-over, add a grey background color */

@@ -13,7 +13,10 @@ class RadioButton extends Component {
             value={this.props.value}
             onChange={(event) => this.props.onChange(event.target.value)}
           />
-          <span className={classes.Checkmark}></span>
+          <span
+            className={[classes.Checkmark, classes[this.props.type]].join(
+              ' '
+            )}></span>
           {this.props.label}
         </label>
       </div>
