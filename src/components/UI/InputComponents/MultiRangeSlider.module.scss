@@ -38,6 +38,9 @@
       border: 1px solid var(--colorborder);
       background-color: var(--colorborder);
     }
+    &.Invalid {
+      border: 1px solid var(--colorerror);
+    }
     .Rail {
       display: flex;
       flex-basis: 1;

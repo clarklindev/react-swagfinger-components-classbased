@@ -405,7 +405,11 @@ class MultiRangeSlider extends Component {
               />
             </div>
             {/* wrapper for rail to show padding/margin*/}
-            <div className={classes.RailWrapper}>
+            <div
+              className={[
+                classes.RailWrapper,
+                Utils.getClassNameString([...tempClassesMin, ...tempClassesMax])
+              ].join(' ')}>
               {/* rail - item of which calculations are based on*/}
               <div
                 ref={this.railRef}
