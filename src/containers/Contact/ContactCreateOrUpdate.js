@@ -47,26 +47,30 @@ class ContactCreateOrUpdate extends Component {
       let clone = [...formstructure.data];
       let formatted = {};
 
+      const dataObject = {
+        data: '',
+        valid: false,
+        errors: null,
+        touched: false,
+        pristine: true
+      };
+
       for (let i = 0; i < clone.length; i++) {
         let tempObj = { ...clone[i] };
+
+        let arrayValues = [];
+        for (
+          let j = 0;
+          j < parseInt(tempObj.elementconfig.defaultinputs);
+          j++
+        ) {
+          arrayValues.push(dataObject);
+        }
+
         tempObj.value =
           tempObj.elementconfig.valuetype === 'array'
-            ? [
-                {
-                  data: '',
-                  valid: true,
-                  errors: null,
-                  touched: false,
-                  pristine: true
-                }
-              ]
-            : {
-                data: '',
-                valid: true,
-                touched: false,
-                pristine: true,
-                errors: null
-              };
+            ? arrayValues
+            : dataObject;
         formatted[tempObj.name] = tempObj;
       }
 
@@ -264,7 +268,7 @@ class ContactCreateOrUpdate extends Component {
     //each prop in contact
     for (let key in form) {
       //if the prop of contact has an element type of...
-      if (form[key].component === 'multiinput') {
+      if (form[key].elementconfig.valuetype === 'array') {
         for (let each of form[key].value) {
           formIsValid = each.valid && formIsValid;
         }

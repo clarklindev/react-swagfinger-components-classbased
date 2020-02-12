@@ -5,6 +5,23 @@
   box-sizing: border-box;
   align-items: center;
 
+  .FlexGroupRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: calc(var(--margindefault) * 0.5);
+    flex-basis: 1;
+    box-sizing: border-box;
+  }
+
+  .FlexGroupColumn {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    flex-basis: 1;
+    flex-grow: 1;
+  }
+
   .RailWrapper {
     align-items: center;
     height: 30px;
@@ -60,10 +77,10 @@
     }
 
     input {
-      width: 65px;
+      width: 75px;
       height: 50px;
       box-sizing: border-box;
-      padding: var(--paddinginput);
+      padding: calc(var(--paddinginput) * 0.5);
       border: 1px solid var(--colorborder);
       border-radius: var(--borderradius);
       text-align: center;
@@ -72,6 +89,9 @@
       font-size: var(--fontsizedefault);
       &:focus {
         outline: none;
+      }
+      &.Invalid {
+        border: 1px solid var(--colorerror);
       }
     }
   }

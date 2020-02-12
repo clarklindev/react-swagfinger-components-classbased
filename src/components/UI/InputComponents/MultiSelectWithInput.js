@@ -61,7 +61,7 @@ class MultiSelectWithInput extends PureComponent {
   };
 
   onChangeHandler = (index, event) => {
-    console.log('ONCHANGEHANDLER...');
+    //console.log('ONCHANGEHANDLER...');
     //val is the selector value...
     let val = event.target.value;
 
@@ -73,20 +73,20 @@ class MultiSelectWithInput extends PureComponent {
       this.props.name,
       index
     );
-    console.log('--------------------------------state: ', this.state);
+    //console.log('--------------------------------state: ', this.state);
   };
 
   render() {
-    console.log('-------------------------------');
-    console.log('RENDER CYCLE>>>>>');
+    //console.log('-------------------------------');
+    //console.log('RENDER CYCLE>>>>>');
     return (
       <div className={this.className}>
         {this.props.value.map((val, index) => {
-          console.log('index: ', index);
-          console.log('val: ', val);
-          console.log('val.data.key: ', val.data.key);
+          // console.log('index: ', index);
+          // console.log('val: ', val);
+          // console.log('val.data.key: ', val.data.key);
           let tempKey = val.data.key;
-          console.log('tempKey: ', tempKey);
+          //console.log('tempKey: ', tempKey);
 
           let tempVal = val.data.value;
           let tempClasses = [];
@@ -99,14 +99,14 @@ class MultiSelectWithInput extends PureComponent {
           ) {
             tempClasses.push(classes.SelectStyling);
           }
-          console.log(
-            'index: ',
-            index,
-            '| key: ',
-            tempKey,
-            '| value: ',
-            tempVal
-          );
+          // console.log(
+          //   'index: ',
+          //   index,
+          //   '| key: ',
+          //   tempKey,
+          //   '| value: ',
+          //   tempVal
+          // );
           let error = null;
           let errorClasses = [];
           if (

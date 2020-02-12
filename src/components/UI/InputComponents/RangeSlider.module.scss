@@ -51,10 +51,10 @@
   .SliderValue {
     margin-left: calc(var(--margindefault) * 0.5);
     input {
-      width: 65px;
+      width: 75px;
       height: 50px;
       box-sizing: border-box;
-      padding: var(--paddinginput);
+      padding: calc(var(--paddinginput) * 0.5);
       border: 1px solid var(--colorborder);
       border-radius: var(--borderradius);
       text-align: center;

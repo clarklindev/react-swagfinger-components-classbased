@@ -3,14 +3,15 @@ import React, { Component } from 'react';
 import classes from './MultiRangeSlider.module.scss';
 import InputContext from '../../../context/InputContext';
 import Utils from '../../../Utils';
+import ErrorList from './ErrorList';
 
 class MultiRangeSlider extends Component {
   static contextType = InputContext;
 
   constructor(props) {
     super(props);
-    this.minLabelRef = React.createRef();
-    this.maxLabelRef = React.createRef();
+    this.minLabelRef = React.createRef(); //wrapper div for input min
+    this.maxLabelRef = React.createRef(); //wrapper div for input max
     this.railRef = React.createRef();
     this.sliderRef = React.createRef();
   }
@@ -56,9 +57,10 @@ class MultiRangeSlider extends Component {
 
   //props or state updates...
   componentDidUpdate() {
-    let min = this.props.value[0];
-    let max = this.props.value[1];
-
+    let min = '';
+    let max = '';
+    console.log('min:', min);
+    console.log('max:', max);
     if (
       min !== undefined &&
       min.data &&
@@ -69,14 +71,16 @@ class MultiRangeSlider extends Component {
     ) {
       //we want to still store the actual values in the database, the display values should be converted from the actual values
       //update positions on screen
-      let findMin = min.data === null ? this.props.elementconfig.min : min.data;
+      let findMin =
+        min.data === null ? this.props.elementconfig.options.min : min.data;
       let tempLabelMin = this.restrictActualBoundaries(findMin, 0);
       let convertedMin = this.convertToDisplayValue(tempLabelMin, 0);
       this.populateSlider(convertedMin, 0);
 
       this.stateDisplayValuesHandler(convertedMin, 0); //set state
 
-      let findMax = max.data === null ? this.props.elementconfig.max : max.data;
+      let findMax =
+        max.data === null ? this.props.elementconfig.options.max : max.data;
       let tempLabelMax = this.restrictActualBoundaries(findMax, 1);
       let convertedMax = this.convertToDisplayValue(tempLabelMax, 1);
       this.populateSlider(convertedMax, 1);
@@ -91,40 +95,62 @@ class MultiRangeSlider extends Component {
   }
 
   restrictActualBoundaries = (value, index = this.state.currentindex) => {
-    let min = this.props.elementconfig.min;
-    let max = this.props.elementconfig.max;
-    let updatedValue = null;
-    if (isNaN(value)) {
-      value = '';
-    }
-    //has a previous node...set min to previous nodes' slider value
-    if (index > 0) {
-      min = this.props.value[index - 1].data;
-      //console.log('SETTING MIN...', min);
-    }
+    let min = this.props.elementconfig.options.min;
+    let max = this.props.elementconfig.options.max;
+
     //has a next node...set max to next nodes' slider value
-    if (index < this.props.value.length - 1) {
+    if (index === 0) {
+      if (value === '') {
+        return value;
+      }
+      if (isNaN(value)) {
+        return '';
+      }
+      if (value < min) {
+        value = min;
+      }
+      max = this.props.value[1].data === '' ? max : this.props.value[1].data;
+
       //console.log('SETTING MAX...', max);
-      max = this.props.value[index + 1].data;
+    }
+
+    //has a previous node...set min to previous nodes' slider value
+    if (index === 1) {
+      if (value === '') {
+        return value;
+      }
+      if (value > max) {
+        value = max;
+      }
+      min = this.props.value[0].data === '' ? min : this.props.value[0].data;
+
+      //console.log('SETTING MIN...', min);
     }
 
     //keep within bounds of chosen values
-    updatedValue = value;
     if (value < min) {
-      updatedValue = min;
+      value = min;
     }
     if (value > max) {
-      updatedValue = max;
+      value = max;
     }
-    //console.log('updated value: ', updatedValue);
-    return updatedValue;
+
+    //console.log('updated value: ', value);
+    return value;
   };
 
   // converts ACTUAL value to DISPLAY value
   convertToDisplayValue = (value, index = this.state.currentindex) => {
-    let min = this.props.elementconfig.min;
-    let max = this.props.elementconfig.max;
-
+    let min = this.props.elementconfig.options.min;
+    let max = this.props.elementconfig.options.max;
+    if (value === '') {
+      if (index === 0) {
+        value = min;
+      }
+      if (index === 1) {
+        value = max;
+      }
+    }
     return parseInt(
       ((value - min) / (max - min)) *
         (this.state.railwidth - 2 * this.state.thumbwidth)
@@ -133,8 +159,16 @@ class MultiRangeSlider extends Component {
 
   //converts DISPLAY value to ACTUAL value
   convertToActualValue = (value, index = this.state.currentindex) => {
-    let min = this.props.elementconfig.min;
-    let max = this.props.elementconfig.max;
+    let min = this.props.elementconfig.options.min;
+    let max = this.props.elementconfig.options.max;
+    if (value === '') {
+      if (index === 0) {
+        value = min;
+      }
+      if (index === 1) {
+        value = max;
+      }
+    }
     return parseInt(
       (value / (this.state.railwidth - 2 * this.state.thumbwidth)) *
         (max - min) +
@@ -172,11 +206,11 @@ class MultiRangeSlider extends Component {
 
   //updates label via event
   labelUpdateHandler = (index, event) => {
-    let testValue = parseInt(event.target.value);
-
+    let testValue = event.target.value;
     if (isNaN(testValue)) {
       testValue = '';
     }
+
     //update value in position 0
     index === 0
       ? this.stateMinHandler(testValue)
@@ -187,7 +221,7 @@ class MultiRangeSlider extends Component {
     //console.log('ONBLUR: ', index);
     //check if incoming is a number
 
-    let val = parseInt(event.target.value);
+    let val = event.target.value;
     let tempRestricted = this.restrictActualBoundaries(val, index);
     //console.log('restricted val: ', temp);
     //update label again
@@ -278,12 +312,14 @@ class MultiRangeSlider extends Component {
 
     //---------------------------------------------------------
     //set left label
-    if (index < this.props.value.length - 1) {
+    if (index === 0) {
+      console.log('INDEX LEFT:', index);
       //console.log('LEFT LABEL: ', tempActual);
       this.stateMinHandler(tempActualRestricted);
     }
     //set right label
-    if (index > 0) {
+    if (index === 1) {
+      console.log('INDEX RIGHT:', index);
       //console.log('RIGHT LABEL: ', tempActual);
       this.stateMaxHandler(tempActualRestricted);
     }
@@ -309,57 +345,108 @@ class MultiRangeSlider extends Component {
   // };
 
   render() {
+    let tempClassesMin = [];
+    let tempClassesMax = [];
+    let errorMin = null;
+    let errorMax = null;
+    if (
+      (this.props.validation.required &&
+        !this.props.value[0].valid &&
+        //min
+        this.props.value[0].touched) ||
+      (!this.props.value[0].touched && !this.props.value[0].pristine)
+    ) {
+      // console.log('pushing invalid: ');
+      tempClassesMin.push(classes.Invalid);
+      errorMin = (
+        <ErrorList
+          value={{
+            data: this.props.value[0].errors
+          }}
+        />
+      );
+    }
+    if (
+      (this.props.validation.required &&
+        !this.props.value[1].valid &&
+        //max
+        this.props.value[1].touched) ||
+      (!this.props.value[1].touched && !this.props.value[1].pristine)
+    ) {
+      // console.log('pushing invalid: ');
+      tempClassesMax.push(classes.Invalid);
+      errorMax = (
+        <ErrorList
+          value={{
+            data: this.props.value[1].errors
+          }}
+        />
+      );
+    }
+
+    if (this.props.readOnly) {
+      tempClassesMin.push(classes.ReadOnly);
+      tempClassesMax.push(classes.ReadOnly);
+    }
     return (
       <div className={classes.MultiRangeSlider}>
-        {/* min label */}
-        <div className={classes.SliderLabel} ref={this.minLabelRef}>
-          <input
-            type='text'
-            value={this.state.labelmin}
-            // onClick={(event) => this.onClickHandler(0, event)}
-            onChange={(event) => this.labelUpdateHandler(0, event)}
-            onBlur={(event) => {
-              this.onBlurHandler(0, event);
-            }}
-          />
-        </div>
-        {/* wrapper for rail to show padding/margin*/}
-        <div className={classes.RailWrapper}>
-          {/* rail - item of which calculations are based on*/}
-          <div
-            ref={this.railRef}
-            className={classes.Rail}
-            onClick={(event) => this.scrollClickHandler(event)}>
-            {/* Sliders */}
-            {(Array.from(this.props.value) || []).map((each, index) => {
-              return (
-                <div
-                  className={classes.Slider}
-                  ref={this.sliderRef}
-                  key={index}
-                  style={{
-                    position: 'relative',
-                    left: this.state.displayvalues[index] + 'px'
-                  }}
-                  // onClick={(event) => this.onClickHandler(index, event)}
-                  onMouseDown={(event) => {
-                    this.onMouseDownHandler(index, event);
-                  }}></div>
-              );
-            })}
+        <div className={classes.FlexGroupColumn}>
+          <div className={classes.FlexGroupRow}>
+            {/* min label */}
+            <div className={classes.SliderLabel} ref={this.minLabelRef}>
+              <input
+                className={[...tempClassesMin].join(' ')}
+                type='text'
+                value={this.state.labelmin}
+                onChange={(event) => this.labelUpdateHandler(0, event)}
+                onBlur={(event) => {
+                  this.onBlurHandler(0, event);
+                }}
+              />
+            </div>
+            {/* wrapper for rail to show padding/margin*/}
+            <div className={classes.RailWrapper}>
+              {/* rail - item of which calculations are based on*/}
+              <div
+                ref={this.railRef}
+                className={classes.Rail}
+                onClick={(event) => this.scrollClickHandler(event)}>
+                {/* Sliders */}
+                {([this.state.labelmin, this.state.labelmax] || []).map(
+                  (each, index) => {
+                    return (
+                      <div
+                        className={classes.Slider}
+                        ref={this.sliderRef}
+                        key={index}
+                        style={{
+                          position: 'relative',
+                          left: this.state.displayvalues[index] + 'px'
+                        }}
+                        onMouseDown={(event) => {
+                          this.onMouseDownHandler(index, event);
+                        }}></div>
+                    );
+                  }
+                )}
+              </div>
+            </div>
+            {/* max label */}
+            <div className={classes.SliderLabel} ref={this.maxLabelRef}>
+              <input
+                type='text'
+                className={[...tempClassesMax].join(' ')}
+                value={this.state.labelmax}
+                // onClick={(event) => this.onClickHandler(1, event)}
+                onChange={(event) => this.labelUpdateHandler(1, event)}
+                onBlur={(event) => {
+                  this.onBlurHandler(1, event);
+                }}
+              />
+            </div>
           </div>
-        </div>
-        {/* max label */}
-        <div className={classes.SliderLabel} ref={this.maxLabelRef}>
-          <input
-            type='text'
-            value={this.state.labelmax}
-            // onClick={(event) => this.onClickHandler(1, event)}
-            onChange={(event) => this.labelUpdateHandler(1, event)}
-            onBlur={(event) => {
-              this.onBlurHandler(1, event);
-            }}
-          />
+          {errorMin}
+          {errorMax}
         </div>
       </div>
     );
