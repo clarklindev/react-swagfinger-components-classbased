@@ -230,7 +230,7 @@ class ContactCreateOrUpdate extends Component {
       }
       return index !== i;
     });
-    console.log('POOOOOOOOOOOOOOOOO updatedInputs: ', updatedInputs);
+    console.log('updatedInputs: ', updatedInputs);
 
     this.setState((prevState) => {
       console.log('...prevState.form[key]: ', { ...prevState.form[key] });
