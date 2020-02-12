@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import classes from './Textarea.module.scss';
 import Utils from '../../../Utils';
 import InputContext from '../../../context/InputContext';
+import ErrorList from './ErrorList';
 
 class Textarea extends Component {
   static contextType = InputContext;
@@ -15,6 +16,7 @@ class Textarea extends Component {
     ]);
   }
   render() {
+    let error = null;
     let tempClasses = [];
     if (
       this.props.validation.required &&
@@ -24,21 +26,25 @@ class Textarea extends Component {
     ) {
       //console.log('pushing invalid: ');
       tempClasses.push(classes.Invalid);
+      error = <ErrorList value={{ data: this.props.value.errors }} />;
     }
     if (this.props.readOnly) {
       tempClasses.push(classes.ReadOnly);
     }
     return (
-      <textarea
-        className={[this.className, ...tempClasses].join(' ')}
-        placeholder={this.props.placeholder}
-        readOnly={this.props.readOnly}
-        {...this.props.elementconfig}
-        value={this.props.value.data}
-        onChange={(event) =>
-          this.context.changed(event.target.value, this.props.name)
-        }
-      />
+      <div className={classes.FlexGroupColumn}>
+        <textarea
+          className={[this.className, ...tempClasses].join(' ')}
+          placeholder={this.props.placeholder}
+          readOnly={this.props.readOnly}
+          {...this.props.elementconfig}
+          value={this.props.value.data}
+          onChange={(event) =>
+            this.context.changed(event.target.value, this.props.name)
+          }
+        />
+        {error}
+      </div>
     );
   }
 }
