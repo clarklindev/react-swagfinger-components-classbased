@@ -66,7 +66,6 @@ class Counter extends PureComponent {
       this.props.value.data >= this.props.elementconfig.max
         ? true
         : false;
-    let actual = this.props.value;
     let tempClasses = [];
     let error = null;
     if (
@@ -75,7 +74,7 @@ class Counter extends PureComponent {
       (this.props.value.touched ||
         (!this.props.value.touched && !this.props.value.pristine))
     ) {
-      console.log('pushing invalid: ');
+      //console.log('pushing invalid: ');
       tempClasses.push(classes.Invalid);
       error = <ErrorList value={{ data: this.props.value.errors }} />;
     }

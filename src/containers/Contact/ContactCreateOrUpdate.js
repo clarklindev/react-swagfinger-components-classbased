@@ -188,7 +188,7 @@ class ContactCreateOrUpdate extends Component {
 
   //addInputHandler is only called on a multiinput type...
   //assumption is working with array hence .concat({})
-  addInputHandler = (event, key) => {
+  addInputHandler = (event, key, data = '') => {
     event.preventDefault();
     console.log('KEY:', key);
 
@@ -199,7 +199,7 @@ class ContactCreateOrUpdate extends Component {
           [key]: {
             ...prevState.form[key],
             value: prevState.form[key].value.concat({
-              data: '',
+              data: data,
               valid: false,
               touched: false,
               pristine: true,
@@ -222,20 +222,29 @@ class ContactCreateOrUpdate extends Component {
   removeInputHandler = (event, key, index) => {
     event.preventDefault();
 
-    let updatedInputs = this.state.form[key].value.filter(
-      (_, i) => index !== i
-    );
-    console.log('updatedInputs: ', updatedInputs);
-
-    this.setState((prevState) => ({
-      form: {
-        ...prevState.form,
-        [key]: {
-          ...prevState.form[key],
-          value: updatedInputs
-        }
+    let updatedInputs = this.state.form[key].value.filter((item, i) => {
+      if (index === i) {
+        console.log('WHAT TO REMOVE:', item);
+        item.key = '';
+        item.value = '';
       }
-    }));
+      return index !== i;
+    });
+    console.log('POOOOOOOOOOOOOOOOO updatedInputs: ', updatedInputs);
+
+    this.setState((prevState) => {
+      console.log('...prevState.form[key]: ', { ...prevState.form[key] });
+      console.log('...updatedInputs', [...updatedInputs]);
+      return {
+        form: {
+          ...prevState.form,
+          [key]: {
+            ...prevState.form[key],
+            value: [...updatedInputs]
+          }
+        }
+      };
+    });
 
     this.setState((prevState) => {
       let isValid = this.checkInputValidProperty(prevState.form);
@@ -281,6 +290,7 @@ class ContactCreateOrUpdate extends Component {
     };
 
     let validation = validationCheck(newval, updatedFormElement.validation);
+    console.log('key: ', key);
     console.log('validation: ', validation);
     //if array
     if (index !== null) {
@@ -323,7 +333,7 @@ class ContactCreateOrUpdate extends Component {
             each.data,
             this.state.form[key].validation
           );
-          console.log('EACH: ', each);
+          //console.log('EACH: ', each);
           let val = { ...each };
           val.touched = true;
           val.pristine = false;

@@ -39,7 +39,7 @@ class InputWithIcon extends Component {
       console.log('pushing invalid: ');
       tempClasses.push(classes.Invalid);
     }
-    console.log('this.props.value: ', this.props.value);
+    //console.log('this.props.value: ', this.props.value);
 
     return (
       <div className={[this.className, tempClasses].join(' ')}>

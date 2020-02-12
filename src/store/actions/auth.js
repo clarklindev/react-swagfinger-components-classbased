@@ -93,16 +93,16 @@ export const checkAuthTimeout = (expirationTime) => {
 export const authCheckState = () => {
   return (dispatch) => {
     const token = localStorage.getItem('token');
-    console.log('TOKEN:', token);
+    //console.log('TOKEN:', token);
     if (!token) {
       dispatch(logout());
     } else {
-      console.log('LOCAL STORAGE: ', localStorage);
+      //console.log('LOCAL STORAGE: ', localStorage);
       const expirationDate = new Date(localStorage.getItem('expirationdate'));
-      console.log('EXPIRATIONDATE: ', expirationDate);
+      //console.log('EXPIRATIONDATE: ', expirationDate);
       //login ONLY if expirationDate is further ahead of current date
       if (expirationDate.getTime() <= new Date().getTime()) {
-        console.log('LOGGGING OUT');
+        //console.log('LOGGGING OUT');
         dispatch(logout());
       } else {
         const userId = localStorage.getItem('userid');

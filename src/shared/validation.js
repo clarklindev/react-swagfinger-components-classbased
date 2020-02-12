@@ -1,4 +1,5 @@
 export const CheckValidity = (value, rules) => {
+  console.log('CheckValidity: ');
   let isValid = true;
   let errors = [];
 
@@ -8,6 +9,21 @@ export const CheckValidity = (value, rules) => {
 
   if (rules.required) {
     isValid = value !== '';
+    console.log('VALUE: ', value);
+    if (typeof value === 'object') {
+      console.log('Value is an object');
+      let testEmptyValues = Object.keys(value).some((item) => {
+        return (
+          value[item] === null ||
+          value[item] === undefined ||
+          value[item] === ''
+        );
+      });
+      if (testEmptyValues === true) {
+        console.log('Object has empty values!!!');
+        isValid = false;
+      }
+    }
     if (isValid === false) {
       errors.push('Input is required');
     }

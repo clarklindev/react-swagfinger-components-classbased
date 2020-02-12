@@ -54,7 +54,7 @@ class Select extends Component {
       (this.props.value.touched ||
         (!this.props.value.touched && !this.props.value.pristine))
     ) {
-      console.log('pushing invalid: ');
+      //console.log('pushing invalid: ');
       tempClasses.push(classes.Invalid);
       error = <ErrorList value={{ data: this.props.value.errors }} />;
     }

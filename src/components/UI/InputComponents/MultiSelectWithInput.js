@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 import Utils from '../../../Utils';
 import classes from './MultiSelectWithInput.module.scss';
 import InputContext from '../../../context/InputContext';
 import Button from '../../UI/Button/Button';
 import Icon from './Icon';
+import ErrorList from './ErrorList';
 
-class MultiSelectWithInput extends Component {
+class MultiSelectWithInput extends PureComponent {
   static contextType = InputContext;
 
   constructor(props) {
@@ -21,14 +22,15 @@ class MultiSelectWithInput extends Component {
   }
 
   state = {
-    isOpenList: {},
-    dropdownSelectedList: {}
+    isOpenList: {} //keeping track of arrow direction on select input,
+    //we need this because we cannot set a class to render() else all instances arrows change at same time
   };
 
   componenDidUpdate() {
     console.log('state:', this.state);
   }
 
+  //function called when input type=select is clicked
   onClickHandler = (index, event) => {
     //console.log(index, event.target);
     let isOpenList = { ...this.state.isOpenList };
@@ -59,21 +61,9 @@ class MultiSelectWithInput extends Component {
   };
 
   onChangeHandler = (index, event) => {
+    console.log('ONCHANGEHANDLER...');
     //val is the selector value...
     let val = event.target.value;
-
-    let dropdownSelectedList = { ...this.state.dropdownSelectedList };
-    this.setState((prevState) => {
-      let updatedState = false;
-      if (val !== '') {
-        console.log('UPDATED STATE = true');
-        updatedState = true;
-      }
-      dropdownSelectedList[index] = updatedState;
-      return {
-        dropdownSelectedList: dropdownSelectedList
-      };
-    });
 
     this.context.changed(
       {
@@ -87,93 +77,120 @@ class MultiSelectWithInput extends Component {
   };
 
   render() {
+    console.log('-------------------------------');
+    console.log('RENDER CYCLE>>>>>');
     return (
       <div className={this.className}>
         {this.props.value.map((val, index) => {
-          let tempKey = val.data === null ? '' : val.data.key;
-          //console.log('val', val);
-          //console.log('tempKey: ', tempKey);
-          let tempVal = val.data === null ? '' : val.data.value;
+          console.log('index: ', index);
+          console.log('val: ', val);
+          console.log('val.data.key: ', val.data.key);
+          let tempKey = val.data.key;
+          console.log('tempKey: ', tempKey);
+
+          let tempVal = val.data.value;
           let tempClasses = [];
           if (this.state.isOpenList[index] === true) {
             tempClasses.push(classes.IsOpen);
           }
-          let dropdownClasses = [];
           if (
-            this.state.dropdownSelectedList[index] === true ||
             (tempKey !== '' && tempKey !== undefined && tempKey !== null) ||
-            (tempVal !== undefined && tempVal !== '')
+            (tempVal !== '' && tempVal !== undefined && tempVal !== null)
           ) {
-            dropdownClasses.push(classes.ShowSocial);
+            tempClasses.push(classes.SelectStyling);
+          }
+          console.log(
+            'index: ',
+            index,
+            '| key: ',
+            tempKey,
+            '| value: ',
+            tempVal
+          );
+          let error = null;
+          let errorClasses = [];
+          if (
+            this.props.validation &&
+            !val.valid &&
+            (val.touched || (!val.touched && !val.pristine))
+          ) {
+            errorClasses.push(classes.Invalid);
+            error = <ErrorList value={{ data: val.errors }} />;
           }
 
           return (
-            <div className={classes.FlexGroupRow} key={this.props.name + index}>
-              <div className={classes.SelectAndInputWrapper}>
-                <select
-                  multiple={false}
-                  name={this.props.name}
-                  value={tempKey}
-                  className={[...tempClasses, ...dropdownClasses].join(' ')}
-                  onClick={(event) => this.onClickHandler(index, event)}
-                  onBlur={(event) => {
-                    this.onBlurHandler(index, event);
-                  }}
-                  onChange={(event) => this.onChangeHandler(index, event)}>
-                  {this.props.elementconfig.options.map((option, index) => (
-                    <option key={option.value} value={option.value}>
-                      {option.displaytext}
-                    </option>
-                  ))}
-                </select>
-                {val.data === null ||
-                tempKey === undefined ||
-                val.data.key === '' ? null : (
-                  <React.Fragment>
-                    <div className={classes.Divider} />
-                    <input
-                      className={classes.InputElement}
-                      placeholder={this.props.placeholder}
-                      value={tempVal}
-                      name={this.props.name}
-                      // disabled={tempKey === (undefined || null)}
-                      onChange={(event) => {
-                        //pass in the name of the prop, and the index (if array item)
-                        this.context.changed(
-                          { key: tempKey, value: event.target.value },
-                          this.props.name,
-                          index
-                        );
+            <React.Fragment key={this.props.name + index}>
+              <div className={classes.FlexGroupRow}>
+                <div className={classes.FlexGroupColumn}>
+                  <div
+                    className={[
+                      classes.SelectAndInputWrapper,
+                      ...errorClasses
+                    ].join(' ')}>
+                    <select
+                      name={this.props.name + index}
+                      value={tempKey}
+                      className={[...tempClasses].join(' ')}
+                      onClick={(event) => this.onClickHandler(index, event)}
+                      onBlur={(event) => {
+                        this.onBlurHandler(index, event);
                       }}
-                    />
-                  </React.Fragment>
-                )}
-              </div>
+                      onChange={(event) => this.onChangeHandler(index, event)}>
+                      {this.props.elementconfig.options.map((option, index) => (
+                        <option key={option.value} value={option.value}>
+                          {option.displaytext}
+                        </option>
+                      ))}
+                    </select>
+                    {val.data === null ||
+                    tempKey === undefined ||
+                    val.data.key === '' ? null : (
+                      <React.Fragment>
+                        <div className={classes.Divider} />
+                        <input
+                          className={classes.InputElement}
+                          placeholder={this.props.placeholder}
+                          value={tempVal}
+                          name={this.props.name}
+                          // disabled={tempKey === (undefined || null)}
+                          onChange={(event) => {
+                            //pass in the name of the prop, and the index (if array item)
+                            this.context.changed(
+                              { key: tempKey, value: event.target.value },
+                              this.props.name,
+                              index
+                            );
+                          }}
+                        />
+                      </React.Fragment>
+                    )}
+                  </div>
 
-              <Button
-                title='Delete'
-                type='WithBorder'
-                className={classes.RemoveButton}
-                onClick={(event) => {
-                  this.setState((prevState) => {
-                    let open = Object.keys(prevState.isOpenList).filter(
-                      (item, j) => {
-                        return index !== j;
-                      }
-                    );
+                  {error}
+                </div>
+                <Button
+                  title='Delete'
+                  type='WithBorder'
+                  className={classes.RemoveButton}
+                  onClick={(event) => {
+                    this.context.removeinput(event, this.props.name, index);
 
-                    let dropdown = Object.keys(
-                      prevState.dropdownSelectedList
-                    ).filter((item, k) => {
-                      return index !== k;
+                    this.setState((prevState) => {
+                      let open = Object.keys(prevState.isOpenList).filter(
+                        (item, j) => {
+                          return index !== j;
+                        }
+                      );
+
+                      return {
+                        isOpenList: open
+                      };
                     });
-                    return { isOpenList: open, dropdownSelectedList: dropdown };
-                  });
-                  this.context.removeinput(event, this.props.name, index);
-                }}>
-                <Icon iconstyle='far' code='trash-alt' size='sm' />
-              </Button>
-            </div>
+                  }}>
+                  <Icon iconstyle='far' code='trash-alt' size='sm' />
+                </Button>
+              </div>
+            </React.Fragment>
           ); //return
         })}
 
@@ -182,7 +199,10 @@ class MultiSelectWithInput extends Component {
           type='WithBorder'
           className={classes.AddButton}
           onClick={(event) => {
-            this.context.addinput(event, this.props.name);
+            this.context.addinput(event, this.props.name, {
+              key: '',
+              value: ''
+            });
           }}>
           <Icon iconstyle='fas' code='plus' size='sm' />
           <p>Add</p>

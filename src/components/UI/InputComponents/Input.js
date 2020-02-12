@@ -21,7 +21,7 @@ class Input extends PureComponent {
   }
 
   componentDidUpdate() {
-    console.log('updated...', this.props.value.data);
+    //console.log('updated...', this.props.value.data);
   }
 
   inputChangeHandler = (event) => {
@@ -42,7 +42,7 @@ class Input extends PureComponent {
       (this.props.value.touched ||
         (!this.props.value.touched && !this.props.value.pristine))
     ) {
-      console.log('pushing invalid: ');
+      // console.log('pushing invalid: ');
       tempClasses.push(classes.Invalid);
       error = <ErrorList value={{ data: this.props.value.errors }} />;
     }

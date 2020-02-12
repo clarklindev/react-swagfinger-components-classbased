@@ -22,7 +22,7 @@ class Textarea extends Component {
       (this.props.value.touched ||
         (!this.props.value.touched && !this.props.value.pristine))
     ) {
-      console.log('pushing invalid: ');
+      //console.log('pushing invalid: ');
       tempClasses.push(classes.Invalid);
     }
     if (this.props.readOnly) {

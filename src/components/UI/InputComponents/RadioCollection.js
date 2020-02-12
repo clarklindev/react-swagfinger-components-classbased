@@ -19,7 +19,7 @@ class RadioCollection extends Component {
       (this.props.value.touched ||
         (!this.props.value.touched && !this.props.value.pristine))
     ) {
-      console.log('pushing invalid: ');
+      //console.log('pushing invalid: ');
       tempClasses.push('Invalid');
       error = <ErrorList value={{ data: this.props.value.errors }} />;
     }
