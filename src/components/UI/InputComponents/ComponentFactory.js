@@ -117,7 +117,7 @@ class ComponentFactory extends Component {
     return (
       <div className={this.className}>
         {this.label}
-        <div className={classes.Component}>{this.inputElement}</div>
+        {this.inputElement}
       </div>
     );
   }
