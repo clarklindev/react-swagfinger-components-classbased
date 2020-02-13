@@ -88,7 +88,7 @@ class Auth extends Component {
     //each prop in contact
     for (let inputIdentifier in form) {
       //if the prop of contact has an element type of...
-      if (form[inputIdentifier].elementtype === 'multiinput') {
+      if (form[inputIdentifier].elementconfig.valuetype === 'array') {
         for (let each of form[inputIdentifier].value) {
           formIsValid = each.valid && formIsValid;
         }
@@ -165,63 +165,51 @@ class Auth extends Component {
     }
 
     let formAll = (
-      <React.Fragment>
-        {formElementsArray.map((item) => (
-          <ComponentFactory key={item.id} id={item.id} data={item.data} />
-        ))}
-        <div className={classes.ButtonWrapper}>
-          <input ref={this.submitInputRef} type='submit' />
+      <DefaultPageLayout
+        type='LayoutNarrow'
+        label={
+          this.props.loading ? '' : this.state.isSignUp ? 'Sign-up' : 'Login'
+        }>
+        <Card>
+          <form onSubmit={this.onSubmitHandler} autoComplete='off'>
+            <InputContext.Provider
+              value={{
+                changed: this.inputChangedHandler
+              }}>
+              {formElementsArray.map((item) => (
+                <ComponentFactory key={item.id} id={item.id} data={item.data} />
+              ))}
+              <div className={classes.ButtonWrapper}>
+                <input ref={this.submitInputRef} type='submit' />
 
-          <Button
-            type='Login'
-            onClick={() => {
-              this.submitInputRef.current.click();
-            }}>
-            Submit
-          </Button>
-          <Button onClick={this.switchAuthModeHandler}>
-            switch to {this.state.isSignUp ? 'Login' : 'Sign-up'}
-          </Button>
-        </div>
-      </React.Fragment>
+                <Button
+                  type='Login'
+                  onClick={() => {
+                    this.submitInputRef.current.click();
+                  }}>
+                  Submit
+                </Button>
+                <Button onClick={this.switchAuthModeHandler}>
+                  switch to {this.state.isSignUp ? 'Login' : 'Sign-up'}
+                </Button>
+              </div>
+            </InputContext.Provider>
+          </form>
+        </Card>
+      </DefaultPageLayout>
     );
 
     if (this.props.loading) {
       formAll = <Spinner />;
     }
 
-    let authRedirect = null;
+    let content = null;
     if (this.props.isAuthenticated) {
-      authRedirect = <Redirect to={this.props.authRedirectPath} />;
+      content = <Redirect to={this.props.authRedirectPath} />;
+    } else {
+      content = <div className={classes.Auth}>{formAll}</div>;
     }
-
-    return (
-      <React.Fragment>
-        {authRedirect}
-        <div className={classes.Auth}>
-          <DefaultPageLayout
-            type='LayoutNarrow'
-            label={
-              this.props.loading
-                ? ''
-                : this.state.isSignUp
-                ? 'Sign-up'
-                : 'Login'
-            }>
-            <Card>
-              <form onSubmit={this.onSubmitHandler} autoComplete='off'>
-                <InputContext.Provider
-                  value={{
-                    changed: this.inputChangedHandler
-                  }}>
-                  {formAll}
-                </InputContext.Provider>
-              </form>
-            </Card>
-          </DefaultPageLayout>
-        </div>
-      </React.Fragment>
-    );
+    return content;
   }
 }
 
