@@ -49,4 +49,9 @@
   &.Danger {
     color: #944317;
   }
+  &.Login {
+    border-radius: var(--borderradius);
+    color: white;
+    background-color: #3897f0;
+  }
 }

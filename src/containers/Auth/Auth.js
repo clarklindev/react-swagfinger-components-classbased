@@ -169,15 +169,16 @@ class Auth extends Component {
         ))}
         <div className={classes.ButtonWrapper}>
           <input ref={this.submitInputRef} type='submit' />
-          <Button type='NoStyle' onClick={this.switchAuthModeHandler}>
-            switch to {this.state.isSignUp ? 'Login' : 'Sign-up'}
-          </Button>
+
           <Button
-            type='WithBorder'
+            type='Login'
             onClick={() => {
               this.submitInputRef.current.click();
             }}>
             Submit
+          </Button>
+          <Button onClick={this.switchAuthModeHandler}>
+            switch to {this.state.isSignUp ? 'Login' : 'Sign-up'}
           </Button>
         </div>
       </React.Fragment>
@@ -197,6 +198,7 @@ class Auth extends Component {
         {authRedirect}
         <div className={classes.Auth}>
           <DefaultPageLayout
+            type='LayoutSmall'
             label={
               this.props.loading
                 ? ''
