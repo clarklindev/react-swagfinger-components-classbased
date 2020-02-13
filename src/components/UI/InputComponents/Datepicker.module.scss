@@ -1,5 +1,7 @@
 .Datepicker {
   /* input */
+  box-sizing: border-box;
+  border-radius: var(--borderradius);
   .Dateinput {
     display: flex;
     flex-direction: row;
@@ -13,6 +15,7 @@
       border-top-right-radius: var(--borderradius);
       border-bottom-right-radius: var(--borderradius);
       border: none;
+      background-color: white;
     }
     input {
       border: none;
@@ -55,10 +58,13 @@
         position: relative;
       }
 
+      //note: without the card padding, use 2x and 1x paddingdefault instead of 3x
       width: calc(
         min(
-          calc(100% - 2 * var(--paddingdefault) 'px'),
-          calc(var(--maxwidth) - var(--paddingdefault) 'px')
+          calc(100% - 3 * var(--paddingdefault) - 2 * var(--borderwidth)),
+          calc(
+            var(--maxwidth) - 3 * var(--paddingdefault) - 2 * var(--borderwidth)
+          )
         )
       );
       position: absolute;

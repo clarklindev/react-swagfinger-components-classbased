@@ -584,14 +584,13 @@ class Datepicker extends Component {
 
     console.log('CHANGED: ', this.inputRef.current.value);
 
-    const pickeddate = new Date(
-      `${this.state.currentdate.getFullYear()}-${this.state.currentdate.getMonth() +
-        1}-${Math.abs(target.innerHTML)}`
-    );
+    const pickeddatestring = `${this.state.currentdate.getFullYear()}-${this.state.currentdate.getMonth() +
+      1}-${Math.abs(target.innerHTML)}`;
+    const pickeddate = new Date(pickeddatestring);
 
     console.log('pickeddate: ', pickeddate);
 
-    this.context.changed(pickeddate, this.props.name);
+    this.context.changed(pickeddatestring, this.props.name);
     //save the DOM we clicked on in state as 'pickeddate'
     //and save the pickeddate as a Date() object
     this.setState((prevState) => {
