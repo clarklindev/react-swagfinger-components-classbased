@@ -21,7 +21,8 @@ class ContactRead extends Component {
   }
 
   state = {
-    id: null
+    id: null,
+    isLoading: true
   };
 
   componentDidMount() {
@@ -34,7 +35,7 @@ class ContactRead extends Component {
   }
   render() {
     /* full contact details */
-    let contact = '';
+    let contact = null;
     if (this.props.activeContact) {
       let contactnumbers = this.props.activeContact['contactnumbers'].map(
         (each, index) => {
@@ -194,12 +195,12 @@ class ContactRead extends Component {
 
     return (
       <div className={this.className}>
-        {this.props.activeContact ? (
+        {this.props.isLoading && !this.props.activeContact ? (
+          <Spinner />
+        ) : (
           <DefaultPageLayout label='Contact Read'>
             <Card>{contact}</Card>
           </DefaultPageLayout>
-        ) : (
-          <Spinner />
         )}
       </div>
     );

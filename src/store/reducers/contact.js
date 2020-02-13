@@ -60,7 +60,7 @@ const fetchContactsCancel = (state, action) => {
 
 //single contact
 const fetchSingleContactStart = (state, action) => {
-  return updateObject(state, { loading: true });
+  return updateObject(state, { loading: true, activeContact: null });
 };
 
 const fetchSingleContactSuccess = (state, action) => {
@@ -73,7 +73,8 @@ const fetchSingleContactSuccess = (state, action) => {
 const fetchSingleContactFail = (state, action) => {
   return updateObject(state, {
     state,
-    loading: false
+    loading: false,
+    activeContact: null
   });
 };
 
