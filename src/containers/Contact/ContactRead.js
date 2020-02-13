@@ -198,7 +198,7 @@ class ContactRead extends Component {
         {this.props.isLoading && !this.props.activeContact ? (
           <Spinner />
         ) : (
-          <DefaultPageLayout label='Contact Read'>
+          <DefaultPageLayout label='Contact'>
             <Card>{contact}</Card>
           </DefaultPageLayout>
         )}
