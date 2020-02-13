@@ -58,19 +58,32 @@ class ContactCreateOrUpdate extends Component {
       for (let i = 0; i < clone.length; i++) {
         let tempObj = { ...clone[i] };
 
+        let inputCount =
+          tempObj.elementconfig.defaultinputs === 'options'
+            ? tempObj.elementconfig.options.length
+            : tempObj.elementconfig.defaultinputs;
+
+        console.log(
+          'tempObj: ',
+          tempObj.name,
+          ' | ',
+          tempObj.elementconfig.defaultinputs === 'options', //use options count to create dataObject
+          ' | inputCount: ',
+          inputCount
+        );
+
         let arrayValues = [];
-        for (
-          let j = 0;
-          j < parseInt(tempObj.elementconfig.defaultinputs);
-          j++
-        ) {
-          arrayValues.push(dataObject);
+        if (tempObj.elementconfig.valuetype === 'array') {
+          for (let j = 0; j < inputCount; j++) {
+            arrayValues.push(dataObject);
+          }
         }
 
         tempObj.value =
           tempObj.elementconfig.valuetype === 'array'
             ? arrayValues
             : dataObject;
+
         formatted[tempObj.name] = tempObj;
       }
 

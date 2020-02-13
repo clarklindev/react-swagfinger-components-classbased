@@ -18,8 +18,10 @@ class CheckboxCollection extends Component {
     return (
       <div className={classes.CheckboxCollection}>
         {this.props.elementconfig.options.map((each, index) => {
+          console.log('HELLO CHECKBOX');
           return this.props.value[index] !== undefined ? (
             <Checkbox
+              {...this.props.elementconfig}
               label={each.displaytext}
               checked={this.props.value[index].data.value}
               key={this.props.name + index}

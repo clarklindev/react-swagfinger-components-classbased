@@ -72,7 +72,9 @@ class MultiRangeSlider extends Component {
       //we want to still store the actual values in the database, the display values should be converted from the actual values
       //update positions on screen
       let findMin =
-        min.data === null ? this.props.elementconfig.options.min : min.data;
+        min.data === null
+          ? this.props.elementconfig.options[0].value
+          : min.data;
       let tempLabelMin = this.restrictActualBoundaries(findMin, 0);
       let convertedMin = this.convertToDisplayValue(tempLabelMin, 0);
       this.populateSlider(convertedMin, 0);
@@ -80,7 +82,9 @@ class MultiRangeSlider extends Component {
       this.stateDisplayValuesHandler(convertedMin, 0); //set state
 
       let findMax =
-        max.data === null ? this.props.elementconfig.options.max : max.data;
+        max.data === null
+          ? this.props.elementconfig.options[1].value
+          : max.data;
       let tempLabelMax = this.restrictActualBoundaries(findMax, 1);
       let convertedMax = this.convertToDisplayValue(tempLabelMax, 1);
       this.populateSlider(convertedMax, 1);
@@ -95,8 +99,8 @@ class MultiRangeSlider extends Component {
   }
 
   restrictActualBoundaries = (value, index = this.state.currentindex) => {
-    let min = this.props.elementconfig.options.min;
-    let max = this.props.elementconfig.options.max;
+    let min = this.props.elementconfig.options[0].value;
+    let max = this.props.elementconfig.options[1].value;
 
     //has a next node...set max to next nodes' slider value
     if (index === 0) {
@@ -141,8 +145,8 @@ class MultiRangeSlider extends Component {
 
   // converts ACTUAL value to DISPLAY value
   convertToDisplayValue = (value, index = this.state.currentindex) => {
-    let min = this.props.elementconfig.options.min;
-    let max = this.props.elementconfig.options.max;
+    let min = this.props.elementconfig.options[0].value;
+    let max = this.props.elementconfig.options[1].value;
     if (value === '') {
       if (index === 0) {
         value = min;
@@ -159,8 +163,8 @@ class MultiRangeSlider extends Component {
 
   //converts DISPLAY value to ACTUAL value
   convertToActualValue = (value, index = this.state.currentindex) => {
-    let min = this.props.elementconfig.options.min;
-    let max = this.props.elementconfig.options.max;
+    let min = this.props.elementconfig.options[0].value;
+    let max = this.props.elementconfig.options[1].value;
     if (value === '') {
       if (index === 0) {
         value = min;
@@ -416,23 +420,21 @@ class MultiRangeSlider extends Component {
                 className={classes.Rail}
                 onClick={(event) => this.scrollClickHandler(event)}>
                 {/* Sliders */}
-                {([this.state.labelmin, this.state.labelmax] || []).map(
-                  (each, index) => {
-                    return (
-                      <div
-                        className={classes.Slider}
-                        ref={this.sliderRef}
-                        key={index}
-                        style={{
-                          position: 'relative',
-                          left: this.state.displayvalues[index] + 'px'
-                        }}
-                        onMouseDown={(event) => {
-                          this.onMouseDownHandler(index, event);
-                        }}></div>
-                    );
-                  }
-                )}
+                {(this.props.elementconfig.options || []).map((each, index) => {
+                  return (
+                    <div
+                      className={classes.Slider}
+                      ref={this.sliderRef}
+                      key={index}
+                      style={{
+                        position: 'relative',
+                        left: this.state.displayvalues[index] + 'px'
+                      }}
+                      onMouseDown={(event) => {
+                        this.onMouseDownHandler(index, event);
+                      }}></div>
+                  );
+                })}
               </div>
             </div>
             {/* max label */}

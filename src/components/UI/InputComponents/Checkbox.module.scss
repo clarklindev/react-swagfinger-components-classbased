@@ -32,6 +32,9 @@
     border-radius: var(--borderradius);
     margin-right: 10px;
     //background-color: #eee;
+    &.Invalid {
+      border: 1px solid var(--colorerror);
+    }
   }
 
   /* On mouse-over, add a grey background color */

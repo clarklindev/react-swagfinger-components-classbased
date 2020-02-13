@@ -13,7 +13,7 @@ class Checkbox extends Component {
               this.props.onChange(this.props.index, event.target.checked, event)
             }
           />
-          <span className={classes.Checkmark}></span>
+          <span className={[classes.Checkmark].join(' ')}></span>
           {this.props.label}
         </label>
       </div>
