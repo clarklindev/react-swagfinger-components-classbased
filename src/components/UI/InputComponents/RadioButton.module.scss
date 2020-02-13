@@ -37,6 +37,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: white;
 
     &.Invalid {
       border: 1px solid var(--colorerror);
