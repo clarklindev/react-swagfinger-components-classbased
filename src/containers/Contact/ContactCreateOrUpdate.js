@@ -28,6 +28,7 @@ class ContactCreateOrUpdate extends Component {
   }
 
   state = {
+    isLoading: true,
     id: null, //id of current item being updated
     loadedContact: null, //when axios call gives response
     saving: false,
@@ -137,9 +138,10 @@ class ContactCreateOrUpdate extends Component {
       }
 
       //upate state
-      this.setState({ form: formatted });
+      this.setState({ form: formatted, isLoading: false });
     } catch (error) {
       console.log(error);
+      this.setState({ isLoading: false });
     }
   }
 
@@ -398,7 +400,8 @@ class ContactCreateOrUpdate extends Component {
       //key is unique because it uses the property 'name'
       return <ComponentFactory key={each.id} id={each.id} data={each.data} />;
     });
-    let query = new URLSearchParams(this.props.location.search).get('id');
+    const query = new URLSearchParams(this.props.location.search).get('id');
+    console.log('QUERY: ', query);
     return (
       <React.Fragment>
         {/* add modal just in-case needed, show binds to state of true/false */}
@@ -406,10 +409,13 @@ class ContactCreateOrUpdate extends Component {
           <p>Saving</p>
         </Modal>
 
-        <div className={this.className}>
-          {(this.state.loadedContact && this.state.id !== null) ||
-          //if id does not exist
-          query === null ? (
+        {(query !== null &&
+          !this.state.loadedContact &&
+          this.state.id === null) ||
+        this.state.isLoading ? (
+          <Spinner />
+        ) : (
+          <div className={this.className}>
             <DefaultPageLayout
               label={this.state.id ? 'Update Contact' : 'Create Contact'}>
               <Card>
@@ -450,10 +456,8 @@ class ContactCreateOrUpdate extends Component {
                 </form>
               </Card>
             </DefaultPageLayout>
-          ) : (
-            <Spinner />
-          )}
-        </div>
+          </div>
+        )}
       </React.Fragment>
     );
   }
