@@ -10,6 +10,8 @@ import InputContext from '../../context/InputContext';
 import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
 import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
 import Spinner from '../../components/UI/Loaders/Spinner';
+import Card from '../../components/UI/Card/Card';
+
 class Phonebook extends Component {
   constructor(props) {
     super(props);
@@ -128,20 +130,22 @@ class Phonebook extends Component {
           <Spinner />
         ) : (
           <DefaultPageLayout label='Phonebook'>
-            <InputContext.Provider
-              value={{
-                changed: (event) => this.searchChangedHandler(event),
-                clear: this.searchClearHandler
-              }}>
-              <SearchFilter value={this.state.filterText} />
-            </InputContext.Provider>
-            <ComponentFactory
-              data={{
-                label: 'Contacts',
-                component: 'list',
-                value: { data: filtered }
-              }}
-            />
+            <Card>
+              <InputContext.Provider
+                value={{
+                  changed: (event) => this.searchChangedHandler(event),
+                  clear: this.searchClearHandler
+                }}>
+                <SearchFilter value={this.state.filterText} />
+              </InputContext.Provider>
+              <ComponentFactory
+                data={{
+                  label: 'Contacts',
+                  component: 'list',
+                  value: { data: filtered }
+                }}
+              />
+            </Card>
           </DefaultPageLayout>
         )}
       </div>

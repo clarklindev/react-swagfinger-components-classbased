@@ -8,6 +8,7 @@ import ComponentFactory from '../../components/UI/InputComponents/ComponentFacto
 import ListItem from '../../components/UI/InputComponents/ListItem';
 import Spinner from '../../components/UI/Loaders/Spinner';
 import { connect } from 'react-redux';
+import Card from '../../components/UI/Card/Card';
 
 class ContactRead extends Component {
   constructor(props) {
@@ -194,7 +195,9 @@ class ContactRead extends Component {
     return (
       <div className={this.className}>
         {this.props.activeContact ? (
-          <DefaultPageLayout label='Contact Read'>{contact}</DefaultPageLayout>
+          <DefaultPageLayout label='Contact Read'>
+            <Card>{contact}</Card>
+          </DefaultPageLayout>
         ) : (
           <Spinner />
         )}

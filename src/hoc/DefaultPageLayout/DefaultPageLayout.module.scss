@@ -3,8 +3,11 @@
     box-sizing: border-box;
     max-width: var(--maxwidth);
     margin: 0 auto;
-    &.LayoutSmall {
+    &.LayoutNarrow {
       max-width: var(--maxwidthsmall);
+    }
+    &.LayoutWide {
+      max-width: var(--maxwidthwide);
     }
   }
 

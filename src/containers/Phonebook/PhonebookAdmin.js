@@ -13,6 +13,8 @@ import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
 import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
 import Spinner from '../../components/UI/Loaders/Spinner';
 import Button from '../../components/UI/Button/Button';
+import Card from '../../components/UI/Card/Card';
+
 class PhonebookAdmin extends Component {
   constructor(props) {
     super(props);
@@ -159,29 +161,31 @@ class PhonebookAdmin extends Component {
           <Spinner />
         ) : (
           <DefaultPageLayout label='Phonebook Admin'>
-            <InputContext.Provider
-              value={{
-                changed: (event) => this.searchChangedHandler(event),
-                clear: this.searchClearHandler
-              }}>
-              <SearchFilter value={this.state.filterText} />
-            </InputContext.Provider>
-            <ComponentFactory
-              data={{
-                component: 'list',
-                label: 'Contacts',
-                value: { data: filtered }
-              }}
-            />
-            <Button
-              type='WithBorder'
-              title='Add'
-              onClick={() => {
-                this.props.history.push('contactcreate');
-              }}>
-              <Icon iconstyle='fas' code='plus' size='sm' />
-              <p>Add Contact</p>
-            </Button>
+            <Card>
+              <InputContext.Provider
+                value={{
+                  changed: (event) => this.searchChangedHandler(event),
+                  clear: this.searchClearHandler
+                }}>
+                <SearchFilter value={this.state.filterText} />
+              </InputContext.Provider>
+              <ComponentFactory
+                data={{
+                  component: 'list',
+                  label: 'Contacts',
+                  value: { data: filtered }
+                }}
+              />
+              <Button
+                type='WithBorder'
+                title='Add'
+                onClick={() => {
+                  this.props.history.push('contactcreate');
+                }}>
+                <Icon iconstyle='fas' code='plus' size='sm' />
+                <p>Add Contact</p>
+              </Button>
+            </Card>
           </DefaultPageLayout>
         )}
       </div>

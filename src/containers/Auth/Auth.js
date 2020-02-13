@@ -13,6 +13,8 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import Spinner from '../../components/UI/Loaders/Spinner';
 import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
 import { CheckValidity as validationCheck } from '../../shared/validation';
+import Card from '../../components/UI/Card/Card';
+
 class Auth extends Component {
   constructor(props) {
     super(props);
@@ -198,7 +200,7 @@ class Auth extends Component {
         {authRedirect}
         <div className={classes.Auth}>
           <DefaultPageLayout
-            type='LayoutSmall'
+            type='LayoutNarrow'
             label={
               this.props.loading
                 ? ''
@@ -206,14 +208,16 @@ class Auth extends Component {
                 ? 'Sign-up'
                 : 'Login'
             }>
-            <form onSubmit={this.onSubmitHandler} autoComplete='off'>
-              <InputContext.Provider
-                value={{
-                  changed: this.inputChangedHandler
-                }}>
-                {formAll}
-              </InputContext.Provider>
-            </form>
+            <Card>
+              <form onSubmit={this.onSubmitHandler} autoComplete='off'>
+                <InputContext.Provider
+                  value={{
+                    changed: this.inputChangedHandler
+                  }}>
+                  {formAll}
+                </InputContext.Provider>
+              </form>
+            </Card>
           </DefaultPageLayout>
         </div>
       </React.Fragment>

@@ -14,6 +14,7 @@ import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
 import Spinner from '../../components/UI/Loaders/Spinner';
 import Button from '../../components/UI/Button/Button';
 import { CheckValidity as validationCheck } from '../../shared/validation';
+import Card from '../../components/UI/Card/Card';
 
 class ContactCreateOrUpdate extends Component {
   constructor(props) {
@@ -281,12 +282,14 @@ class ContactCreateOrUpdate extends Component {
     //each prop in contact
     for (let key in form) {
       //if the prop of contact has an element type of...
-      if (form[key].elementconfig.valuetype === 'array') {
-        for (let each of form[key].value) {
-          formIsValid = each.valid && formIsValid;
+      if (form[key].validation === true) {
+        if (form[key].elementconfig.valuetype === 'array') {
+          for (let each of form[key].value) {
+            formIsValid = each.valid && formIsValid;
+          }
+        } else {
+          formIsValid = form[key].value.valid && formIsValid;
         }
-      } else {
-        formIsValid = form[key].value.valid && formIsValid;
       }
     }
 
@@ -409,41 +412,43 @@ class ContactCreateOrUpdate extends Component {
           query === null ? (
             <DefaultPageLayout
               label={this.state.id ? 'Update Contact' : 'Create Contact'}>
-              <form onSubmit={this.onSubmitHandler} autoComplete='off'>
-                {/* input context provides context state/functions to formInputs */}
-                <InputContext.Provider
-                  value={{
-                    addinput: this.addInputHandler,
-                    removeinput: this.removeInputHandler,
-                    changed: this.inputChangedHandler
-                  }}>
-                  {formInputs}
-                </InputContext.Provider>
-                <input
-                  ref={this.submitInputRef}
-                  type='submit'
-                  value='Submit'
-                  onMouseOver={(event) => this.onSubmitTest(event)}
-                  // disabled={!this.state.formIsValid} //dont disable just handle with validation
-                />
-                <Button
-                  type='WithBorder'
-                  onClick={(event) => {
-                    console.log('Submit...');
-                    event.preventDefault();
-                    this.submitInputRef.current.click();
-                  }}
-                  onMouseOver={() => {
-                    const event = new MouseEvent('mouseover', {
-                      view: window,
-                      bubbles: true,
-                      cancelable: true
-                    });
-                    this.submitInputRef.current.dispatchEvent(event);
-                  }}>
-                  Submit
-                </Button>
-              </form>
+              <Card>
+                <form onSubmit={this.onSubmitHandler} autoComplete='off'>
+                  {/* input context provides context state/functions to formInputs */}
+                  <InputContext.Provider
+                    value={{
+                      addinput: this.addInputHandler,
+                      removeinput: this.removeInputHandler,
+                      changed: this.inputChangedHandler
+                    }}>
+                    {formInputs}
+                  </InputContext.Provider>
+                  <input
+                    ref={this.submitInputRef}
+                    type='submit'
+                    value='Submit'
+                    onMouseOver={(event) => this.onSubmitTest(event)}
+                    // disabled={!this.state.formIsValid} //dont disable just handle with validation
+                  />
+                  <Button
+                    type='WithBorder'
+                    onClick={(event) => {
+                      console.log('Submit...');
+                      event.preventDefault();
+                      this.submitInputRef.current.click();
+                    }}
+                    onMouseOver={() => {
+                      const event = new MouseEvent('mouseover', {
+                        view: window,
+                        bubbles: true,
+                        cancelable: true
+                      });
+                      this.submitInputRef.current.dispatchEvent(event);
+                    }}>
+                    Submit
+                  </Button>
+                </form>
+              </Card>
             </DefaultPageLayout>
           ) : (
             <Spinner />
