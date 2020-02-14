@@ -21,10 +21,7 @@ export const processContactCreate = (token, contact, callback) => {
         dispatch(
           contactCreate({
             id: response.data.name,
-            name: contact.name,
-            lastname: contact.lastname,
-            contactnumbers: contact.contactnumbers,
-            emails: contact.emails
+            ...contact
           })
         );
         callback();
@@ -51,19 +48,10 @@ export const processContactDelete = (token, id) => {
   };
 };
 
-export const contactUpdate = (
-  { name, lastname, contactnumbers, emails },
-  id
-) => {
+export const contactUpdate = (contact, id) => {
   return {
     type: actionTypes.CONTACT_UPDATE,
-    contactData: {
-      id: id,
-      name: name,
-      lastname: lastname,
-      contactnumbers: contactnumbers,
-      emails: emails
-    }
+    contactData: { ...contact }
   };
 };
 //async

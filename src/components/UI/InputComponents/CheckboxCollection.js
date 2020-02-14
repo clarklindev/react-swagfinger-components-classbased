@@ -8,7 +8,7 @@ class CheckboxCollection extends Component {
 
   onChangeHandler = (index, isChecked, event) => {
     this.context.changed(
-      { key: this.props.value[index].data.key, value: isChecked },
+      this.props.elementconfig.options[index].value,
       this.props.name,
       index
     );

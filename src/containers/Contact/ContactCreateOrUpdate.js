@@ -58,21 +58,12 @@ class ContactCreateOrUpdate extends Component {
       };
 
       for (let i = 0; i < clone.length; i++) {
-        let tempObj = { ...clone[i] };
+        let tempObj = { ...clone[i] }; //firebase form[i]
 
         let inputCount =
           tempObj.elementconfig.defaultinputs === 'options'
             ? tempObj.elementconfig.options.length
             : tempObj.elementconfig.defaultinputs;
-
-        console.log(
-          'tempObj: ',
-          tempObj.name,
-          ' | ',
-          tempObj.elementconfig.defaultinputs === 'options', //use options count to create dataObject
-          ' | inputCount: ',
-          inputCount
-        );
 
         let arrayValues = [];
         if (tempObj.elementconfig.valuetype === 'array') {
@@ -83,8 +74,8 @@ class ContactCreateOrUpdate extends Component {
 
         tempObj.value =
           tempObj.elementconfig.valuetype === 'array'
-            ? arrayValues
-            : dataObject;
+            ? arrayValues //array of dataObject
+            : dataObject; //single dataObject
 
         formatted[tempObj.name] = tempObj;
       }
@@ -93,11 +84,11 @@ class ContactCreateOrUpdate extends Component {
       const query = new URLSearchParams(this.props.location.search);
       const id = query.get('id'); //get id in url query params
       if (id) {
-        let response = await axios.get(`/contacts/${id}.json`);
+        let response = await axios.get(`/contacts/${id}.json`); //returns object:value pairs
 
         //console.log('response: ', response.data); //returns a single contact
         //map each key of contact (there are inputs/ input sets)
-        Object.keys(response.data).map((item) => {
+        Object.keys(response.data).forEach((item) => {
           let val = null;
           if (this.state.form[item]) {
             //check if whats coming back from firebase is an array...
@@ -128,12 +119,10 @@ class ContactCreateOrUpdate extends Component {
                 pristine: true
               }; //return single value
             }
-
-            let updatedObj = { ...formatted[item] };
-            updatedObj.value = val;
-            formatted[item] = updatedObj;
           }
-          return val;
+          let updatedObj = { ...formatted[item] };
+          updatedObj.value = val;
+          formatted[item] = updatedObj;
         });
       }
 
@@ -169,7 +158,7 @@ class ContactCreateOrUpdate extends Component {
       //build formData object and save only the value of each key...
       for (let key in this.state.form) {
         //array value, store just the value.data in formData
-        if (this.state.form[key].component === 'multiinput') {
+        if (this.state.form[key].elementconfig.valuetype === 'array') {
           formData[key] = this.state.form[key].value.map((each) => {
             return each.data;
           });
@@ -284,7 +273,7 @@ class ContactCreateOrUpdate extends Component {
     //each prop in contact
     for (let key in form) {
       //if the prop of contact has an element type of...
-      if (form[key].validation === true) {
+      if (form[key].validation) {
         if (form[key].elementconfig.valuetype === 'array') {
           for (let each of form[key].value) {
             formIsValid = each.valid && formIsValid;
@@ -314,25 +303,30 @@ class ContactCreateOrUpdate extends Component {
     let validation = validationCheck(newval, updatedFormElement.validation);
     console.log('key: ', key);
     console.log('validation: ', validation);
+
+    let obj = {
+      data: newval,
+      touched: true,
+      pristine: false,
+      valid: validation.isValid,
+      errors: validation.errors
+    };
+
     //if array
     if (index !== null) {
-      updatedFormElement.value[index] = {
-        data: newval,
-        touched: true,
-        pristine: false,
-        valid: validation.isValid,
-        errors: validation.errors
-      };
+      if (!updatedFormElement.value) {
+        updatedFormElement.value = [];
+      }
+      updatedFormElement.value[index] = obj;
     } else {
       //if single value
-      updatedFormElement.value = {
-        data: newval,
-        touched: true,
-        pristine: false,
-        valid: validation.isValid,
-        errors: validation.errors
-      };
+      updatedFormElement.value = obj;
     }
+    console.log(
+      '\n\n\n====================\nUPDATED FORM ELEMENT: \n',
+      updatedFormElement,
+      '-----------------------------\n'
+    );
 
     updatedForm[key] = updatedFormElement; //update form's input element state as that or 'updatedFormElement'
 
@@ -385,6 +379,11 @@ class ContactCreateOrUpdate extends Component {
         }
       }));
     }
+    console.log(
+      '\n\nON SUBMIT FORM STATE:\n====================================',
+      this.state.form,
+      '\n\n====================================='
+    );
   };
 
   render() {
