@@ -59,6 +59,14 @@ export const CheckValidity = (value, rules) => {
     }
   }
 
+  if (rules.isPhoneNumber) {
+    const pattern = /(^\d{3}?[ |-|.]*?[0-9]{3}[ |-|.]*?[0-9]{4}$)|^\(\d{3}\)[ |-|.]*?(\d{3})[ |-|.]*?\d{4}|(^\(?\+?\d{2}\)?)[ |.|-]*?(\d{2})[ |.|-]*?(\d{3})[ |.|-]*?(\d{4})$/;
+    isValid = pattern.test(value) && isValid;
+    if (isValid === false) {
+      errors.push('Value must be a valid contact number');
+    }
+  }
+
   return { isValid: isValid, errors: errors };
 };
 
