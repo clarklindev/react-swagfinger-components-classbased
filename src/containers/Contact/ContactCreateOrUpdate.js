@@ -15,6 +15,7 @@ import Spinner from '../../components/UI/Loaders/Spinner';
 import Button from '../../components/UI/Button/Button';
 import { CheckValidity as validationCheck } from '../../shared/validation';
 import Card from '../../components/UI/Card/Card';
+import { faAssistiveListeningSystems } from '@fortawesome/free-solid-svg-icons';
 
 class ContactCreateOrUpdate extends Component {
   constructor(props) {
@@ -30,7 +31,6 @@ class ContactCreateOrUpdate extends Component {
   state = {
     isLoading: true,
     id: null, //id of current item being updated
-    loadedContact: null, //when axios call gives response
     saving: false,
     formIsValid: null, //for form validation
     form: null
@@ -79,6 +79,7 @@ class ContactCreateOrUpdate extends Component {
 
         formatted[tempObj.name] = tempObj;
       }
+      this.setState({ form: formatted, isLoading: false });
 
       //check if there is 'id' in querystring
       const query = new URLSearchParams(this.props.location.search);
@@ -91,8 +92,9 @@ class ContactCreateOrUpdate extends Component {
         Object.keys(response.data).forEach((item) => {
           let val = null;
           if (this.state.form[item]) {
-            //check if whats coming back from firebase is an array...
+            //   //check if whats coming back from firebase is an array...
             if (Array.isArray(response.data[item])) {
+              //return array of values
               val = response.data[item].map((each) => {
                 let validation = validationCheck(
                   each,
@@ -105,7 +107,7 @@ class ContactCreateOrUpdate extends Component {
                   touched: false,
                   pristine: true
                 };
-              }); //return array of values
+              });
             } else {
               let validation = validationCheck(
                 response.data[item],
@@ -119,15 +121,24 @@ class ContactCreateOrUpdate extends Component {
                 pristine: true
               }; //return single value
             }
+            let updatedObj = { ...formatted[item] };
+            updatedObj.value = val;
+            formatted[item] = updatedObj;
           }
-          let updatedObj = { ...formatted[item] };
-          updatedObj.value = val;
-          formatted[item] = updatedObj;
         });
-      }
 
-      //upate state
-      this.setState({ form: formatted, isLoading: false });
+        this.setState({
+          form: formatted,
+          isLoading: false,
+          id: id
+        });
+        //upate state
+        console.log(
+          'FORMATTED: ',
+          this.state.form,
+          '\n=============================='
+        );
+      }
     } catch (error) {
       console.log(error);
       this.setState({ isLoading: false });
@@ -408,10 +419,7 @@ class ContactCreateOrUpdate extends Component {
           <p>Saving</p>
         </Modal>
 
-        {(query !== null &&
-          !this.state.loadedContact &&
-          this.state.id === null) ||
-        this.state.isLoading ? (
+        {(query !== null && this.state.id === null) || this.state.isLoading ? (
           <Spinner />
         ) : (
           <div className={this.className}>
