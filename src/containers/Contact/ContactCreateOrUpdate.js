@@ -15,7 +15,6 @@ import Spinner from '../../components/UI/Loaders/Spinner';
 import Button from '../../components/UI/Button/Button';
 import { CheckValidity as validationCheck } from '../../shared/validation';
 import Card from '../../components/UI/Card/Card';
-import { faAssistiveListeningSystems } from '@fortawesome/free-solid-svg-icons';
 
 class ContactCreateOrUpdate extends Component {
   constructor(props) {
