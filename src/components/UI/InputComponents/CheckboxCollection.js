@@ -1,51 +1,60 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import Checkbox from './Checkbox';
 import classes from './CheckboxCollection.module.scss';
 import InputContext from '../../../context/InputContext';
 
-class CheckboxCollection extends Component {
+class CheckboxCollection extends PureComponent {
   static contextType = InputContext;
 
-  onChangeHandler = (index, isChecked, event) => {
-    event.preventDefault();
-    console.log('CLICKED: ', index, isChecked, event.target.value);
+  state = {
+    checked: []
+  };
 
-    this.context.changed(
-      isChecked ? event.target.value : '',
-      this.props.name,
-      index
+  componentDidMount() {
+    console.log(
+      '\n==============================================\n COMPONENTDIDMOUNT'
     );
+    let status = [];
+    status = (this.props.value || []).map((item) => {
+      return item.data;
+    });
+    this.setState({ checked: status });
+  }
+
+  componentDidUpdate() {
+    console.log('\n==================================\n COMPONENTDIDUPDATE');
+    let status = [];
+    status = (this.props.value || []).map((item) => {
+      return item.data;
+    });
+    if (this.state.checked.toString() !== status.toString()) {
+      console.log('UPDATING CHECKBOX COLLECTION');
+      this.setState({ checked: status });
+    }
+  }
+
+  onChangeHandler = (index, isChecked, event) => {
+    console.log('onChangeHandler CLICKED: ', index, isChecked);
+    this.context.changed(isChecked, this.props.name, index);
   };
 
   render() {
-    console.log('props.value: ', this.props.value);
+    console.log('state.checked: ', this.state.checked);
 
     return (
       <div className={classes.CheckboxCollection}>
         {this.props.elementconfig.options.map((each, index) => {
-          let isChecked = false; //initiate to false
-          //go through values list, check if option is in this list,
-          for (let i = 0; i < this.props.value.length; i++) {
-            console.log(
-              'this.props.value[i].data: ',
-              this.props.value[i].data,
-              '| each.value: ',
-              each.value
-            );
-            if (this.props.value[i].data === each.value) {
-              isChecked = true;
-            }
-          }
-
-          console.log('isChecked: ', isChecked);
-          // //if it is, make it checked
+          console.log(
+            `this.state.checked[${index}]: `,
+            this.state.checked[index]
+          );
           return (
             <Checkbox
-              {...this.props.elementconfig}
-              label={each.displaytext}
-              value={this.props.elementconfig.options[index].value}
-              checked={isChecked}
               key={this.props.name + index}
+              label={each.displaytext}
+              name={this.props.name}
+              value={this.props.elementconfig.options[index].value}
+              checked={this.state.checked[index]}
               index={index}
               onChange={this.onChangeHandler} //(index,checked,event)
             />
