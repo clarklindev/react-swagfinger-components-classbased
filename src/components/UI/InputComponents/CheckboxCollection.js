@@ -7,28 +7,49 @@ class CheckboxCollection extends Component {
   static contextType = InputContext;
 
   onChangeHandler = (index, isChecked, event) => {
+    event.preventDefault();
+    console.log('CLICKED: ', index, isChecked, event.target.value);
+
     this.context.changed(
-      this.props.elementconfig.options[index].value,
+      isChecked ? event.target.value : '',
       this.props.name,
       index
     );
   };
 
   render() {
+    console.log('props.value: ', this.props.value);
+
     return (
       <div className={classes.CheckboxCollection}>
         {this.props.elementconfig.options.map((each, index) => {
-          console.log('HELLO CHECKBOX');
-          return this.props.value[index] !== undefined ? (
+          let isChecked = false; //initiate to false
+          //go through values list, check if option is in this list,
+          for (let i = 0; i < this.props.value.length; i++) {
+            console.log(
+              'this.props.value[i].data: ',
+              this.props.value[i].data,
+              '| each.value: ',
+              each.value
+            );
+            if (this.props.value[i].data === each.value) {
+              isChecked = true;
+            }
+          }
+
+          console.log('isChecked: ', isChecked);
+          // //if it is, make it checked
+          return (
             <Checkbox
               {...this.props.elementconfig}
               label={each.displaytext}
-              checked={this.props.value[index].data.value}
+              value={this.props.elementconfig.options[index].value}
+              checked={isChecked}
               key={this.props.name + index}
               index={index}
-              onChange={this.onChangeHandler}
+              onChange={this.onChangeHandler} //(index,checked,event)
             />
-          ) : null;
+          );
         })}
       </div>
     );

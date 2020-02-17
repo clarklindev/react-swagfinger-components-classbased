@@ -57,41 +57,37 @@ class MultiRangeSlider extends Component {
 
   //props or state updates...
   componentDidUpdate() {
-    // let min = '';
-    // let max = '';
-    // //console.log('min:', min);
-    // //console.log('max:', max);
-    // if (
-    //   min !== undefined &&
-    //   min.data &&
-    //   min.data !== this.state.labelmin &&
-    //   max !== undefined &&
-    //   max.data &&
-    //   max.data !== this.state.labelmax
-    // ) {
-    //   //we want to still store the actual values in the database, the display values should be converted from the actual values
-    //   //update positions on screen
-    //   let findMin =
-    //     min.data === null
-    //       ? this.props.elementconfig.options[0].value
-    //       : min.data;
-    //   let tempLabelMin = this.restrictActualBoundaries(findMin, 0);
-    //   let convertedMin = this.convertToDisplayValue(tempLabelMin, 0);
-    //   this.populateSlider(convertedMin, 0);
-    //   this.stateDisplayValuesHandler(convertedMin, 0); //set state
-    //   let findMax =
-    //     max.data === null
-    //       ? this.props.elementconfig.options[1].value
-    //       : max.data;
-    //   let tempLabelMax = this.restrictActualBoundaries(findMax, 1);
-    //   let convertedMax = this.convertToDisplayValue(tempLabelMax, 1);
-    //   this.populateSlider(convertedMax, 1);
-    //   this.stateDisplayValuesHandler(convertedMax, 1); //set state
-    //   //actual values
-    //   //set state
-    //   this.stateMinHandler(tempLabelMin);
-    //   this.stateMaxHandler(tempLabelMax);
-    // }
+    console.log('MULTIRANGESLIDER: COMPONENT DID UPDATE');
+    let min = this.props.value[0];
+    let max = this.props.value[1];
+    if (
+      min !== undefined &&
+      min.data &&
+      min.data !== this.state.labelmin &&
+      max !== undefined &&
+      max.data &&
+      max.data !== this.state.labelmax
+    ) {
+      console.log('UPDATING WITH NEW VALUES');
+      //we want to still store the actual values in the database, the display values should be converted from the actual values
+      //update positions on screen
+      //MIN
+      let findMin = min.data === null ? min : this.props.value[0].data;
+      let tempLabelMin = this.restrictActualBoundaries(findMin, 0);
+      let convertedMin = this.convertToDisplayValue(tempLabelMin, 0);
+      this.populateSlider(convertedMin, 0);
+      this.stateDisplayValuesHandler(convertedMin, 0); //set state
+      //MAX
+      let findMax = max.data === null ? max : this.props.value[1].data;
+      let tempLabelMax = this.restrictActualBoundaries(findMax, 1);
+      let convertedMax = this.convertToDisplayValue(tempLabelMax, 1);
+      this.populateSlider(convertedMax, 1);
+      this.stateDisplayValuesHandler(convertedMax, 1); //set state
+      //actual values
+      //set state
+      this.stateMinHandler(tempLabelMin);
+      this.stateMaxHandler(tempLabelMax);
+    }
   }
 
   restrictActualBoundaries = (value, index = this.state.currentindex) => {
