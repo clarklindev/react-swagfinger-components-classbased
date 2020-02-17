@@ -299,7 +299,7 @@ class ContactCreateOrUpdate extends Component {
 
   // ------------------------------------
   inputChangedHandler = (newval, key, index = null) => {
-    console.log('inputChangedHandler key: ', key, ':', newval);
+    console.log('inputChangedHandler key: ', key, '|', newval);
     //single contact
     const updatedForm = {
       ...this.state.form
