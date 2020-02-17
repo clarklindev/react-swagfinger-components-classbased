@@ -152,7 +152,7 @@ class Datepicker extends Component {
         <tbody>
           {[...Array(rows)].map((_, i) => {
             return (
-              <tr key={'yearrow' + i}>
+              <tr key={'arrow' + i}>
                 {[...Array(cols)].map((_, j) => {
                   let output = (
                     <td key={'year' + counter}>
@@ -519,8 +519,8 @@ class Datepicker extends Component {
   //-----------------------------------------------------------
 
   clickHandler = (event) => {
-    // event.preventDefault();
-    // event.stopPropagation();
+    event.preventDefault();
+    event.stopPropagation();
     console.log('other:', event.target.className);
     console.log('TARGET: ', event.target);
 
@@ -679,6 +679,8 @@ class Datepicker extends Component {
             {this.state[this.state.viewstate].arrows ? (
               <Button
                 onClick={(event) => {
+                  event.preventDefault();
+                  event.stopPropagation();
                   this.decrease(event);
                 }}
                 onMouseOver={(event) => {
@@ -740,6 +742,8 @@ class Datepicker extends Component {
               <Button
                 onClick={(event) => {
                   this.increase(event);
+                  event.preventDefault();
+                  event.stopPropagation();
                 }}
                 onMouseOver={(event) => {
                   this.onMouseOver(event);
