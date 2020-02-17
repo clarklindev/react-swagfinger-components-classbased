@@ -57,7 +57,7 @@ class MultiRangeSlider extends Component {
 
   //props or state updates...
   componentDidUpdate() {
-    console.log('MULTIRANGESLIDER: COMPONENT DID UPDATE');
+    //console.log('MULTIRANGESLIDER: COMPONENT DID UPDATE');
     let min = this.props.value[0];
     let max = this.props.value[1];
     if (
@@ -68,7 +68,7 @@ class MultiRangeSlider extends Component {
       max.data &&
       max.data !== this.state.labelmax
     ) {
-      console.log('UPDATING WITH NEW VALUES');
+      //console.log('UPDATING WITH NEW VALUES');
       //we want to still store the actual values in the database, the display values should be converted from the actual values
       //update positions on screen
       //MIN
@@ -309,13 +309,13 @@ class MultiRangeSlider extends Component {
     //---------------------------------------------------------
     //set left label
     if (index === 0) {
-      console.log('INDEX LEFT:', index);
+      //console.log('INDEX LEFT:', index);
       //console.log('LEFT LABEL: ', tempActual);
       this.stateMinHandler(tempActualRestricted);
     }
     //set right label
     if (index === 1) {
-      console.log('INDEX RIGHT:', index);
+      //console.log('INDEX RIGHT:', index);
       //console.log('RIGHT LABEL: ', tempActual);
       this.stateMaxHandler(tempActualRestricted);
     }
