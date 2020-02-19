@@ -30,10 +30,6 @@ class Auth extends Component {
           type: 'text',
           placeholder: 'Mail Address'
         },
-        validation: {
-          required: true,
-          isEmail: true
-        },
         value: {
           data: '',
           valid: false,
@@ -49,10 +45,6 @@ class Auth extends Component {
         elementconfig: {
           type: 'password',
           placeholder: 'Password'
-        },
-        validation: {
-          required: true,
-          minLength: 6
         },
         value: {
           data: '',
@@ -170,7 +162,7 @@ class Auth extends Component {
         label={
           this.props.loading ? '' : this.state.isSignUp ? 'Sign-up' : 'Login'
         }>
-        <Card>
+        <Card className='Card'>
           <form onSubmit={this.onSubmitHandler} autoComplete='off'>
             <InputContext.Provider
               value={{
@@ -189,12 +181,24 @@ class Auth extends Component {
                   }}>
                   Submit
                 </Button>
-                <Button onClick={this.switchAuthModeHandler}>
-                  switch to {this.state.isSignUp ? 'Login' : 'Sign-up'}
-                </Button>
               </div>
             </InputContext.Provider>
           </form>
+        </Card>
+        <Card className={'Card'}>
+          <div className={classes.FlexGroupRow}>
+            {this.state.isSignUp
+              ? `Have an account? `
+              : `Don't have an account? `}
+            <Button
+              className={classes.SwitchButton}
+              type='WithPadding'
+              onClick={this.switchAuthModeHandler}>
+              <span className={classes.ButtonText}>
+                {this.state.isSignUp ? 'Login' : 'Sign-up'}
+              </span>
+            </Button>
+          </div>
         </Card>
       </DefaultPageLayout>
     );

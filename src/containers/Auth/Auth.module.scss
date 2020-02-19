@@ -1,5 +1,13 @@
 .Auth {
+  color: var(--colordefault);
   display: block;
+  .FlexGroupRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+
   input[type='submit'] {
     display: none;
   }
@@ -8,7 +16,12 @@
     flex-direction: column;
     justify-content: space-between;
   }
-  .SwitchButton {
-    margin-left: var(--margindefault);
+
+  .SwitchButton .ButtonText {
+    color: var(--colorlogin);
+  }
+
+  .Card {
+    margin-bottom: var(--margindefault);
   }
 }

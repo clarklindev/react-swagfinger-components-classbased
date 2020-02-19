@@ -3,7 +3,11 @@ import React, { Component } from 'react';
 
 class Card extends Component {
   render() {
-    return <div className={classes.Card}>{this.props.children}</div>;
+    return (
+      <div className={[classes.Card, this.props.className].join(' ')}>
+        {this.props.children}
+      </div>
+    );
   }
 }
 

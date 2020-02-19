@@ -36,6 +36,9 @@
     padding: 0;
     height: auto;
   }
+  &.WithPadding {
+    padding: var(--paddinginput);
+  }
 
   &.WithBorder {
     border: 1px solid var(--colorborder);
@@ -44,14 +47,14 @@
   }
 
   &.Success {
-    color: #5c9210;
+    color: var(--colorsuccess);
   }
   &.Danger {
-    color: #944317;
+    color: var(--colordanger);
   }
   &.Login {
     border-radius: var(--borderradius);
     color: white;
-    background-color: #3897f0;
+    background-color: var(--colorlogin);
   }
 }

@@ -42,7 +42,7 @@ class ContactCreateOrUpdate extends Component {
     //generate form from firebase 'form'
     try {
       //get the structure of the form from firebase
-      let formstructure = await axios.get(`/form.json`);
+      let formstructure = await axios.get(`/form-contacts.json`);
       console.log('formstructure:', formstructure.data);
 
       let clone = [...formstructure.data];
