@@ -10,7 +10,7 @@ class Modal extends Component {
   }
 
   render() {
-    return (
+    return this.props.show ? (
       <React.Fragment>
         <Backdrop show={this.props.show} onClick={this.props.modalClosed} />
         <DefaultPageLayout type='LayoutNarrow'>
@@ -19,7 +19,7 @@ class Modal extends Component {
           </div>
         </DefaultPageLayout>
       </React.Fragment>
-    );
+    ) : null;
   }
 }
 
