@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 class Card extends Component {
   render() {
-    return (
+    return this.props.hide ? null : (
       <div className={[classes.Card, this.props.className].join(' ')}>
         {this.props.children}
       </div>

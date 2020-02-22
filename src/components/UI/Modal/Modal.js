@@ -1,25 +1,23 @@
 import React, { Component } from 'react';
-import classes from './Modal.module.scss';
 import Backdrop from '../Backdrop/Backdrop';
+import DefaultPageLayout from '../../../hoc/DefaultPageLayout/DefaultPageLayout';
+import classes from './Modal.module.scss';
+import Card from '../Card/Card';
 
 class Modal extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     return nextProps.show !== this.props.show;
   }
-  UNSAFE_componentWillUpdate() {
-    console.log('[Modal] WillUpdate');
-  }
+
   render() {
     return (
       <React.Fragment>
         <Backdrop show={this.props.show} onClick={this.props.modalClosed} />
-        <div
-          className={classes.Modal}
-          style={{
-            display: this.props.show ? 'block' : 'none'
-          }}>
-          {this.props.children}
-        </div>
+        <DefaultPageLayout type='LayoutNarrow'>
+          <div className={classes.Modal}>
+            <Card hide={!this.props.show}>{this.props.children}</Card>
+          </div>
+        </DefaultPageLayout>
       </React.Fragment>
     );
   }

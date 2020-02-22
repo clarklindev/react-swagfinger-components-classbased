@@ -1,17 +1,13 @@
 .Modal {
-  position: absolute;
-  top: 50%;
-  z-index: var(--modalzindex);
-  background-color: white;
-  width: 70%;
-  max-width: var(--maxwidth);
+  position: fixed;
+  top: 35vh;
   margin: 0 auto;
   left: 0;
   right: 0;
-  color: var(--colordefault);
-  border: 1px solid var(--colorborder);
-  border-radius: var(--borderradius);
   padding: var(--paddingdefault);
+  max-width: var(--maxwidthsmall);
+  z-index: var(--modalzindex);
+  color: var(--colordefault);
   box-sizing: border-box;
   transition: all 0.3s ease-out;
 }
