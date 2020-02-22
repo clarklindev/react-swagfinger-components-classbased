@@ -13,6 +13,8 @@ const button = (props) => {
 
   return (
     <button
+      tabIndex={props.tabIndex}
+      ref={props.reference}
       disabled={props.disabled}
       className={classList}
       onClick={props.onClick}

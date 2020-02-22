@@ -11,11 +11,18 @@ class SearchFilter extends Component {
         iconposition: 'left', //left || right
         iconstyle: 'fas',
         iconcode: 'search',
-        iconsize: 'sm'
+        iconsize: 'sm',
+        hasdivider: 'true'
       },
       name: 'search',
       label: 'Search',
-      value: { data: this.props.value, valid: 'true', touched: 'false' }
+      value: {
+        data: this.props.value,
+        valid: true,
+        touched: false,
+        pristine: true,
+        errors: null
+      }
     };
     return <ComponentFactory data={{ ...obj }} />;
   }

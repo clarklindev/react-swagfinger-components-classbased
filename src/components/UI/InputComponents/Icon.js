@@ -16,7 +16,9 @@ import {
   faExclamationCircle,
   faArrowCircleUp,
   faCloudUploadAlt,
-  faCheck
+  faCheck,
+  faEye,
+  faEyeSlash
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faEdit,
@@ -42,7 +44,9 @@ library.add(
   faExclamationCircle, //input error
   faArrowCircleUp, //uploaded
   faCloudUploadAlt, //upload
-  faCheck //check icon
+  faCheck, //check icon
+  faEye,
+  faEyeSlash //show/hide password
 );
 
 class Icon extends Component {
@@ -58,7 +62,7 @@ class Icon extends Component {
       <div className={[classList].join(' ')}>
         <FontAwesomeIcon
           icon={[this.props.iconstyle, this.props.code]}
-          size={this.props.size}
+          size={this.props.size} //xs, sm, lg, 2x,3x,4x,5x,6x,7x,8x,9x,10x
           fixedWidth
         />
       </div>

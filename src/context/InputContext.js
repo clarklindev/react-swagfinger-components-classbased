@@ -4,6 +4,7 @@ const inputContext = React.createContext({
   addinput: () => {},
   removeinput: () => {},
   changed: () => {},
+  togglepasswordvisibility: () => {},
   submitTest: false
 });
 

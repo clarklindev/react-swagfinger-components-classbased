@@ -17,6 +17,9 @@
     font-size: var(--fontsizedefault);
     padding: var(--paddinginput);
     color: var(--colordefault);
+    box-sizing: border-box;
+    height: var(--inputheight);
+    line-height: var(--inputheight); //50px - (6px x2)
     &:focus {
       outline: none;
     }
@@ -40,7 +43,7 @@
   }
 
   svg {
-    padding: var(--paddingdefault);
+    padding: var(--paddinginput);
   }
 
   &.Invalid {

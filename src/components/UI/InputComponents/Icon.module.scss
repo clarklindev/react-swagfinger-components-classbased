@@ -1,5 +1,6 @@
 .Icon {
-  display: block;
+  display: flex;
+  align-self: center;
   &.WithRoundBorder {
     padding: 3px;
     border: 1px solid var(--colorborder);

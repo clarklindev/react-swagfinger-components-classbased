@@ -19,6 +19,7 @@ class Auth extends Component {
   constructor(props) {
     super(props);
     this.submitInputRef = React.createRef();
+    this.submitButtonRef = React.createRef();
   }
   state = {
     form: {
@@ -39,13 +40,20 @@ class Auth extends Component {
         }
       },
       password: {
-        component: 'input',
+        component: 'inputwithicon',
         name: 'password',
         label: 'Password',
         elementconfig: {
           type: 'password',
-          placeholder: 'Password'
+          placeholder: 'Password',
+          iconposition: 'right',
+          iconstyle: 'fas',
+          iconcode: 'eye',
+          iconsize: 'sm',
+          hasdivider: 'false',
+          iconclick: () => this.togglePasswordVisibility
         },
+
         value: {
           data: '',
           valid: false,
@@ -56,19 +64,53 @@ class Auth extends Component {
       }
     },
     formIsValid: false,
-    isSignUp: false
+    isSignUp: false,
+    isPasswordVisible: false
   };
   //------------------------------------------------------
   //------------------------------------------------------
-  // componentDidMount() {
-  //   //check we reset path if not busy before authenticate
-  //   // if (
-  //   //   /*!this.props.buildingBurger && */ this.props.authRedirectPath !== '/'
-  //   // ) {
-  //   //   this.props.onSetAuthRedirectPath(); //always passes /
-  //   // }
-  // }
+  componentDidMount() {
+    //check we reset path if not busy before authenticate
+    // if (
+    //   /*!this.props.buildingBurger && */ this.props.authRedirectPath !== '/'
+    // ) {
+    //   this.props.onSetAuthRedirectPath(); //always passes /
+    // }
+    window.addEventListener('keydown', this.keyListener);
+  }
 
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.keyListener);
+  }
+
+  keyListener = (event) => {
+    if (event.key === 'Enter' || event.keyCode === 13 || event.which === 13) {
+      console.log('key: ', event.key);
+      this.onSubmitHandler(event);
+    }
+  };
+
+  togglePasswordVisibility = () => {
+    console.log('togglePassword!!!!');
+    this.setState((prevState) => {
+      let obj = { ...this.state.form.password.elementconfig };
+      if (prevState.form.password.elementconfig.type === 'password') {
+        obj.type = 'text';
+        obj.iconcode = 'eye-slash';
+      } else {
+        obj.type = 'password';
+        obj.iconcode = 'eye';
+      }
+
+      return {
+        isPasswordVisible: !prevState.isPasswordVisible,
+        form: {
+          ...prevState.form,
+          password: { ...prevState.form.password, elementconfig: obj }
+        }
+      };
+    });
+  };
   //------------------------------------------------------
   //------------------------------------------------------
   //checks the .valid property of each input in array or individual input
@@ -175,6 +217,7 @@ class Auth extends Component {
                 <input ref={this.submitInputRef} type='submit' />
 
                 <Button
+                  reference={this.submitButtonRef}
                   type='Login'
                   onClick={() => {
                     this.submitInputRef.current.click();
