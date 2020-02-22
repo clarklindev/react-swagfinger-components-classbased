@@ -12,7 +12,7 @@ class SearchFilter extends Component {
         iconstyle: 'fas',
         iconcode: 'search',
         iconsize: 'sm',
-        hasdivider: 'true'
+        hasdivider: true
       },
       name: 'search',
       label: 'Search',
