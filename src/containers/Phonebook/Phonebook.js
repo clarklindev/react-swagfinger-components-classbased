@@ -39,10 +39,9 @@ class Phonebook extends Component {
     });
   };
 
-  searchChangedHandler = (event) => {
-    //match string
-    console.log('input:', event.target.value);
-    this.setState({ filterText: event.target.value });
+  searchChangedHandler = (newVal, name, index = null) => {
+    console.log('searchChangedHandler:', newVal);
+    this.setState({ filterText: newVal });
   };
 
   //highlighting - matching regular expression (useful for search matching)
@@ -133,7 +132,7 @@ class Phonebook extends Component {
             <Card>
               <InputContext.Provider
                 value={{
-                  changed: (event) => this.searchChangedHandler(event),
+                  changed: this.searchChangedHandler, //newval, name, index
                   clear: this.searchClearHandler
                 }}>
                 <SearchFilter value={this.state.filterText} />
