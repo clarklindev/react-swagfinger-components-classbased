@@ -1,7 +1,32 @@
 .Card {
   border: 1px solid var(--colorborder);
-  padding: var(--paddingdefault);
   border-radius: var(--borderradius);
   background-color: white;
   margin-bottom: var(--margindefault);
+  .CardHeader {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--paddingdefault);
+  }
+
+  .CardBody {
+    display: flex;
+    flex-direction: column;
+    padding: var(--paddingdefault);
+    form {
+      width: 100%;
+    }
+  }
+
+  .CardFooter {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    padding: var(--paddingdefault);
+  }
+
+  &.NoPadding {
+    padding: 0;
+  }
 }

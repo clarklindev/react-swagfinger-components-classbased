@@ -1,0 +1,13 @@
+.Divider {
+  display: flex;
+  flex-direction: row;
+  align-self: stretch;
+  height: 100%;
+  width: 100%;
+  &.Horizontal {
+    border-bottom: 1px solid var(--colorborder);
+  }
+  &.Vertical {
+    border-left: 1px solid var(--colorborder);
+  }
+}
