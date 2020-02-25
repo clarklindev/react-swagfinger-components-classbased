@@ -141,7 +141,7 @@ class Upload extends Component {
         );
 
         axios
-          .post('react-crud-1db4b.appspot.com', formData, {
+          .post('https://react-crud-1db4b.appspot.com/', formData, {
             onUploadProgress: (progressEvent) => {
               let uploadAll = [...this.state.uploadProgress];
               let uploadCurrent = Math.round(
@@ -199,7 +199,7 @@ class Upload extends Component {
               className={classes.Icon}
               iconstyle='fas'
               code='cloud-upload-alt'
-              size={this.props.elementconfig.iconsize}
+              size='sm'
             />
             <p>Drag and drop files here</p>
           </div>
