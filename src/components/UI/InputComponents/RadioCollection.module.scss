@@ -8,4 +8,11 @@
     border: 1px solid red; //var(--colorborder);
     padding: 6px 10px;
   }
+
+  .RadioButton {
+    margin-bottom: calc(var(--margindefault) * 0.5);
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 }

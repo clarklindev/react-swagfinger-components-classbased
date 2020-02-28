@@ -19,6 +19,11 @@
     box-sizing: content-box;
     align-items: center;
     display: flex;
+    margin-bottom: calc(var(--margindefault) * 0.5);
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 
   a {

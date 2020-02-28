@@ -4,7 +4,7 @@ import classes from './RadioButton.module.scss';
 class RadioButton extends Component {
   render() {
     return (
-      <div className={classes.RadioButton}>
+      <div className={[classes.RadioButton, this.props.className].join(' ')}>
         <label className={classes.Container}>
           <input
             type='radio'

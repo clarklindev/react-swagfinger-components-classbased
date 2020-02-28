@@ -28,7 +28,9 @@ class Modal extends Component {
     return this.props.show ? (
       <React.Fragment>
         <Backdrop show={this.props.show} onClick={this.props.modalClosed} />
-        <DefaultPageLayout type='LayoutNarrow'>
+        <DefaultPageLayout
+          type='LayoutNarrow'
+          label={this.props.label ? this.props.label : ''}>
           <div className={classes.Modal}>
             <Card
               type='NoPadding'

@@ -1,7 +1,8 @@
 .MultiInput {
   width: 100%;
   box-sizing: border-box;
-  margin: 0 0 30px 0;
+  display: flex;
+  flex-direction: column;
 
   .RemoveButton {
     margin-left: calc(var(--margindefault) * 0.5);

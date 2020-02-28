@@ -72,6 +72,7 @@ class CheckboxCollection extends PureComponent {
           );
           return (
             <Checkbox
+              className={classes.Checkbox}
               key={this.props.name + index}
               label={each.displaytext}
               name={this.props.name}

@@ -29,6 +29,7 @@ class RadioCollection extends Component {
           return this.props.value.data !== undefined ? (
             <RadioButton
               {...this.props}
+              className={classes.RadioButton}
               type={[...tempClasses].join(' ')}
               key={this.props.name + index}
               name={this.props.name}

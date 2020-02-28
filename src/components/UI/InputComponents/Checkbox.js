@@ -24,7 +24,7 @@ class Checkbox extends Component {
 
   render() {
     return (
-      <div className={classes.Checkbox}>
+      <div className={[classes.Checkbox, this.props.className].join(' ')}>
         <label className={classes.Container}>
           <input
             type='checkbox'
