@@ -37,7 +37,6 @@ class App extends Component {
         <Route path='/login' component={Auth} />
         <Route path='/phonebook' component={Phonebook} />
         <Route path='/contactread' component={ContactRead} />
-        <Route path='/upload' component={UploadContent} />
         <Route path='/faq' component={Faq} />
         <Route path='/' exact component={Phonebook} />
         <Redirect to='/' />
