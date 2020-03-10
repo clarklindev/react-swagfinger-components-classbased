@@ -3,13 +3,7 @@ import classes from './Accordion.module.scss';
 import Icon from './Icon';
 class Accordion extends Component {
   state = {
-    data: [
-      { title: 'question1', content: 'content1', isActive: false },
-      { title: 'question2', content: 'content2', isActive: false },
-      { title: 'question3', content: 'content3', isActive: false }
-    ],
-    startIndex: 0,
-    allowMultiOpen: true
+    isActive: []
   };
 
   constructor(props) {
@@ -17,14 +11,40 @@ class Accordion extends Component {
     this.accordionRef = React.createRef();
   }
 
-  componentDidUpdate() {
-    console.log(this.state);
+  componentDidMount() {
     let accordion = this.accordionRef.current;
 
     Array.from(
       accordion.querySelectorAll("[class*='AccordionContent']")
     ).forEach((item, index) => {
-      if (this.state.data[index].isActive) {
+      console.log('dom: ', item, ', index: ', index);
+
+      if (this.state.isActive[index]) {
+        item.style.maxHeight = item.scrollHeight + 'px';
+      } else {
+        item.style.maxHeight = 0;
+      }
+
+      this.setState(prevState => {
+        let oldState = prevState.isActive;
+        let copiedState = [...oldState];
+        copiedState[index] =
+          this.props.openOnStartIndex > 0 &&
+          this.props.openOnStartIndex === index
+            ? true
+            : false;
+        return { isActive: copiedState };
+      });
+    });
+  }
+
+  componentDidUpdate() {
+    let accordion = this.accordionRef.current;
+
+    Array.from(
+      accordion.querySelectorAll("[class*='AccordionContent']")
+    ).forEach((item, index) => {
+      if (this.state.isActive[index]) {
         item.style.maxHeight = item.scrollHeight + 'px';
       } else {
         item.style.maxHeight = 0;
@@ -34,26 +54,18 @@ class Accordion extends Component {
 
   onClickHandler = (index, event) => {
     console.log(index);
-
-    this.setState((prevState) => {
-      let dataClone = [...prevState.data];
-      let updatedClone = dataClone.map((item, i) => {
+    this.setState(prevState => {
+      let dataClone = [...prevState.isActive];
+      let updatedClone = dataClone.map((value, i) => {
         if (i === index) {
-          return {
-            ...item,
-            isActive: this.state.allowMultiOpen ? !item.isActive : true
-          };
+          return !value;
         } else {
-          return this.state.allowMultiOpen
-            ? {
-                ...item
-              }
-            : { ...item, isActive: false };
+          return this.props.allowMultiOpen === true ? value : false;
         }
       });
-
+      console.log('updatedClone: ', updatedClone);
       return {
-        data: updatedClone
+        isActive: updatedClone
       };
     });
   };
@@ -61,23 +73,26 @@ class Accordion extends Component {
   render() {
     return (
       <div className={classes.Accordion} ref={this.accordionRef}>
-        {this.state.data.map((item, index) => {
+        {this.props.value.map((item, index) => {
+          console.log('prop: ', item);
           let additionalClasses = [];
-          if (this.state.data[index].isActive === true) {
+          if (this.state.isActive[index] === true) {
             additionalClasses.push(classes.Active);
           }
           return (
             <div
               className={classes.AccordionItem}
-              key={'accordionitem' + index}>
+              key={'accordionitem' + index}
+            >
               <div
                 className={classes.AccordionTitle}
-                onClick={(event) => this.onClickHandler(index, event)}>
+                onClick={event => this.onClickHandler(index, event)}
+              >
                 {item.title}
                 <Icon
                   iconstyle='fas'
                   code={
-                    this.state.data[index].isActive
+                    this.state.isActive[index] === true
                       ? 'chevron-up'
                       : 'chevron-down'
                   }
@@ -88,7 +103,8 @@ class Accordion extends Component {
                 className={[
                   classes.AccordionContent,
                   ...additionalClasses
-                ].join(' ')}>
+                ].join(' ')}
+              >
                 {item.content}
               </div>
             </div>
