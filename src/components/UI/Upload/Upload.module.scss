@@ -1,69 +1,15 @@
 .Upload {
-  .DropWrapper {
-    position: relative;
-    padding: 15px;
-    border: 1px dashed var(--colorborder);
-    border-radius: var(--borderradius);
-    background-color: white;
-    display: flex;
-    flex-grow: 1;
-    flex-basis: 1;
-    box-sizing: border-box;
-    align-items: center;
-    justify-content: space-between;
-    text-align: left;
-    color: var(--colordefault);
-    input {
-      display: none;
-    }
-    button {
-      margin-left: 5px;
-      text-align: left;
-      color: var(--colordefault);
-      font: inherit;
-      font-size: var(--fontsizedefault);
-      &.Hidden {
-        display: none;
-      }
-    }
-    &.Dragging {
-      background-color: var(--colorplaceholder);
-      color: white;
-    }
-  }
-  .UploadLabel {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+
+  .FlexGroupRow {
     display: flex;
     flex-direction: row;
-    align-items: center;
-    color: var(--colordefault);
-    font-size: var(--fontsizedefault);
-    .Icon {
-      margin-right: var(--margindefault); //calc(var(--margindefault) * 0.5);
-    }
-  }
-
-  .UploadList {
-    ul {
-      margin-top: var(--margindefault);
-    }
-    li {
-      box-sizing: border-box;
-      display: block;
-      border-radius: 0;
-      border: 1px solid var(--colorborder);
-      border-top: none;
-      border-bottom: 1px solid var(--colorborder);
-      background-color: white;
-      margin-bottom: 0px;
-      &:first-of-type {
-        border-top: 1px solid var(--colorborder);
-        border-top-left-radius: var(--borderradius);
-        border-top-right-radius: var(--borderradius);
-      }
-      &:last-of-type {
-        border-bottom-left-radius: var(--borderradius);
-        border-bottom-right-radius: var(--borderradius);
-      }
-    }
+    margin-bottom: calc(var(--margindefault) * 0.5);
+    flex-basis: 1;
+    flex-grow: 1;
+    box-sizing: border-box;
   }
 }
