@@ -13,7 +13,6 @@ import ContactRead from './containers/Contact/ContactRead';
 import ContactCreateOrUpdate from './containers/Contact/ContactCreateOrUpdate';
 import Logout from './containers/Auth/Logout/Logout';
 import Faq from './containers/Faq/Faq';
-import UploadContent from './containers/UploadContent/UploadContent';
 
 //actions
 import * as actions from './store/actions/index';
@@ -48,7 +47,6 @@ class App extends Component {
         <Switch>
           <Route path='/logout' component={Logout} />
           <Route path='/faq' component={Faq} />
-          <Route path='/upload' component={UploadContent} />
           <Route path='/phonebook' component={Phonebook} />
           <Route path='/contactread' component={ContactRead} />
           <Route path='/phonebookadmin' component={PhonebookAdmin} />
