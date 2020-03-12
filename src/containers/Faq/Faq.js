@@ -12,7 +12,7 @@ class Faq extends Component {
         { title: 'question2', content: 'content2' },
         { title: 'question3', content: 'content3' }
       ],
-      allowMultiOpen: true,
+      allowMultiOpen: false,
       openOnStartIndex: 0 //zero-index, negative value or invalid index to not open on start,
     };
   }
