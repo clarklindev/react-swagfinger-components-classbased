@@ -3,6 +3,8 @@ import classes from './Select.module.scss';
 import Utils from '../../../Utils';
 import InputContext from '../../../context/InputContext';
 import ErrorList from './ErrorList';
+import PropTypes from 'prop-types';
+
 class Select extends Component {
   static contextType = InputContext;
 
@@ -18,7 +20,7 @@ class Select extends Component {
 
   onBlurHandler = () => {
     if (this.state.isOpen) {
-      this.setState((prevState) => {
+      this.setState(prevState => {
         // console.log('isOpen: ', false);
         return {
           isOpen: false
@@ -26,8 +28,9 @@ class Select extends Component {
       });
     }
   };
-  onClickHandler = (event) => {
-    this.setState((prevState) => {
+  onClickHandler = event => {
+    //console.log('SELECT onClickHandler..');
+    this.setState(prevState => {
       // console.log('isOpen: ', !this.state.isOpen);
       return {
         isOpen: !prevState.isOpen
@@ -35,7 +38,8 @@ class Select extends Component {
     });
   };
 
-  onChangeHandler = (event) => {
+  onChangeHandler = event => {
+    console.log('SELECT onChangeHandler...');
     // The selected option element
     this.context.changed(event.target.value, this.props.name);
   };
@@ -66,17 +70,22 @@ class Select extends Component {
       <div className={this.className}>
         <select
           name={this.props.name}
-          className={[...tempClasses].join('')}
-          placeholder={this.props.elementconfig.placeholder}
+          className={[...tempClasses].join(' ')}
           value={this.props.value.data}
-          onChange={this.onChangeHandler}
+          onChange={
+            this.props.onChange ? this.props.onChange : this.onChangeHandler
+          }
           onClick={this.onClickHandler}
-          onBlur={this.onBlurHandler}>
+          onBlur={this.onBlurHandler}
+        >
           {/* the placeholder will never be present on an update if this is a required input */}
-          {/* <option value="" disabled>{this.props.elementconfig.placeholder}</option> */}
-          {this.props.elementconfig.options.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.displaytext}
+          <option key='placeholder' value='' disabled>
+            {this.props.elementconfig.placeholder}
+          </option>
+
+          {this.props.elementconfig.options.map(({ value, displaytext }) => (
+            <option key={value} value={value}>
+              {displaytext}
             </option>
           ))}
         </select>
@@ -85,5 +94,24 @@ class Select extends Component {
     ) : null;
   }
 }
+
+Select.propTypes = {
+  name: PropTypes.string,
+  label: PropTypes.string,
+  validation: PropTypes.object,
+  value: PropTypes.shape({
+    valid: PropTypes.bool,
+    touched: PropTypes.bool,
+    pristine: PropTypes.bool,
+    data: PropTypes.string,
+    errors: PropTypes.array
+  }),
+  readOnly: PropTypes.bool,
+  elementconfig: PropTypes.shape({
+    options: PropTypes.array,
+    placeholder: PropTypes.string,
+    valuetype: PropTypes.oneOf(['singlevalue', 'array'])
+  })
+};
 
 export default Select;

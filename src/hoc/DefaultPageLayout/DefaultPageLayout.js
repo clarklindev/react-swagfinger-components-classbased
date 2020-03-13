@@ -7,15 +7,21 @@ class DefaultPageLayout extends Component {
   render() {
     return (
       <div className={classes.DefaultPageLayout}>
-        <div
-          className={[
-            classes.Wrapper,
-            'container',
-            classes[this.props.type]
-          ].join(' ')}>
-          <SectionHeader>{this.props.label}</SectionHeader>
-          {this.props.children}
-        </div>
+        {this.props.label.trim().length > 0 ? (
+          <div
+            className={[
+              classes.Wrapper,
+              'container',
+              classes[this.props.type]
+            ].join(' ')}
+          >
+            <SectionHeader>{this.props.label}</SectionHeader>
+
+            {this.props.children}
+          </div>
+        ) : (
+          this.props.children
+        )}
       </div>
     );
   }

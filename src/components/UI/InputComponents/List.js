@@ -12,7 +12,8 @@ class List extends Component {
     return (
       <div className={classList}>
         <ul>
-          {(this.props.value.data || []).map((item, index) => {
+          {(Array.from(this.props.value.data) || []).map((item, index) => {
+            console.log('ITEM: ', item);
             return <li key={'list' + index}>{item}</li>;
           })}
         </ul>

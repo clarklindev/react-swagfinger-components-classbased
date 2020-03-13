@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import classes from './Accordion.module.scss';
 import Icon from './Icon';
-class Accordion extends Component {
+class Accordion extends PureComponent {
   state = {
     isActive: []
   };
@@ -17,8 +17,6 @@ class Accordion extends Component {
     Array.from(
       accordion.querySelectorAll("[class*='AccordionContent']")
     ).forEach((item, index) => {
-      console.log('dom: ', item, ', index: ', index);
-
       if (this.state.isActive[index]) {
         item.style.maxHeight = item.scrollHeight + 'px';
       } else {
@@ -29,7 +27,7 @@ class Accordion extends Component {
         let oldState = prevState.isActive;
         let copiedState = [...oldState];
         copiedState[index] =
-          this.props.openOnStartIndex > 0 &&
+          this.props.openOnStartIndex >= 0 &&
           this.props.openOnStartIndex === index
             ? true
             : false;
@@ -48,6 +46,19 @@ class Accordion extends Component {
         item.style.maxHeight = item.scrollHeight + 'px';
       } else {
         item.style.maxHeight = 0;
+      }
+
+      if (this.state.isActive[index] === undefined) {
+        this.setState(prevState => {
+          let oldState = prevState.isActive;
+          let copiedState = [...oldState];
+          copiedState[index] =
+            this.props.openOnStartIndex >= 0 &&
+            this.props.openOnStartIndex === index
+              ? true
+              : false;
+          return { isActive: copiedState };
+        });
       }
     });
   }

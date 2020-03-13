@@ -12,6 +12,7 @@
   .CardBody {
     display: flex;
     flex-direction: column;
+    text-align: center;
     padding: var(--paddingdefault);
     form {
       width: 100%;
@@ -20,10 +21,12 @@
 
   .CardFooter {
     display: flex;
-    flex-direction: column;
-    align-items: stretch;
+    flex-direction: row;
     justify-content: center;
     padding: var(--paddingdefault);
+    button {
+      margin: 0 calc(var(--margindefault) * 0.5);
+    }
   }
 
   &.NoPadding {

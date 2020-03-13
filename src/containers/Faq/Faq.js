@@ -8,12 +8,12 @@ class Faq extends Component {
 
     this.config = {
       value: [
-        { title: 'question1', content: 'content1' },
-        { title: 'question2', content: 'content2' },
-        { title: 'question3', content: 'content3' }
+        { title: <strong>question1</strong>, content: 'content1' },
+        { title: <strong>question2</strong>, content: 'content2' },
+        { title: <strong>question3</strong>, content: 'content3' }
       ],
       allowMultiOpen: false,
-      openOnStartIndex: 0 //zero-index, negative value or invalid index to not open on start,
+      openOnStartIndex: -1 //zero-index, negative value or invalid index to not open on start,
     };
   }
   render() {

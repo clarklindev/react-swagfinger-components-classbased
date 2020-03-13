@@ -10,7 +10,8 @@ class Card extends Component {
           classes.Card,
           this.props.className,
           classes[this.props.type]
-        ].join(' ')}>
+        ].join(' ')}
+      >
         {this.props.header ? (
           <React.Fragment>
             <div className={classes.CardHeader}>{this.props.header}</div>
@@ -22,6 +23,7 @@ class Card extends Component {
 
         {this.props.footer ? (
           <React.Fragment>
+            <Divider type='Horizontal'></Divider>
             <div className={classes.CardFooter}>{this.props.footer}</div>
           </React.Fragment>
         ) : null}
