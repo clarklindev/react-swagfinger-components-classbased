@@ -83,7 +83,7 @@ class Auth extends Component {
     window.removeEventListener('keydown', this.keyListener);
   }
 
-  keyListener = (event) => {
+  keyListener = event => {
     if (event.key === 'Enter' || event.keyCode === 13 || event.which === 13) {
       console.log('key: ', event.key);
       this.onSubmitHandler(event);
@@ -92,7 +92,7 @@ class Auth extends Component {
 
   togglePasswordVisibility = () => {
     console.log('togglePassword!!!!');
-    this.setState((prevState) => {
+    this.setState(prevState => {
       let obj = { ...this.state.form.password.elementconfig };
       if (prevState.form.password.elementconfig.type === 'password') {
         obj.type = 'text';
@@ -115,7 +115,7 @@ class Auth extends Component {
   //------------------------------------------------------
   //checks the .valid property of each input in array or individual input
   //returns true/false if form object is valid/invalid
-  checkInputValidProperty = (form) => {
+  checkInputValidProperty = form => {
     // console.log('IS FORM VALID CHECK');
     let formIsValid = true;
 
@@ -172,7 +172,7 @@ class Auth extends Component {
     this.setState({ form: updatedForm, formIsValid: formValidCheck });
   };
 
-  onSubmitHandler = (event) => {
+  onSubmitHandler = event => {
     event.preventDefault(); //prevents reloading of page
     this.props.onAuth(
       this.state.form.email.value.data,
@@ -181,11 +181,28 @@ class Auth extends Component {
     );
   };
 
-  switchAuthModeHandler = (event) => {
+  switchAuthModeHandler = event => {
     event.preventDefault();
     console.log('switchAuthModeHandler!');
-    this.setState((prevState) => {
-      return { isSignUp: !prevState.isSignUp };
+
+    let email = { ...this.state.form.email.value };
+    email.data = '';
+
+    this.setState(prevState => {
+      return {
+        isSignUp: !prevState.isSignUp,
+        form: {
+          ...prevState.form,
+          email: {
+            ...prevState.form.email,
+            value: { ...prevState.form.email.value, data: '' }
+          },
+          password: {
+            ...prevState.form.password,
+            value: { ...prevState.form.password.value, data: '' }
+          }
+        }
+      };
     });
   };
 
@@ -203,14 +220,16 @@ class Auth extends Component {
         type='LayoutNarrow'
         label={
           this.props.loading ? '' : this.state.isSignUp ? 'Sign-up' : 'Login'
-        }>
+        }
+      >
         <Card className='Card'>
           <form onSubmit={this.onSubmitHandler} autoComplete='off'>
             <InputContext.Provider
               value={{
                 changed: this.inputChangedHandler
-              }}>
-              {formElementsArray.map((item) => (
+              }}
+            >
+              {formElementsArray.map(item => (
                 <ComponentFactory key={item.id} id={item.id} data={item.data} />
               ))}
               <div className={classes.ButtonWrapper}>
@@ -221,7 +240,8 @@ class Auth extends Component {
                   type='Login'
                   onClick={() => {
                     this.submitInputRef.current.click();
-                  }}>
+                  }}
+                >
                   Submit
                 </Button>
               </div>
@@ -236,7 +256,8 @@ class Auth extends Component {
             <Button
               className={classes.SwitchButton}
               type='WithPadding'
-              onClick={this.switchAuthModeHandler}>
+              onClick={this.switchAuthModeHandler}
+            >
               <span className={classes.ButtonText}>
                 {this.state.isSignUp ? 'Login' : 'Sign-up'}
               </span>
@@ -260,7 +281,7 @@ class Auth extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     loading: state.auth.loading,
     error: state.auth.error,
@@ -269,7 +290,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     onAuth: (email, password, isSignup) =>
       dispatch(actions.auth(email, password, isSignup)),
