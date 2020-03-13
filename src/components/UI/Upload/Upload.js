@@ -122,14 +122,20 @@ class Upload extends PureComponent {
     config.value = { data: this.state.selectedfolder };
 
     let updatedelementconfig = { ...config.elementconfig };
-    updatedelementconfig.options = this.state.folders.map(item => {
+
+    let mandatoryoptions = [
+      {
+        value: this.CREATEFOLDER,
+        displaytext: '[add new folder]'
+      }
+    ];
+
+    let options = this.state.folders.map(item => {
       // console.log('POOOP: ', item);
       return { value: item, displaytext: item };
     });
-    updatedelementconfig.options.push({
-      value: this.CREATEFOLDER,
-      displaytext: '[add new folder]'
-    });
+
+    updatedelementconfig.options = [...mandatoryoptions, ...options];
     config.elementconfig = updatedelementconfig;
 
     console.log('new createfoldername: ', this.state.createfoldername);
@@ -141,17 +147,7 @@ class Upload extends PureComponent {
             <Select {...config}></Select>
           </div>
         ) : null}
-        {/* <Button
-          title='Add'
-          type='WithBorder'
-          onClick={event => {
-            event.preventDefault();
-            this.setState({ showModal: true, createfoldername: '' });
-          }}
-        >
-          <Icon iconstyle='fas' code='plus' size='sm' />
-          <p>Add Folder</p>
-        </Button> */}
+        {this.state.selectedfolder ? <UploadDrop></UploadDrop> : null}
 
         <Modal
           label='Create folder'
