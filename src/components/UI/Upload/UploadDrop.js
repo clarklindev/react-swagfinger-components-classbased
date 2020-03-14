@@ -162,9 +162,11 @@ class UploadDrop extends Component {
   };
 
   uploadHandler = event => {
-    event.persist();
+    event.preventDefault();
+    let e = event;
+
     this.state.selectedFiles.forEach((item, index) => {
-      this.context.addinput(event, this.props.name, item);
+      this.context.addinput(e, this.props.name, item);
     });
   };
 

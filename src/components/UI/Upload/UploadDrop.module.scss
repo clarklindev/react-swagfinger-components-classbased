@@ -39,13 +39,13 @@
     font-size: var(--fontsizedefault);
     .Icon {
       margin-right: var(--margindefault); //calc(var(--margindefault) * 0.5);
-      color:var(--colorborder);
+      color: var(--colorborder);
     }
   }
 
   .UploadList {
     ul {
-      margin-top: var(--margindefault);
+      margin-top: calc(var(--margindefault) * 0.5);
     }
     li {
       box-sizing: border-box;

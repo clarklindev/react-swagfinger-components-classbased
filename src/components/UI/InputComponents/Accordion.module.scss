@@ -1,4 +1,8 @@
 .Accordion {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 1;
+  flex-grow: 1;
   color: var(--colordefault);
 
   .AccordionItem {

@@ -9,6 +9,7 @@ import Button from '../Button/Button';
 import Icon from '../InputComponents/Icon';
 import Modal from '../Modal/Modal';
 import Input from '../InputComponents/Input';
+import Accordion from '../InputComponents/Accordion';
 
 //firebase imports
 import firebase from '@firebase/app';
@@ -17,6 +18,8 @@ import '@firebase/auth';
 import '@firebase/storage';
 
 class Upload extends PureComponent {
+  CREATEFOLDER = '***newfolder***';
+
   constructor(props) {
     super(props);
     this.firebaseConfig = {
@@ -36,44 +39,38 @@ class Upload extends PureComponent {
       console.log('already exists...');
     }
 
-    this.uploadconfig = {
+    this.selectconfig = {
       name: this.props.name,
       label: this.props.label,
-      value: { data: this.state.selectedfolder },
+      value: { data: '' }, //default value which will match selects' placeholder text
       elementconfig: {
         placeholder: 'select a folder',
         options: []
       },
       readOnly: false,
-      validation: null,
-      onChange: event => {
-        let targetval = event.target.value;
+      validation: null
+    };
 
-        //check if its creating folder...
-        if (targetval === this.CREATEFOLDER) {
-          console.log('CREATING A FOLDER');
-          this.setState({ showModal: true, createfoldername: '' });
-        } else {
-          console.log('CHANGED SELECTION');
-          this.setState({ selectedfolder: targetval });
-        }
-      }
+    this.accordionconfig = {
+      value: [],
+      allowMultiOpen: false,
+      openOnStartIndex: -1 //zero-index, negative value or invalid index to not open on start,
     };
   }
-
   state = {
-    folders: [],
-    selectedfolder: '',
-    showModal: false,
-    createfoldername: ''
+    folders: [], //select
+    selectedFolders: [], //accordion - removed items from 'folders',
+    createfoldername: '',
+    showModal: false
   };
-  CREATEFOLDER = '***newfolder***';
 
   componentDidMount() {
     //get from storage folders
     // Get a reference to the storage service, which is used to create references in your storage bucket
     this.storage = firebase.storage();
     this.storageRef = this.storage.ref(); // Create a storage reference from our storage service
+    //create a child reference 'images'
+    this.imagesRef = this.storageRef.child('images');
 
     const query = new URLSearchParams(this.props.location.search);
     const id = query.get('id'); //get id in url query params
@@ -81,12 +78,10 @@ class Upload extends PureComponent {
       console.log('id: ', id);
     }
 
-    //create a child reference
-    this.imagesRef = this.storageRef.child('images');
-
     //current id folder
     this.currentIdRef = this.imagesRef.child(id);
 
+    //save to state folder ref from firebase storage
     this.currentIdRef.listAll().then(res => {
       res.prefixes.forEach((folderRef, index) => {
         console.log('folder: ', folderRef.name);
@@ -100,55 +95,83 @@ class Upload extends PureComponent {
     });
   }
 
-  updateCreateFolderName = event => {
-    let updatedValue = event.target.value;
-    console.log('updatedValue: ', updatedValue);
-    this.setState({ createfoldername: updatedValue });
-  };
-
-  addFolderToSelect = () => {
-    let updatedFolders = [...this.state.folders];
-    if (this.state.createfoldername.length) {
-      updatedFolders.push(this.state.createfoldername);
+  addFolderToSelect = newfolder => {
+    if (newfolder.length) {
+      this.setState({
+        folders: [...this.state.folders, newfolder]
+      });
     }
-    this.setState({
-      folders: updatedFolders,
-      selectedfolder: this.state.createfoldername
-    });
   };
 
+  uploadSelectChangeHandler = event => {
+    let targetval = event.target.value;
+
+    //check if its creating folder...
+    if (targetval === this.CREATEFOLDER) {
+      console.log('CREATING A FOLDER');
+      this.setState({ showModal: true, createfoldername: '' });
+    } else {
+      console.log('CHANGED SELECTION');
+
+      let currentFolders = [...this.state.folders];
+      let filteredFolders = currentFolders.filter(item => {
+        console.log('item: ', item, '| targetval: ', targetval);
+        return item !== targetval;
+      });
+      console.log('UPDATED Folders: ', filteredFolders);
+      this.setState(prevState => {
+        return {
+          folders: filteredFolders,
+          selectedFolders: [...prevState.selectedFolders, targetval]
+        };
+      });
+    }
+  };
   render() {
-    let config = { ...this.uploadconfig };
-    config.value = { data: this.state.selectedfolder };
-
-    let updatedelementconfig = { ...config.elementconfig };
-
-    let mandatoryoptions = [
-      {
-        value: this.CREATEFOLDER,
-        displaytext: '[add new folder]'
-      }
-    ];
-
-    let options = this.state.folders.map(item => {
-      // console.log('POOOP: ', item);
+    let selectconfig = { ...this.selectconfig };
+    // //update selectconfig.elementconfig
+    const selectmandatoryconfig = {
+      value: this.CREATEFOLDER,
+      displaytext: '[add new folder]'
+    };
+    const selectoptionalconfig = this.state.folders.map(item => {
       return { value: item, displaytext: item };
     });
+    let selectelementconfig = { ...selectconfig.elementconfig };
+    selectelementconfig.options = [
+      selectmandatoryconfig,
+      ...selectoptionalconfig
+    ];
+    //assign back to config
+    selectconfig.elementconfig = selectelementconfig;
 
-    updatedelementconfig.options = [...mandatoryoptions, ...options];
-    config.elementconfig = updatedelementconfig;
-
-    console.log('new createfoldername: ', this.state.createfoldername);
+    //accordion
+    let accordionconfig = { ...this.accordionconfig };
+    accordionconfig.value = this.state.selectedFolders.map(item => {
+      return {
+        title: item,
+        content: item
+      };
+    });
 
     return (
       <div className={classes.Upload}>
-        {config.elementconfig.options.length ? (
-          <div className={classes.FlexGroupRow}>
-            <Select {...config}></Select>
-          </div>
-        ) : null}
-        {this.state.selectedfolder ? <UploadDrop></UploadDrop> : null}
+        <div className={classes.FlexGroupRow}>
+          <Select
+            {...selectconfig}
+            onChange={this.uploadSelectChangeHandler}
+          ></Select>
+        </div>
 
+        <div className={classes.FlexGroupRow}>
+          <Accordion {...accordionconfig}></Accordion>
+        </div>
+
+        {/* {this.state.selectedfolder ? (
+          <UploadDrop name={this.props.name}></UploadDrop>
+        ) : null} */}
+
+        {/* upload modal for all instances */}
         <Modal
           label='Create folder'
           show={this.state.showModal}
@@ -158,7 +181,7 @@ class Upload extends PureComponent {
           }}
           continue={() => {
             console.log('continue');
-            this.addFolderToSelect();
+            this.addFolderToSelect(this.state.createfoldername);
             this.setState({ showModal: false });
           }}
         >
