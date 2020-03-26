@@ -56,31 +56,43 @@ class ContactCreateOrUpdate extends Component {
         pristine: true
       };
 
+
+      //-----------------------------------------------
+      //step1: CREATE FORM from firebase 
+      //-----------------------------------------------
+
+      //setting form property .value
       for (let i = 0; i < clone.length; i++) {
         let tempObj = { ...clone[i] }; //firebase form[i]
 
-        let inputCount =
+        //add value property - only if for property has a valuetype and check how many inputs to add (.defaultinputs) 
+        //if elementconfig.defaultinputs === options then use the amount of entries under .options as number of inputs
+        //adds dataObject as value or an array of dataObjects
+        if(tempObj.elementconfig.valuetype !== 'none' && tempObj.elementconfig.valuetype !== undefined){
+          let inputCount =
           tempObj.elementconfig.defaultinputs === 'options'
             ? tempObj.elementconfig.options.length
             : tempObj.elementconfig.defaultinputs;
 
-        let arrayValues = [];
-        if (tempObj.elementconfig.valuetype === 'array') {
-          for (let j = 0; j < inputCount; j++) {
-            arrayValues.push(dataObject);
+          let arrayValues = [];
+          if (tempObj.elementconfig.valuetype === 'array') {
+            for (let j = 0; j < inputCount; j++) {
+              arrayValues.push(dataObject);
+            }
           }
-        }
-
-        tempObj.value =
+          tempObj.value =
           tempObj.elementconfig.valuetype === 'array'
             ? arrayValues //array of dataObject
             : dataObject; //single dataObject
-
+        }
         formatted[tempObj.name] = tempObj;
       }
       this.setState({ form: formatted, isLoading: false });
 
-      //check if there is 'id' in querystring
+      //-----------------------------------------------
+      //step2: Update the dataObject value from step1 with firebase data associated with querystring id property 
+      //-----------------------------------------------
+      //check if there is 'id' in querystring, if there is get that info
       const query = new URLSearchParams(this.props.location.search);
       const id = query.get('id'); //get id in url query params
       if (id) {
@@ -90,11 +102,15 @@ class ContactCreateOrUpdate extends Component {
         //map each key of contact (there are inputs/ input sets)
         Object.keys(response.data).forEach((item) => {
           let val = null;
+
+          //if the values also exist from forms schema
           if (this.state.form[item]) {
             //   //check if whats coming back from firebase is an array...
             if (Array.isArray(response.data[item])) {
               //return array of values
               val = response.data[item].map((each) => {
+
+                //validate the query id's property with the form schemas validation
                 let validation = validationCheck(
                   each,
                   this.state.form[item].validation
@@ -126,6 +142,7 @@ class ContactCreateOrUpdate extends Component {
           }
         });
 
+        //save the id in the state
         this.setState({
           form: formatted,
           isLoading: false,
@@ -353,30 +370,39 @@ class ContactCreateOrUpdate extends Component {
     //each prop in contact
     for (let key in this.state.form) {
       let obj;
-      if (this.state.form[key].elementconfig.valuetype === 'array') {
-        obj = this.state.form[key].value.map((each) => {
+
+      switch (this.state.form[key].elementconfig.valuetype){
+        case 'array':
+          obj = this.state.form[key].value.map((each) => {
+            let validation = validationCheck(
+              each.data,
+              this.state.form[key].validation
+            );
+            //console.log('EACH: ', each);
+            let val = { ...each };
+            val.touched = true;
+            val.pristine = false;
+            val.errors = validation.errors;
+            val.valid = validation.isValid;
+            return val;
+          });
+          break;
+
+        case 'singlevalue':
           let validation = validationCheck(
-            each.data,
+            this.state.form[key].value.data,
             this.state.form[key].validation
           );
-          //console.log('EACH: ', each);
-          let val = { ...each };
-          val.touched = true;
-          val.pristine = false;
-          val.errors = validation.errors;
-          val.valid = validation.isValid;
-          return val;
-        });
-      } else {
-        let validation = validationCheck(
-          this.state.form[key].value.data,
-          this.state.form[key].validation
-        );
-        obj = { ...this.state.form[key].value };
-        obj.touched = true;
-        obj.pristine = false;
-        obj.errors = validation.errors;
-        obj.valid = validation.isValid;
+          obj = { ...this.state.form[key].value };
+          obj.touched = true;
+          obj.pristine = false;
+          obj.errors = validation.errors;
+          obj.valid = validation.isValid;
+          break;
+
+        default:
+          console.log(this.state.form[key], ': not validating')
+          break;
       }
 
       this.setState((prevState) => ({
@@ -398,6 +424,8 @@ class ContactCreateOrUpdate extends Component {
 
   render() {
     let formElementsArray = [];
+
+    //go through form in state, call each prop 'id', and data is value associated with property
     for (let key in this.state.form) {
       formElementsArray.push({
         id: key,
