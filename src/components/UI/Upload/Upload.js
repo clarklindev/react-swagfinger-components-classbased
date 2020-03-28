@@ -11,6 +11,7 @@ import ListItem from '../InputComponents/ListItem';
 import Button from '../Button/Button';
 import Icon from '../InputComponents/Icon';
 import Checkbox from '../InputComponents/Checkbox';
+import CheckboxManager from '../InputComponents/CheckboxManager';
 //firebase imports
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
@@ -93,22 +94,26 @@ class Upload extends PureComponent {
             <Button type="Action" onClick={this.uploadHandler}><Icon iconstyle='fas' code='arrow-circle-up' size='lg' /> Upload file</Button>
             <Button type="WithPadding" onClick={this.addFolderHandler}><Icon iconstyle="fas" code="folder-plus" size="lg"/></Button>
           </div>  
-          <div className={classes.UploadBodyHeader}>
-            <Checkbox></Checkbox>
-            Name
-          </div>
-          <div className={classes.UploadBody}>
-            {
-              <List value={ 
-                {
-                  data: this.state.folders.map(item=>{
-                  return <React.Fragment><Checkbox></Checkbox><ListItem aligntype="FlexStart"><Icon iconstyle='far' code='folder' size='lg' />{item}</ListItem></React.Fragment>;
-                  })
+          <CheckboxManager>
+            {(this.state.folders.length || this.state.files.length)?
+              <div className={classes.UploadBodyHeader}>
+                <Checkbox></Checkbox>
+                Name
+              </div>
+            :null}
+            <div className={classes.UploadBody}>
+              {
+                <List value={ 
+                  {
+                    data: this.state.folders.map(item=>{
+                    return <React.Fragment><Checkbox></Checkbox><ListItem aligntype="FlexStart"><Icon iconstyle='far' code='folder' size='lg' />{item}</ListItem></React.Fragment>;
+                    })
+                }
+                }>
+                </List>
               }
-              }>
-              </List>
-            }
-          </div>
+            </div>
+          </CheckboxManager>
         </div>
         {/* upload modal for all instances */}
         <Modal
