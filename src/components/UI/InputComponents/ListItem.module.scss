@@ -31,4 +31,10 @@
     font-weight: bold;
     color: var(--colorhighlight);
   }
+
+  .FlexStart{
+    display:flex;
+    flex-direction: row;
+    justify-content: flex-start;
+  }
 }

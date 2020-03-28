@@ -6,7 +6,11 @@ import classes from './Upload.module.scss';
 import UploadDrop from './UploadDrop';
 import Modal from '../Modal/Modal';
 import Input from '../InputComponents/Input';
-
+import List from '../InputComponents/List';
+import ListItem from '../InputComponents/ListItem';
+import Button from '../Button/Button';
+import Icon from '../InputComponents/Icon';
+import Checkbox from '../InputComponents/Checkbox';
 //firebase imports
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
@@ -35,51 +39,84 @@ class Upload extends PureComponent {
 
   }
 
-  // CREATEFOLDER = '***newfolder***';
-
-  // state = {
-  //   showModal: false,
-  //   folders: []
-  // };
+  state = {
+    showModal: false,
+    folders: []
+  };
 
   componentDidMount() {
     //get from storage folders
     // Get a reference to the storage service, which is used to create references in your storage bucket
-    // this.storage = firebase.storage();
-    // this.storageRef = this.storage.ref(); // Create a storage reference from our storage service
+    this.storage = firebase.storage();
+    this.storageRef = this.storage.ref(); // Create a storage reference from our storage service
     
-    // const query = new URLSearchParams(this.props.location.search);
-    // const id = query.get('id'); //get id in url query params
-    // if (id) {
-    //   console.log('id: ', id);
-    // }
+    //get id from querystring
+    const query = new URLSearchParams(this.props.location.search);
+    const id = query.get('id'); //get id in url query params
+    if (id) {
+      console.log('id: ', id);
+    }
 
     // //current id folder
-    // this.currentIdRef = this.storageRef.child(id);
+    this.currentIdRef = this.storageRef.child(id);
 
     // //save to state folder ref from firebase storage
-    // this.currentIdRef.listAll().then(res => {
-    //   res.prefixes.forEach((folderRef) => {
-    //     console.log('folder: ', folderRef.name);
-    //     this.setState(prevState => {
-    //       return { folders: [...prevState.folders, folderRef.name] };
-    //     });
-    //   });
-    // });
+    this.currentIdRef.listAll().then(res => {
+      res.prefixes.forEach((folderRef) => {
+        console.log('folder: ', folderRef.name);
+        this.setState(prevState => {
+          return { folders: [...prevState.folders, folderRef.name] };
+        });
+      });
+    });
+  }
+
+  uploadHandler = (event) =>{
+    event.preventDefault();
+    console.log('uploadHandler');
+  }
+  addFolderHandler = (event)=>{
+    event.preventDefault();
+    console.log('addFolderHandler');
   }
 
   render() {
 
     return (
-      <div className={classes.Upload}>Upload
-        {/* {this.state.folders} */}
+      <div className={classes.Upload}>
+        
+        <div className={[classes.Border].join(' ')}>
+          <div className={classes.UploadHeader}>
+            asdasdads
+          </div>
+          <div className={[classes.UploadActionButtons].join(' ')}>
+            <Button type="Action" onClick={this.uploadHandler}><Icon iconstyle='fas' code='arrow-circle-up' size='lg' /> Upload file</Button>
+            <Button type="WithPadding" onClick={this.addFolderHandler}><Icon iconstyle="fas" code="folder-plus" size="lg"/></Button>
+          </div>  
+          <div className={classes.UploadBodyHeader}>
+            <Checkbox></Checkbox>
+            Name
+          </div>
+          <div className={classes.UploadBody}>
+            {
+              <List value={ 
+                {
+                  data: this.state.folders.map(item=>{
+                  return <React.Fragment><Checkbox></Checkbox><ListItem aligntype="FlexStart"><Icon iconstyle='far' code='folder' size='lg' />{item}</ListItem></React.Fragment>;
+                  })
+              }
+              }>
+              </List>
+            }
+          </div>
+        </div>
         {/* upload modal for all instances */}
-        {/* <Modal
+        <Modal
           label='Create folder'
           show={this.state.showModal}
           isInteractive={true}
           modalClosed={() => {
-            this.setState({ showModal: false, createfoldername: '' });
+            this.setState({ showModal: false });
           }}
           continue={() => {
             console.log('continue');
@@ -102,7 +139,7 @@ class Upload extends PureComponent {
               });
             }}
           />
-        </Modal> */}
+        </Modal>
       </div>
     );
   }

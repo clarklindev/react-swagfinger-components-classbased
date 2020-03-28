@@ -237,7 +237,7 @@ class Auth extends Component {
 
                 <Button
                   reference={this.submitButtonRef}
-                  type='Login'
+                  type='Action'
                   onClick={() => {
                     this.submitInputRef.current.click();
                   }}

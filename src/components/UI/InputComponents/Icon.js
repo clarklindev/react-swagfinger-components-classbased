@@ -18,12 +18,14 @@ import {
   faCloudUploadAlt,
   faCheck,
   faEye,
-  faEyeSlash
+  faEyeSlash,
+  faFolderPlus
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faEdit,
   faTrashAlt as farFaTrashAlt,
-  faCalendarAlt
+  faCalendarAlt,
+  faFolder,
 } from '@fortawesome/free-regular-svg-icons';
 
 import Utils from '../../../Utils';
@@ -46,7 +48,9 @@ library.add(
   faCloudUploadAlt, //upload
   faCheck, //check icon
   faEye,
-  faEyeSlash //show/hide password
+  faEyeSlash, //show/hide password
+  faFolder, //normal folder icon
+  faFolderPlus
 );
 
 class Icon extends Component {

@@ -52,9 +52,10 @@
   &.Danger {
     color: var(--colordanger);
   }
-  &.Login {
+
+  &.Action {
     border-radius: var(--borderradius);
     color: white;
-    background-color: var(--colorlogin);
+    background-color: var(--coloraction);
   }
 }

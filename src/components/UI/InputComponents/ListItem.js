@@ -42,7 +42,7 @@ class ListItem extends Component {
 
     return (
       <div className={this.className} onClick={this.props.onClick}>
-        <div className={classes.ListItemWrapper}>
+        <div className={[classes.ListItemWrapper, classes[this.props.aligntype]].join(' ')}>
           <div>
             {displayText}
             {hasExtraText}

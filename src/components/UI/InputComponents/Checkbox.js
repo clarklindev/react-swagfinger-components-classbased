@@ -22,6 +22,10 @@ class Checkbox extends Component {
     }
   }
 
+  onChange = ()=>{
+    
+  }
+
   render() {
     return (
       <div className={[classes.Checkbox, this.props.className].join(' ')}>
@@ -33,6 +37,9 @@ class Checkbox extends Component {
             onClick={(event) => {
               const target = event.target;
               console.log('CHECKBOX onClick: ', target.checked);
+              if(this.props.onChange){
+                
+              }
               this.props.onChange(this.props.index, target.checked, event);
               this.setState({ checked: target.checked ? true : false });
             }}
