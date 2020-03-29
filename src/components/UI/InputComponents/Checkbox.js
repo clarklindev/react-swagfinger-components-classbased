@@ -22,24 +22,19 @@ class Checkbox extends Component {
     }
   }
 
-  onChange = ()=>{
-    
-  }
+  onChange = () => {};
 
   render() {
     return (
       <div className={[classes.Checkbox, this.props.className].join(' ')}>
         <label className={classes.Container}>
           <input
-            type='checkbox'
+            type="checkbox"
             defaultChecked={this.state.checked}
             name={this.props.name}
-            onClick={(event) => {
+            onClick={event => {
               const target = event.target;
               console.log('CHECKBOX onClick: ', target.checked);
-              if(this.props.onChange){
-                
-              }
               this.props.onChange(this.props.index, target.checked, event);
               this.setState({ checked: target.checked ? true : false });
             }}

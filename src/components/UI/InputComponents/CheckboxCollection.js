@@ -16,12 +16,12 @@ class CheckboxCollection extends PureComponent {
     );
     let status = [];
     if (this.props.value) {
-      status = this.props.elementconfig.options.map((each) => {
+      status = this.props.elementconfig.options.map(each => {
         return false;
       });
       console.log('STATUS:', status);
 
-      status = (this.props.value || []).map((item) => {
+      status = (this.props.value || []).map(item => {
         return item.data === '' || item.data === undefined ? false : item.data;
       });
       console.log('STATUS:', status);
@@ -33,7 +33,7 @@ class CheckboxCollection extends PureComponent {
     console.log('\n==================================\n COMPONENTDIDUPDATE');
     if (this.props.value) {
       let status = [];
-      status = this.props.elementconfig.options.map((each) => {
+      status = this.props.elementconfig.options.map(each => {
         return false;
       });
       console.log('STATUS:', status);
@@ -79,6 +79,7 @@ class CheckboxCollection extends PureComponent {
               value={this.props.elementconfig.options[index].value}
               checked={this.state.checked[index] === false ? false : true}
               index={index}
+              usecontext={true}
               onChange={this.onChangeHandler} //(index,checked,event)
             />
           );

@@ -26,6 +26,7 @@ import {
   faTrashAlt as farFaTrashAlt,
   faCalendarAlt,
   faFolder,
+  faFile
 } from '@fortawesome/free-regular-svg-icons';
 
 import Utils from '../../../Utils';
@@ -50,7 +51,8 @@ library.add(
   faEye,
   faEyeSlash, //show/hide password
   faFolder, //normal folder icon
-  faFolderPlus
+  faFolderPlus,
+  faFile //file
 );
 
 class Icon extends Component {

@@ -41,7 +41,7 @@
   //   background-color: #ccc;
   // }
 
-  /* When the checkbox is checked, add a blue background */
+  /* When the checkbox is checked */
   .Container input:checked ~ .Checkmark {
     background-color: #ccc;
   }

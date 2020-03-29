@@ -41,7 +41,8 @@ class Upload extends PureComponent {
 
   state = {
     showModal: false,
-    folders: []
+    folders: [],
+    files: []
   };
 
   componentDidMount() {
@@ -65,7 +66,19 @@ class Upload extends PureComponent {
       res.prefixes.forEach(folderRef => {
         console.log('folder: ', folderRef.name);
         this.setState(prevState => {
-          return { folders: [...prevState.folders, folderRef.name] };
+          return {
+            ...prevState,
+            folders: [...prevState.folders, folderRef.name]
+          };
+        });
+      });
+      res.items.forEach(itemRef => {
+        // All the items under listRef.
+        this.setState(prevState => {
+          return {
+            ...prevState,
+            files: [...prevState.files, itemRef.name]
+          };
         });
       });
     });
@@ -78,6 +91,12 @@ class Upload extends PureComponent {
   addFolderHandler = event => {
     event.preventDefault();
     console.log('addFolderHandler');
+    this.setState({ showModal: true });
+  };
+
+  fileCheckHandler = (index, isChecked, event) => {
+    console.log('onChangeHandler CLICKED: ', index, isChecked);
+    //this.context.changed(isChecked, this.props.name, index);
   };
 
   render() {
@@ -99,7 +118,7 @@ class Upload extends PureComponent {
           {this.state.folders.length ? (
             <CheckboxManager>
               <div className={classes.UploadBodyHeader}>
-                <Checkbox></Checkbox>
+                <Checkbox onChange={this.fileCheckHandler}></Checkbox>
                 Name
               </div>
 
@@ -107,17 +126,34 @@ class Upload extends PureComponent {
                 {
                   <List
                     value={{
-                      data: this.state.folders.map(item => {
-                        return (
-                          <React.Fragment>
-                            <Checkbox></Checkbox>
-                            <ListItem aligntype="FlexStart">
-                              <Icon iconstyle="far" code="folder" size="lg" />
-                              {item}
-                            </ListItem>
-                          </React.Fragment>
-                        );
-                      })
+                      data: [
+                        ...this.state.folders.map(item => {
+                          return (
+                            <React.Fragment>
+                              <Checkbox
+                                onChange={this.fileCheckHandler}
+                              ></Checkbox>
+                              <ListItem aligntype="FlexStart">
+                                <Icon iconstyle="far" code="folder" size="lg" />
+                                {item}
+                              </ListItem>
+                            </React.Fragment>
+                          );
+                        }),
+                        ...this.state.files.map(item => {
+                          return (
+                            <React.Fragment>
+                              <Checkbox
+                                onChange={this.fileCheckHandler}
+                              ></Checkbox>
+                              <ListItem aligntype="FlexStart">
+                                <Icon iconstyle="far" code="file" size="lg" />
+                                {item}
+                              </ListItem>
+                            </React.Fragment>
+                          );
+                        })
+                      ]
                     }}
                   ></List>
                 }
