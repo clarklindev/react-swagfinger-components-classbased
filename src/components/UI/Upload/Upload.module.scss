@@ -1,40 +1,47 @@
 .Upload {
   width: 100%;
-  min-height:150px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  
-  .Border{
+
+  .Border {
     border: var(--borderwidth) solid var(--colorborder);
     border-radius: var(--borderradius);
   }
 
-  .UploadHeader{
+  .UploadHeader {
     height: 40px;
-    border-bottom: var(--borderwidth) solid var(--colorborder);
     padding: var(--paddinginput);
     align-items: center;
-  }
-  .UploadActionButtons{
-    display:flex;
-    flex-direction:row;
-    justify-content: flex-end;
-    padding: var(--paddinginput);
-    border-bottom: var(--borderwidth) solid var(--colorborder);
+    display: flex;
+    justify-content: space-between;
   }
 
-  .UploadBodyHeader{
-    padding: var(--paddinginput);
-    background-color: var(--colorbackground);
-    border-bottom: var(--borderwidth) solid var(--colorborder);
-    display:flex;
-    flex-direction:row;
+  .UploadUrl {
+    display: flex;
+    flex-direction: row;
     align-items: center;
     color: var(--colordefault);
   }
 
-  .UploadBody{
+  .UploadActionButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+
+  .UploadBodyHeader {
+    padding: var(--paddinginput);
+    background-color: var(--colorbackground);
+    border-top: var(--borderwidth) solid var(--colorborder);
+    border-bottom: var(--borderwidth) solid var(--colorborder);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: var(--colordefault);
+  }
+
+  .UploadBody {
     padding: var(--paddinginput);
   }
 
@@ -47,9 +54,7 @@
     box-sizing: border-box;
   }
 
-  .FlexEnd{
+  .FlexEnd {
     justify-content: flex-end;
   }
-
-  
 }

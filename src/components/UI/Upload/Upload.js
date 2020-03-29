@@ -37,7 +37,6 @@ class Upload extends PureComponent {
     } catch {
       console.log('already exists...');
     }
-
   }
 
   state = {
@@ -50,7 +49,7 @@ class Upload extends PureComponent {
     // Get a reference to the storage service, which is used to create references in your storage bucket
     this.storage = firebase.storage();
     this.storageRef = this.storage.ref(); // Create a storage reference from our storage service
-    
+
     //get id from querystring
     const query = new URLSearchParams(this.props.location.search);
     const id = query.get('id'); //get id in url query params
@@ -63,7 +62,7 @@ class Upload extends PureComponent {
 
     // //save to state folder ref from firebase storage
     this.currentIdRef.listAll().then(res => {
-      res.prefixes.forEach((folderRef) => {
+      res.prefixes.forEach(folderRef => {
         console.log('folder: ', folderRef.name);
         this.setState(prevState => {
           return { folders: [...prevState.folders, folderRef.name] };
@@ -72,52 +71,63 @@ class Upload extends PureComponent {
     });
   }
 
-  uploadHandler = (event) =>{
+  uploadHandler = event => {
     event.preventDefault();
     console.log('uploadHandler');
-  }
-  addFolderHandler = (event)=>{
+  };
+  addFolderHandler = event => {
     event.preventDefault();
     console.log('addFolderHandler');
-  }
+  };
 
   render() {
-
     return (
       <div className={classes.Upload}>
-        
         <div className={[classes.Border].join(' ')}>
           <div className={classes.UploadHeader}>
-            asdasdads
+            <div className={classes.UploadUrl}>asdasdasdasd</div>
+            <div className={[classes.UploadActionButtons].join(' ')}>
+              <Button type="Action" onClick={this.uploadHandler}>
+                <Icon iconstyle="fas" code="arrow-circle-up" size="lg" /> Upload
+                file
+              </Button>
+              <Button type="LastItemRight" onClick={this.addFolderHandler}>
+                <Icon iconstyle="fas" code="folder-plus" size="lg" />
+              </Button>
+            </div>
           </div>
-          <div className={[classes.UploadActionButtons].join(' ')}>
-            <Button type="Action" onClick={this.uploadHandler}><Icon iconstyle='fas' code='arrow-circle-up' size='lg' /> Upload file</Button>
-            <Button type="WithPadding" onClick={this.addFolderHandler}><Icon iconstyle="fas" code="folder-plus" size="lg"/></Button>
-          </div>  
-          <CheckboxManager>
-            {(this.state.folders.length || this.state.files.length)?
+          {this.state.folders.length ? (
+            <CheckboxManager>
               <div className={classes.UploadBodyHeader}>
                 <Checkbox></Checkbox>
                 Name
               </div>
-            :null}
-            <div className={classes.UploadBody}>
-              {
-                <List value={ 
-                  {
-                    data: this.state.folders.map(item=>{
-                    return <React.Fragment><Checkbox></Checkbox><ListItem aligntype="FlexStart"><Icon iconstyle='far' code='folder' size='lg' />{item}</ListItem></React.Fragment>;
-                    })
+
+              <div className={classes.UploadBody}>
+                {
+                  <List
+                    value={{
+                      data: this.state.folders.map(item => {
+                        return (
+                          <React.Fragment>
+                            <Checkbox></Checkbox>
+                            <ListItem aligntype="FlexStart">
+                              <Icon iconstyle="far" code="folder" size="lg" />
+                              {item}
+                            </ListItem>
+                          </React.Fragment>
+                        );
+                      })
+                    }}
+                  ></List>
                 }
-                }>
-                </List>
-              }
-            </div>
-          </CheckboxManager>
+              </div>
+            </CheckboxManager>
+          ) : null}
         </div>
         {/* upload modal for all instances */}
         <Modal
-          label='Create folder'
+          label="Create folder"
           show={this.state.showModal}
           isInteractive={true}
           modalClosed={() => {
@@ -131,7 +141,7 @@ class Upload extends PureComponent {
         >
           <Input
             value={{ data: this.state.createfoldername }}
-            placeholder='Folder name'
+            placeholder="Folder name"
             onChange={event => {
               event.preventDefault();
               console.log('typed: ', event.target.value);

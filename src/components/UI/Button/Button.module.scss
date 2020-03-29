@@ -40,6 +40,13 @@
     padding: var(--paddinginput);
   }
 
+  &.LastItemRight{
+    padding-left: var(--paddinginput);
+    padding-top: var(--paddinginput);
+    padding-bottom:var (--paddinginput);
+    padding-right: 0;
+  }
+
   &.WithBorder {
     border: 1px solid var(--colorborder);
     border-radius: var(--borderradius);
