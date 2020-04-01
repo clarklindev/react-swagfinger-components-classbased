@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import classes from './Checkbox.module.scss';
 
-class Checkbox extends Component {
+class Checkbox extends PureComponent {
   state = {
     checked: null
   };
@@ -18,11 +18,11 @@ class Checkbox extends Component {
     );
     if (this.state.checked !== this.props.checked) {
       console.log('DIFF VALUES...', this.state.checked, this.props.checked);
-      this.setState({ checked: this.props.checked });
+      this.setState(prevState => {
+        return { checked: this.props.checked };
+      });
     }
   }
-
-  onChange = () => {};
 
   render() {
     return (
@@ -30,14 +30,20 @@ class Checkbox extends Component {
         <label className={classes.Container}>
           <input
             type="checkbox"
-            defaultChecked={this.state.checked}
+            checked={this.state.checked}
             name={this.props.name}
-            onClick={event => {
-              const target = event.target;
-              console.log('CHECKBOX onClick: ', target.checked);
-              this.props.onChange(this.props.index, target.checked, event);
-              this.setState({ checked: target.checked ? true : false });
+            onChange={event => {
+              console.log('CHECKBOX onClick: ', event.target.checked);
+              this.setState(prevState => {
+                return { checked: !this.state.checked };
+              });
+              this.props.onChange(
+                this.props.index,
+                event.target.checked,
+                event
+              );
             }}
+            onClick={this.props.onClick}
           />
           <span className={[classes.Checkmark].join(' ')}></span>
           {this.props.label}

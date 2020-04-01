@@ -40,10 +40,10 @@
     padding: var(--paddinginput);
   }
 
-  &.LastItemRight{
+  &.LastItemRight {
     padding-left: var(--paddinginput);
     padding-top: var(--paddinginput);
-    padding-bottom:var (--paddinginput);
+    padding-bottom: var (--paddinginput);
     padding-right: 0;
   }
 
@@ -61,6 +61,7 @@
   }
 
   &.Action {
+    border: 1px solid white;
     border-radius: var(--borderradius);
     color: white;
     background-color: var(--coloraction);

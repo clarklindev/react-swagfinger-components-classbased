@@ -56,23 +56,25 @@ class ContactCreateOrUpdate extends Component {
         pristine: true
       };
 
-
       //-----------------------------------------------
-      //step1: CREATE FORM from firebase 
+      //step1: CREATE FORM from firebase
       //-----------------------------------------------
 
       //setting form property .value
       for (let i = 0; i < clone.length; i++) {
         let tempObj = { ...clone[i] }; //firebase form[i]
 
-        //add value property - only if for property has a valuetype and check how many inputs to add (.defaultinputs) 
+        //add value property - only if for property has a valuetype and check how many inputs to add (.defaultinputs)
         //if elementconfig.defaultinputs === options then use the amount of entries under .options as number of inputs
         //adds dataObject as value or an array of dataObjects
-        if(tempObj.elementconfig.valuetype !== 'none' && tempObj.elementconfig.valuetype !== undefined){
+        if (
+          tempObj.elementconfig.valuetype !== 'none' &&
+          tempObj.elementconfig.valuetype !== undefined
+        ) {
           let inputCount =
-          tempObj.elementconfig.defaultinputs === 'options'
-            ? tempObj.elementconfig.options.length
-            : tempObj.elementconfig.defaultinputs;
+            tempObj.elementconfig.defaultinputs === 'options'
+              ? tempObj.elementconfig.options.length
+              : tempObj.elementconfig.defaultinputs;
 
           let arrayValues = [];
           if (tempObj.elementconfig.valuetype === 'array') {
@@ -81,16 +83,16 @@ class ContactCreateOrUpdate extends Component {
             }
           }
           tempObj.value =
-          tempObj.elementconfig.valuetype === 'array'
-            ? arrayValues //array of dataObject
-            : dataObject; //single dataObject
+            tempObj.elementconfig.valuetype === 'array'
+              ? arrayValues //array of dataObject
+              : dataObject; //single dataObject
         }
         formatted[tempObj.name] = tempObj;
       }
       this.setState({ form: formatted, isLoading: false });
 
       //-----------------------------------------------
-      //step2: Update the dataObject value from step1 with firebase data associated with querystring id property 
+      //step2: Update the dataObject value from step1 with firebase data associated with querystring id property
       //-----------------------------------------------
       //check if there is 'id' in querystring, if there is get that info
       const query = new URLSearchParams(this.props.location.search);
@@ -100,7 +102,7 @@ class ContactCreateOrUpdate extends Component {
 
         //console.log('response: ', response.data); //returns a single contact
         //map each key of contact (there are inputs/ input sets)
-        Object.keys(response.data).forEach((item) => {
+        Object.keys(response.data).forEach(item => {
           let val = null;
 
           //if the values also exist from forms schema
@@ -108,8 +110,7 @@ class ContactCreateOrUpdate extends Component {
             //   //check if whats coming back from firebase is an array...
             if (Array.isArray(response.data[item])) {
               //return array of values
-              val = response.data[item].map((each) => {
-
+              val = response.data[item].map(each => {
                 //validate the query id's property with the form schemas validation
                 let validation = validationCheck(
                   each,
@@ -172,7 +173,7 @@ class ContactCreateOrUpdate extends Component {
   //------------------------------------------------------
 
   //function gets called when submit button is clicked
-  onSubmitHandler = (event) => {
+  onSubmitHandler = event => {
     console.log('onSubmitHandler..');
     event.preventDefault();
 
@@ -186,7 +187,7 @@ class ContactCreateOrUpdate extends Component {
       for (let key in this.state.form) {
         //array value, store just the value.data in formData
         if (this.state.form[key].elementconfig.valuetype === 'array') {
-          formData[key] = this.state.form[key].value.map((each) => {
+          formData[key] = this.state.form[key].value.map(each => {
             return each.data;
           });
         }
@@ -228,7 +229,7 @@ class ContactCreateOrUpdate extends Component {
     event.preventDefault();
     console.log('KEY:', key);
 
-    this.setState((prevState) => {
+    this.setState(prevState => {
       return {
         form: {
           ...prevState.form,
@@ -245,7 +246,7 @@ class ContactCreateOrUpdate extends Component {
         }
       };
     });
-    this.setState((prevState) => {
+    this.setState(prevState => {
       let isValid = this.checkInputValidProperty(prevState.form);
 
       return {
@@ -268,7 +269,7 @@ class ContactCreateOrUpdate extends Component {
     });
     console.log('updatedInputs: ', updatedInputs);
 
-    this.setState((prevState) => {
+    this.setState(prevState => {
       console.log('...prevState.form[key]: ', { ...prevState.form[key] });
       console.log('...updatedInputs', [...updatedInputs]);
       return {
@@ -282,7 +283,7 @@ class ContactCreateOrUpdate extends Component {
       };
     });
 
-    this.setState((prevState) => {
+    this.setState(prevState => {
       let isValid = this.checkInputValidProperty(prevState.form);
 
       return {
@@ -293,7 +294,7 @@ class ContactCreateOrUpdate extends Component {
 
   //checks the .valid property of each input in array or individual input
   //returns true/false if form object is valid/invalid
-  checkInputValidProperty = (form) => {
+  checkInputValidProperty = form => {
     // console.log('IS FORM VALID CHECK');
     let formIsValid = true;
 
@@ -317,16 +318,17 @@ class ContactCreateOrUpdate extends Component {
   // ------------------------------------
   inputChangedHandler = (newval, key, index = null) => {
     console.log('inputChangedHandler key: ', key, '|', newval);
-    //single contact
+
     const updatedForm = {
       ...this.state.form
     };
 
-    //single prop of form
     const updatedFormElement = {
       ...updatedForm[key]
     };
 
+    //single contact
+    //single prop of form
     let validation = validationCheck(newval, updatedFormElement.validation);
     console.log('key: ', key);
     console.log('validation: ', validation);
@@ -364,16 +366,16 @@ class ContactCreateOrUpdate extends Component {
 
   //mutate .pristine prop of inputs to false
   //used to test inputs validity when mouse is over submit button
-  onSubmitTest = (event) => {
+  onSubmitTest = event => {
     console.log('onSubmitTest');
     //make all inputs pristine:false
     //each prop in contact
     for (let key in this.state.form) {
       let obj;
 
-      switch (this.state.form[key].elementconfig.valuetype){
+      switch (this.state.form[key].elementconfig.valuetype) {
         case 'array':
-          obj = this.state.form[key].value.map((each) => {
+          obj = this.state.form[key].value.map(each => {
             let validation = validationCheck(
               each.data,
               this.state.form[key].validation
@@ -401,11 +403,11 @@ class ContactCreateOrUpdate extends Component {
           break;
 
         default:
-          console.log(this.state.form[key], ': not validating')
+          console.log(this.state.form[key], ': not validating');
           break;
       }
 
-      this.setState((prevState) => ({
+      this.setState(prevState => ({
         form: {
           ...prevState.form,
           [key]: {
@@ -433,7 +435,7 @@ class ContactCreateOrUpdate extends Component {
       });
     }
 
-    let formInputs = formElementsArray.map((each) => {
+    let formInputs = formElementsArray.map(each => {
       //key is unique because it uses the property 'name'
       return <ComponentFactory key={each.id} id={each.id} data={each.data} />;
     });
@@ -451,28 +453,30 @@ class ContactCreateOrUpdate extends Component {
         ) : (
           <div className={this.className}>
             <DefaultPageLayout
-              label={this.state.id ? 'Update Contact' : 'Create Contact'}>
+              label={this.state.id ? 'Update Contact' : 'Create Contact'}
+            >
               <Card>
-                <form onSubmit={this.onSubmitHandler} autoComplete='off'>
+                <form onSubmit={this.onSubmitHandler} autoComplete="off">
                   {/* input context provides context state/functions to formInputs */}
                   <InputContext.Provider
                     value={{
                       addinput: this.addInputHandler,
                       removeinput: this.removeInputHandler,
                       changed: this.inputChangedHandler
-                    }}>
+                    }}
+                  >
                     {formInputs}
                   </InputContext.Provider>
                   <input
                     ref={this.submitInputRef}
-                    type='submit'
-                    value='Submit'
-                    onMouseOver={(event) => this.onSubmitTest(event)}
+                    type="submit"
+                    value="Submit"
+                    onMouseOver={event => this.onSubmitTest(event)}
                     // disabled={!this.state.formIsValid} //dont disable just handle with validation
                   />
                   <Button
-                    type='WithBorder'
-                    onClick={(event) => {
+                    type="WithBorder"
+                    onClick={event => {
                       console.log('Submit...');
                       event.preventDefault();
                       this.submitInputRef.current.click();
@@ -484,7 +488,8 @@ class ContactCreateOrUpdate extends Component {
                         cancelable: true
                       });
                       this.submitInputRef.current.dispatchEvent(event);
-                    }}>
+                    }}
+                  >
                     Submit
                   </Button>
                 </form>
@@ -497,13 +502,13 @@ class ContactCreateOrUpdate extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     token: state.auth.token
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     onContactCreated: (token, form, callback) => {
       dispatch(actions.processContactCreate(token, form, callback));
