@@ -96,7 +96,7 @@ class Upload extends PureComponent {
     this.setState({ showModal: true });
   };
 
-  fileCheckHandler = (index, isChecked) => {
+  fileCheckHandler = (index, isChecked, event = null) => {
     console.log('onChangeHandler CLICKED: ', index, isChecked);
     //this.context.changed(isChecked, this.props.name, index);
     this.setState(prevState => {
@@ -106,24 +106,13 @@ class Upload extends PureComponent {
     });
   };
 
-  folderCheckHandler = (index, isChecked) => {
+  folderCheckHandler = (index, isChecked, event = null) => {
     console.log('onChangeHandler CLICKED: ', index, isChecked);
     this.setState(prevState => {
       let folders = [...prevState.checkedFolders];
       folders[index] = isChecked;
       return { checkedFolders: folders };
     });
-  };
-
-  checkboxMainHandler = (index, isChecked, event) => {
-    console.log('isChecked main: ', isChecked);
-    if (isChecked) {
-      this.toggleCheckAllFolders(true);
-      this.toggleCheckAllFiles(true);
-    } else {
-      this.toggleCheckAllFolders(false);
-      this.toggleCheckAllFiles(false);
-    }
   };
 
   toggleCheckAllFolders = isChecked => {
@@ -148,10 +137,17 @@ class Upload extends PureComponent {
     });
   };
 
-  toggleMainChecked = () => {
+  toggleMainChecked = checked => {
+    console.log('toggleMainChecked');
+    this.toggleCheckAllFolders(!checked);
+    this.toggleCheckAllFiles(!checked);
     this.setState(prevState => {
       return { mainChecked: !prevState.mainChecked };
     });
+  };
+
+  updateCheck = index => {
+    console.log('updateCheck: ', index);
   };
 
   render() {
@@ -161,7 +157,9 @@ class Upload extends PureComponent {
         return (
           <React.Fragment>
             <Checkbox
-              onChange={this.folderCheckHandler}
+              onChange={(index, checked) =>
+                this.folderCheckHandler(index, checked)
+              }
               index={index}
               checked={this.state.checkedFolders[index]}
             ></Checkbox>
@@ -176,7 +174,9 @@ class Upload extends PureComponent {
         return (
           <React.Fragment>
             <Checkbox
-              onChange={this.fileCheckHandler}
+              onChange={(index, checked) =>
+                this.fileCheckHandler(index, checked)
+              }
               index={index}
               checked={this.state.checkedFiles[index]}
             ></Checkbox>
@@ -208,11 +208,11 @@ class Upload extends PureComponent {
             <React.Fragment>
               <div className={classes.UploadBodyHeader}>
                 <Checkbox
-                  onChange={(index, checked) =>
-                    this.checkboxMainHandler(index, checked)
-                  }
+                  index={0}
                   checked={this.state.mainChecked}
-                  onClick={this.toggleMainChecked}
+                  onChange={() => {
+                    this.toggleMainChecked(this.state.mainChecked);
+                  }}
                 ></Checkbox>
                 Name
               </div>
@@ -229,6 +229,7 @@ class Upload extends PureComponent {
             </React.Fragment>
           ) : null}
         </div>
+
         {/* upload modal for all instances */}
         <Modal
           label="Create folder"
