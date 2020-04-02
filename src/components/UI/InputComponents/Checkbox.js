@@ -26,7 +26,7 @@ class Checkbox extends Component {
     if (this.props.indeterminate === true) {
       this.checkboxRef.current.indeterminate = true;
     } else {
-      this.checkboxRef.current.indeterminate = false;
+      this.checkboxRef.current.indeterminate = null;
     }
   }
 
@@ -49,7 +49,11 @@ class Checkbox extends Component {
             <span className={[classes.Checkmark].join(' ')}></span>
           )} */}
 
-          <span className={[classes.Checkmark].join(' ')}></span>
+          {this.props.indeterminate === true ? (
+            <span className={[classes.Indeterminate].join(' ')}></span>
+          ) : (
+            <span className={[classes.Checkmark].join(' ')}></span>
+          )}
 
           {this.props.label}
         </label>

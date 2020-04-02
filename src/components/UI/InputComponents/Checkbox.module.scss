@@ -24,7 +24,8 @@
   }
 
   /* Create a custom checkbox */
-  .Checkmark {
+  .Checkmark,
+  .Indeterminate {
     height: 25px;
     width: 25px;
     border: 1px solid var(--colorborder);
@@ -42,19 +43,22 @@
   // }
 
   /* When the checkbox is checked */
-  .Container input:checked ~ .Checkmark {
+  .Container input:checked ~ .Checkmark,
+  .Container input:indeterminate ~ .Indeterminate {
     background-color: #ccc;
   }
 
   /* Create the checkmark/indicator (hidden when not checked) */
-  .Checkmark:after {
+  .Checkmark:after,
+  .Indeterminate:after {
     content: '';
     position: absolute;
     display: none;
   }
 
   /* Show the checkmark when checked */
-  .Container input:checked ~ .Checkmark:after {
+  .Container input:checked ~ .Checkmark:after,
+  .Container input:indeterminate ~ .Indeterminate:after {
     display: block;
   }
 
@@ -69,5 +73,13 @@
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
+  }
+
+  .Container .Indeterminate:after {
+    top: 12px;
+    left: 8px;
+    height: 3px;
+    width: 10px;
+    background-color: white;
   }
 }

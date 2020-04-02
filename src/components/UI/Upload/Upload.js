@@ -142,7 +142,7 @@ class Upload extends PureComponent {
     this.toggleCheckAllFolders(!checked);
     this.toggleCheckAllFiles(!checked);
     this.setState(prevState => {
-      return { mainChecked: !prevState.mainChecked };
+      return { mainChecked: !prevState.mainChecked, mainIndeterminate: false };
     });
   };
 
@@ -168,8 +168,9 @@ class Upload extends PureComponent {
       this.setState({ mainIndeterminate: false, mainChecked: true });
     } else if (checkedItems === 0) {
       this.setState({ mainIndeterminate: false, mainChecked: false });
-    } else {
-      this.setState({ mainIndeterminate: true });
+    } else if (checkedItems < allItems) {
+      console.log('INDETERMINATE STATE!!');
+      this.setState({ mainIndeterminate: true, mainChecked: false });
     }
   };
 
