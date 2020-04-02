@@ -15,6 +15,13 @@
     align-items: center;
     display: flex;
     justify-content: space-between;
+    color: var(--colordefault);
+  }
+
+  .UploadIndeterminate {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
   }
 
   .UploadUrl {
@@ -56,5 +63,12 @@
 
   .FlexEnd {
     justify-content: flex-end;
+  }
+
+  .Divider {
+    padding: calc(var(--paddinginput) * 0.5);
+    height: 100%;
+    width: 1px;
+    background-color: red;
   }
 }

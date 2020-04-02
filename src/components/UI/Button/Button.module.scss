@@ -40,6 +40,15 @@
     padding: var(--paddinginput);
   }
 
+  &.CheckboxSize {
+    padding: 0;
+    margin: 0;
+    width: 25px;
+    height: 25px;
+    box-sizing: border-box;
+    margin-right: 10px;
+  }
+
   &.LastItemRight {
     padding-left: var(--paddinginput);
     padding-top: var(--paddinginput);

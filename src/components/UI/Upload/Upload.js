@@ -150,18 +150,23 @@ class Upload extends PureComponent {
     console.log('updateCheck: ', index);
   };
 
+  getCheckFoldersLength = () => {
+    return this.state.checkedFolders.filter(item => {
+      return item === true;
+    }).length;
+  };
+
+  getCheckedFilesLength = () => {
+    return this.state.checkedFiles.filter(item => {
+      return item === true;
+    }).length;
+  };
+
   checkIndeterminate = () => {
     console.log('checkIndeterminate!!!!');
 
-    let checkedFolderLength = this.state.checkedFolders.filter(item => {
-      return item === true;
-    }).length;
-
-    let checkedFileLength = this.state.checkedFiles.filter(item => {
-      return item === true;
-    }).length;
-
-    let checkedItems = checkedFolderLength + checkedFileLength;
+    let checkedItems =
+      this.getCheckFoldersLength() + this.getCheckedFilesLength();
     let allItems = this.state.files.length + this.state.folders.length;
 
     if (checkedItems === allItems) {
@@ -217,16 +222,37 @@ class Upload extends PureComponent {
       <div className={classes.Upload}>
         <div className={[classes.Border].join(' ')}>
           <div className={classes.UploadHeader}>
-            <div className={classes.UploadUrl}>asdasdasdasd</div>
-            <div className={[classes.UploadActionButtons].join(' ')}>
-              <Button type="Action" onClick={this.uploadHandler}>
-                <Icon iconstyle="fas" code="arrow-circle-up" size="lg" /> Upload
-                file
-              </Button>
-              <Button type="LastItemRight" onClick={this.addFolderHandler}>
-                <Icon iconstyle="fas" code="folder-plus" size="lg" />
-              </Button>
-            </div>
+            {this.state.mainIndeterminate === true ||
+            (this.getCheckFoldersLength() + this.getCheckedFilesLength() ===
+              this.state.files.length + this.state.folders.length &&
+              this.state.files.length + this.state.folders.length > 0) ? (
+              <React.Fragment>
+                <div className={classes.UploadIndeterminate}>
+                  <Button type="CheckboxSize">
+                    <Icon iconstyle="fas" code="times" size="lg" />
+                  </Button>
+                  <span>
+                    {this.getCheckFoldersLength() +
+                      this.getCheckedFilesLength() +
+                      ' selected'}
+                  </span>
+                </div>
+                <Button type="Action">Delete</Button>
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                <div className={classes.UploadUrl}>asdasdasdasd</div>
+                <div className={[classes.UploadActionButtons].join(' ')}>
+                  <Button type="Action" onClick={this.uploadHandler}>
+                    <Icon iconstyle="fas" code="arrow-circle-up" size="lg" />
+                    Upload file
+                  </Button>
+                  <Button type="LastItemRight" onClick={this.addFolderHandler}>
+                    <Icon iconstyle="fas" code="folder-plus" size="lg" />
+                  </Button>
+                </div>
+              </React.Fragment>
+            )}
           </div>
           {this.state.folders.length ? (
             <React.Fragment>
