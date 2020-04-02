@@ -44,7 +44,8 @@ class Upload extends PureComponent {
     files: [],
     checkedFolders: [],
     checkedFiles: [],
-    mainChecked: false
+    mainChecked: false,
+    mainIndeterminate: false
   };
 
   componentDidMount() {
@@ -98,12 +99,11 @@ class Upload extends PureComponent {
 
   fileCheckHandler = (index, isChecked, event = null) => {
     console.log('onChangeHandler CLICKED: ', index, isChecked);
-    //this.context.changed(isChecked, this.props.name, index);
     this.setState(prevState => {
       let files = [...prevState.checkedFiles];
       files[index] = isChecked;
       return { checkedFiles: files };
-    });
+    }, this.checkIndeterminate);
   };
 
   folderCheckHandler = (index, isChecked, event = null) => {
@@ -112,7 +112,7 @@ class Upload extends PureComponent {
       let folders = [...prevState.checkedFolders];
       folders[index] = isChecked;
       return { checkedFolders: folders };
-    });
+    }, this.checkIndeterminate);
   };
 
   toggleCheckAllFolders = isChecked => {
@@ -148,6 +148,29 @@ class Upload extends PureComponent {
 
   updateCheck = index => {
     console.log('updateCheck: ', index);
+  };
+
+  checkIndeterminate = () => {
+    console.log('checkIndeterminate!!!!');
+
+    let checkedFolderLength = this.state.checkedFolders.filter(item => {
+      return item === true;
+    }).length;
+
+    let checkedFileLength = this.state.checkedFiles.filter(item => {
+      return item === true;
+    }).length;
+
+    let checkedItems = checkedFolderLength + checkedFileLength;
+    let allItems = this.state.files.length + this.state.folders.length;
+
+    if (checkedItems === allItems) {
+      this.setState({ mainIndeterminate: false, mainChecked: true });
+    } else if (checkedItems === 0) {
+      this.setState({ mainIndeterminate: false, mainChecked: false });
+    } else {
+      this.setState({ mainIndeterminate: true });
+    }
   };
 
   render() {
@@ -210,6 +233,7 @@ class Upload extends PureComponent {
                 <Checkbox
                   index={0}
                   checked={this.state.mainChecked}
+                  indeterminate={this.state.mainIndeterminate}
                   onChange={() => {
                     this.toggleMainChecked(this.state.mainChecked);
                   }}

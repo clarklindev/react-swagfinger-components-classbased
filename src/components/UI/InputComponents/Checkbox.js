@@ -22,6 +22,12 @@ class Checkbox extends Component {
       this.setState({ checked: this.props.checked });
       this.checkboxRef.current.checked = this.props.checked;
     }
+
+    if (this.props.indeterminate === true) {
+      this.checkboxRef.current.indeterminate = true;
+    } else {
+      this.checkboxRef.current.indeterminate = false;
+    }
   }
 
   render() {
@@ -33,12 +39,18 @@ class Checkbox extends Component {
             defaultChecked={this.state.checked}
             name={this.props.name}
             ref={this.checkboxRef}
-            indeterminate={this.props.indeterminate}
             onChange={event => {
               this.props.onChange(this.props.index, event.target.checked);
             }}
           />
+          {/* {this.checkboxRef.current.indeterminate ? (
+            <span className={[classes.Intermediate].join(' ')}></span>
+          ) : (
+            <span className={[classes.Checkmark].join(' ')}></span>
+          )} */}
+
           <span className={[classes.Checkmark].join(' ')}></span>
+
           {this.props.label}
         </label>
       </div>
