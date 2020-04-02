@@ -137,12 +137,14 @@ class Upload extends PureComponent {
     });
   };
 
-  toggleMainChecked = checked => {
+  toggleMainChecked = val => {
     console.log('toggleMainChecked');
-    this.toggleCheckAllFolders(!checked);
-    this.toggleCheckAllFiles(!checked);
+
     this.setState(prevState => {
-      return { mainChecked: !prevState.mainChecked, mainIndeterminate: false };
+      return {
+        mainChecked: val ? val : !prevState.mainChecked,
+        mainIndeterminate: false
+      };
     });
   };
 
@@ -175,7 +177,7 @@ class Upload extends PureComponent {
       this.setState({ mainIndeterminate: false, mainChecked: false });
     } else if (checkedItems < allItems) {
       console.log('INDETERMINATE STATE!!');
-      this.setState({ mainIndeterminate: true, mainChecked: false });
+      this.setState({ mainIndeterminate: true, mainChecked: true });
     }
   };
 
@@ -217,18 +219,36 @@ class Upload extends PureComponent {
         );
       })
     ];
+    let isIndeterminateClass =
+      this.state.mainIndeterminate === true ||
+      (this.getCheckFoldersLength() + this.getCheckedFilesLength() ===
+        this.state.files.length + this.state.folders.length &&
+        this.state.files.length + this.state.folders.length > 0)
+        ? classes.StyleUploadIndeterminate
+        : null;
 
+    console.log('IS INDETERMINATE: ', isIndeterminateClass);
     return (
       <div className={classes.Upload}>
         <div className={[classes.Border].join(' ')}>
-          <div className={classes.UploadHeader}>
+          <div
+            className={[classes.UploadHeader, isIndeterminateClass].join(' ')}
+          >
             {this.state.mainIndeterminate === true ||
             (this.getCheckFoldersLength() + this.getCheckedFilesLength() ===
               this.state.files.length + this.state.folders.length &&
               this.state.files.length + this.state.folders.length > 0) ? (
               <React.Fragment>
                 <div className={classes.UploadIndeterminate}>
-                  <Button type="CheckboxSize">
+                  <Button
+                    type="CheckboxSize"
+                    onClick={event => {
+                      event.preventDefault();
+                      this.toggleMainChecked(false);
+                      this.toggleCheckAllFolders(false);
+                      this.toggleCheckAllFiles(false);
+                    }}
+                  >
                     <Icon iconstyle="fas" code="times" size="lg" />
                   </Button>
                   <span>
@@ -262,7 +282,9 @@ class Upload extends PureComponent {
                   checked={this.state.mainChecked}
                   indeterminate={this.state.mainIndeterminate}
                   onChange={() => {
-                    this.toggleMainChecked(this.state.mainChecked);
+                    this.toggleMainChecked();
+                    this.toggleCheckAllFolders(!this.state.mainChecked);
+                    this.toggleCheckAllFiles(!this.state.mainChecked);
                   }}
                 ></Checkbox>
                 Name

@@ -15,13 +15,19 @@
     align-items: center;
     display: flex;
     justify-content: space-between;
-    color: var(--colordefault);
+    color: white;
+
+    &.StyleUploadIndeterminate {
+      background-color: var(--coloraction);
+    }
   }
 
   .UploadIndeterminate {
     display: flex;
     flex-direction: row;
     align-items: center;
+    flex-basis: 1;
+    flex-grow: 1;
   }
 
   .UploadUrl {
