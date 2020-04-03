@@ -14,7 +14,9 @@ class Counter extends PureComponent {
     this.counterRef = React.createRef();
   }
 
-  decrement = () => {
+  decrement = event => {
+    event.preventDefault();
+    event.stopPropagation();
     let tempVal =
       this.props.value.data === ''
         ? Number(this.props.elementconfig.default)
@@ -26,7 +28,9 @@ class Counter extends PureComponent {
     this.context.changed(tempVal.toFixed(2), this.props.name);
   };
 
-  increment = () => {
+  increment = event => {
+    event.preventDefault();
+    event.stopPropagation();
     let tempVal =
       this.props.value.data === ''
         ? Number(this.props.elementconfig.default)
@@ -38,7 +42,7 @@ class Counter extends PureComponent {
     this.context.changed(tempVal.toFixed(2), this.props.name);
   };
 
-  onBlur = (event) => {
+  onBlur = event => {
     if (event.target.value <= this.props.elementconfig.min) {
       this.context.changed(this.props.elementconfig.min, this.props.name);
     }
@@ -50,7 +54,7 @@ class Counter extends PureComponent {
     }
   };
 
-  onChangeHandler = (event) => {
+  onChangeHandler = event => {
     console.log('CHANGED: ', event.target.value);
     this.context.changed(event.target.value, this.props.name);
   };
@@ -85,20 +89,21 @@ class Counter extends PureComponent {
             classes.FlexGroupRow,
             classes.Wrapper,
             ...tempClasses
-          ].join(' ')}>
+          ].join(' ')}
+        >
           <Button onClick={this.decrement} disabled={isMinBound}>
-            <Icon iconstyle='fas' code='minus' size='sm' />
+            <Icon iconstyle="fas" code="minus" size="sm" />
           </Button>
           <input
             step={this.props.elementconfig.increment}
             ref={this.counterRef}
             value={this.props.value.data}
-            onChange={(event) => this.onChangeHandler(event)}
-            onInput={(event) => this.onChangeHandler(event)}
-            onBlur={(event) => this.onBlur(event)}
+            onChange={event => this.onChangeHandler(event)}
+            onInput={event => this.onChangeHandler(event)}
+            onBlur={event => this.onBlur(event)}
           />
           <Button onClick={this.increment} disabled={isMaxBound}>
-            <Icon iconstyle='fas' code='plus' size='sm' />
+            <Icon iconstyle="fas" code="plus" size="sm" />
           </Button>
         </div>
         {error}
