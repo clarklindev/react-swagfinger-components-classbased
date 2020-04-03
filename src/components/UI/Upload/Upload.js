@@ -11,6 +11,8 @@ import ListItem from '../InputComponents/ListItem';
 import Button from '../Button/Button';
 import Icon from '../InputComponents/Icon';
 import Checkbox from '../InputComponents/Checkbox';
+import Breadcrumb from '../InputComponents/Breadcrumb';
+
 //firebase imports
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
@@ -45,7 +47,9 @@ class Upload extends PureComponent {
     checkedFolders: [],
     checkedFiles: [],
     mainChecked: false,
-    mainIndeterminate: false
+    mainIndeterminate: false,
+    currentFolderRef: null,
+    currentFolderDrilldownRefs: []
   };
 
   componentDidMount() {
@@ -63,9 +67,31 @@ class Upload extends PureComponent {
 
     // //current id folder
     this.currentIdRef = this.storageRef.child(id);
+    this.setCurrentFolderRef(this.currentIdRef);
+    this.addCurrentFolderToDrilldown(this.currentIdRef);
+    this.getFolderData(this.currentIdRef);
+  }
 
+  addCurrentFolderToDrilldown = ref => {
+    this.setState(prevState => {
+      return {
+        currentFolderDrilldownRefs: [
+          ...prevState.currentFolderDrilldownRefs,
+          ref
+        ]
+      };
+    });
+  };
+
+  updateFolderDrilldown = ref => {};
+
+  setCurrentFolderRef = ref => {
+    this.setState({ currentFolderRef: ref });
+  };
+
+  getFolderData = ref => {
     // //save to state folder ref from firebase storage
-    this.currentIdRef.listAll().then(res => {
+    ref.listAll().then(res => {
       res.prefixes.forEach(folderRef => {
         console.log('folder: ', folderRef.name);
         this.setState(prevState => {
@@ -85,12 +111,13 @@ class Upload extends PureComponent {
         });
       });
     });
-  }
+  };
 
   uploadHandler = event => {
     event.preventDefault();
     console.log('uploadHandler');
   };
+
   addFolderHandler = event => {
     event.preventDefault();
     console.log('addFolderHandler');
@@ -261,7 +288,11 @@ class Upload extends PureComponent {
               </React.Fragment>
             ) : (
               <React.Fragment>
-                <div className={classes.UploadUrl}>asdasdasdasd</div>
+                <div className={classes.UploadUrl}>
+                  <Breadcrumb
+                    path={this.state.currentFolderDrilldownRefs}
+                  ></Breadcrumb>
+                </div>
                 <div className={[classes.UploadActionButtons].join(' ')}>
                   <Button type="Action" onClick={this.uploadHandler}>
                     <Icon iconstyle="fas" code="arrow-circle-up" size="lg" />
