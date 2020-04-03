@@ -40,9 +40,21 @@ class ListItem extends Component {
       <p ref={this.extraTextRef}></p>
     ) : null;
 
+    let styleClasses = [];
+    if (this.props.hovereffect === true) {
+      styleClasses = [classes.ListItemHover];
+    }
     return (
-      <div className={this.className} onClick={this.props.onClick}>
-        <div className={[classes.ListItemWrapper, classes[this.props.aligntype]].join(' ')}>
+      <div
+        className={[this.className, ...styleClasses].join(' ')}
+        onClick={this.props.onClick}
+      >
+        <div
+          className={[
+            classes.ListItemWrapper,
+            classes[this.props.aligntype]
+          ].join(' ')}
+        >
           <div>
             {displayText}
             {hasExtraText}

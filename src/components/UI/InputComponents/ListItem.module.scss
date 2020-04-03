@@ -8,6 +8,11 @@
   border: 1px solid var(--colorborder);
   border-radius: var(--borderradius);
 
+  &.ListItemHover:hover {
+    border-color: var(--colorborderhover);
+    cursor: pointer;
+  }
+
   background-color: white;
   .ListItemWrapper {
     display: flex;
@@ -32,8 +37,8 @@
     color: var(--colorhighlight);
   }
 
-  .FlexStart{
-    display:flex;
+  .FlexStart {
+    display: flex;
     flex-direction: row;
     justify-content: flex-start;
   }

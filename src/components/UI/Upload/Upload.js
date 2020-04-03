@@ -194,7 +194,7 @@ class Upload extends PureComponent {
               index={index}
               checked={this.state.checkedFolders[index]}
             ></Checkbox>
-            <ListItem aligntype="FlexStart">
+            <ListItem aligntype="FlexStart" hovereffect={true}>
               <Icon iconstyle="far" code="folder" size="lg" />
               {item}/
             </ListItem>
@@ -211,7 +211,7 @@ class Upload extends PureComponent {
               index={index}
               checked={this.state.checkedFiles[index]}
             ></Checkbox>
-            <ListItem aligntype="FlexStart">
+            <ListItem aligntype="FlexStart" hovereffect={true}>
               <Icon iconstyle="far" code="file" size="lg" />
               {item}
             </ListItem>
