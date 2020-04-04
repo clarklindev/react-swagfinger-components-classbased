@@ -4,7 +4,7 @@ class Breadcrumb extends Component {
     let paths = this.props.path.map(item => {
       return item.location.path;
     });
-    return paths;
+    return paths.join(', ');
   }
 }
 

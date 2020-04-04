@@ -42,8 +42,8 @@ class Upload extends PureComponent {
 
   state = {
     showModal: false,
-    folders: [],
-    files: [],
+    folders: [], //should store refs
+    files: [], //should store refs
     checkedFolders: [],
     checkedFiles: [],
     mainChecked: false,
@@ -57,20 +57,29 @@ class Upload extends PureComponent {
     // Get a reference to the storage service, which is used to create references in your storage bucket
     this.storage = firebase.storage();
     this.storageRef = this.storage.ref(); // Create a storage reference from our storage service
-
     //get id from querystring
     const query = new URLSearchParams(this.props.location.search);
     const id = query.get('id'); //get id in url query params
+
+    let path = this.storageRef;
+
     if (id) {
       console.log('id: ', id);
+      // //current id folder
+      path = this.storageRef.child(id);
+      this.setState({ currentFolderRef: path });
+    } else {
+      path = this.storageRef;
+      this.setState({ currentFolderRef: path });
     }
-
-    // //current id folder
-    this.currentIdRef = this.storageRef.child(id);
-    this.setCurrentFolderRef(this.currentIdRef);
-    this.addCurrentFolderToDrilldown(this.currentIdRef);
-    this.getFolderData(this.currentIdRef);
+    this.changeFolderPath(path);
   }
+
+  changeFolderPath = ref => {
+    this.setCurrentFolderRef(ref);
+    this.addCurrentFolderToDrilldown(ref);
+    this.getFolderData(ref);
+  };
 
   addCurrentFolderToDrilldown = ref => {
     this.setState(prevState => {
@@ -83,7 +92,13 @@ class Upload extends PureComponent {
     });
   };
 
-  updateFolderDrilldown = ref => {};
+  updateFolderDrilldown = ref => {
+    let index = this.state.currentFolderDrilldownRefs.findIndex(item => {
+      return item === ref;
+    });
+    let updatedFolders = this.state.currentFolderDrilldownRefs.slice(0, index);
+    this.setState({ currentFolderDrilldownRefs: updatedFolders });
+  };
 
   setCurrentFolderRef = ref => {
     this.setState({ currentFolderRef: ref });
@@ -92,23 +107,40 @@ class Upload extends PureComponent {
   getFolderData = ref => {
     // //save to state folder ref from firebase storage
     ref.listAll().then(res => {
-      res.prefixes.forEach(folderRef => {
-        console.log('folder: ', folderRef.name);
-        this.setState(prevState => {
-          return {
-            ...prevState,
-            folders: [...prevState.folders, folderRef.name]
-          };
+      let folders = [];
+      if (res.prefixes.length) {
+        res.prefixes.forEach(folderRef => {
+          console.log('folder: ', folderRef.name);
+          folders.push(folderRef);
+          console.log(
+            'XXX folders: ',
+            folders.map(item => {
+              return item.name;
+            })
+          );
         });
-      });
-      res.items.forEach(itemRef => {
-        // All the items under listRef.
-        this.setState(prevState => {
-          return {
-            ...prevState,
-            files: [...prevState.files, itemRef.name]
-          };
+      }
+      let files = [];
+      if (res.items.length) {
+        res.items.forEach(itemRef => {
+          // All the items under listRef.
+          console.log('file: ', itemRef.name);
+          files.push(itemRef);
+          console.log(
+            'xxx files: ',
+            files.map(item => {
+              return item.name;
+            })
+          );
         });
+      }
+
+      this.setState(prevState => {
+        return {
+          ...prevState,
+          folders: folders,
+          files: files
+        };
       });
     });
   };
@@ -221,9 +253,13 @@ class Upload extends PureComponent {
               index={index}
               checked={this.state.checkedFolders[index]}
             ></Checkbox>
-            <ListItem aligntype="FlexStart" hovereffect={true}>
+            <ListItem
+              aligntype="FlexStart"
+              hovereffect={true}
+              onClick={() => this.changeFolderPath(item)}
+            >
               <Icon iconstyle="far" code="folder" size="lg" />
-              {item}/
+              {item.name}/
             </ListItem>
           </React.Fragment>
         );
@@ -238,9 +274,13 @@ class Upload extends PureComponent {
               index={index}
               checked={this.state.checkedFiles[index]}
             ></Checkbox>
-            <ListItem aligntype="FlexStart" hovereffect={true}>
+            <ListItem
+              aligntype="FlexStart"
+              hovereffect={true}
+              //onClick={() => this.changeFolderPath(item)}
+            >
               <Icon iconstyle="far" code="file" size="lg" />
-              {item}
+              {item.name}
             </ListItem>
           </React.Fragment>
         );
