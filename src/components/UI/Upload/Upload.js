@@ -76,12 +76,14 @@ class Upload extends PureComponent {
   }
 
   changeFolderPath = ref => {
+    console.log('CHANGE FOLDER PATH...');
     this.setCurrentFolderRef(ref);
     this.addCurrentFolderToDrilldown(ref);
     this.getFolderData(ref);
   };
 
   addCurrentFolderToDrilldown = ref => {
+    console.log('addCurrentFolderToDrilldown: ', ref);
     this.setState(prevState => {
       return {
         currentFolderDrilldownRefs: [

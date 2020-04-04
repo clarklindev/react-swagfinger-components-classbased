@@ -4,7 +4,14 @@ class Breadcrumb extends Component {
     let paths = this.props.path.map(item => {
       return item.location.path;
     });
-    return paths.join(', ');
+
+    let currentFolders = paths.map((item, index) => {
+      console.log('xxx: ', item);
+      let isFound = item.lastIndexOf('/');
+      return isFound > 0 ? item.substring(isFound) : item;
+    });
+
+    return currentFolders;
   }
 }
 
