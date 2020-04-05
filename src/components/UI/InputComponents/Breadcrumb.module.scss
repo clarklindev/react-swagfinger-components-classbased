@@ -1,3 +1,15 @@
 .Breadcrumb {
   display: flex;
+  flex-basis: 1;
+  flex-grow: 0;
+  flex-shrink: 0;
+
+  .BreadcrumbLink {
+    display: block;
+    cursor: pointer;
+    color: var(--colordefault);
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }

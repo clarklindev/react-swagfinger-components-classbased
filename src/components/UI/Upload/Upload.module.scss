@@ -14,6 +14,9 @@
     padding: var(--paddinginput);
     align-items: center;
     display: flex;
+    flex-basis: 1;
+    flex-grow: 0;
+    flex-shrink: 0;
     justify-content: space-between;
     color: white;
 
@@ -33,6 +36,7 @@
   .UploadUrl {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
     color: var(--colordefault);
   }
@@ -41,6 +45,9 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+    flex-shrink: 0;
+    flex-grow: 0;
+    flex-basis: 1;
   }
 
   .UploadBodyHeader {

@@ -30,7 +30,7 @@ class Upload extends PureComponent {
       storageBucket: 'react-crud-1db4b.appspot.com',
       messagingSenderId: '44556258250',
       appId: '1:44556258250:web:f756e981ee135db270dd33',
-      measurementId: 'G-QJZQEZMV2J'
+      measurementId: 'G-QJZQEZMV2J',
     };
     try {
       console.log('initializing firebase');
@@ -49,7 +49,7 @@ class Upload extends PureComponent {
     mainChecked: false,
     mainIndeterminate: false,
     currentFolderRef: null,
-    currentFolderDrilldownRefs: []
+    currentFolderDrilldownRefs: [],
   };
 
   componentDidMount() {
@@ -67,56 +67,73 @@ class Upload extends PureComponent {
       console.log('id: ', id);
       // //current id folder
       path = this.storageRef.child(id);
-      this.setState({ currentFolderRef: path });
     } else {
       path = this.storageRef;
-      this.setState({ currentFolderRef: path });
     }
+
     this.changeFolderPath(path);
   }
 
-  changeFolderPath = ref => {
+  changeFolderPath = (ref) => {
     console.log('CHANGE FOLDER PATH...');
     this.setCurrentFolderRef(ref);
-    this.addCurrentFolderToDrilldown(ref);
+
+    //go through exisiting references, look for current reference (===) the ref from props,
+    let index = this.state.currentFolderDrilldownRefs.findIndex((item) => {
+      return item === ref;
+    });
+    console.log('index:', index);
+
+    //if it is found, then slice off from currentFolderDrilldownRefs onwards...(we navigated back)...
+    if (index >= 0) {
+      //slice() returns new array..
+      this.updateFolderDrilldown(ref);
+    }
+    //else if not found, then add to currentFolderDrilldownRefs.
+    else {
+      this.addCurrentFolderToDrilldown(ref);
+    }
     this.getFolderData(ref);
   };
 
-  addCurrentFolderToDrilldown = ref => {
+  addCurrentFolderToDrilldown = (ref) => {
     console.log('addCurrentFolderToDrilldown: ', ref);
-    this.setState(prevState => {
+    this.setState((prevState) => {
       return {
         currentFolderDrilldownRefs: [
           ...prevState.currentFolderDrilldownRefs,
-          ref
-        ]
+          ref,
+        ],
       };
     });
   };
 
-  updateFolderDrilldown = ref => {
-    let index = this.state.currentFolderDrilldownRefs.findIndex(item => {
-      return item === ref;
+  updateFolderDrilldown = (ref) => {
+    let index = this.state.currentFolderDrilldownRefs.findIndex((item) => {
+      return item.location.path === ref.location.path; //comparing objects :(
     });
-    let updatedFolders = this.state.currentFolderDrilldownRefs.slice(0, index);
+    let updatedFolders = this.state.currentFolderDrilldownRefs.slice(
+      0,
+      index + 1
+    );
     this.setState({ currentFolderDrilldownRefs: updatedFolders });
   };
 
-  setCurrentFolderRef = ref => {
+  setCurrentFolderRef = (ref) => {
     this.setState({ currentFolderRef: ref });
   };
 
-  getFolderData = ref => {
+  getFolderData = (ref) => {
     // //save to state folder ref from firebase storage
-    ref.listAll().then(res => {
+    ref.listAll().then((res) => {
       let folders = [];
       if (res.prefixes.length) {
-        res.prefixes.forEach(folderRef => {
+        res.prefixes.forEach((folderRef) => {
           console.log('folder: ', folderRef.name);
           folders.push(folderRef);
           console.log(
             'XXX folders: ',
-            folders.map(item => {
+            folders.map((item) => {
               return item.name;
             })
           );
@@ -124,35 +141,35 @@ class Upload extends PureComponent {
       }
       let files = [];
       if (res.items.length) {
-        res.items.forEach(itemRef => {
+        res.items.forEach((itemRef) => {
           // All the items under listRef.
           console.log('file: ', itemRef.name);
           files.push(itemRef);
           console.log(
             'xxx files: ',
-            files.map(item => {
+            files.map((item) => {
               return item.name;
             })
           );
         });
       }
 
-      this.setState(prevState => {
+      this.setState((prevState) => {
         return {
           ...prevState,
           folders: folders,
-          files: files
+          files: files,
         };
       });
     });
   };
 
-  uploadHandler = event => {
+  uploadHandler = (event) => {
     event.preventDefault();
     console.log('uploadHandler');
   };
 
-  addFolderHandler = event => {
+  addFolderHandler = (event) => {
     event.preventDefault();
     console.log('addFolderHandler');
     this.setState({ showModal: true });
@@ -160,7 +177,7 @@ class Upload extends PureComponent {
 
   fileCheckHandler = (index, isChecked, event = null) => {
     console.log('onChangeHandler CLICKED: ', index, isChecked);
-    this.setState(prevState => {
+    this.setState((prevState) => {
       let files = [...prevState.checkedFiles];
       files[index] = isChecked;
       return { checkedFiles: files };
@@ -169,17 +186,17 @@ class Upload extends PureComponent {
 
   folderCheckHandler = (index, isChecked, event = null) => {
     console.log('onChangeHandler CLICKED: ', index, isChecked);
-    this.setState(prevState => {
+    this.setState((prevState) => {
       let folders = [...prevState.checkedFolders];
       folders[index] = isChecked;
       return { checkedFolders: folders };
     }, this.checkIndeterminate);
   };
 
-  toggleCheckAllFolders = isChecked => {
-    this.setState(prevState => {
+  toggleCheckAllFolders = (isChecked) => {
+    this.setState((prevState) => {
       let folders = [...prevState.folders];
-      let result = folders.map(item => {
+      let result = folders.map((item) => {
         return isChecked;
       });
       console.log('checkAllFolders: ', result);
@@ -187,10 +204,10 @@ class Upload extends PureComponent {
     });
   };
 
-  toggleCheckAllFiles = isChecked => {
-    this.setState(prevState => {
+  toggleCheckAllFiles = (isChecked) => {
+    this.setState((prevState) => {
       let files = [...prevState.files];
-      let result = files.map(item => {
+      let result = files.map((item) => {
         return isChecked;
       });
       console.log('checkedFiles: ', result);
@@ -198,29 +215,29 @@ class Upload extends PureComponent {
     });
   };
 
-  toggleMainChecked = val => {
+  toggleMainChecked = (val) => {
     console.log('toggleMainChecked');
 
-    this.setState(prevState => {
+    this.setState((prevState) => {
       return {
         mainChecked: val ? val : !prevState.mainChecked,
-        mainIndeterminate: false
+        mainIndeterminate: false,
       };
     });
   };
 
-  updateCheck = index => {
+  updateCheck = (index) => {
     console.log('updateCheck: ', index);
   };
 
   getCheckFoldersLength = () => {
-    return this.state.checkedFolders.filter(item => {
+    return this.state.checkedFolders.filter((item) => {
       return item === true;
     }).length;
   };
 
   getCheckedFilesLength = () => {
-    return this.state.checkedFiles.filter(item => {
+    return this.state.checkedFiles.filter((item) => {
       return item === true;
     }).length;
   };
@@ -286,7 +303,7 @@ class Upload extends PureComponent {
             </ListItem>
           </React.Fragment>
         );
-      })
+      }),
     ];
     let isIndeterminateClass =
       this.state.mainIndeterminate === true ||
@@ -311,7 +328,7 @@ class Upload extends PureComponent {
                 <div className={classes.UploadIndeterminate}>
                   <Button
                     type="CheckboxSize"
-                    onClick={event => {
+                    onClick={(event) => {
                       event.preventDefault();
                       this.toggleMainChecked(false);
                       this.toggleCheckAllFolders(false);
@@ -333,6 +350,7 @@ class Upload extends PureComponent {
                 <div className={classes.UploadUrl}>
                   <Breadcrumb
                     path={this.state.currentFolderDrilldownRefs}
+                    onClick={(ref) => this.changeFolderPath(ref)}
                   ></Breadcrumb>
                 </div>
                 <div className={[classes.UploadActionButtons].join(' ')}>
@@ -367,7 +385,7 @@ class Upload extends PureComponent {
                 {
                   <List
                     value={{
-                      data: currentFolderData
+                      data: currentFolderData,
                     }}
                   ></List>
                 }
@@ -393,14 +411,14 @@ class Upload extends PureComponent {
           <Input
             value={{ data: this.state.createfoldername }}
             placeholder="Folder name"
-            onChange={event => {
+            onChange={(event) => {
               event.preventDefault();
               console.log('typed: ', event.target.value);
               let targetVal = event.target.value;
 
-              this.setState(prevState => {
+              this.setState((prevState) => {
                 return {
-                  createfoldername: targetVal
+                  createfoldername: targetVal,
                 };
               });
             }}
