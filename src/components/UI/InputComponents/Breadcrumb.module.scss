@@ -1,12 +1,17 @@
 .Breadcrumb {
-  display: flex;
-  flex-basis: 1;
-  flex-grow: 0;
-  flex-shrink: 0;
+  display: block;
+  overflow: hidden;
 
   .BreadcrumbLink {
+    display: inline-block;
     cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     color: var(--colordefault);
+    &:not(:first-child) {
+      max-width: 100px;
+    }
     &:hover {
       text-decoration: underline;
     }
