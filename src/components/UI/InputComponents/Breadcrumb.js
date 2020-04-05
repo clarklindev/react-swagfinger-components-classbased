@@ -20,7 +20,7 @@ class Breadcrumb extends Component {
       );
     });
 
-    return links;
+    return <div className={classes.Breadcrumb}>{links}</div>;
   }
 }
 
