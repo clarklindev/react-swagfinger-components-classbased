@@ -6,6 +6,8 @@ class Breadcrumb extends Component {
   render() {
     let currentNavPathName = null;
     let prevPaths = null;
+    let founditem = null;
+
     //if there is more than one Breadcrumb, the first becomes a '.../' navigation
     if (this.props.path.length === 1) {
       currentNavPathName = this.props.path[0].location.path;
@@ -22,7 +24,7 @@ class Breadcrumb extends Component {
         </div>
       );
     } else {
-      let founditem = this.props.path.find((item, index) => {
+      founditem = this.props.path.find((item, index) => {
         return index === this.props.path.length - 1;
       });
       if (founditem) {
@@ -46,7 +48,7 @@ class Breadcrumb extends Component {
             </div>
             <div
               className={classes.BreadcrumbLink}
-              onClick={(event) => this.props.onClick()}
+              onClick={() => this.props.onClick(founditem)}
               title={currentNavPathName}
             >
               {currentNavPathName}
