@@ -42,6 +42,7 @@ class Upload extends PureComponent {
 
   state = {
     showModal: false,
+    editBreadcrumbModal: false,
     folders: [], //should store refs
     files: [], //should store refs
     checkedFolders: [],
@@ -107,6 +108,10 @@ class Upload extends PureComponent {
         ],
       };
     });
+  };
+
+  editBreadcrumbModal = () => {
+    this.setState({ editBreadcrumbModal: true });
   };
 
   updateFolderDrilldown = (ref) => {
@@ -368,11 +373,13 @@ class Upload extends PureComponent {
                   <Breadcrumb
                     path={this.state.currentFolderDrilldownRefs}
                     onClick={(ref) => this.changeFolderPath(ref)}
+                    onEdit={() => this.editBreadcrumbModal()}
                   ></Breadcrumb>
 
                   <div
                     className={[classes.Divider, isHoverUploadUrl].join(' ')}
                     title="edit"
+                    onClick={() => this.editBreadcrumbModal()}
                   >
                     <Icon iconstyle="fas" code="edit" size="sm" />
                   </div>
@@ -453,6 +460,38 @@ class Upload extends PureComponent {
                   createfoldername: targetVal,
                 };
               });
+            }}
+          />
+        </Modal>
+        <Modal
+          label="Edit folder path"
+          show={this.state.editBreadcrumbModal}
+          isInteractive={true}
+          modalClosed={() => {
+            this.setState({ editBreadcrumbModal: false });
+          }}
+          continue={() => {
+            console.log('continue');
+            this.setState({ editBreadcrumbModal: false });
+          }}
+        >
+          <Input
+            value={{
+              data: this.state.currentFolderRef
+                ? this.state.currentFolderRef.location.path
+                : null,
+            }}
+            placeholder="Folder"
+            onChange={(event) => {
+              event.preventDefault();
+              console.log('typed: ', event.target.value);
+              let targetVal = event.target.value;
+
+              // this.setState((prevState) => {
+              //   return {
+              //     createfoldername: targetVal,
+              //   };
+              // });
             }}
           />
         </Modal>

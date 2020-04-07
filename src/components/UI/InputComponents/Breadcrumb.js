@@ -38,7 +38,7 @@ class Breadcrumb extends Component {
           <div className={classes.Breadcrumb}>
             <div
               className={classes.BreadcrumbLink}
-              onClick={(event) => this.props.editPath()}
+              onClick={(event) => this.props.onEdit()}
               title={prevPaths}
             >
               <Icon iconstyle="fas" code="ellipsis-h" size="sm" />
