@@ -19,14 +19,16 @@ import {
   faCheck,
   faEye,
   faEyeSlash,
-  faFolderPlus
+  faFolderPlus,
+  faEllipsisH,
+  faEdit as faEditSolid,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faEdit,
   faTrashAlt as farFaTrashAlt,
   faCalendarAlt,
   faFolder,
-  faFile
+  faFile,
 } from '@fortawesome/free-regular-svg-icons';
 
 import Utils from '../../../Utils';
@@ -35,6 +37,7 @@ library.add(
   faChevronLeft,
   faChevronRight,
   faEdit,
+  faEditSolid,
   faTimes, //close
   farFaTrashAlt, //delete
   faPlus,
@@ -52,7 +55,8 @@ library.add(
   faEyeSlash, //show/hide password
   faFolder, //normal folder icon
   faFolderPlus,
-  faFile //file
+  faFile, //file,
+  faEllipsisH //ellipsis
 );
 
 class Icon extends Component {
@@ -61,7 +65,7 @@ class Icon extends Component {
       classes.Icon,
       Icon.name,
       classes[this.props.type],
-      this.props.className
+      this.props.className,
     ]);
 
     return (

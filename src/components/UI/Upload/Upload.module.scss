@@ -39,6 +39,13 @@
     flex-wrap: wrap;
     align-items: center;
     color: var(--colordefault);
+    .UploadUrlOver {
+      display: block;
+      cursor: pointer;
+    }
+    .UploadUrlOut {
+      display: none;
+    }
   }
 
   .UploadActionButtons {
@@ -79,9 +86,6 @@
   }
 
   .Divider {
-    padding: calc(var(--paddinginput) * 0.5);
-    height: 100%;
-    width: 1px;
-    background-color: red;
+    padding: calc(var(--paddinginput));
   }
 }

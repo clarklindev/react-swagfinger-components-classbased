@@ -50,6 +50,7 @@ class Upload extends PureComponent {
     mainIndeterminate: false,
     currentFolderRef: null,
     currentFolderDrilldownRefs: [],
+    uploadUrlOver: false,
   };
 
   componentDidMount() {
@@ -173,6 +174,15 @@ class Upload extends PureComponent {
     event.preventDefault();
     console.log('addFolderHandler');
     this.setState({ showModal: true });
+  };
+
+  uploadUrlOverHandler = (event) => {
+    console.log('target: ', event.target);
+    this.setState({ uploadUrlOver: true });
+  };
+  uploadUrlOutHandler = (event) => {
+    console.log('target: ', event.target);
+    this.setState({ uploadUrlOver: false });
   };
 
   fileCheckHandler = (index, isChecked, event = null) => {
@@ -313,12 +323,19 @@ class Upload extends PureComponent {
         ? classes.StyleUploadIndeterminate
         : null;
 
+    let isHoverUploadUrl =
+      this.state.uploadUrlOver === true
+        ? classes.UploadUrlOver
+        : classes.UploadUrlOut;
+
     console.log('IS INDETERMINATE: ', isIndeterminateClass);
     return (
       <div className={classes.Upload}>
         <div className={[classes.Border].join(' ')}>
           <div
             className={[classes.UploadHeader, isIndeterminateClass].join(' ')}
+            onMouseOver={this.uploadUrlOverHandler}
+            onMouseOut={this.uploadUrlOutHandler}
           >
             {this.state.mainIndeterminate === true ||
             (this.getCheckFoldersLength() + this.getCheckedFilesLength() ===
@@ -352,6 +369,12 @@ class Upload extends PureComponent {
                     path={this.state.currentFolderDrilldownRefs}
                     onClick={(ref) => this.changeFolderPath(ref)}
                   ></Breadcrumb>
+
+                  <div
+                    className={[classes.Divider, isHoverUploadUrl].join(' ')}
+                  >
+                    <Icon iconstyle="fas" code="edit" size="sm" />
+                  </div>
                 </div>
                 <div className={[classes.UploadActionButtons].join(' ')}>
                   <Button type="Action" onClick={this.uploadHandler}>

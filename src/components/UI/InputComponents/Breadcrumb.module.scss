@@ -1,19 +1,32 @@
 .Breadcrumb {
-  display: block;
+  display: flex;
+  flex-shrink: 1;
+  flex-grow: 1;
+  flex-basis: 1;
   overflow: hidden;
+  align-items: center;
 
   .BreadcrumbLink {
-    display: inline-block;
     cursor: pointer;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     color: var(--colordefault);
-    &:not(:first-child) {
-      max-width: 100px;
+    &:first-child {
+      display: flex;
+      align-items: center;
+      max-width: none;
     }
+    &:not(:first-child) {
+      max-width: 160px;
+    }
+
     &:hover {
       text-decoration: underline;
     }
+  }
+
+  .Divider {
+    padding: var(--paddinginput);
   }
 }

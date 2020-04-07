@@ -1,26 +1,56 @@
 import React, { Component } from 'react';
 import classes from './Breadcrumb.module.scss';
+import Icon from './Icon';
 
 class Breadcrumb extends Component {
   render() {
-    let links = (this.props.path || []).map((item, index) => {
-      //console.log('item: ', item.location.path);
-      const fullPath = item.location.path;
-      let isFound = fullPath.lastIndexOf('/');
-      let currentNavPathName =
-        isFound > 0 ? fullPath.substring(isFound) : fullPath;
+    let currentNavPathName = null;
+    //if there is more than one Breadcrumb, the first becomes a '.../' navigation
+    if (this.props.path.length === 1) {
+      currentNavPathName = this.props.path[0].location.path;
+      console.log('CURRENTNAVPATHNAME: ', currentNavPathName);
       return (
-        <div
-          key={`breadcrumb${index}`}
-          className={classes.BreadcrumbLink}
-          onClick={(event) => this.props.onClick(item)}
-        >
-          {currentNavPathName}
+        <div className={classes.Breadcrumb}>
+          <div
+            className={classes.BreadcrumbLink}
+            onClick={(event) => this.props.onClick()}
+          >
+            {currentNavPathName}
+          </div>
         </div>
       );
-    });
-
-    return <div className={classes.Breadcrumb}>{links}</div>;
+    } else {
+      let founditem = this.props.path.find((item, index) => {
+        return index === this.props.path.length - 1;
+      });
+      if (founditem) {
+        const fullPath = founditem.location.path;
+        let lastFolderInPathIndex = fullPath.lastIndexOf('/');
+        currentNavPathName = fullPath.substring(lastFolderInPathIndex + 1);
+      }
+      return (
+        <React.Fragment>
+          <div className={classes.Breadcrumb}>
+            <div
+              className={classes.BreadcrumbLink}
+              onClick={(event) => this.props.editPath()}
+            >
+              <Icon iconstyle="fas" code="ellipsis-h" size="sm" />
+            </div>
+            <div className={classes.Divider}>
+              <Icon iconstyle="fas" code="chevron-right" size="sm"></Icon>
+            </div>
+            <div
+              className={classes.BreadcrumbLink}
+              onClick={(event) => this.props.onClick()}
+              title={currentNavPathName}
+            >
+              {currentNavPathName}
+            </div>
+          </div>
+        </React.Fragment>
+      );
+    }
   }
 }
 
