@@ -372,16 +372,25 @@ class Upload extends PureComponent {
 
                   <div
                     className={[classes.Divider, isHoverUploadUrl].join(' ')}
+                    title="edit"
                   >
                     <Icon iconstyle="fas" code="edit" size="sm" />
                   </div>
                 </div>
                 <div className={[classes.UploadActionButtons].join(' ')}>
-                  <Button type="Action" onClick={this.uploadHandler}>
+                  <Button
+                    type="Action"
+                    onClick={this.uploadHandler}
+                    title="upload"
+                  >
                     <Icon iconstyle="fas" code="arrow-circle-up" size="lg" />
                     Upload file
                   </Button>
-                  <Button type="LastItemRight" onClick={this.addFolderHandler}>
+                  <Button
+                    type="LastItemRight"
+                    onClick={this.addFolderHandler}
+                    title="new folder"
+                  >
                     <Icon iconstyle="fas" code="folder-plus" size="lg" />
                   </Button>
                 </div>

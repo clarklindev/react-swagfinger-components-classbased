@@ -5,6 +5,7 @@ import Icon from './Icon';
 class Breadcrumb extends Component {
   render() {
     let currentNavPathName = null;
+    let prevPaths = null;
     //if there is more than one Breadcrumb, the first becomes a '.../' navigation
     if (this.props.path.length === 1) {
       currentNavPathName = this.props.path[0].location.path;
@@ -14,6 +15,7 @@ class Breadcrumb extends Component {
           <div
             className={classes.BreadcrumbLink}
             onClick={(event) => this.props.onClick()}
+            title={currentNavPathName}
           >
             {currentNavPathName}
           </div>
@@ -26,6 +28,7 @@ class Breadcrumb extends Component {
       if (founditem) {
         const fullPath = founditem.location.path;
         let lastFolderInPathIndex = fullPath.lastIndexOf('/');
+        prevPaths = fullPath.substring(0, lastFolderInPathIndex);
         currentNavPathName = fullPath.substring(lastFolderInPathIndex + 1);
       }
       return (
@@ -34,6 +37,7 @@ class Breadcrumb extends Component {
             <div
               className={classes.BreadcrumbLink}
               onClick={(event) => this.props.editPath()}
+              title={prevPaths}
             >
               <Icon iconstyle="fas" code="ellipsis-h" size="sm" />
             </div>
