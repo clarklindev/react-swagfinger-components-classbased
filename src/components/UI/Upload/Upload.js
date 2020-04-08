@@ -50,6 +50,7 @@ class Upload extends PureComponent {
     mainChecked: false,
     mainIndeterminate: false,
     currentFolderRef: null,
+    tempFolderPath: null, //used for when editing in the modal state
     currentFolderDrilldownRefs: [],
     uploadUrlOver: false,
   };
@@ -111,7 +112,12 @@ class Upload extends PureComponent {
   };
 
   editBreadcrumbModal = () => {
-    this.setState({ editBreadcrumbModal: true });
+    this.setState((prevState) => {
+      return {
+        editBreadcrumbModal: true,
+        tempFolderPath: prevState.currentFolderRef.location.path, //reset the value when modal is opened
+      };
+    });
   };
 
   updateFolderDrilldown = (ref) => {
@@ -126,7 +132,7 @@ class Upload extends PureComponent {
   };
 
   setCurrentFolderRef = (ref) => {
-    this.setState({ currentFolderRef: ref });
+    this.setState({ currentFolderRef: ref, tempFolderPath: ref.location.path });
   };
 
   getFolderData = (ref) => {
@@ -328,12 +334,13 @@ class Upload extends PureComponent {
         ? classes.StyleUploadIndeterminate
         : null;
 
+    console.log('IS INDETERMINATE: ', isIndeterminateClass);
+
     let isHoverUploadUrl =
       this.state.uploadUrlOver === true
         ? classes.UploadUrlOver
         : classes.UploadUrlOut;
 
-    console.log('IS INDETERMINATE: ', isIndeterminateClass);
     return (
       <div className={classes.Upload}>
         <div className={[classes.Border].join(' ')}>
@@ -472,26 +479,33 @@ class Upload extends PureComponent {
           }}
           continue={() => {
             console.log('continue');
+            //get the index of last /
+            //find the current nav folder
+            //compare to drilldown, if found, that is the new ref
+            //on continue, navigate to new ref
             this.setState({ editBreadcrumbModal: false });
           }}
         >
           <Input
-            value={{
-              data: this.state.currentFolderRef
-                ? this.state.currentFolderRef.location.path
-                : null,
-            }}
+            value={
+              {
+                data: this.state.tempFolderPath
+                  ? this.state.tempFolderPath
+                  : null,
+              }
+              //   {
+              //   data: this.state.currentFolderDrilldownRefs
+              //     .map((item) => {
+              //       return item.location.path;
+              //     })
+              //     .join('/'),
+              // }
+            }
             placeholder="Folder"
             onChange={(event) => {
               event.preventDefault();
               console.log('typed: ', event.target.value);
-              let targetVal = event.target.value;
-
-              // this.setState((prevState) => {
-              //   return {
-              //     createfoldername: targetVal,
-              //   };
-              // });
+              this.setState({ tempFolderPath: event.target.value });
             }}
           />
         </Modal>
