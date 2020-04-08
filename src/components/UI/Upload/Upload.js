@@ -215,11 +215,9 @@ class Upload extends PureComponent {
   };
 
   uploadUrlOverHandler = (event) => {
-    console.log('target: ', event.target);
     this.setState({ uploadUrlOver: true });
   };
   uploadUrlOutHandler = (event) => {
-    console.log('target: ', event.target);
     this.setState({ uploadUrlOver: false });
   };
 
@@ -384,6 +382,7 @@ class Upload extends PureComponent {
                 <div className={classes.UploadIndeterminate}>
                   <Button
                     type="CheckboxSize"
+                    color="White"
                     onClick={(event) => {
                       event.preventDefault();
                       this.toggleMainChecked(false);
@@ -438,9 +437,10 @@ class Upload extends PureComponent {
               </React.Fragment>
             )}
           </div>
-          {this.state.folders.length ? (
-            <React.Fragment>
-              <div className={classes.UploadBodyHeader}>
+
+          <React.Fragment>
+            <div className={classes.UploadBodyHeader}>
+              <div className={classes.HeaderRow}>
                 <Checkbox
                   index={0}
                   checked={this.state.mainChecked}
@@ -451,20 +451,56 @@ class Upload extends PureComponent {
                     this.toggleCheckAllFiles(!this.state.mainChecked);
                   }}
                 ></Checkbox>
-                Name
+                <span>Name</span>
               </div>
+            </div>
 
-              <div className={classes.UploadBody}>
-                {
-                  <List
-                    value={{
-                      data: currentFolderData,
+            <div className={classes.UploadBody}>
+              {this.state.currentFolderDrilldownRefs.length > 1 ? (
+                <div
+                  className={[
+                    classes.FlexGroupRow,
+                    classes.NavigateUpOneFolder,
+                  ].join(' ')}
+                >
+                  <ListItem
+                    aligntype="FlexStart"
+                    hovereffect={true}
+                    onClick={() => {
+                      //get current index on drilldown,
+                      let index = this.state.currentFolderDrilldownRefs.findIndex(
+                        (item) => {
+                          return (
+                            item.location.path ===
+                            this.state.currentFolderRef.location.path
+                          );
+                        }
+                      );
+                      //navigate to index -1
+
+                      this.changeFolderPath(
+                        this.state.currentFolderDrilldownRefs[index - 1]
+                      );
                     }}
-                  ></List>
-                }
-              </div>
-            </React.Fragment>
-          ) : null}
+                  >
+                    <Icon
+                      iconstyle="fas"
+                      code="level-up-alt"
+                      size="md"
+                      flip="horizontal"
+                    />
+                    ../
+                  </ListItem>
+                </div>
+              ) : null}
+
+              <List
+                value={{
+                  data: currentFolderData,
+                }}
+              ></List>
+            </div>
+          </React.Fragment>
         </div>
 
         {/* upload modal for all instances */}

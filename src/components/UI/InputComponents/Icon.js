@@ -22,6 +22,7 @@ import {
   faFolderPlus,
   faEllipsisH,
   faEdit as faEditSolid,
+  faLevelUpAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faEdit,
@@ -56,7 +57,8 @@ library.add(
   faFolder, //normal folder icon
   faFolderPlus,
   faFile, //file,
-  faEllipsisH //ellipsis
+  faEllipsisH, //ellipsis
+  faLevelUpAlt //navigate one folder up
 );
 
 class Icon extends Component {
@@ -73,6 +75,7 @@ class Icon extends Component {
         <FontAwesomeIcon
           icon={[this.props.iconstyle, this.props.code]}
           size={this.props.size} //xs, sm, lg, 2x,3x,4x,5x,6x,7x,8x,9x,10x
+          flip={this.props.flip}
           fixedWidth
         />
       </div>

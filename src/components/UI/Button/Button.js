@@ -8,7 +8,8 @@ const button = (props) => {
     classes.Button,
     'Button',
     classes[props.type],
-    props.className
+    classes[props.color],
+    props.className,
   ]);
 
   return (
@@ -21,7 +22,8 @@ const button = (props) => {
       onBlur={props.onBlur}
       title={props.title}
       onMouseOver={props.onMouseOver}
-      onMouseOut={props.onMouseOut}>
+      onMouseOut={props.onMouseOut}
+    >
       {props.children}
     </button>
   );

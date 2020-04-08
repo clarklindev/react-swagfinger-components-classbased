@@ -62,14 +62,26 @@
     background-color: var(--colorbackground);
     border-top: var(--borderwidth) solid var(--colorborder);
     border-bottom: var(--borderwidth) solid var(--colorborder);
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+
     color: var(--colordefault);
+
+    display: flex;
+    flex-direction: column;
+    .HeaderRow {
+      display: flex;
+      flex-direction: row;
+      flex-basis: 1;
+      flex-grow: 1;
+      align-items: center;
+    }
   }
 
   .UploadBody {
     padding: var(--paddinginput);
+  }
+
+  .NavigateUpOneFolder {
+    margin-left: 37px;
   }
 
   .FlexGroupRow {
