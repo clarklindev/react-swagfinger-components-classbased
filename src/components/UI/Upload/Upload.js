@@ -43,8 +43,10 @@ class Upload extends PureComponent {
   state = {
     showModal: false,
     editBreadcrumbModal: false,
-    folders: [], //should store refs
-    files: [], //should store refs
+    errorModalMessage: null,
+    allFolderList:[],
+    folders: [], //should store refs of current folder
+    files: [], //should store refs of current folder
     checkedFolders: [],
     checkedFiles: [],
     mainChecked: false,
@@ -75,6 +77,18 @@ class Upload extends PureComponent {
     }
 
     this.changeFolderPath(path);
+    this.buildFolderList(path);
+  }
+
+  errorConfirmedHandler = () => {
+    this.setState({ errorModal: null });
+  };
+
+  findFoldersForBuild = (ref)=>{
+
+  }
+  buildFolderList = (ref)=>{
+
   }
 
   changeFolderPath = (ref) => {
@@ -116,13 +130,14 @@ class Upload extends PureComponent {
       return {
         editBreadcrumbModal: true,
         tempFolderPath: prevState.currentFolderRef.location.path, //reset the value when modal is opened
+        errorModalMessage: null,
       };
     });
   };
 
   updateFolderDrilldown = (ref) => {
     let index = this.state.currentFolderDrilldownRefs.findIndex((item) => {
-      return item.location.path === ref.location.path; //comparing objects :(
+      return item.location.path === ref.location.path; //comparing object paths
     });
     let updatedFolders = this.state.currentFolderDrilldownRefs.slice(
       0,
@@ -475,32 +490,58 @@ class Upload extends PureComponent {
           show={this.state.editBreadcrumbModal}
           isInteractive={true}
           modalClosed={() => {
-            this.setState({ editBreadcrumbModal: false });
+            this.setState({
+              editBreadcrumbModal: false,
+              errorModalMessage: null,
+            });
           }}
           continue={() => {
             console.log('continue');
-            //get the index of last /
-            //find the current nav folder
-            //compare to drilldown, if found, that is the new ref
-            //on continue, navigate to new ref
-            this.setState({ editBreadcrumbModal: false });
+            //go through directory list
+            //navigate if not in current drilldown but folders exists..
+            //ie. check all paths in directory list
+            if(){
+
+            }
+            else{
+              //go thru drilldown,
+              this.state.currentFolderDrilldownRefs.find((item) => {
+                //compare to drilldown ref.location.path, if found, that is the new ref
+
+                if (item.location.path === this.state.tempFolderPath) {
+                  //found in drilldown...so it exists, navigate to it
+                  this.changeFolderPath(item);
+                  //on continue, navigate to new ref
+                  this.setState({
+                    editBreadcrumbModal: false,
+                    errorModalMessage: null,
+                  });
+                } 
+                else if (
+                  this.state.tempFolderPath[
+                    this.state.tempFolderPath.length - 1
+                  ] === '/'
+                ) {
+                  console.error('path does not exist');
+                  this.setState({
+                    errorModalMessage: 'Remove trailing "/" character from path',
+                  });
+                } else {
+                  console.error('path does not exist');
+                  this.setState({
+                    errorModalMessage: 'Path does not exist',
+                  });
+                }
+              });
+            }
           }}
         >
           <Input
-            value={
-              {
-                data: this.state.tempFolderPath
-                  ? this.state.tempFolderPath
-                  : null,
-              }
-              //   {
-              //   data: this.state.currentFolderDrilldownRefs
-              //     .map((item) => {
-              //       return item.location.path;
-              //     })
-              //     .join('/'),
-              // }
-            }
+            value={{
+              data: this.state.tempFolderPath
+                ? this.state.tempFolderPath
+                : null,
+            }}
             placeholder="Folder"
             onChange={(event) => {
               event.preventDefault();
@@ -508,6 +549,7 @@ class Upload extends PureComponent {
               this.setState({ tempFolderPath: event.target.value });
             }}
           />
+          <div className={classes.Errors}>{this.state.errorModalMessage}</div>
         </Modal>
       </div>
     );

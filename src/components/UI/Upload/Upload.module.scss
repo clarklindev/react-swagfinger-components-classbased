@@ -88,4 +88,11 @@
   .Divider {
     padding: calc(var(--paddinginput));
   }
+
+  .Errors {
+    padding-top: calc(var(--paddinginput));
+    padding-bottom: calc(var(--paddinginput));
+    color: red;
+    display: flex;
+  }
 }
