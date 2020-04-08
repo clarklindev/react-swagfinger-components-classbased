@@ -44,7 +44,7 @@ class Upload extends PureComponent {
     showModal: false,
     editBreadcrumbModal: false,
     errorModalMessage: null,
-    allFolderList:[],
+    allFolderList: [],
     folders: [], //should store refs of current folder
     files: [], //should store refs of current folder
     checkedFolders: [],
@@ -84,12 +84,24 @@ class Upload extends PureComponent {
     this.setState({ errorModal: null });
   };
 
-  findFoldersForBuild = (ref)=>{
+  findFoldersForBuild = (ref) => {
+    console.log('FIND FOLDERS FOR BUILD');
+    this.setState((prevState) => {
+      return { allFolderList: [...prevState.allFolderList, ref] };
+    });
+    ref.listAll().then((res) => {
+      //if the current folder does NOT have folders
+      res.prefixes.forEach((folderRef) => {
+        this.findFoldersForBuild(folderRef);
+      });
+    });
+  };
 
-  }
-  buildFolderList = (ref)=>{
-
-  }
+  //gets all folders from ref onwards saving refs
+  buildFolderList = (ref) => {
+    console.log('BUILD FOLDER LIST');
+    this.findFoldersForBuild(ref);
+  };
 
   changeFolderPath = (ref) => {
     console.log('CHANGE FOLDER PATH...');
@@ -498,12 +510,40 @@ class Upload extends PureComponent {
           continue={() => {
             console.log('continue');
             //go through directory list
-            //navigate if not in current drilldown but folders exists..
+            //navigate if folders exists..
             //ie. check all paths in directory list
-            if(){
-
-            }
-            else{
+            try {
+              this.state.allFolderList.map((item, index) => {
+                console.log(
+                  `allFolderList item: index:[${index}]`,
+                  item.location.path
+                );
+                if (item.location.path === this.state.tempFolderPath) {
+                  //found in drilldown...so it exists, navigate to it
+                  this.changeFolderPath(item);
+                  //on continue, navigate to new ref
+                  this.setState({
+                    editBreadcrumbModal: false,
+                    errorModalMessage: null,
+                  });
+                } else if (
+                  this.state.tempFolderPath[
+                    this.state.tempFolderPath.length - 1
+                  ] === '/'
+                ) {
+                  console.error('path does not exist');
+                  this.setState({
+                    errorModalMessage:
+                      'Remove trailing "/" character from path',
+                  });
+                } else {
+                  console.error('path does not exist');
+                  this.setState({
+                    errorModalMessage: 'Path does not exist',
+                  });
+                }
+              });
+            } catch {
               //go thru drilldown,
               this.state.currentFolderDrilldownRefs.find((item) => {
                 //compare to drilldown ref.location.path, if found, that is the new ref
@@ -516,15 +556,15 @@ class Upload extends PureComponent {
                     editBreadcrumbModal: false,
                     errorModalMessage: null,
                   });
-                } 
-                else if (
+                } else if (
                   this.state.tempFolderPath[
                     this.state.tempFolderPath.length - 1
                   ] === '/'
                 ) {
                   console.error('path does not exist');
                   this.setState({
-                    errorModalMessage: 'Remove trailing "/" character from path',
+                    errorModalMessage:
+                      'Remove trailing "/" character from path',
                   });
                 } else {
                   console.error('path does not exist');
