@@ -67,16 +67,23 @@ class Icon extends Component {
       classes.Icon,
       Icon.name,
       classes[this.props.type],
+      classes[this.props.px],
       this.props.className,
     ]);
 
     return (
-      <div className={[classList].join(' ')}>
+      <div
+        className={[classList].join(' ')}
+        style={{
+          width: this.props.width ? this.props.width : 'auto',
+          height: this.props.height ? this.props.height : 'auto',
+        }}
+      >
         <FontAwesomeIcon
           icon={[this.props.iconstyle, this.props.code]}
           size={this.props.size} //xs, sm, lg, 2x,3x,4x,5x,6x,7x,8x,9x,10x
           flip={this.props.flip}
-          fixedWidth
+          fixedWidth={true}
         />
       </div>
     );

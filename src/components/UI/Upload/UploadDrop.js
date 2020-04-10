@@ -15,7 +15,7 @@ class UploadDrop extends Component {
     super(props);
     this.className = Utils.getClassNameString([
       classes.UploadDrop,
-      UploadDrop.name
+      UploadDrop.name,
     ]);
 
     this.dropRef = React.createRef();
@@ -25,7 +25,7 @@ class UploadDrop extends Component {
   state = {
     selectedFiles: [],
     dragging: false,
-    uploadProgress: []
+    uploadProgress: [],
   };
 
   componentDidMount() {
@@ -49,13 +49,13 @@ class UploadDrop extends Component {
     div.removeEventListener('drop', this.handleDrop);
   }
 
-  handleDrag = event => {
+  handleDrag = (event) => {
     event.preventDefault();
     event.stopPropagation();
     event.dataTransfer.dropEffect = 'copy'; //show this is a copy by using drag-copy cursor
   };
 
-  handleDragIn = event => {
+  handleDragIn = (event) => {
     event.preventDefault();
     event.stopPropagation();
     this.dragCounter++;
@@ -64,7 +64,7 @@ class UploadDrop extends Component {
     }
   };
 
-  handleDragOut = event => {
+  handleDragOut = (event) => {
     event.preventDefault();
     event.stopPropagation();
     this.dragCounter--;
@@ -72,7 +72,7 @@ class UploadDrop extends Component {
     this.setState({ dragging: false });
   };
 
-  handleDrop = event => {
+  handleDrop = (event) => {
     event.preventDefault();
     event.stopPropagation();
     this.setState({ dragging: false });
@@ -81,7 +81,7 @@ class UploadDrop extends Component {
       // this.props.handleDrop(e.dataTransfer.files);
       let existingFiles = [];
 
-      Array.from(event.dataTransfer.files).forEach(file => {
+      Array.from(event.dataTransfer.files).forEach((file) => {
         const existingFile = this.findDuplicateFile(file);
         if (existingFile) {
           console.error('Existing file:', existingFile);
@@ -91,9 +91,9 @@ class UploadDrop extends Component {
         console.warn('Added file:', file);
       });
       this.setState(
-        prevState => {
+        (prevState) => {
           return {
-            selectedFiles: [...prevState.selectedFiles, ...existingFiles]
+            selectedFiles: [...prevState.selectedFiles, ...existingFiles],
           };
         },
         () => {
@@ -106,8 +106,8 @@ class UploadDrop extends Component {
     }
   };
 
-  findDuplicateFile = file => {
-    return this.state.selectedFiles.find(existingFile => {
+  findDuplicateFile = (file) => {
+    return this.state.selectedFiles.find((existingFile) => {
       const isDuplicate =
         existingFile.name === file.name &&
         existingFile.lastModified === file.lastModified &&
@@ -119,14 +119,14 @@ class UploadDrop extends Component {
   };
 
   //function called when input button clicked
-  fileChangedHandler = event => {
+  fileChangedHandler = (event) => {
     event.preventDefault();
     event.persist();
     const files = event.target.files;
 
     let existingFiles = [];
 
-    Array.from(files).forEach(file => {
+    Array.from(files).forEach((file) => {
       const existingFile = this.findDuplicateFile(file);
       if (existingFile) {
         console.error('Existing file:', existingFile);
@@ -137,10 +137,10 @@ class UploadDrop extends Component {
     });
     console.log('EXISTING: ', existingFiles);
     this.setState(
-      prevState => {
+      (prevState) => {
         console.log('waypoint1!!!!');
         return {
-          selectedFiles: [...prevState.selectedFiles, ...existingFiles]
+          selectedFiles: [...prevState.selectedFiles, ...existingFiles],
         };
       },
       () => {
@@ -155,19 +155,21 @@ class UploadDrop extends Component {
     let updatedFiles = [
       ...this.state.selectedFiles.filter((item, i) => {
         return index !== i ? item : null;
-      })
+      }),
     ];
     this.setState({ selectedFiles: updatedFiles });
     this.context.removeinput(event, this.props.name, index);
   };
 
-  uploadHandler = event => {
+  uploadHandler = (event) => {
     event.preventDefault();
-    let e = event;
-
     this.state.selectedFiles.forEach((item, index) => {
-      this.context.addinput(e, this.props.name, item);
+      console.log('uploadHandler item: ', item.name);
     });
+    //there is no items to add or remove ast upload items go straight to cloud or are removed straight from cloud
+    // this.state.selectedFiles.forEach((item, index) => {
+    //   this.context.addinput(event, this.props.name, item);
+    // });
   };
 
   render() {
@@ -242,12 +244,12 @@ class UploadDrop extends Component {
                 <div className={classes.Divider} />
                 <div className={classes.UploadDelete}>
                   <Button
-                    onClick={event => {
+                    onClick={(event) => {
                       event.preventDefault();
                       this.removeFromList(event, index);
                     }}
                   >
-                    <Icon iconstyle='far' code='trash-alt' size='sm' />
+                    <Icon iconstyle="far" code="trash-alt" size="sm" />
                   </Button>
                 </div>
               </React.Fragment>
@@ -265,23 +267,23 @@ class UploadDrop extends Component {
         >
           <input
             ref={this.uploadRef}
-            type='file'
-            accept='image/*'
+            type="file"
+            accept="image/*"
             multiple
             onChange={this.fileChangedHandler}
           />
           <div className={classes.UploadLabel}>
             <Icon
               className={classes.Icon}
-              iconstyle='fas'
-              code='arrow-circle-up'
-              size='lg'
+              iconstyle="fas"
+              code="arrow-circle-up"
+              size="lg"
             />
             <p>Drag and drop files here</p>
           </div>
           <Button
-            type='WithBorder'
-            onClick={event => {
+            type="WithBorder"
+            onClick={(event) => {
               event.preventDefault();
               this.uploadRef.current.click();
             }}

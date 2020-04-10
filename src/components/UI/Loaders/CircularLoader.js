@@ -14,21 +14,22 @@ class CircularLoader extends Component {
 
             <div className={classes.Pie}>
               <div
-                className={[classes.LeftSide, classes.HalfCircle].join(
-                  ' '
-                )}></div>
+                className={[classes.LeftSide, classes.HalfCircle].join(' ')}
+              ></div>
               <div
-                className={[classes.RightSide, classes.HalfCircle].join(
-                  ' '
-                )}></div>
+                className={[classes.RightSide, classes.HalfCircle].join(' ')}
+              ></div>
             </div>
           </div>
         ) : (
           <Icon
-            type='WithRoundBorder'
-            iconstyle='fas'
-            code='check'
-            size='sm'></Icon>
+            type="WithRoundBorder"
+            iconstyle="fas"
+            code="check"
+            size="sm"
+            width={this.props.width}
+            height={this.props.height}
+          ></Icon>
         )}
       </div>
     );

@@ -15,6 +15,7 @@ import Input from './Input';
 import Datepicker from './Datepicker';
 import Toggle from './Toggle';
 import Upload from '../Upload/Upload';
+import UploadDrop from '../Upload/UploadDrop';
 import Counter from './Counter';
 import RangeSlider from './RangeSlider';
 import MultiRangeSlider from './MultiRangeSlider';
@@ -32,7 +33,7 @@ class ComponentFactory extends Component {
     this.label = null;
     this.className = Utils.getClassNameString([
       classes.ComponentFactory,
-      'ComponentFactory'
+      'ComponentFactory',
     ]);
   }
 
@@ -98,6 +99,9 @@ class ComponentFactory extends Component {
 
       case 'upload':
         this.inputElement = <Upload {...this.props.data} />;
+        break;
+      case 'uploaddrop':
+        this.inputElement = <UploadDrop {...this.props.data} />;
         break;
       case 'list':
         this.inputElement = <List {...this.props.data} />;

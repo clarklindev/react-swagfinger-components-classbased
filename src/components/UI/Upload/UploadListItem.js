@@ -9,8 +9,8 @@ class UploadListItem extends Component {
       <div className={classes.UploadListItem}>
         {/* row */}
         <div className={classes.UploadDetails}>
-          <div className={classes.Label} title={this.props.name}>
-            {this.props.name}
+          <div className={classes.Label} title={this.props.filename}>
+            {this.props.filename}
           </div>
           <div className={classes.FileSize}>
             {Number(this.props.size / 1024).toFixed(2)}KB
@@ -18,14 +18,18 @@ class UploadListItem extends Component {
         </div>
         <div className={classes.UploadInteraction}>
           <div className={classes.UploadProgress}>
-            <CircularLoader progress={this.props.progress} />
+            <CircularLoader
+              progress={this.props.progress}
+              width="17px"
+              height="17px"
+            />
           </div>
           {this.props.progress >= 100 ? (
             <React.Fragment>
               <div className={classes.Divider} />
               <div className={classes.UploadDelete}>
                 <Button>
-                  <Icon iconstyle='far' code='trash-alt' size='sm' />
+                  <Icon iconstyle="far" code="trash-alt" size="sm" />
                 </Button>
               </div>
             </React.Fragment>
