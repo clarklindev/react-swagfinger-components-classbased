@@ -19,7 +19,7 @@ class UploadDrop extends Component {
     ]);
 
     this.dropRef = React.createRef();
-    this.uploadRef = React.createRef();
+    this.uploadDropRef = React.createRef();
   }
 
   state = {
@@ -119,6 +119,7 @@ class UploadDrop extends Component {
   };
 
   //function called when input button clicked
+
   fileChangedHandler = (event) => {
     event.preventDefault();
     event.persist();
@@ -166,7 +167,7 @@ class UploadDrop extends Component {
     this.state.selectedFiles.forEach((item, index) => {
       console.log('uploadHandler item: ', item.name);
     });
-    //there is no items to add or remove ast upload items go straight to cloud or are removed straight from cloud
+    //there is no items to add or remove as upload items go straight to cloud or are removed straight from cloud
     // this.state.selectedFiles.forEach((item, index) => {
     //   this.context.addinput(event, this.props.name, item);
     // });
@@ -266,7 +267,7 @@ class UploadDrop extends Component {
           className={[classes.DropWrapper, ...tempClasses].join(' ')}
         >
           <input
-            ref={this.uploadRef}
+            ref={this.uploadDropRef}
             type="file"
             accept="image/*"
             multiple
@@ -285,7 +286,7 @@ class UploadDrop extends Component {
             type="WithBorder"
             onClick={(event) => {
               event.preventDefault();
-              this.uploadRef.current.click();
+              this.uploadDropRef.current.click();
             }}
           >
             Browse files

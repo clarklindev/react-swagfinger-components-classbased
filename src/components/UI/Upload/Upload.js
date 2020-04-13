@@ -38,6 +38,7 @@ class Upload extends PureComponent {
     } catch {
       console.log('already exists...');
     }
+    this.uploadRef = React.createRef();
   }
 
   state = {
@@ -55,6 +56,7 @@ class Upload extends PureComponent {
     tempFolderPath: null, //used for when editing in the modal state
     currentFolderDrilldownRefs: [],
     uploadUrlOver: false,
+    selectedFiles: [], //files added for upload
   };
 
   componentDidMount() {
@@ -203,11 +205,6 @@ class Upload extends PureComponent {
     });
   };
 
-  uploadHandler = (event) => {
-    event.preventDefault();
-    console.log('uploadHandler');
-  };
-
   addFolderHandler = (event) => {
     event.preventDefault();
     console.log('addFolderHandler');
@@ -303,6 +300,112 @@ class Upload extends PureComponent {
       console.log('INDETERMINATE STATE!!');
       this.setState({ mainIndeterminate: true, mainChecked: true });
     }
+  };
+
+  findDuplicateFile = (file) => {
+    return this.state.selectedFiles.find((existingFile) => {
+      const isDuplicate =
+        existingFile.name === file.name &&
+        existingFile.lastModified === file.lastModified &&
+        existingFile.size === file.size &&
+        existingFile.type === file.type;
+      console.log('IS DUPLICATE? ', isDuplicate);
+      return isDuplicate;
+    });
+  };
+
+  fileChangedHandler = (event) => {
+    event.preventDefault();
+    event.persist();
+    const files = event.target.files;
+
+    let existingFiles = [];
+
+    //finds duplicates from current selection
+    Array.from(files).forEach((file) => {
+      const existingFile = this.findDuplicateFile(file);
+      if (existingFile) {
+        console.error('Existing file:', existingFile);
+        return;
+      }
+      existingFiles.push(file);
+      console.warn('Added file:', file);
+    });
+    console.log('EXISTING: ', existingFiles);
+    this.setState(
+      (prevState) => {
+        console.log('waypoint1!!!!');
+        return {
+          selectedFiles: [...prevState.selectedFiles, ...existingFiles],
+        };
+      },
+      () => {
+        console.log('waypoint2!!!!');
+        console.log('this.state.selectedFiles: ', this.state.selectedFiles);
+        this.uploadHandler(event);
+      }
+    );
+  };
+
+  uploadHandler = (event) => {
+    event.preventDefault();
+    this.state.selectedFiles.forEach((item, index) => {
+      console.log('uploadHandler item: ', item.name);
+      let file = this.state.selectedFiles[index];
+      let fileName = this.state.selectedFiles[index].name;
+      // console.log('FILE: ', file, '| filename: ', fileName);
+      let fileRef = this.state.currentFolderRef.child(fileName);
+
+      //using .fullPath
+      let path = fileRef.fullPath; //path is images/{filename}
+      //put() takes files via javascript File and Blob api and uploads them to cloud storage
+      let uploadTask = fileRef.put(file);
+
+      uploadTask.on(
+        'state_changed', //or firebase.storage.TaskEvent.STATE_CHANGED
+        (snapshot) => {
+          var progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log('UPLOAD PROGRESS: ', progress);
+        },
+        (error) => {
+          console.log('error');
+        },
+        () => {
+          //callback after completion
+          console.log('uploaded file.');
+          this.getFolderData(this.state.currentFolderRef);
+        }
+      );
+    });
+    //there is no items to add or remove as upload items go straight to cloud or are removed straight from cloud
+    // this.state.selectedFiles.forEach((item, index) => {
+    //   this.context.addinput(event, this.props.name, item);
+    // });
+
+    //FILEREADER...
+    //use file reference by instantiating a FileReader object to read contents into memeory,
+    //when load finishes, the reader's onload event is fired
+    //and its 'result' attr can be used to access the file data
+
+    //options:
+    //FileReader.readAsBinaryString(Blob|File)
+    //FileReader.readAsText(Blob|File, opt_encoding)
+    //FileReader.readAsDataURL(Blob|File)
+    //FileReader.readAsArrayBuffer(Blob|File)
+    /*
+        Once one of these read methods is called on your FileReader object can be used to track its progress. 
+        - onloadstart 
+        - onprogress 
+        - onload 
+        - onabort 
+        - onerror 
+        - onloadend 
+        */
+
+    // let reader = new FileReader();
+
+    // reader.readAsDataURL(this.state.selectedFiles[i]);
   };
 
   render() {
@@ -418,9 +521,19 @@ class Upload extends PureComponent {
                   </div>
                 </div>
                 <div className={[classes.UploadActionButtons].join(' ')}>
+                  <input
+                    ref={this.uploadRef}
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={this.fileChangedHandler}
+                  />
                   <Button
                     type="Action"
-                    onClick={this.uploadHandler}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      this.uploadRef.current.click();
+                    }}
                     title="upload"
                   >
                     <Icon iconstyle="fas" code="arrow-circle-up" size="lg" />

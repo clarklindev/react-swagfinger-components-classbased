@@ -55,6 +55,9 @@
     flex-shrink: 0;
     flex-grow: 0;
     flex-basis: 1;
+    input {
+      display: none;
+    }
   }
 
   .UploadBodyHeader {
