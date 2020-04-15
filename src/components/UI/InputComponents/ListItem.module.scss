@@ -7,6 +7,9 @@
   box-sizing: border-box;
   border: 1px solid var(--colorborder);
   border-radius: var(--borderradius);
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 
   &.ListItemHover:hover {
     border-color: var(--colorborderhover);
@@ -30,6 +33,9 @@
   }
   p {
     margin: 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
   span {
     padding: 0px;

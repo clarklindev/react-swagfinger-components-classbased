@@ -8,7 +8,7 @@ class ListItem extends Component {
     this.className = Utils.getClassNameString([
       classes.ListItem,
       ListItem.name,
-      this.props.className
+      this.props.className,
     ]);
 
     this.displayTextRef = React.createRef();
@@ -48,17 +48,20 @@ class ListItem extends Component {
       <div
         className={[this.className, ...styleClasses].join(' ')}
         onClick={this.props.onClick}
+        title={this.props.title}
       >
         <div
           className={[
             classes.ListItemWrapper,
-            classes[this.props.aligntype]
+            classes[this.props.aligntype],
           ].join(' ')}
         >
-          <div>
-            {displayText}
-            {hasExtraText}
-          </div>
+          {displayText || hasExtraText ? (
+            <div>
+              {displayText}
+              {hasExtraText}
+            </div>
+          ) : null}
           {this.props.children}
         </div>
       </div>

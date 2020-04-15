@@ -164,9 +164,9 @@ class Upload extends PureComponent {
     this.setState({ currentFolderRef: ref, tempFolderPath: ref.location.path });
   };
 
-  getFolderData = (ref) => {
+  getFolderData = async (ref) => {
     // //save to state folder ref from firebase storage
-    ref.listAll().then((res) => {
+    await ref.listAll().then((res) => {
       let folders = [];
       if (res.prefixes.length) {
         res.prefixes.forEach((folderRef) => {
@@ -408,6 +408,24 @@ class Upload extends PureComponent {
     // reader.readAsDataURL(this.state.selectedFiles[i]);
   };
 
+  deleteSelected = (event) => {
+    event.preventDefault();
+    //go through file refs
+    let updatedFiles = [...this.state.files].filter((item, index) => {
+      //remove checked
+      if (this.state.checkedFiles[index] === true) {
+        item.delete().then(async () => {
+          await this.getFolderData(this.state.currentFolderRef);
+          this.setState({
+            mainIndeterminate: false,
+            mainChecked: false,
+            checkedFiles: [],
+          });
+        });
+      }
+    });
+  };
+
   render() {
     let currentFolderData = [
       ...this.state.folders.map((item, index) => {
@@ -425,9 +443,10 @@ class Upload extends PureComponent {
               aligntype="FlexStart"
               hovereffect={true}
               onClick={() => this.changeFolderPath(item)}
+              title={item.name}
             >
               <Icon iconstyle="far" code="folder" size="lg" />
-              {item.name}/
+              <p>{item.name}/</p>
             </ListItem>
           </React.Fragment>
         );
@@ -448,7 +467,7 @@ class Upload extends PureComponent {
               //onClick={() => this.changeFolderPath(item)}
             >
               <Icon iconstyle="far" code="file" size="lg" />
-              {item.name}
+              <p>{item.name}</p>
             </ListItem>
           </React.Fragment>
         );
@@ -501,7 +520,9 @@ class Upload extends PureComponent {
                       ' selected'}
                   </span>
                 </div>
-                <Button type="Action">Delete</Button>
+                <Button type="Action" onClick={this.deleteSelected}>
+                  Delete
+                </Button>
               </React.Fragment>
             ) : (
               <React.Fragment>
