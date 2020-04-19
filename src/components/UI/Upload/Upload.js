@@ -424,6 +424,20 @@ class Upload extends PureComponent {
         });
       }
     });
+
+    //go through folder refs
+    let updatedFolders = [...this.state.folders].filter(async (item, index) => {
+      if (this.state.checkedFolders[index] === true) {
+        await item.getParent().child(item).delete();
+
+        await this.getFolderData(this.state.currentFolderRef);
+        this.setState({
+          mainIndeterminate: false,
+          mainChecked: false,
+          checkedFolders: [],
+        });
+      }
+    });
   };
 
   render() {
