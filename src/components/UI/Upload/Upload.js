@@ -599,7 +599,7 @@ class Upload extends PureComponent {
                     this.toggleCheckAllFiles(!this.state.mainChecked);
                   }}
                 ></Checkbox>
-                <span>Name</span>
+                <span className={classes.LabelName}>Name</span>
               </div>
             </div>
 
