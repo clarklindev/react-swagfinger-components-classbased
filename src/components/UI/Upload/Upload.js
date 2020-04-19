@@ -604,49 +604,56 @@ class Upload extends PureComponent {
             </div>
 
             <div className={classes.UploadBody}>
-              {this.state.currentFolderDrilldownRefs.length > 1 ? (
-                <div
-                  className={[
-                    classes.FlexGroupRow,
-                    classes.NavigateUpOneFolder,
-                  ].join(' ')}
-                >
-                  <ListItem
-                    aligntype="FlexStart"
-                    hovereffect={true}
-                    onClick={() => {
-                      //get current index on drilldown,
-                      let index = this.state.currentFolderDrilldownRefs.findIndex(
-                        (item) => {
-                          return (
-                            item.location.path ===
-                            this.state.currentFolderRef.location.path
-                          );
-                        }
-                      );
-                      //navigate to index -1
-
-                      this.changeFolderPath(
-                        this.state.currentFolderDrilldownRefs[index - 1]
-                      );
-                    }}
+              {
+                // > 1 because else it is the root node
+                this.state.currentFolderDrilldownRefs.length > 1 ? (
+                  <div
+                    className={[
+                      classes.FlexGroupRow,
+                      classes.NavigateUpOneFolder,
+                    ].join(' ')}
                   >
-                    <Icon
-                      iconstyle="fas"
-                      code="level-up-alt"
-                      size="md"
-                      flip="horizontal"
-                    />
-                    ../
-                  </ListItem>
-                </div>
-              ) : null}
+                    <ListItem
+                      aligntype="FlexStart"
+                      hovereffect={true}
+                      onClick={() => {
+                        //get current index on drilldown,
+                        let index = this.state.currentFolderDrilldownRefs.findIndex(
+                          (item) => {
+                            return (
+                              item.location.path ===
+                              this.state.currentFolderRef.location.path
+                            );
+                          }
+                        );
+                        //navigate to index -1
 
-              <List
-                value={{
-                  data: currentFolderData,
-                }}
-              ></List>
+                        this.changeFolderPath(
+                          this.state.currentFolderDrilldownRefs[index - 1]
+                        );
+                      }}
+                    >
+                      <Icon
+                        iconstyle="fas"
+                        code="level-up-alt"
+                        size="md"
+                        flip="horizontal"
+                      />
+                      ../
+                    </ListItem>
+                  </div>
+                ) : null
+              }
+
+              {this.state.folders.length || this.state.files.length ? (
+                <List
+                  value={{
+                    data: currentFolderData,
+                  }}
+                ></List>
+              ) : (
+                'There are no files here yet'
+              )}
             </div>
           </React.Fragment>
         </div>

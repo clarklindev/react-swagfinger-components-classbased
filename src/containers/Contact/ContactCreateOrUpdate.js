@@ -21,7 +21,7 @@ class ContactCreateOrUpdate extends Component {
     super(props);
     this.className = Utils.getClassNameString([
       classes.ContactCreateOrUpdate, //css module
-      ContactCreateOrUpdate.name
+      ContactCreateOrUpdate.name,
     ]);
 
     this.submitInputRef = React.createRef();
@@ -32,7 +32,7 @@ class ContactCreateOrUpdate extends Component {
     id: null, //id of current item being updated
     saving: false,
     formIsValid: null, //for form validation
-    form: null
+    form: null,
   };
   //------------------------------------------------------
   //------------------------------------------------------
@@ -42,7 +42,7 @@ class ContactCreateOrUpdate extends Component {
     //generate form from firebase 'form'
     try {
       //get the structure of the form from firebase
-      let formstructure = await axios.get(`/form-contacts.json`);
+      let formstructure = await axios.get(`/forms/form-contacts.json`);
       console.log('formstructure:', formstructure.data);
 
       let clone = [...formstructure.data];
@@ -53,7 +53,7 @@ class ContactCreateOrUpdate extends Component {
         valid: false,
         errors: null,
         touched: false,
-        pristine: true
+        pristine: true,
       };
 
       //-----------------------------------------------
@@ -102,7 +102,7 @@ class ContactCreateOrUpdate extends Component {
 
         //console.log('response: ', response.data); //returns a single contact
         //map each key of contact (there are inputs/ input sets)
-        Object.keys(response.data).forEach(item => {
+        Object.keys(response.data).forEach((item) => {
           let val = null;
 
           //if the values also exist from forms schema
@@ -110,7 +110,7 @@ class ContactCreateOrUpdate extends Component {
             //   //check if whats coming back from firebase is an array...
             if (Array.isArray(response.data[item])) {
               //return array of values
-              val = response.data[item].map(each => {
+              val = response.data[item].map((each) => {
                 //validate the query id's property with the form schemas validation
                 let validation = validationCheck(
                   each,
@@ -121,7 +121,7 @@ class ContactCreateOrUpdate extends Component {
                   valid: validation.isValid,
                   errors: validation.errors,
                   touched: false,
-                  pristine: true
+                  pristine: true,
                 };
               });
             } else {
@@ -134,7 +134,7 @@ class ContactCreateOrUpdate extends Component {
                 valid: validation.isValid,
                 errors: validation.errors,
                 touched: false,
-                pristine: true
+                pristine: true,
               }; //return single value
             }
             let updatedObj = { ...formatted[item] };
@@ -147,7 +147,7 @@ class ContactCreateOrUpdate extends Component {
         this.setState({
           form: formatted,
           isLoading: false,
-          id: id
+          id: id,
         });
         //upate state
         console.log(
@@ -173,7 +173,7 @@ class ContactCreateOrUpdate extends Component {
   //------------------------------------------------------
 
   //function gets called when submit button is clicked
-  onSubmitHandler = event => {
+  onSubmitHandler = (event) => {
     console.log('onSubmitHandler..');
     event.preventDefault();
 
@@ -187,7 +187,7 @@ class ContactCreateOrUpdate extends Component {
       for (let key in this.state.form) {
         //array value, store just the value.data in formData
         if (this.state.form[key].elementconfig.valuetype === 'array') {
-          formData[key] = this.state.form[key].value.map(each => {
+          formData[key] = this.state.form[key].value.map((each) => {
             return each.data;
           });
         }
@@ -229,7 +229,7 @@ class ContactCreateOrUpdate extends Component {
     event.preventDefault();
     console.log('KEY:', key);
 
-    this.setState(prevState => {
+    this.setState((prevState) => {
       return {
         form: {
           ...prevState.form,
@@ -240,17 +240,17 @@ class ContactCreateOrUpdate extends Component {
               valid: false,
               touched: false,
               pristine: true,
-              errors: null
-            })
-          }
-        }
+              errors: null,
+            }),
+          },
+        },
       };
     });
-    this.setState(prevState => {
+    this.setState((prevState) => {
       let isValid = this.checkInputValidProperty(prevState.form);
 
       return {
-        formIsValid: isValid
+        formIsValid: isValid,
       };
     });
   };
@@ -269,7 +269,7 @@ class ContactCreateOrUpdate extends Component {
     });
     console.log('updatedInputs: ', updatedInputs);
 
-    this.setState(prevState => {
+    this.setState((prevState) => {
       console.log('...prevState.form[key]: ', { ...prevState.form[key] });
       console.log('...updatedInputs', [...updatedInputs]);
       return {
@@ -277,24 +277,24 @@ class ContactCreateOrUpdate extends Component {
           ...prevState.form,
           [key]: {
             ...prevState.form[key],
-            value: [...updatedInputs]
-          }
-        }
+            value: [...updatedInputs],
+          },
+        },
       };
     });
 
-    this.setState(prevState => {
+    this.setState((prevState) => {
       let isValid = this.checkInputValidProperty(prevState.form);
 
       return {
-        formIsValid: isValid
+        formIsValid: isValid,
       };
     });
   };
 
   //checks the .valid property of each input in array or individual input
   //returns true/false if form object is valid/invalid
-  checkInputValidProperty = form => {
+  checkInputValidProperty = (form) => {
     // console.log('IS FORM VALID CHECK');
     let formIsValid = true;
 
@@ -320,11 +320,11 @@ class ContactCreateOrUpdate extends Component {
     console.log('inputChangedHandler key: ', key, '|', newval);
 
     const updatedForm = {
-      ...this.state.form
+      ...this.state.form,
     };
 
     const updatedFormElement = {
-      ...updatedForm[key]
+      ...updatedForm[key],
     };
 
     //single contact
@@ -338,7 +338,7 @@ class ContactCreateOrUpdate extends Component {
       touched: true,
       pristine: false,
       valid: validation.isValid,
-      errors: validation.errors
+      errors: validation.errors,
     };
 
     //if array
@@ -366,7 +366,7 @@ class ContactCreateOrUpdate extends Component {
 
   //mutate .pristine prop of inputs to false
   //used to test inputs validity when mouse is over submit button
-  onSubmitTest = event => {
+  onSubmitTest = (event) => {
     console.log('onSubmitTest');
     //make all inputs pristine:false
     //each prop in contact
@@ -375,7 +375,7 @@ class ContactCreateOrUpdate extends Component {
 
       switch (this.state.form[key].elementconfig.valuetype) {
         case 'array':
-          obj = this.state.form[key].value.map(each => {
+          obj = this.state.form[key].value.map((each) => {
             let validation = validationCheck(
               each.data,
               this.state.form[key].validation
@@ -407,14 +407,14 @@ class ContactCreateOrUpdate extends Component {
           break;
       }
 
-      this.setState(prevState => ({
+      this.setState((prevState) => ({
         form: {
           ...prevState.form,
           [key]: {
             ...prevState.form[key],
-            value: obj
-          }
-        }
+            value: obj,
+          },
+        },
       }));
     }
     console.log(
@@ -431,11 +431,11 @@ class ContactCreateOrUpdate extends Component {
     for (let key in this.state.form) {
       formElementsArray.push({
         id: key,
-        data: this.state.form[key] //refers to the object associated with the contact property
+        data: this.state.form[key], //refers to the object associated with the contact property
       });
     }
 
-    let formInputs = formElementsArray.map(each => {
+    let formInputs = formElementsArray.map((each) => {
       //key is unique because it uses the property 'name'
       return <ComponentFactory key={each.id} id={each.id} data={each.data} />;
     });
@@ -462,7 +462,7 @@ class ContactCreateOrUpdate extends Component {
                     value={{
                       addinput: this.addInputHandler,
                       removeinput: this.removeInputHandler,
-                      changed: this.inputChangedHandler
+                      changed: this.inputChangedHandler,
                     }}
                   >
                     {formInputs}
@@ -471,12 +471,12 @@ class ContactCreateOrUpdate extends Component {
                     ref={this.submitInputRef}
                     type="submit"
                     value="Submit"
-                    onMouseOver={event => this.onSubmitTest(event)}
+                    onMouseOver={(event) => this.onSubmitTest(event)}
                     // disabled={!this.state.formIsValid} //dont disable just handle with validation
                   />
                   <Button
                     type="WithBorder"
-                    onClick={event => {
+                    onClick={(event) => {
                       console.log('Submit...');
                       event.preventDefault();
                       this.submitInputRef.current.click();
@@ -485,7 +485,7 @@ class ContactCreateOrUpdate extends Component {
                       const event = new MouseEvent('mouseover', {
                         view: window,
                         bubbles: true,
-                        cancelable: true
+                        cancelable: true,
                       });
                       this.submitInputRef.current.dispatchEvent(event);
                     }}
@@ -502,20 +502,20 @@ class ContactCreateOrUpdate extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    token: state.auth.token
+    token: state.auth.token,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     onContactCreated: (token, form, callback) => {
       dispatch(actions.processContactCreate(token, form, callback));
     },
     onContactChanged: (token, form, id, callback) => {
       dispatch(actions.processContactUpdate(token, form, id, callback));
-    }
+    },
   };
 };
 export default connect(
