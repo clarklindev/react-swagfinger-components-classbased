@@ -1,9 +1,5 @@
 # Assigment
 
-## Preview
-
-http://bit.ly/2VbYehG
-
 ## Tech Stack
 
 My tech stack for this project:
