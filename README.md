@@ -1,5 +1,3 @@
-# Assigment
-
 ## Tech Stack
 
 My tech stack for this project:
