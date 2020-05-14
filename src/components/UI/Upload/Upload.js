@@ -3,7 +3,6 @@ import { withRouter } from 'react-router-dom';
 
 import classes from './Upload.module.scss';
 
-import UploadDrop from './UploadDrop';
 import Modal from '../Modal/Modal';
 import Input from '../InputComponents/Input';
 import List from '../InputComponents/List';
@@ -342,42 +341,38 @@ class Upload extends PureComponent {
       () => {
         console.log('waypoint2!!!!');
         console.log('this.state.selectedFiles: ', this.state.selectedFiles);
-        this.uploadHandler(event);
+        this.state.selectedFiles.forEach((item, index) => {
+          console.log('uploadHandler item: ', item.name);
+          let file = this.state.selectedFiles[index];
+          let fileName = this.state.selectedFiles[index].name;
+          // console.log('FILE: ', file, '| filename: ', fileName);
+          let fileRef = this.state.currentFolderRef.child(fileName);
+    
+          //using .fullPath
+          let path = fileRef.fullPath; //path is images/{filename}
+          //put() takes files via javascript File and Blob api and uploads them to cloud storage
+          let uploadTask = fileRef.put(file);
+    
+          uploadTask.on(
+            'state_changed', //or firebase.storage.TaskEvent.STATE_CHANGED
+            (snapshot) => {
+              var progress =
+                (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+              console.log('UPLOAD PROGRESS: ', progress);
+            },
+            (error) => {
+              console.log('error');
+            },
+            () => {
+              //callback after completion
+              console.log('uploaded file.');
+              this.getFolderData(this.state.currentFolderRef);
+            }
+          );
+        });
       }
     );
-  };
 
-  uploadHandler = (event) => {
-    event.preventDefault();
-    this.state.selectedFiles.forEach((item, index) => {
-      console.log('uploadHandler item: ', item.name);
-      let file = this.state.selectedFiles[index];
-      let fileName = this.state.selectedFiles[index].name;
-      // console.log('FILE: ', file, '| filename: ', fileName);
-      let fileRef = this.state.currentFolderRef.child(fileName);
-
-      //using .fullPath
-      let path = fileRef.fullPath; //path is images/{filename}
-      //put() takes files via javascript File and Blob api and uploads them to cloud storage
-      let uploadTask = fileRef.put(file);
-
-      uploadTask.on(
-        'state_changed', //or firebase.storage.TaskEvent.STATE_CHANGED
-        (snapshot) => {
-          var progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log('UPLOAD PROGRESS: ', progress);
-        },
-        (error) => {
-          console.log('error');
-        },
-        () => {
-          //callback after completion
-          console.log('uploaded file.');
-          this.getFolderData(this.state.currentFolderRef);
-        }
-      );
-    });
     //there is no items to add or remove as upload items go straight to cloud or are removed straight from cloud
     // this.state.selectedFiles.forEach((item, index) => {
     //   this.context.addinput(event, this.props.name, item);
@@ -407,6 +402,8 @@ class Upload extends PureComponent {
 
     // reader.readAsDataURL(this.state.selectedFiles[i]);
   };
+
+
 
   deleteSelected = (event) => {
     event.preventDefault();
