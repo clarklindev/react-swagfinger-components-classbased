@@ -29,7 +29,7 @@ class Input extends PureComponent {
       console.log('CALL PARENT ONCHANGE...');
       this.props.onChange(event);
     } else {
-      console.log('props.name: ', this.props.name);
+      //console.log('props.name: ', this.props.name);
       this.context.changed(event.target.value, this.props.name);
     }
   };

@@ -18,7 +18,7 @@ class Checkbox extends Component {
 
   componentDidUpdate() {
     if (this.state.checked !== this.props.checked) {
-      console.log('COMPONENT DID UPDATE');
+      //console.log('COMPONENT DID UPDATE');
       this.setState({ checked: this.props.checked });
       this.checkboxRef.current.checked = this.props.checked;
     }

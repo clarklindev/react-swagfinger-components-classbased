@@ -11,7 +11,7 @@ class Breadcrumb extends Component {
     //if there is more than one Breadcrumb, the first becomes a '.../' navigation
     if (this.props.path.length === 1) {
       currentNavPathName = this.props.path[0].location.path;
-      console.log('CURRENTNAVPATHNAME: ', currentNavPathName);
+      //console.log('CURRENTNAVPATHNAME: ', currentNavPathName);
       return (
         <div className={classes.Breadcrumb}>
           <div

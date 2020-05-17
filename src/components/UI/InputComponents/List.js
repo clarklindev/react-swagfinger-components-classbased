@@ -13,7 +13,7 @@ class List extends Component {
       <div className={classList}>
         <ul>
           {(Array.from(this.props.value.data) || []).map((item, index) => {
-            console.log('ITEM: ', item);
+            //console.log('ITEM: ', item);
             return <li key={'list' + index}>{item}</li>;
           })}
         </ul>

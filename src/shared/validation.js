@@ -1,5 +1,5 @@
 export const CheckValidity = (value, rules) => {
-  console.log('CheckValidity: ');
+  //console.log('CheckValidity: ');
   let isValid = true;
   let errors = [];
 
