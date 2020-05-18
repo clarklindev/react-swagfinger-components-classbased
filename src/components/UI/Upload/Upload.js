@@ -244,7 +244,6 @@ class Upload extends PureComponent {
       //current folders
       else{
         console.log('FOUND in placeholderFolders...');
-        let obj = null;
         let foundIndex = prevState.placeholderFolders[pathMatch].pathfolders.findIndex((item)=>{
           return item === foldername;
         });
@@ -257,12 +256,23 @@ class Upload extends PureComponent {
           //add folder to pathfolders at current pathMatch
           console.log('FOLDER DOES NOT EXIST YET');
           
-          let prevPlaceholderFolders = [...prevState.placeholderFolders];
-          let updatedObj = prevPlaceholderFolders[pathMatch];
-          updatedObj.pathfolders = [...updatedObj.pathfolders, foldername];
+          let allExceptMatch = prevState.placeholderFolders.filter(item=>{
+            return item.pathRef !== this.state.currentFolderRef;
+          });
 
-          console.log('NEW OBJ: ', prevPlaceholderFolders);
-          return { placeholderFolders: prevPlaceholderFolders, createFolderModal: false} 
+          let match = prevState.placeholderFolders.find(item=>{
+            return item.pathRef === this.state.currentFolderRef;
+          });
+          
+          let isFound = match.pathfolders.findIndex(item=>{
+            return item === foldername;
+          });
+          if(isFound === -1){
+            let updatedFolders = [...match.pathfolders, foldername];
+            match.pathfolders = updatedFolders;
+          }
+          
+          return { placeholderFolders: [...allExceptMatch, match], createFolderModal: false} 
         }
        
       }
@@ -499,12 +509,19 @@ class Upload extends PureComponent {
 
   render() {
     console.log('RENDER: ', this.state.placeholderFolders);
-
-    let placeholder = this.state.placeholderFolders.find((item)=>{
-      return (item.pathRef === this.state.currentFolderRef);
-    });
-    let placeholders = null;
+    console.log('this.state.currentFolderRef: ', this.state.currentFolderRef);
+    let placeholder = undefined;
+    if(this.state.placeholderFolders.length){
+      console.log('SOMETHING HERE...')
+      placeholder = this.state.placeholderFolders.find((item)=>{
+        return (item.pathRef.location.path === this.state.currentFolderRef.location.path);
+      });
+    }
+    
+    let placeholders=[];
+    console.log('PLACEHOLDERS IS []');
     if(placeholder !== undefined){
+      console.log('MATCH');
       console.log('placeholder: ', placeholder);
       placeholders = placeholder.pathfolders.map((path, index)=>{
         let key = this.state.currentFolderRef.location.path+index;
@@ -533,9 +550,13 @@ class Upload extends PureComponent {
             </ListItem>
           </React.Fragment>
         );
-      })
+      });
+      console.log('UPDATED placeholders: ', placeholders);
     }
+    
 
+  
+    
     let currentFolderData = [
       ...this.state.firebaseFolders.map((item, index) => {
         console.log(`folder [${index}]: ${this.state.checkedFolders[index]}`);
@@ -561,7 +582,7 @@ class Upload extends PureComponent {
         );
       }),
       //placeholder data
-      placeholders,
+      ...placeholders,
       //=====================================
       ...this.state.firebaseFiles.map((item, index) => {
         return (
@@ -743,7 +764,7 @@ class Upload extends PureComponent {
                 ) : null
               }
 
-              {this.state.firebaseFolders.length || this.state.firebaseFiles.length ? (
+              {this.state.firebaseFolders.length || this.state.firebaseFiles.length || this.state.placeholderFolders.length ? (
                 <List
                   value={{
                     data: currentFolderData,
