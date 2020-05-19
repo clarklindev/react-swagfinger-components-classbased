@@ -48,7 +48,7 @@ class Upload extends PureComponent {
     allFolderList: [],
     firebaseFolders: [], //should store refs of current folder
     firebaseFiles: [], //should store refs of current folder
-    placeholderFolders: [], //placeholder folder not in firebase, stores an array of obj {ref:, path:, folders:[]}
+    placeholderFolders: [], //placeholder folder not in firebase, stores an array of obj {pathRef:, folders:[]}
     checkedFolders: [],
     checkedFiles: [],
     mainChecked: false,
@@ -80,13 +80,14 @@ class Upload extends PureComponent {
     }
 
     this.changeFolderPath(path);
-    this.buildFolderList(path);
+    this.findFoldersForBuild(path);
   }
 
   errorConfirmedHandler = () => {
     this.setState({ errorModal: null });
   };
 
+  //RECURSIVE - gets all folders from ref onwards saving refs
   findFoldersForBuild = (ref) => {
     console.log('FIND FOLDERS FOR BUILD');
     this.setState((prevState) => {
@@ -99,12 +100,6 @@ class Upload extends PureComponent {
         this.findFoldersForBuild(folderRef);
       });
     });
-  };
-
-  //gets all folders from ref onwards saving refs
-  buildFolderList = (ref) => {
-    console.log('BUILD FOLDER LIST');
-    this.findFoldersForBuild(ref);
   };
 
   changeFolderPath = (ref) => {
@@ -526,6 +521,7 @@ class Upload extends PureComponent {
       placeholders = placeholder.pathfolders.map((path, index)=>{
         let key = this.state.currentFolderRef.location.path+index;
         console.log('key: ', key);
+
         return (
           <React.Fragment key={key}>
             <Checkbox
@@ -764,7 +760,7 @@ class Upload extends PureComponent {
                 ) : null
               }
 
-              {this.state.firebaseFolders.length || this.state.firebaseFiles.length || this.state.placeholderFolders.length ? (
+              {currentFolderData.length  ? (
                 <List
                   value={{
                     data: currentFolderData,
