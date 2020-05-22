@@ -202,6 +202,33 @@ class Upload extends PureComponent {
         });
       }      
 
+      //sort out placeholder folders
+      let placeholderMatchIndex=-1;
+
+      if(this.state.placeholderFolders.length){
+        console.log('SOMETHING HERE...')
+        placeholderMatchIndex = this.state.placeholderFolders.findIndex((item)=>{
+          return (item.pathRef.location.path === this.state.currentFolderRef.location.path);
+        });
+
+        if(placeholderMatchIndex !== -1){
+          let filtered = this.state.placeholderFolders[placeholderMatchIndex].pathfolders.filter(folder=>{
+            //go thru firebase folders and see if there is a match to 'folder' name
+            let isFound = folders.find(folderref=>{
+              return folderref.name === folder;
+            });
+            console.log('ISFOUND: ', isFound);
+            if(isFound !== undefined){
+              return false;
+            }
+            return true;
+          });
+          console.log('UPDATED CHILDFOLDERS: ', filtered);
+          
+          this.state.placeholderFolders[placeholderMatchIndex].pathfolders = filtered;
+        }
+      }
+
       this.setState((prevState) => {
         return {
           ...prevState,
@@ -523,75 +550,49 @@ class Upload extends PureComponent {
   render() {
     console.log('RENDER: ', this.state.placeholderFolders);
     console.log('this.state.currentFolderRef: ', this.state.currentFolderRef);
+    let placeholders = [];
     let placeholderMatch = undefined;
+    
     if(this.state.placeholderFolders.length){
       console.log('SOMETHING HERE...')
       placeholderMatch = this.state.placeholderFolders.find((item)=>{
         return (item.pathRef.location.path === this.state.currentFolderRef.location.path);
       });
 
-      //if the folder in pathfolders exists in state.firebaseFolders,
-      //then dont render..
-      //current folder match...
-      console.log('LENGTH: ', this.state.placeholderFolders);
-  
-      let placeholderFolderNotMatch = this.state.placeholderFolders.filter(obj=>{
-        return obj.pathRef !== this.state.currentFolderRef;
-      });
+      if(placeholderMatch !== undefined){
 
-      console.log('SAMEFOLDER: ', placeholderMatch);
-      console.log('ALL OTHER REFS: ', placeholderFolderNotMatch);
+        placeholders = placeholderMatch.pathfolders.map((path, index)=>{
+          
+          let key = this.state.currentFolderRef.location.path+index;
+          console.log('key: ', key);
 
-    }
-
-    let placeholders = [];
-    if(placeholderMatch !== undefined){
-      let childfolders = [...placeholderMatch.pathfolders];
-      let filtered = childfolders.filter(folder=>{
-        //go thru firebase folders and see if there is a match to 'folder' name
-        let isFound = this.state.firebaseFolders.find(folderref=>{
-          return folderref.name === folder;
+          return (
+            <React.Fragment key={key}>
+              <Checkbox
+                onChange={(index, checked) =>
+                  this.folderCheckHandler(index, checked)
+                }
+                index={index}
+                checked={this.state.checkedFolders[index]}
+              ></Checkbox>
+              <ListItem
+                aligntype="FlexStart"
+                hovereffect={true}
+                onClick={() => {
+                  console.log('CHANGING FOLDER :)');
+                  let newRef = this.state.currentFolderRef.child(path);
+                  this.changeFolderPath(newRef)
+                }}
+                title={path}
+              >
+                <Icon iconstyle="far" code="folder" size="lg" />
+                <p>{path}/</p>
+              </ListItem>
+            </React.Fragment>
+          );
         });
-        console.log('ISFOUND: ', isFound);
-        if(isFound !== undefined){
-          return false;
-        }
-        return true;
-      });
-      console.log('UPDATED CHILDFOLDERS: ', filtered);
 
-      placeholderMatch.pathfolders = filtered;
-      placeholders = placeholderMatch.pathfolders.map((path, index)=>{
-        
-        let key = this.state.currentFolderRef.location.path+index;
-        console.log('key: ', key);
-
-        return (
-          <React.Fragment key={key}>
-            <Checkbox
-              onChange={(index, checked) =>
-                this.folderCheckHandler(index, checked)
-              }
-              index={index}
-              checked={this.state.checkedFolders[index]}
-            ></Checkbox>
-            <ListItem
-              aligntype="FlexStart"
-              hovereffect={true}
-              onClick={() => {
-                console.log('CHANGING FOLDER :)');
-                let newRef = this.state.currentFolderRef.child(path);
-                this.changeFolderPath(newRef)
-              }}
-              title={path}
-            >
-              <Icon iconstyle="far" code="folder" size="lg" />
-              <p>{path}/</p>
-            </ListItem>
-          </React.Fragment>
-        );
-      });
-
+      }
     }
 
     let currentFolderData = [
@@ -643,6 +644,7 @@ class Upload extends PureComponent {
         );
       }),
     ];
+    
     let isIndeterminateClass =
       this.state.mainIndeterminate === true ||
       (this.getCheckFoldersLength() + this.getCheckedFilesLength() ===
