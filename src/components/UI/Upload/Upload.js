@@ -44,6 +44,7 @@ class Upload extends PureComponent {
     createFolderModal: false,
     createFolderName: '',
     editBreadcrumbModal: false,
+    uploadUrlOver: false,
     errorModalMessage: null,
     allFolderList: [],
     firebaseFolders: [], //should store refs of current folder
@@ -56,7 +57,6 @@ class Upload extends PureComponent {
     currentFolderRef: null,
     tempFolderPath: null, //used for when editing in the modal state
     currentFolderDrilldownRefs: [],
-    uploadUrlOver: false,
     selectedFiles: [], //files added for upload
   };
 
@@ -186,6 +186,7 @@ class Upload extends PureComponent {
           );
         });
       }
+
       let files = [];
       if (res.items.length) {
         res.items.forEach((itemRef) => {
@@ -199,7 +200,7 @@ class Upload extends PureComponent {
             })
           );
         });
-      }
+      }      
 
       this.setState((prevState) => {
         return {
@@ -225,28 +226,45 @@ class Upload extends PureComponent {
     console.log('this.state.currentFolderRef.location.path:', this.state.currentFolderRef.location.path);
     this.setState((prevState)=>{
       
-      let pathMatch = prevState.placeholderFolders.findIndex(obj=>{  //note placeholderFolders stores object {path:, ref:, folders:[]}
+      //current folder match...
+      let placeholderFolderMatchIndex = prevState.placeholderFolders.findIndex(obj=>{  //note placeholderFolders stores object {path:, ref:, folders:[]}
         return obj.pathRef === this.state.currentFolderRef;
-      })
-      console.log('SAMEFOLDER: ', pathMatch);
+      });
+      console.log('SAMEFOLDER: ', placeholderFolderMatchIndex);
+      
+      //can we find it in firebase?
+      let foundInFirebaseIndex = prevState.firebaseFolders.findIndex((item)=>{
+        console.log('item.name: ', item.name);
+        console.log('foldername: ', foldername);
+        return item.name === foldername;
+      });
+      console.log('foundInFirebaseIndex: ', foundInFirebaseIndex);
 
-      //try find...not found...add!
-      if(pathMatch === -1){
+      if(foundInFirebaseIndex > -1){
+        console.log('FOLDER EXISTS');
+        this.setState({errorModalMessage: 'Path already exists'});
+        return prevState;
+      } 
+
+      //try find current folder...not found...add!
+      if(placeholderFolderMatchIndex === -1){
         console.log('NOT FOUND');
-        let obj={pathRef: this.state.currentFolderRef, pathfolders: [foldername]}
+        let obj={pathRef: {...this.state.currentFolderRef}, pathfolders: [foldername]}
         return { placeholderFolders: [...prevState.placeholderFolders, obj], createFolderModal: false}
       }
-      //current folders
+      //current folders' folders
       else{
         console.log('FOUND in placeholderFolders...');
-        let foundIndex = prevState.placeholderFolders[pathMatch].pathfolders.findIndex((item)=>{
+        let foundIndex = prevState.placeholderFolders[placeholderFolderMatchIndex].pathfolders.findIndex((item)=>{
           return item === foldername;
         });
+
         if(foundIndex > -1){
           console.log('FOLDER EXISTS');
           this.setState({errorModalMessage: 'Path already exists'});
           return prevState;
         }
+
         else{
           //add folder to pathfolders at current pathMatch
           console.log('FOLDER DOES NOT EXIST YET');
@@ -505,20 +523,46 @@ class Upload extends PureComponent {
   render() {
     console.log('RENDER: ', this.state.placeholderFolders);
     console.log('this.state.currentFolderRef: ', this.state.currentFolderRef);
-    let placeholder = undefined;
+    let placeholderMatch = undefined;
     if(this.state.placeholderFolders.length){
       console.log('SOMETHING HERE...')
-      placeholder = this.state.placeholderFolders.find((item)=>{
+      placeholderMatch = this.state.placeholderFolders.find((item)=>{
         return (item.pathRef.location.path === this.state.currentFolderRef.location.path);
       });
+
+      //if the folder in pathfolders exists in state.firebaseFolders,
+      //then dont render..
+      //current folder match...
+      console.log('LENGTH: ', this.state.placeholderFolders);
+  
+      let placeholderFolderNotMatch = this.state.placeholderFolders.filter(obj=>{
+        return obj.pathRef !== this.state.currentFolderRef;
+      });
+
+      console.log('SAMEFOLDER: ', placeholderMatch);
+      console.log('ALL OTHER REFS: ', placeholderFolderNotMatch);
+
     }
-    
-    let placeholders=[];
-    console.log('PLACEHOLDERS IS []');
-    if(placeholder !== undefined){
-      console.log('MATCH');
-      console.log('placeholder: ', placeholder);
-      placeholders = placeholder.pathfolders.map((path, index)=>{
+
+    let placeholders = [];
+    if(placeholderMatch !== undefined){
+      let childfolders = [...placeholderMatch.pathfolders];
+      let filtered = childfolders.filter(folder=>{
+        //go thru firebase folders and see if there is a match to 'folder' name
+        let isFound = this.state.firebaseFolders.find(folderref=>{
+          return folderref.name === folder;
+        });
+        console.log('ISFOUND: ', isFound);
+        if(isFound !== undefined){
+          return false;
+        }
+        return true;
+      });
+      console.log('UPDATED CHILDFOLDERS: ', filtered);
+
+      placeholderMatch.pathfolders = filtered;
+      placeholders = placeholderMatch.pathfolders.map((path, index)=>{
+        
         let key = this.state.currentFolderRef.location.path+index;
         console.log('key: ', key);
 
@@ -547,12 +591,9 @@ class Upload extends PureComponent {
           </React.Fragment>
         );
       });
-      console.log('UPDATED placeholders: ', placeholders);
-    }
-    
 
-  
-    
+    }
+
     let currentFolderData = [
       ...this.state.firebaseFolders.map((item, index) => {
         console.log(`folder [${index}]: ${this.state.checkedFolders[index]}`);
