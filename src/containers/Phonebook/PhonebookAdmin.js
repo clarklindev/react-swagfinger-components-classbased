@@ -96,8 +96,8 @@ class PhonebookAdmin extends Component {
                 return each.includes(this.state.filterText.toLowerCase());
               });
 
-              console.log('contact numbers: ', contactnumberString);
-              console.log('email numbers: ', emailsString);
+              //console.log('contact numbers: ', contactnumberString);
+              //console.log('email numbers: ', emailsString);
 
               let entry =
                 this.state.filterText.length > 0

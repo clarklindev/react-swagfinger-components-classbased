@@ -33,8 +33,8 @@ class InputWithIcon extends Component {
   };
 
   changeHandler = (event) => {
-    console.log('TARGET VALUE: ', event.target.value);
-    console.log('props.name: ', this.props.name, 'value: ', event.target.value);
+    //console.log('TARGET VALUE: ', event.target.value);
+    //console.log('props.name: ', this.props.name, 'value: ', event.target.value);
     this.context.changed(event.target.value, this.props.name);
   };
 
@@ -43,7 +43,7 @@ class InputWithIcon extends Component {
   };
 
   render() {
-    console.log('this.props.value.data: ', this.props.value.data);
+    //console.log('this.props.value.data: ', this.props.value.data);
     let tempClasses = [];
     if (
       this.props.elementtype !== 'multiinput' &&

@@ -317,7 +317,7 @@ class ContactCreateOrUpdate extends Component {
 
   // ------------------------------------
   inputChangedHandler = (newval, key, index = null) => {
-    console.log('inputChangedHandler key: ', key, '|', newval);
+    //console.log('inputChangedHandler key: ', key, '|', newval);
 
     const updatedForm = {
       ...this.state.form,
@@ -330,8 +330,8 @@ class ContactCreateOrUpdate extends Component {
     //single contact
     //single prop of form
     let validation = validationCheck(newval, updatedFormElement.validation);
-    console.log('key: ', key);
-    console.log('validation: ', validation);
+    //console.log('key: ', key);
+    //console.log('validation: ', validation);
 
     let obj = {
       data: newval,
@@ -351,11 +351,11 @@ class ContactCreateOrUpdate extends Component {
       //if single value
       updatedFormElement.value = obj;
     }
-    console.log(
-      '\n\n\n====================\nUPDATED FORM ELEMENT: \n',
-      updatedFormElement,
-      '-----------------------------\n'
-    );
+    // console.log(
+    //   '\n\n\n====================\nUPDATED FORM ELEMENT: \n',
+    //   updatedFormElement,
+    //   '-----------------------------\n'
+    // );
 
     updatedForm[key] = updatedFormElement; //update form's input element state as that or 'updatedFormElement'
 

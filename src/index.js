@@ -20,8 +20,8 @@ import * as serviceWorker from './serviceWorker';
 const logger = (store) => {
   return (next) => {
     return (action) => {
-      console.log('[Middleware] Dispatching action: ', action);
-      console.log('[Middleware] state: ', store.getState());
+      //console.log('[Middleware] Dispatching action: ', action);
+      //console.log('[Middleware] state: ', store.getState());
       return next(action);
     };
   };

@@ -90,8 +90,8 @@ class Phonebook extends Component {
         let emailsString = emails.find((each) => {
           return each.includes(this.state.filterText.toLowerCase());
         });
-        console.log('contact numbers: ', contactnumberString);
-        console.log('email numbers: ', emailsString);
+        //console.log('contact numbers: ', contactnumberString);
+        //console.log('email numbers: ', emailsString);
         let entry =
           this.state.filterText.length > 0
             ? this.regMatch(`${name} ${lastname}`, regex)
