@@ -9,9 +9,9 @@ export const CheckValidity = (value, rules) => {
 
   if (rules.required) {
     isValid = value !== '';
-    console.log('VALUE: ', value);
+    //console.log('VALUE: ', value);
     if (typeof value === 'object') {
-      console.log('Value is an object');
+      //console.log('Value is an object');
       let testEmptyValues = Object.keys(value).some((item) => {
         return (
           value[item] === null ||

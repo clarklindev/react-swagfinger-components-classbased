@@ -150,11 +150,11 @@ class ContactCreateOrUpdate extends Component {
           id: id,
         });
         //upate state
-        console.log(
-          'FORMATTED: ',
-          this.state.form,
-          '\n=============================='
-        );
+        // console.log(
+        //   'FORMATTED: ',
+        //   this.state.form,
+        //   '\n=============================='
+        // );
       }
     } catch (error) {
       console.log(error);
@@ -440,7 +440,7 @@ class ContactCreateOrUpdate extends Component {
       return <ComponentFactory key={each.id} id={each.id} data={each.data} />;
     });
     const query = new URLSearchParams(this.props.location.search).get('id');
-    console.log('QUERY: ', query);
+    //console.log('QUERY: ', query);
     return (
       <React.Fragment>
         {/* add modal just in-case needed, show binds to state of true/false */}

@@ -30,7 +30,7 @@ class UploadDrop extends Component {
 
   componentDidMount() {
     //check if there is 'id' in querystring
-    console.log('COMPONENT DID MOUNT:');
+    //console.log('COMPONENT DID MOUNT:');
 
     this.dragCounter = 0;
 

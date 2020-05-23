@@ -11,9 +11,9 @@ class CheckboxCollection extends PureComponent {
   };
 
   componentDidMount() {
-    console.log(
-      '\n==============================================\n COMPONENTDIDMOUNT'
-    );
+    // console.log(
+    //   '\n==============================================\n COMPONENTDIDMOUNT'
+    // );
     let status = [];
     if (this.props.value) {
       status = this.props.elementconfig.options.map(each => {

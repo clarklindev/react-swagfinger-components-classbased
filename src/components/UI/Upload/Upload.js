@@ -20,6 +20,8 @@ import 'firebase/storage';
 
 class Upload extends PureComponent {
   constructor(props) {
+    console.log('==============================================')
+    console.log('CONSTRUCTOR Upload');
     super(props);
     this.firebaseConfig = {
       apiKey: 'AIzaSyBcmwi6R0CaeY9l1jfEUo0u71MZsVxldKo',
@@ -61,6 +63,8 @@ class Upload extends PureComponent {
   };
 
   componentDidMount() {
+    console.log('==============================================')
+    console.log('FUNCTION componentDidMount');
     //get from storage folders
     // Get a reference to the storage service, which is used to create references in your storage bucket
     this.storage = firebase.storage();
@@ -72,7 +76,7 @@ class Upload extends PureComponent {
     let path = this.storageRef;
 
     if (id) {
-      console.log('id: ', id);
+      console.log('EXISTS - id: ', id);
       // //current id folder
       path = this.storageRef.child(id);
     } else {
@@ -84,12 +88,15 @@ class Upload extends PureComponent {
   }
 
   errorConfirmedHandler = () => {
+    console.log('==============================================')
+    console.log('FUNCTION errorConfirmedHandler');
     this.setState({ errorModal: null });
   };
 
   //RECURSIVE - gets all folders from ref onwards saving refs
   findFoldersForBuild = (ref) => {
-    console.log('FIND FOLDERS FOR BUILD');
+    console.log('==============================================')
+    console.log('FUNCTION findFoldersForBuild, props: ', ref);
     this.setState((prevState) => {
       return { allFolderList: [...prevState.allFolderList, ref] };
     });
@@ -104,7 +111,7 @@ class Upload extends PureComponent {
 
   changeFolderPath = (ref) => {
     console.log('==============================================')
-    console.log('CHANGE FOLDER PATH...');
+    console.log('FUNCTION changeFolderPath, props: ', ref);
     this.setCurrentFolderRef(ref);
 
     //go through exisiting references, look for current reference (===) the ref from props,
@@ -123,11 +130,11 @@ class Upload extends PureComponent {
       this.addCurrentFolderToDrilldown(ref);
     }
     this.getFolderData(ref);
-    console.log('==============================================')
   };
 
   addCurrentFolderToDrilldown = (ref) => {
-    console.log('addCurrentFolderToDrilldown: ', ref);
+    console.log('==============================================')
+    console.log('FUNCTION addCurrentFolderToDrilldown, props:', ref);
     this.setState((prevState) => {
       return {
         currentFolderDrilldownRefs: [
@@ -139,6 +146,8 @@ class Upload extends PureComponent {
   };
 
   editBreadcrumbModal = () => {
+    console.log('==============================================')
+    console.log('FUNCTION editBreadcrumbModal');
     this.setState((prevState) => {
       return {
         editBreadcrumbModal: true,
@@ -149,6 +158,8 @@ class Upload extends PureComponent {
   };
 
   updateFolderDrilldown = (ref) => {
+    console.log('==============================================')
+    console.log('FUNCTION updateFolderDrilldown, props:', ref);
     let index = this.state.currentFolderDrilldownRefs.findIndex((item) => {
       return item.location.path === ref.location.path; //comparing object paths
     });
@@ -160,12 +171,15 @@ class Upload extends PureComponent {
   };
 
   setCurrentFolderRef = (ref) => {
-    console.log('FUNCTION setCurrentFolderRef:', ref)
+    console.log('==============================================')
+    console.log('FUNCTION setCurrentFolderRef, props: ', ref)
     this.setState({ currentFolderRef: ref, tempFolderPath: ref.location.path });
   };
 
   getFolderData = async (ref) => {
     //reset folder first...
+    console.log('==============================================')
+    console.log('FUNCTION getFolderData, props: ', ref);
     this.setState((prevState) => {
       return {
         ...prevState,
@@ -242,8 +256,9 @@ class Upload extends PureComponent {
   };
 
   addFolderHandler = (event) => {
+    console.log('==============================================')
+    console.log('FUNCTION addFolderHandler');
     event.preventDefault();
-    console.log('addFolderHandler');
     console.log('this.state.currentFolderRef.location.path:', this.state.currentFolderRef.location.path);
     this.setState({ createFolderModal: true, errorModalMessage: false, createFolderName: ''});
   };
@@ -251,7 +266,7 @@ class Upload extends PureComponent {
   //new folder needs to be specific for the currentFolderRef
   addFolder = (foldername) => {
     console.log('===================================');
-    console.log('addFolder FUNCTION!!!!');
+    console.log('FUNCTION addFolder');
     console.log('this.state.currentFolderRef.location.path:', this.state.currentFolderRef.location.path);
     this.setState((prevState)=>{
       
@@ -322,14 +337,20 @@ class Upload extends PureComponent {
   };
 
   uploadUrlOverHandler = (event) => {
+    console.log('===================================');
+    console.log('FUNCTION uploadUrlOverHandler');
     this.setState({ uploadUrlOver: true });
   };
 
   uploadUrlOutHandler = (event) => {
+    console.log('===================================');
+    console.log('FUNCTION uploadUrlOutHandler');
     this.setState({ uploadUrlOver: false });
   };
 
   fileCheckHandler = (index, isChecked, event = null) => {
+    console.log('===================================');
+    console.log('FUNCTION fileCheckHandler, props: ', index, isChecked);
     console.log('onChangeHandler CLICKED: ', index, isChecked);
     this.setState((prevState) => {
       let files = [...prevState.checkedFiles];
@@ -339,6 +360,7 @@ class Upload extends PureComponent {
   };
 
   folderCheckHandler = (index, isChecked, event = null) => {
+    console.log('FUNCTION folderCheckHandler, props: ', index, isChecked);
     console.log('onChangeHandler CLICKED: ', index, isChecked);
     this.setState((prevState) => {
       let folders = [...prevState.checkedFolders];
@@ -348,6 +370,8 @@ class Upload extends PureComponent {
   };
 
   toggleCheckAllFolders = (isChecked) => {
+    console.log('==============================================')
+    console.log('FUNCTION toggleCheckAllFolders, props: ', isChecked);
     this.setState((prevState) => {
       let folders = [...prevState.firebaseFolders];
       let result = folders.map((item) => {
@@ -359,6 +383,8 @@ class Upload extends PureComponent {
   };
 
   toggleCheckAllFiles = (isChecked) => {
+    console.log('==============================================')
+    console.log('FUNCTION toggleCheckAllFiles, props: ', isChecked);
     this.setState((prevState) => {
       let files = [...prevState.firebaseFiles];
       let result = files.map((item) => {
@@ -370,7 +396,8 @@ class Upload extends PureComponent {
   };
 
   toggleMainChecked = (val) => {
-    console.log('toggleMainChecked');
+    console.log('==============================================')
+    console.log('FUNCTION toggleMainChecked, props: ', val);
 
     this.setState((prevState) => {
       return {
@@ -380,24 +407,25 @@ class Upload extends PureComponent {
     });
   };
 
-  updateCheck = (index) => {
-    console.log('updateCheck: ', index);
-  };
-
   getCheckFoldersLength = () => {
+    console.log('==============================================')
+    console.log('FUNCTION getCheckFoldersLength');
     return this.state.checkedFolders.filter((item) => {
       return item === true;
     }).length;
   };
 
   getCheckedFilesLength = () => {
+    console.log('==============================================')
+    console.log('FUNCTION getCheckedFilesLength');
     return this.state.checkedFiles.filter((item) => {
       return item === true;
     }).length;
   };
 
   checkIndeterminate = () => {
-    console.log('checkIndeterminate!!!!');
+    console.log('==============================================')
+    console.log('FUNCTION checkIndeterminate');
 
     let checkedItems =
       this.getCheckFoldersLength() + this.getCheckedFilesLength();
@@ -414,6 +442,8 @@ class Upload extends PureComponent {
   };
 
   findDuplicateFile = (file) => {
+    console.log('==============================================')
+    console.log('FUNCTION findDuplicateFile');
     return this.state.selectedFiles.find((existingFile) => {
       const isDuplicate =
         existingFile.name === file.name &&
@@ -426,6 +456,8 @@ class Upload extends PureComponent {
   };
 
   fileChangedHandler = (event) => {
+    console.log('==============================================')
+    console.log('FUNCTION fileChangedHandler');
     event.preventDefault();
     event.persist();
     const files = event.target.files;
@@ -461,7 +493,7 @@ class Upload extends PureComponent {
           let fileRef = this.state.currentFolderRef.child(fileName);
     
           //using .fullPath
-          let path = fileRef.fullPath; //path is images/{filename}
+          //let path = fileRef.fullPath; //path is images/{filename}
           //put() takes files via javascript File and Blob api and uploads them to cloud storage
           let uploadTask = fileRef.put(file);
     
@@ -515,6 +547,8 @@ class Upload extends PureComponent {
   };
 
   deleteFolder = async (ref)=>{
+    console.log('==============================================')
+    console.log('FUNCTION deleteFolder');
     let res = await ref.listAll();
     
     //folders
@@ -534,9 +568,11 @@ class Upload extends PureComponent {
   }
 
   deleteSelected = (event) => {
+    console.log('==============================================')
+    console.log('FUNCTION deleteSelected');
     event.preventDefault();
     //go through file refs
-    let updatedFiles = [...this.state.firebaseFiles].filter((item, index) => {
+    [...this.state.firebaseFiles].forEach((item, index) => {
       //remove checked
       if (this.state.checkedFiles[index] === true) {
         item.delete().then(async () => {
@@ -551,7 +587,7 @@ class Upload extends PureComponent {
     });
 
     //go through folder refs
-    let updatedFolders = [...this.state.firebaseFolders].filter(async (item, index) => {
+    [...this.state.firebaseFolders].forEach(async (item, index) => {
       if (this.state.checkedFolders[index] === true) {
         //loop through folder
         await this.deleteFolder(item);//recursively go through folders and delete files
@@ -567,7 +603,7 @@ class Upload extends PureComponent {
   };
 
   render() {
-    console.log('RENDER: ', this.state.placeholderFolders);
+    console.log('RENDER state.placeholderFolders: ', this.state.placeholderFolders);
     console.log('this.state.currentFolderRef: ', this.state.currentFolderRef);
     let placeholders = [];
     let placeholderMatch = undefined;
@@ -888,7 +924,7 @@ class Upload extends PureComponent {
             //navigate if folders exists..
             //ie. check all paths in directory list
             try {
-              this.state.allFolderList.map((item, index) => {
+              this.state.allFolderList.forEach((item, index) => {
                 console.log(
                   `allFolderList item: index:[${index}]`,
                   item.location.path
@@ -920,7 +956,7 @@ class Upload extends PureComponent {
               });
             } catch {
               //go thru drilldown,
-              this.state.currentFolderDrilldownRefs.find((item) => {
+              this.state.currentFolderDrilldownRefs.forEach((item) => {
                 //compare to drilldown ref.location.path, if found, that is the new ref
 
                 if (item.location.path === this.state.tempFolderPath) {
