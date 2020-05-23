@@ -274,9 +274,10 @@ class Upload extends PureComponent {
       let placeholderFolderMatchIndex = prevState.placeholderFolders.findIndex(obj=>{  //note placeholderFolders stores object {path:, ref:, folders:[]}
         return obj.pathRef === this.state.currentFolderRef;
       });
-      console.log('SAMEFOLDER: ', placeholderFolderMatchIndex);
+      console.log('placeholderFolderMatchIndex: ', placeholderFolderMatchIndex);
       
       //can we find it in firebase?
+      console.log('try find in firebaseFolders');
       let foundInFirebaseIndex = prevState.firebaseFolders.findIndex((item)=>{
         console.log('item.name: ', item.name);
         console.log('foldername: ', foldername);
@@ -292,7 +293,7 @@ class Upload extends PureComponent {
 
       //try find current folder...not found...add!
       if(placeholderFolderMatchIndex === -1){
-        console.log('NOT FOUND');
+        console.log('NOT FOUND, adding to pathfolders');
         let obj={pathRef: {...this.state.currentFolderRef}, pathfolders: [foldername]}
         return { placeholderFolders: [...prevState.placeholderFolders, obj], createFolderModal: false}
       }
@@ -337,14 +338,14 @@ class Upload extends PureComponent {
   };
 
   uploadUrlOverHandler = (event) => {
-    console.log('===================================');
-    console.log('FUNCTION uploadUrlOverHandler');
+    // console.log('===================================');
+    // console.log('FUNCTION uploadUrlOverHandler');
     this.setState({ uploadUrlOver: true });
   };
 
   uploadUrlOutHandler = (event) => {
-    console.log('===================================');
-    console.log('FUNCTION uploadUrlOutHandler');
+    // console.log('===================================');
+    // console.log('FUNCTION uploadUrlOutHandler');
     this.setState({ uploadUrlOver: false });
   };
 
@@ -408,16 +409,16 @@ class Upload extends PureComponent {
   };
 
   getCheckFoldersLength = () => {
-    console.log('==============================================')
-    console.log('FUNCTION getCheckFoldersLength');
+    // console.log('==============================================')
+    // console.log('FUNCTION getCheckFoldersLength');
     return this.state.checkedFolders.filter((item) => {
       return item === true;
     }).length;
   };
 
   getCheckedFilesLength = () => {
-    console.log('==============================================')
-    console.log('FUNCTION getCheckedFilesLength');
+    // console.log('==============================================')
+    // console.log('FUNCTION getCheckedFilesLength');
     return this.state.checkedFiles.filter((item) => {
       return item === true;
     }).length;
@@ -603,8 +604,12 @@ class Upload extends PureComponent {
   };
 
   render() {
-    console.log('RENDER state.placeholderFolders: ', this.state.placeholderFolders);
-    console.log('this.state.currentFolderRef: ', this.state.currentFolderRef);
+    console.log('==============================================')
+    console.log('==============================================')
+    console.log('FUNCTION render');
+    
+    //console.log('this.state.currentFolderRef: ', this.state.currentFolderRef);
+    //console.log('state.placeholderFolders: ', this.state.placeholderFolders);
     let placeholders = [];
     let placeholderMatch = undefined;
     
@@ -618,8 +623,8 @@ class Upload extends PureComponent {
 
         placeholders = placeholderMatch.pathfolders.map((path, index)=>{
           
-          let key = this.state.currentFolderRef.location.path+index;
-          console.log('key: ', key);
+          let key = this.state.currentFolderRef.location.path+'_placeholderMatch_'+index;
+          //console.log('key: ', key);
 
           return (
             <React.Fragment key={key}>
@@ -652,9 +657,11 @@ class Upload extends PureComponent {
 
     let currentFolderData = [
       ...this.state.firebaseFolders.map((item, index) => {
-        console.log(`folder [${index}]: ${this.state.checkedFolders[index]}`);
+        let key = this.state.currentFolderRef.location.path+'_firebaseFolders_'+index;
+        //console.log('key: ', key);
+
         return (
-          <React.Fragment>
+          <React.Fragment key={key}>
             <Checkbox
               onChange={(index, checked) =>
                 this.folderCheckHandler(index, checked)
@@ -678,8 +685,11 @@ class Upload extends PureComponent {
       ...placeholders,
       //=====================================
       ...this.state.firebaseFiles.map((item, index) => {
+        let key = this.state.currentFolderRef.location.path+'_firebaseFiles_'+index;
+        //console.log('key: ', key);
+
         return (
-          <React.Fragment>
+          <React.Fragment key={key}>
             <Checkbox
               onChange={(index, checked) =>
                 this.fileCheckHandler(index, checked)
