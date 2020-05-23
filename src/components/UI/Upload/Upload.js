@@ -501,7 +501,6 @@ class Upload extends PureComponent {
     /*
         Once one of these read methods is called on your FileReader object can be used to track its progress. 
         - onloadstart 
-        - onprogress 
         - onload 
         - onabort 
         - onerror 
@@ -513,7 +512,24 @@ class Upload extends PureComponent {
     // reader.readAsDataURL(this.state.selectedFiles[i]);
   };
 
+  deleteFolder = async (ref)=>{
+    let res = await ref.listAll();
+    
+    //folders
+    if (res.prefixes.length) {
+      for(let folder of res.prefixes){
+        await this.deleteFolder(folder);
+      }
+    }
+    
+    //delete the files
+    if (res.items.length) {
+      for(let file of res.items){
+        await file.delete();
+      }
+    }
 
+  }
 
   deleteSelected = (event) => {
     event.preventDefault();
@@ -535,9 +551,10 @@ class Upload extends PureComponent {
     //go through folder refs
     let updatedFolders = [...this.state.firebaseFolders].filter(async (item, index) => {
       if (this.state.checkedFolders[index] === true) {
-        await item.getParent().child(item).delete();
-
-        await this.getFolderData(this.state.currentFolderRef);
+        //loop through folder
+        await this.deleteFolder(item);//recursively go through folders and delete files
+        this.getFolderData(this.state.currentFolderRef);
+        
         this.setState({
           mainIndeterminate: false,
           mainChecked: false,
