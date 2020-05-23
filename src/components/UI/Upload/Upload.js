@@ -195,7 +195,7 @@ class Upload extends PureComponent {
           console.log('folder: ', folderRef.name);
           folders.push(folderRef);
           console.log(
-            'XXX folders: ',
+            'folders: ',
             folders.map((item) => {
               return item.name;
             })
@@ -210,7 +210,7 @@ class Upload extends PureComponent {
           console.log('file: ', itemRef.name);
           files.push(itemRef);
           console.log(
-            'xxx files: ',
+            'files: ',
             files.map((item) => {
               return item.name;
             })

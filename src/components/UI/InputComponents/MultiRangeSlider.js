@@ -38,7 +38,7 @@ class MultiRangeSlider extends Component {
   }
 
   updateDimensions = () => {
-    console.log('update DIMENSIONS');
+    //console.log('update DIMENSIONS');
     this.setState({
       railwidth: parseInt(this.railRef.current.offsetWidth)
     });
