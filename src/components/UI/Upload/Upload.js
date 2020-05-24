@@ -58,7 +58,7 @@ class Upload extends PureComponent {
     mainIndeterminate: false,
     currentFolderRef: null,
     tempFolderPath: null, //used for when editing in the modal state
-    currentFolderDrilldownRefs: [],
+    currentFolderDrilldownRefs: [], //for edit modal
     selectedFiles: [], //files added for upload
   };
 
@@ -84,7 +84,7 @@ class Upload extends PureComponent {
     }
 
     this.changeFolderPath(path);
-    this.findFoldersForBuild(path);
+    this.getAllFolders(path);
   }
 
   errorConfirmedHandler = () => {
@@ -92,6 +92,12 @@ class Upload extends PureComponent {
     console.log('FUNCTION errorConfirmedHandler');
     this.setState({ errorModal: null });
   };
+
+  //resets state.allFolderList
+  getAllFolders = (ref)=>{
+    this.setState({allFolderList:[]});
+    this.findFoldersForBuild(ref);
+  }
 
   //RECURSIVE - gets all folders from ref onwards saving refs
   findFoldersForBuild = (ref) => {
@@ -228,10 +234,10 @@ class Upload extends PureComponent {
         });
 
         if(placeholderMatchIndex !== -1){
-          let filtered = this.state.placeholderFolders[placeholderMatchIndex].pathfolders.filter(folder=>{
+          let filtered = this.state.placeholderFolders[placeholderMatchIndex].pathfolders.filter(ref=>{
             //go thru firebase folders and see if there is a match to 'folder' name
             let isFound = folders.find(folderref=>{
-              return folderref.name === folder;
+              return folderref.location.path === ref.location.path;
             });
             console.log('ISFOUND: ', isFound);
             if(isFound !== undefined){
@@ -264,7 +270,7 @@ class Upload extends PureComponent {
   };
 
   //new folder needs to be specific for the currentFolderRef
-  addFolder = (foldername) => {
+  addFolder = (folderRef) => {
     console.log('===================================');
     console.log('FUNCTION addFolder');
     console.log('this.state.currentFolderRef.location.path:', this.state.currentFolderRef.location.path);
@@ -280,8 +286,8 @@ class Upload extends PureComponent {
       console.log('try find in firebaseFolders');
       let foundInFirebaseIndex = prevState.firebaseFolders.findIndex((item)=>{
         console.log('item.name: ', item.name);
-        console.log('foldername: ', foldername);
-        return item.name === foldername;
+        console.log('folderRef: ', folderRef);
+        return item === folderRef;
       });
       console.log('foundInFirebaseIndex: ', foundInFirebaseIndex);
 
@@ -294,14 +300,15 @@ class Upload extends PureComponent {
       //try find current folder...not found...add!
       if(placeholderFolderMatchIndex === -1){
         console.log('NOT FOUND, adding to pathfolders');
-        let obj={pathRef: {...this.state.currentFolderRef}, pathfolders: [foldername]}
+        console.log('folderRef: ', folderRef);
+        let obj={pathRef: {...this.state.currentFolderRef}, pathfolders: [folderRef]}
         return { placeholderFolders: [...prevState.placeholderFolders, obj], createFolderModal: false}
       }
       //current folders' folders
       else{
         console.log('FOUND in placeholderFolders...');
         let foundIndex = prevState.placeholderFolders[placeholderFolderMatchIndex].pathfolders.findIndex((item)=>{
-          return item === foldername;
+          return item === folderRef;
         });
 
         if(foundIndex > -1){
@@ -323,10 +330,10 @@ class Upload extends PureComponent {
           });
           
           let isFound = match.pathfolders.findIndex(item=>{
-            return item === foldername;
+            return item === folderRef;
           });
           if(isFound === -1){
-            let updatedFolders = [...match.pathfolders, foldername];
+            let updatedFolders = [...match.pathfolders, folderRef];
             match.pathfolders = updatedFolders;
           }
           
@@ -614,14 +621,14 @@ class Upload extends PureComponent {
     let placeholderMatch = undefined;
     
     if(this.state.placeholderFolders.length){
-      console.log('SOMETHING HERE...')
+      console.log('this.state.placeholderFolders.length:', this.state.placeholderFolders.length);
       placeholderMatch = this.state.placeholderFolders.find((item)=>{
         return (item.pathRef.location.path === this.state.currentFolderRef.location.path);
       });
 
       if(placeholderMatch !== undefined){
 
-        placeholders = placeholderMatch.pathfolders.map((path, index)=>{
+        placeholders = placeholderMatch.pathfolders.map((item, index)=>{
           
           let key = this.state.currentFolderRef.location.path+'_placeholderMatch_'+index;
           //console.log('key: ', key);
@@ -640,13 +647,12 @@ class Upload extends PureComponent {
                 hovereffect={true}
                 onClick={() => {
                   console.log('CHANGING FOLDER :)');
-                  let newRef = this.state.currentFolderRef.child(path);
-                  this.changeFolderPath(newRef)
+                  this.changeFolderPath(item)
                 }}
-                title={path}
+                title={item.name}
               >
                 <Icon iconstyle="far" code="folder" size="lg" />
-                <p>{path}/</p>
+                <p>{item.name}/</p>
               </ListItem>
             </React.Fragment>
           );
@@ -893,7 +899,8 @@ class Upload extends PureComponent {
           }}
           continue={() => {
             console.log('continue');
-            this.addFolder(this.state.createFolderName);
+            const newRef = this.state.currentFolderRef.child(this.state.createFolderName);
+            this.addFolder(newRef);
             
           }}
         >
