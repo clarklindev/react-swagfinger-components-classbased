@@ -617,9 +617,13 @@ class Upload extends PureComponent {
     
     //console.log('this.state.currentFolderRef: ', this.state.currentFolderRef);
     //console.log('state.placeholderFolders: ', this.state.placeholderFolders);
-    let placeholders = [];
-    let placeholderMatch = undefined;
     
+    let sortedMergedFolders = [];
+    let sorted = [];
+    let placeholders = [];
+    let firebaseFolders = [];
+    
+    let placeholderMatch = undefined;
     if(this.state.placeholderFolders.length){
       console.log('this.state.placeholderFolders.length:', this.state.placeholderFolders.length);
       placeholderMatch = this.state.placeholderFolders.find((item)=>{
@@ -627,68 +631,60 @@ class Upload extends PureComponent {
       });
 
       if(placeholderMatch !== undefined){
-
-        placeholders = placeholderMatch.pathfolders.map((item, index)=>{
-          
-          let key = this.state.currentFolderRef.location.path+'_placeholderMatch_'+index;
-          //console.log('key: ', key);
-
-          return (
-            <React.Fragment key={key}>
-              <Checkbox
-                onChange={(index, checked) =>
-                  this.folderCheckHandler(index, checked)
-                }
-                index={index}
-                checked={this.state.checkedFolders[index]}
-              ></Checkbox>
-              <ListItem
-                aligntype="FlexStart"
-                hovereffect={true}
-                onClick={() => {
-                  console.log('CHANGING FOLDER :)');
-                  this.changeFolderPath(item)
-                }}
-                title={item.name}
-              >
-                <Icon iconstyle="far" code="folder" size="lg" />
-                <p>{item.name}/</p>
-              </ListItem>
-            </React.Fragment>
-          );
-        });
-
+        placeholders = placeholderMatch.pathfolders;
       }
     }
 
-    let currentFolderData = [
-      ...this.state.firebaseFolders.map((item, index) => {
-        let key = this.state.currentFolderRef.location.path+'_firebaseFolders_'+index;
-        //console.log('key: ', key);
+    firebaseFolders = this.state.firebaseFolders;
+    //merge
+    sortedMergedFolders = [placeholders, firebaseFolders].flat().sort((a,b)=>{
+      var nameA = a.name.toLowerCase();
+      var nameB = b.name.toLowerCase();
+      console.log('compare: ', nameA, '| ', nameB);
+      if(nameA < nameB){
+        return -1;
+      }
+      if(nameA > nameB){
+        return 1;
+      }
+      return 0;
+    });
+    
+    
 
-        return (
-          <React.Fragment key={key}>
-            <Checkbox
-              onChange={(index, checked) =>
-                this.folderCheckHandler(index, checked)
-              }
-              index={index}
-              checked={this.state.checkedFolders[index]}
-            ></Checkbox>
-            <ListItem
-              aligntype="FlexStart"
-              hovereffect={true}
-              onClick={() => this.changeFolderPath(item)}
-              title={item.name}
-            >
-              <Icon iconstyle="far" code="folder" size="lg" />
-              <p>{item.name}/</p>
-            </ListItem>
-          </React.Fragment>
-        );
-      }),
-      //placeholder data
-      ...placeholders,
+    console.log('sortedMergedFolders: ', sortedMergedFolders);
+    sorted = sortedMergedFolders.map((item, index)=>{
+          
+      let key = this.state.currentFolderRef.location.path+'_folder_'+index;
+      //console.log('key: ', key);
+
+      return (
+        <React.Fragment key={key}>
+          <Checkbox
+            onChange={(index, checked) =>
+              this.folderCheckHandler(index, checked)
+            }
+            index={index}
+            checked={this.state.checkedFolders[index]}
+          ></Checkbox>
+          <ListItem
+            aligntype="FlexStart"
+            hovereffect={true}
+            onClick={() => {
+              console.log('CHANGING FOLDER :)');
+              this.changeFolderPath(item)
+            }}
+            title={item.name}
+          >
+            <Icon iconstyle="far" code="folder" size="lg" />
+            <p>{item.name}/</p>
+          </ListItem>
+        </React.Fragment>
+      );
+    });
+
+    let currentFolderData = [
+      ...sorted,
       //=====================================
       ...this.state.firebaseFiles.map((item, index) => {
         let key = this.state.currentFolderRef.location.path+'_firebaseFiles_'+index;
