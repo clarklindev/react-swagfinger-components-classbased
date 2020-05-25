@@ -225,35 +225,53 @@ class Upload extends PureComponent {
       }      
 
       //sort out placeholder folders
-      let placeholderMatchIndex=-1;
+      // let placeholderMatchIndex=-1;
+      // let pathFolders = [];
 
-      if(this.state.placeholderFolders.length){
-        console.log('SOMETHING HERE...')
-        placeholderMatchIndex = this.state.placeholderFolders.findIndex((item)=>{
-          return (item.pathRef.location.path === this.state.currentFolderRef.location.path);
-        });
+      // if(this.state.placeholderFolders.length){
+      //   console.log('SOMETHING HERE...')
+      //   placeholderMatchIndex = this.state.placeholderFolders.findIndex((item)=>{
+      //     return (item.pathRef.location.path === this.state.currentFolderRef.location.path);
+      //   });
 
-        if(placeholderMatchIndex !== -1){
-          let filtered = this.state.placeholderFolders[placeholderMatchIndex].pathfolders.filter(ref=>{
-            //go thru firebase folders and see if there is a match to 'folder' name
-            let isFound = folders.find(folderref=>{
-              return folderref.location.path === ref.location.path;
-            });
-            console.log('ISFOUND: ', isFound);
-            if(isFound !== undefined){
-              return false;
-            }
-            return true;
-          });
-          console.log('UPDATED CHILDFOLDERS: ', filtered);
+      //   if(placeholderMatchIndex !== -1){
+      //     let filtered = this.state.placeholderFolders[placeholderMatchIndex].pathfolders.filter(ref=>{
+      //       //go thru firebase folders and see if there is a match to 'folder' name
+      //       let isFound = folders.find(folderref=>{
+      //         return folderref.location.path === ref.location.path;
+      //       });
+      //       console.log('ISFOUND: ', isFound);
+      //       if(isFound !== undefined){
+      //         return false;
+      //       }
+      //       return true;
+      //     });
+      //     console.log('UPDATED CHILDFOLDERS: ', filtered);
           
-          this.state.placeholderFolders[placeholderMatchIndex].pathfolders = filtered;
-        }
-      }
+      //     this.state.placeholderFolders[placeholderMatchIndex].pathfolders = filtered;
+      //     pathFolders = filtered;
+      //   }
+      // }
+      //      //merge
+      // let firebaseAndPlaceholderFolders = [pathFolders, folders].flat().sort((a,b)=>{
+      //   var nameA = a.name.toLowerCase();
+      //   var nameB = b.name.toLowerCase();
+      //   console.log('compare: ', nameA, '| ', nameB);
+      //   if(nameA < nameB){
+      //     return -1;
+      //   }
+      //   if(nameA > nameB){
+      //     return 1;
+      //   }
+      //   return 0;
+      // });
+
+      // console.log('firebaseAndPlaceholderFolders: ', firebaseAndPlaceholderFolders);
 
       this.setState((prevState) => {
         return {
           ...prevState,
+          //firebaseAndPlaceholderFolders:firebaseAndPlaceholderFolders,
           firebaseFolders: folders,
           firebaseFiles: files,
         };
@@ -276,70 +294,74 @@ class Upload extends PureComponent {
     console.log('this.state.currentFolderRef.location.path:', this.state.currentFolderRef.location.path);
     this.setState((prevState)=>{
       
-      //current folder match...
-      let placeholderFolderMatchIndex = prevState.placeholderFolders.findIndex(obj=>{  //note placeholderFolders stores object {path:, ref:, folders:[]}
-        return obj.pathRef === this.state.currentFolderRef;
-      });
-      console.log('placeholderFolderMatchIndex: ', placeholderFolderMatchIndex);
-      
       //can we find it in firebase?
       console.log('try find in firebaseFolders');
       let foundInFirebaseIndex = prevState.firebaseFolders.findIndex((item)=>{
-        console.log('item.name: ', item.name);
-        console.log('folderRef: ', folderRef);
+        console.log('compare - item.name: ', item.name,' | folderRef: ', folderRef.name);
         return item === folderRef;
       });
       console.log('foundInFirebaseIndex: ', foundInFirebaseIndex);
 
+      //if found in firebase...
       if(foundInFirebaseIndex > -1){
         console.log('FOLDER EXISTS');
         this.setState({errorModalMessage: 'Path already exists'});
         return prevState;
       } 
 
-      //try find current folder...not found...add!
+      //current folder match...
+      //try find current folder in placeholderFolders...
+      
+
+      let placeholderFolderAllExceptMatch = prevState.placeholderFolders.filter(item=>{
+        return item.pathRef !== this.state.currentFolderRef;
+      });
+
+      let placeholderFolderMatch = prevState.placeholderFolders.find(item=>{
+        return item.pathRef === this.state.currentFolderRef;
+      });
+
+      let placeholderFolderMatchIndex = prevState.placeholderFolders.findIndex(item=>{  //note placeholderFolders stores object {path:, ref:, folders:[]}
+        return item.pathRef === this.state.currentFolderRef;
+      });
+      
+      console.log('placeholderFolderMatchIndex: ', placeholderFolderMatchIndex);
+      
+      //not found in placeholderFolders?...add!
       if(placeholderFolderMatchIndex === -1){
         console.log('NOT FOUND, adding to pathfolders');
         console.log('folderRef: ', folderRef);
-        let obj={pathRef: {...this.state.currentFolderRef}, pathfolders: [folderRef]}
-        return { placeholderFolders: [...prevState.placeholderFolders, obj], createFolderModal: false}
+        let obj={pathRef: this.state.currentFolderRef, pathfolders: [folderRef]};
+        
+        return { placeholderFolders: [...prevState.placeholderFolders, obj], 
+        //firebaseAndPlaceholderFolders:firebaseAndPlaceholderFolders, 
+        createFolderModal: false}
       }
-      //current folders' folders
+      //FOUND current folder in placeholderFolders
       else{
-        console.log('FOUND in placeholderFolders...');
+        //index in pathfolders
         let foundIndex = prevState.placeholderFolders[placeholderFolderMatchIndex].pathfolders.findIndex((item)=>{
           return item === folderRef;
         });
 
+        //folder found in pathfolders
         if(foundIndex > -1){
           console.log('FOLDER EXISTS');
           this.setState({errorModalMessage: 'Path already exists'});
           return prevState;
         }
-
+        //not found in pathfolders
         else{
-          //add folder to pathfolders at current pathMatch
-          console.log('FOLDER DOES NOT EXIST YET');
-          
-          let allExceptMatch = prevState.placeholderFolders.filter(item=>{
-            return item.pathRef !== this.state.currentFolderRef;
-          });
-
-          let match = prevState.placeholderFolders.find(item=>{
-            return item.pathRef === this.state.currentFolderRef;
-          });
-          
-          let isFound = match.pathfolders.findIndex(item=>{
+          console.log('FOLDER DOES NOT EXIST YET');         
+          let isFound = placeholderFolderMatch.pathfolders.findIndex(item=>{
             return item === folderRef;
           });
           if(isFound === -1){
-            let updatedFolders = [...match.pathfolders, folderRef];
-            match.pathfolders = updatedFolders;
+            let updatedFolders = [...placeholderFolderMatch.pathfolders, folderRef];
+            placeholderFolderMatch.pathfolders = updatedFolders;
           }
-          
-          return { placeholderFolders: [...allExceptMatch, match], createFolderModal: false} 
+          return { placeholderFolders: [...placeholderFolderAllExceptMatch, placeholderFolderMatch], createFolderModal: false}
         }
-       
       }
     });
   };
@@ -612,34 +634,92 @@ class Upload extends PureComponent {
 
   render() {
     console.log('==============================================')
-    console.log('==============================================')
     console.log('FUNCTION render');
     
     //console.log('this.state.currentFolderRef: ', this.state.currentFolderRef);
     //console.log('state.placeholderFolders: ', this.state.placeholderFolders);
     
-    let sortedMergedFolders = [];
-    let sorted = [];
-    let placeholders = [];
-    let firebaseFolders = [];
-    
-    let placeholderMatch = undefined;
+    //sort out placeholder folders
+    let placeholderMatchIndex=-1;
+    let pathFolders = [];
+
     if(this.state.placeholderFolders.length){
-      console.log('this.state.placeholderFolders.length:', this.state.placeholderFolders.length);
-      placeholderMatch = this.state.placeholderFolders.find((item)=>{
+      console.log('SOMETHING HERE...')
+      placeholderMatchIndex = this.state.placeholderFolders.findIndex((item)=>{
         return (item.pathRef.location.path === this.state.currentFolderRef.location.path);
       });
-
-      if(placeholderMatch !== undefined){
-        placeholders = placeholderMatch.pathfolders;
-      }
     }
+    console.log('placeholderMatchIndex: ', placeholderMatchIndex);
+    
+    if(placeholderMatchIndex > -1){
+      pathFolders = this.state.placeholderFolders[placeholderMatchIndex].pathfolders;
+      
+    }
+    
+    let sortedDOM = [
+      
+      ...pathFolders.map((item, index)=>{
+        console.log('pathfolder:', item);
+        let key = this.state.currentFolderRef.location.path+'_placeholderfolder_'+index;
+        //console.log('key: ', key);
 
-    firebaseFolders = this.state.firebaseFolders;
-    //merge
-    sortedMergedFolders = [placeholders, firebaseFolders].flat().sort((a,b)=>{
-      var nameA = a.name.toLowerCase();
-      var nameB = b.name.toLowerCase();
+        return (
+          <React.Fragment key={key}>
+            <Checkbox
+              onChange={(index, checked) =>
+                this.folderCheckHandler(index, checked)
+              }
+              index={index}
+              checked={this.state.checkedFolders[index]}
+            ></Checkbox>
+            <ListItem
+              aligntype="FlexStart"
+              hovereffect={true}
+              onClick={() => {
+                console.log('CHANGING FOLDER :)');
+                this.changeFolderPath(item)
+              }}
+              title={item.name}
+            >
+              <Icon iconstyle="far" code="folder" size="lg" />
+              <p>{item.name}/</p>
+            </ListItem>
+          </React.Fragment>
+        );
+      }),
+
+      ...this.state.firebaseFolders.map((item, index)=>{
+          
+        let key = this.state.currentFolderRef.location.path+'_folder_'+index;
+        //console.log('key: ', key);
+
+        return (
+          <React.Fragment key={key}>
+            <Checkbox
+              onChange={(index, checked) =>
+                this.folderCheckHandler(index, checked)
+              }
+              index={index}
+              checked={this.state.checkedFolders[index]}
+            ></Checkbox>
+            <ListItem
+              aligntype="FlexStart"
+              hovereffect={true}
+              onClick={() => {
+                console.log('CHANGING FOLDER :)');
+                this.changeFolderPath(item)
+              }}
+              title={item.name}
+            >
+              <Icon iconstyle="far" code="folder" size="lg" />
+              <p>{item.name}/</p>
+            </ListItem>
+          </React.Fragment>
+        );
+      })
+    ].sort((a,b)=>{
+      var nameA = a.props.children[1].props.title.toLowerCase();
+      var nameB = b.props.children[1].props.title.toLowerCase();
       console.log('compare: ', nameA, '| ', nameB);
       if(nameA < nameB){
         return -1;
@@ -648,43 +728,13 @@ class Upload extends PureComponent {
         return 1;
       }
       return 0;
-    });
-    
-    
+    })
 
-    console.log('sortedMergedFolders: ', sortedMergedFolders);
-    sorted = sortedMergedFolders.map((item, index)=>{
-          
-      let key = this.state.currentFolderRef.location.path+'_folder_'+index;
-      //console.log('key: ', key);
-
-      return (
-        <React.Fragment key={key}>
-          <Checkbox
-            onChange={(index, checked) =>
-              this.folderCheckHandler(index, checked)
-            }
-            index={index}
-            checked={this.state.checkedFolders[index]}
-          ></Checkbox>
-          <ListItem
-            aligntype="FlexStart"
-            hovereffect={true}
-            onClick={() => {
-              console.log('CHANGING FOLDER :)');
-              this.changeFolderPath(item)
-            }}
-            title={item.name}
-          >
-            <Icon iconstyle="far" code="folder" size="lg" />
-            <p>{item.name}/</p>
-          </ListItem>
-        </React.Fragment>
-      );
-    });
+    //console.log('this.state.firebaseAndPlaceholderFolders: ', this.state.firebaseAndPlaceholderFolders);
+    console.log('sortedDOM: ', sortedDOM);
 
     let currentFolderData = [
-      ...sorted,
+      ...sortedDOM,
       //=====================================
       ...this.state.firebaseFiles.map((item, index) => {
         let key = this.state.currentFolderRef.location.path+'_firebaseFiles_'+index;
