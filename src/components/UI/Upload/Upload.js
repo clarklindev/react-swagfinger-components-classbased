@@ -361,6 +361,7 @@ class Upload extends PureComponent {
     this.setState((prevState) => {
       let placeholderFolders = [...prevState.checkedPlaceholderFolders];
       placeholderFolders[index] = isChecked;
+      console.log('placeholderFolders: ', placeholderFolders);
       return { checkedPlaceholderFolders: placeholderFolders };
     }, this.checkIndeterminate);
   }
@@ -369,12 +370,29 @@ class Upload extends PureComponent {
     console.log('==============================================')
     console.log('FUNCTION toggleCheckAllFolders, props: ', isChecked);
     this.setState((prevState) => {
+      //check all firebase folders
       let folders = [...prevState.firebaseFolders];
-      let result = folders.map((item) => {
+      let resultFolders = folders.map((item) => {
         return isChecked;
       });
-      console.log('checkAllFolders: ', result);
-      return { checkedFolders: result };
+
+      //check all pathfolders of current folder
+      let placeholderFolderMatch = prevState.placeholderFolders.find(item=>{
+        return item.pathRef === prevState.currentFolderRef;
+      });
+      let placeholderFolderMatchIndex = prevState.placeholderFolders.findIndex(item=>{  //note placeholderFolders stores object {path:, ref:, folders:[]}
+        return item.pathRef === prevState.currentFolderRef;
+      });
+      let resultPathFolders = [];
+      if(placeholderFolderMatch !== undefined){
+        console.log('placeholderFolderMatchIndex: ', placeholderFolderMatchIndex);
+        resultPathFolders = prevState.placeholderFolders[placeholderFolderMatchIndex].pathfolders.map(item=>{
+          return isChecked;
+        });
+      }
+
+      console.log('checkAllFolders: ', resultFolders, resultPathFolders);
+      return { checkedFolders: resultPathFolders, checkedPlaceholderFolders:resultPathFolders };
     });
   };
 
@@ -441,13 +459,14 @@ class Upload extends PureComponent {
       return item.pathRef === this.state.currentFolderRef;
     });
 
-    let placeholderFolders = [];
+    let pathfolders = [];
     if(placeholderFolderMatch !== undefined){
-      placeholderFolders = this.state.placeholderFolders[placeholderFolderMatchIndex];
+      console.log('pathfolders: ', pathfolders);
+      pathfolders = this.state.placeholderFolders[placeholderFolderMatchIndex].pathfolders;
     }
     let checkedItems =
       this.getCheckFoldersLength() + this.getCheckedFilesLength() + this.getCheckPlaceholderFoldersPathFoldersLength();
-    let allItems = this.state.firebaseFiles.length + this.state.firebaseFolders.length + placeholderFolders.pathfolders.length;
+    let allItems = this.state.firebaseFiles.length + this.state.firebaseFolders.length + pathfolders.length;
 
     if (checkedItems === allItems) {
       this.setState({ mainIndeterminate: false, mainChecked: true });
@@ -658,7 +677,7 @@ class Upload extends PureComponent {
                 this.placeholderFolderCheckHandler(index, checked)
               }
               index={index}
-              checked={this.state.checkedFolders[index]}
+              checked={this.state.checkedPlaceholderFolders[index]}
             ></Checkbox>
             <ListItem
               aligntype="FlexStart"
@@ -774,9 +793,9 @@ class Upload extends PureComponent {
             onMouseOut={this.uploadUrlOutHandler}
           >
             {this.state.mainIndeterminate === true ||
-            (this.getCheckFoldersLength() + this.getCheckedFilesLength() ===
-              this.state.firebaseFiles.length + this.state.firebaseFolders.length &&
-              this.state.firebaseFiles.length + this.state.firebaseFolders.length > 0) ? (
+            (this.getCheckFoldersLength() + this.getCheckedFilesLength() + this.getCheckPlaceholderFoldersPathFoldersLength() ===
+              this.state.firebaseFiles.length + this.state.firebaseFolders.length + pathFolders.length &&
+              this.state.firebaseFiles.length + this.state.firebaseFolders.length + pathFolders.length > 0) ? (
               <React.Fragment>
                 <div className={classes.UploadIndeterminate}>
                   <Button
@@ -794,6 +813,7 @@ class Upload extends PureComponent {
                   <span>
                     {this.getCheckFoldersLength() +
                       this.getCheckedFilesLength() +
+                      this.getCheckPlaceholderFoldersPathFoldersLength() + 
                       ' selected'}
                   </span>
                 </div>
