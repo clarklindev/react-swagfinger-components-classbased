@@ -121,32 +121,32 @@ class Upload extends PureComponent {
     console.log('==============================================')
     console.log('FUNCTION removeDuplicateFolders');
     //sort out placeholder folders	
-    let placeholderFolderAllExceptMatch = this.state.placeholderFolders.filter(item=>{
+    let placeholderFolderAllExceptMatch = [...this.state.placeholderFolders.filter(item=>{
       return item.pathRef !== this.state.currentFolderRef;
-    });
+    })];
 
     let placeholderFolderMatch = this.state.placeholderFolders.find(item=>{
       return item.pathRef === this.state.currentFolderRef;
     });
+    console.log('placeholderFolderMatch: ', placeholderFolderMatch);
 
     let placeholderMatchIndex=-1;	
-    let pathFolders = [];	
     console.log('this.state.currentFolderRef: ', this.state.currentFolderRef);
     if(this.state.placeholderFolders.length){	
       console.log('SOMETHING HERE...')	
       placeholderMatchIndex = this.state.placeholderFolders.findIndex((item)=>{	
-        console.log('item.pathRef.location.path:', item.pathRef.location.path);
-        return (item.pathRef.location.path === this.state.currentFolderRef.location.path);	
+        console.log('item.pathRef:', item.pathRef);
+        return (item.pathRef === this.state.currentFolderRef);	
       });	
       console.log('placehodlerMatchIndex: ', placeholderMatchIndex);
       //if found in placeholder...
-      if(placeholderMatchIndex !== -1){	
+      if(placeholderMatchIndex > -1){	
         //look in the pathfolders of placeholder (exclude the same name)
-        let filtered = this.state.placeholderFolders[placeholderMatchIndex].pathfolders.filter(ref=>{	
+        let filtered = [...this.state.placeholderFolders[placeholderMatchIndex].pathfolders.filter(ref=>{	
           //go thru firebase folders and see if there is a match to 'folder' name	
-          console.log('ref name: ', ref.name);
+          console.log('ref.location.path: ', ref.location.path);
           let isFound = this.state.firebaseFolders.find(folderref=>{	
-            return folderref.name === ref.name;	
+            return folderref.location.path === ref.location.path;	
           });	
           console.log('ISFOUND: ', isFound);	
           //if found, return false
@@ -155,11 +155,12 @@ class Upload extends PureComponent {
           }	
           //else if NOT found, return true
           return true;	
-        });	
+        })];
         
         console.log('UPDATED CHILDFOLDERS: ', filtered);	
 
         placeholderFolderMatch.pathfolders = filtered;	
+
         //set state
         this.setState({placeholderFolders: [...placeholderFolderAllExceptMatch, placeholderFolderMatch]})
 
@@ -177,7 +178,8 @@ class Upload extends PureComponent {
     //reset checked folders and files
     this.setState({
       checkedFolders: [], //all checked folders in current folder
-      checkedFiles: []
+      checkedFiles: [],
+      checkedPlaceholderFolders:[]
     });
 
     //go through exisiting references, look for current reference (===) the ref from props,
@@ -330,9 +332,9 @@ class Upload extends PureComponent {
       //try find current folder in placeholderFolders...
       
 
-      let placeholderFolderAllExceptMatch = prevState.placeholderFolders.filter(item=>{
+      let placeholderFolderAllExceptMatch = [...prevState.placeholderFolders.filter(item=>{
         return item.pathRef !== this.state.currentFolderRef;
-      });
+      })];
 
       let placeholderFolderMatch = prevState.placeholderFolders.find(item=>{
         return item.pathRef === this.state.currentFolderRef;
@@ -453,7 +455,7 @@ class Upload extends PureComponent {
       }
 
       console.log('checkAllFolders: ', resultFolders, resultPathFolders);
-      return { checkedFolders: resultPathFolders, checkedPlaceholderFolders:resultPathFolders };
+      return { checkedFolders: resultFolders, checkedPlaceholderFolders:resultPathFolders };
     });
   };
 
@@ -664,10 +666,6 @@ class Upload extends PureComponent {
         await file.delete();
       }
     }
-
-    //delete the selected folder..
-    await ref.delete();
-
   }
 
   deleteSelected = (event) => {
@@ -693,7 +691,7 @@ class Upload extends PureComponent {
       if (this.state.checkedFolders[index] === true) {
         //loop through folder
         await this.deleteFolder(item);//recursively go through folders and delete files
-        this.getFolderData(this.state.currentFolderRef); 
+        await this.getFolderData(this.state.currentFolderRef); 
         this.setState(prevState=>{
           return {
             mainIndeterminate: false,
@@ -704,26 +702,68 @@ class Upload extends PureComponent {
       }
     });
 
-    //placeholder
-    //remove from pathfolders
-    let placeholderFolderNotMatch = this.state.placeholderFolders.find(item=>{
+    let placeholderFolderAllExceptMatch = this.state.placeholderFolders.filter(item=>{
       return item.pathRef !== this.state.currentFolderRef;
     });
+
+    //cleanup Placeholders
     let placeholderFolderMatch = this.state.placeholderFolders.find(item=>{
       return item.pathRef === this.state.currentFolderRef;
     });
-    let placeholderFolderMatchIndex = this.state.placeholderFolders.findIndex(item=>{  //note placeholderFolders stores object {path:, ref:, folders:[]}
-      return item.pathRef === this.state.currentFolderRef;
-    });
-    // let resultPathFolders = [];
-    // if(placeholderFolderMatch !== undefined){
-    //   console.log('placeholderFolderMatchIndex: ', placeholderFolderMatchIndex);
-    //   resultPathFolders = this.state.placeholderFolders[placeholderFolderMatchIndex].pathfolders.map(pathRef=>{
-    //     return pathRef.name !== item.name;
-    //   });
-    //   placeholderFolderMatch.pathfolders = resultPathFolders;
-    // }
-    // this.setState({placeholderFolders: [...placeholderFolderMatch, ]})
+    console.log('placeholderFolderMatch: ', placeholderFolderMatch);
+
+    let placeholderMatchIndex=-1;	
+    console.log('this.state.currentFolderRef: ', this.state.currentFolderRef);
+    if(this.state.placeholderFolders.length){	
+      console.log('SOMETHING HERE...')	
+      placeholderMatchIndex = this.state.placeholderFolders.findIndex((item)=>{	
+        console.log('item.pathRef:', item.pathRef);
+        return (item.pathRef === this.state.currentFolderRef);	
+      });	
+      console.log('placehodlerMatchIndex: ', placeholderMatchIndex);
+      //if found in placeholder...
+      if(placeholderMatchIndex > -1){	
+        //go through placeholderFolders, check if .location.path includes pathfolders[index].name
+        //try find 'name' in all the rest of placeholdFolders
+
+        let cleanedUpPlaceholders = this.state.placeholderFolders.filter(item=>{
+
+          let includeItem = placeholderFolderMatch.pathfolders.some((ref,index)=>{	
+            return (item.pathRef.location.path.includes(ref.location.path) && this.state.checkedPlaceholderFolders[index] === true);
+          });
+
+          console.log('is checked and in path? ', includeItem);
+
+          return !includeItem;
+        });
+
+        console.log('cleanedUpPlaceholders: ', cleanedUpPlaceholders);
+        let removeDud = cleanedUpPlaceholders.filter(item=>{
+        console.log('item.pathRef.location.path: ', item.pathRef.location.path);
+        console.log('this.state.currentFolderRef.location.path: ', this.state.currentFolderRef.location.path);
+        console.log('item.pathfolders: ', item.pathfolders);
+        console.log('item.pathfolders.length: ', item.pathfolders.length);
+
+          return !(item.pathRef.location.path === this.state.currentFolderRef.location.path);
+        });
+
+        console.log('removeDud:', removeDud);
+
+        //look in the pathfolders of placeholder (exclude the same name)
+        let filtered = placeholderFolderMatch.pathfolders.filter((ref,index)=>{	
+          if(this.state.checkedPlaceholderFolders[index] === true){
+            //it was checked...we need to delete it from pathfolders
+            return false;
+          }
+          return true;
+        });
+        placeholderFolderMatch.pathfolders = filtered;
+        let updatedPlaceholderFolders = [...removeDud]
+
+        //we have now cut out all those pathfolders that were checked...
+        this.setState({placeholderFolders: updatedPlaceholderFolders ,checkedPlaceholderFolders:[]})
+      }
+    }
   };
 
   render() {
@@ -735,6 +775,7 @@ class Upload extends PureComponent {
     console.log('\n\n checkedPlaceholderFolders: ', this.state.checkedPlaceholderFolders);
     console.log('\n\n checkedFolders: ', this.state.checkedFolders);
     console.log('\n\n checkedFiles: ', this.state.checkedFiles);
+    console.log('\n\n currentFolderDrilldownRefs: ', this.state.currentFolderDrilldownRefs);
     console.log('\n=====');
     //sort out placeholder folders
     let placeholderMatchIndex=-1;
@@ -1045,7 +1086,6 @@ class Upload extends PureComponent {
             console.log('continue');
             const newRef = this.state.currentFolderRef.child(this.state.createFolderName);
             this.addFolder(newRef);
-            
           }}
         >
           <Input
