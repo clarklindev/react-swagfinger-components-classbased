@@ -484,7 +484,7 @@ class Upload extends PureComponent {
     });
   };
 
-  getCheckPlaceholderFoldersPathFoldersLength = () => {
+  getCheckPlaceholderFoldersPathLength = () => {
     // console.log('==============================================')
     // console.log('FUNCTION getCheckFoldersLength');
     return this.state.checkedPlaceholderFolders.filter((item) => {
@@ -528,7 +528,7 @@ class Upload extends PureComponent {
       pathfolders = this.state.placeholderFolders[placeholderFolderMatchIndex].pathfolders;
     }
     let checkedItems =
-      this.getCheckFoldersLength() + this.getCheckedFilesLength() + this.getCheckPlaceholderFoldersPathFoldersLength();
+      this.getCheckFoldersLength() + this.getCheckedFilesLength() + this.getCheckPlaceholderFoldersPathLength();
     let allItems = this.state.firebaseFiles.length + this.state.firebaseFolders.length + pathfolders.length;
 
     if (checkedItems === allItems) {
@@ -924,7 +924,7 @@ class Upload extends PureComponent {
             onMouseOut={this.uploadUrlOutHandler}
           >
             {this.state.mainIndeterminate === true ||
-            (this.getCheckFoldersLength() + this.getCheckedFilesLength() + this.getCheckPlaceholderFoldersPathFoldersLength() ===
+            (this.getCheckFoldersLength() + this.getCheckedFilesLength() + this.getCheckPlaceholderFoldersPathLength() ===
               this.state.firebaseFiles.length + this.state.firebaseFolders.length + pathFolders.length &&
               this.state.firebaseFiles.length + this.state.firebaseFolders.length + pathFolders.length > 0) ? (
               <React.Fragment>
@@ -944,7 +944,7 @@ class Upload extends PureComponent {
                   <span>
                     {this.getCheckFoldersLength() +
                       this.getCheckedFilesLength() +
-                      this.getCheckPlaceholderFoldersPathFoldersLength() + 
+                      this.getCheckPlaceholderFoldersPathLength() + 
                       ' selected'}
                   </span>
                 </div>
