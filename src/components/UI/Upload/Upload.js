@@ -88,30 +88,119 @@ class Upload extends PureComponent {
     this.getAllFolders(path);
   }
 
-  errorConfirmedHandler = () => {
+  changeFolderPath = async (ref) => {
+    console.log('\n\n\n\n***************************************************************')
     console.log('==============================================')
-    console.log('FUNCTION errorConfirmedHandler');
-    this.setState({ errorModal: null });
-  };
+    console.log('FUNCTION changeFolderPath, props: ', ref);
+    this.setCurrentFolderRef(ref);
 
-  //resets state.allFolderList
-  getAllFolders = (ref)=>{
-    this.setState({allFolderList:[]});
-    this.findFoldersForBuild(ref);
-  }
-
-  //RECURSIVE - gets all folders from ref onwards saving refs
-  findFoldersForBuild = (ref) => {
-    console.log('==============================================')
-    console.log('FUNCTION findFoldersForBuild, props: ', ref);
-    this.setState((prevState) => {
-      return { allFolderList: [...prevState.allFolderList, ref] };
+    //reset checked folders and files
+    this.setState({
+      checkedFolders: [], //all checked folders in current folder
+      checkedFiles: [],
+      checkedPlaceholderFolders:[]
     });
 
-    ref.listAll().then((res) => {
-      //if the current folder does NOT have folders
-      res.prefixes.forEach((folderRef) => {
-        this.findFoldersForBuild(folderRef);
+    //go through exisiting references, look for current reference (===) the ref from props,
+    let index = this.state.currentFolderDrilldownRefs.findIndex((item) => {
+      return item === ref;
+    });
+    console.log('index:', index);
+
+    //if it is found, then slice off from currentFolderDrilldownRefs onwards...(we navigated back)...
+    if (index >= 0) {
+      //slice() returns new array..
+      this.updateFolderDrilldown(ref);
+    }
+    //else if not found, then add to currentFolderDrilldownRefs.
+    else {
+      this.addCurrentFolderToDrilldown(ref);
+    }
+    await this.getFolderData(ref);
+    this.removeDuplicateFolders();
+
+  };  
+
+  setCurrentFolderRef = (ref) => {
+    console.log('==============================================')
+    console.log('FUNCTION setCurrentFolderRef, props: ', ref)
+    this.setState({ currentFolderRef: ref, tempFolderPath: ref.location.path });
+  };
+
+  updateFolderDrilldown = (ref) => {
+    console.log('==============================================')
+    console.log('FUNCTION updateFolderDrilldown, props:', ref);
+    let index = this.state.currentFolderDrilldownRefs.findIndex((item) => {
+      return item.location.path === ref.location.path; //comparing object paths
+    });
+    let updatedFolders = this.state.currentFolderDrilldownRefs.slice(
+      0,
+      index + 1
+    );
+    this.setState({ currentFolderDrilldownRefs: updatedFolders });
+  };
+
+  addCurrentFolderToDrilldown = (ref) => {
+    console.log('==============================================')
+    console.log('FUNCTION addCurrentFolderToDrilldown, props:', ref);
+    this.setState((prevState) => {
+      return {
+        currentFolderDrilldownRefs: [
+          ...prevState.currentFolderDrilldownRefs,
+          ref,
+        ],
+      };
+    });
+  };
+
+  getFolderData = async (ref) => {
+    //reset folder first...
+    console.log('==============================================')
+    console.log('FUNCTION getFolderData, props: ', ref);
+    this.setState((prevState) => {
+      return {
+        ...prevState,
+        firebaseFolders: [],
+        firebaseFiles: [],
+      };
+    });
+    // //save to state folder ref from firebase storage
+    await ref.listAll().then((res) => {
+      let folders = [];
+      if (res.prefixes.length) {
+        res.prefixes.forEach((folderRef) => {
+          console.log('folder: ', folderRef.name);
+          folders.push(folderRef);
+          console.log(
+            'folders: ',
+            folders.map((item) => {
+              return item.name;
+            })
+          );
+        });
+      }
+
+      let files = [];
+      if (res.items.length) {
+        res.items.forEach((itemRef) => {
+          // All the items under listRef.
+          console.log('file: ', itemRef.name);
+          files.push(itemRef);
+          console.log(
+            'files: ',
+            files.map((item) => {
+              return item.name;
+            })
+          );
+        });
+      }      
+
+      this.setState((prevState) => {
+        return {
+          ...prevState,
+          firebaseFolders: folders,
+          firebaseFiles: files,
+        };
       });
     });
   };
@@ -168,220 +257,25 @@ class Upload extends PureComponent {
     }
   }
 
-
-  changeFolderPath = async (ref) => {
-    console.log('\n\n\n\n***************************************************************')
+  //resets state.allFolderList
+  getAllFolders = (ref)=>{
+    this.setState({allFolderList:[]});
+    this.findFoldersForBuild(ref);
+  }
+  
+  //RECURSIVE - gets all folders from ref onwards saving refs
+  findFoldersForBuild = (ref) => {
     console.log('==============================================')
-    console.log('FUNCTION changeFolderPath, props: ', ref);
-    this.setCurrentFolderRef(ref);
-
-    //reset checked folders and files
-    this.setState({
-      checkedFolders: [], //all checked folders in current folder
-      checkedFiles: [],
-      checkedPlaceholderFolders:[]
-    });
-
-    //go through exisiting references, look for current reference (===) the ref from props,
-    let index = this.state.currentFolderDrilldownRefs.findIndex((item) => {
-      return item === ref;
-    });
-    console.log('index:', index);
-
-    //if it is found, then slice off from currentFolderDrilldownRefs onwards...(we navigated back)...
-    if (index >= 0) {
-      //slice() returns new array..
-      this.updateFolderDrilldown(ref);
-    }
-    //else if not found, then add to currentFolderDrilldownRefs.
-    else {
-      this.addCurrentFolderToDrilldown(ref);
-    }
-    await this.getFolderData(ref);
-    this.removeDuplicateFolders();
-
-  };
-
-  addCurrentFolderToDrilldown = (ref) => {
-    console.log('==============================================')
-    console.log('FUNCTION addCurrentFolderToDrilldown, props:', ref);
+    console.log('FUNCTION findFoldersForBuild, props: ', ref);
     this.setState((prevState) => {
-      return {
-        currentFolderDrilldownRefs: [
-          ...prevState.currentFolderDrilldownRefs,
-          ref,
-        ],
-      };
+      return { allFolderList: [...prevState.allFolderList, ref] };
     });
-  };
 
-  editBreadcrumbModal = () => {
-    console.log('==============================================')
-    console.log('FUNCTION editBreadcrumbModal');
-    this.setState((prevState) => {
-      return {
-        editBreadcrumbModal: true,
-        tempFolderPath: prevState.currentFolderRef.location.path, //reset the value when modal is opened
-        errorModalMessage: null,
-      };
-    });
-  };
-
-  updateFolderDrilldown = (ref) => {
-    console.log('==============================================')
-    console.log('FUNCTION updateFolderDrilldown, props:', ref);
-    let index = this.state.currentFolderDrilldownRefs.findIndex((item) => {
-      return item.location.path === ref.location.path; //comparing object paths
-    });
-    let updatedFolders = this.state.currentFolderDrilldownRefs.slice(
-      0,
-      index + 1
-    );
-    this.setState({ currentFolderDrilldownRefs: updatedFolders });
-  };
-
-  setCurrentFolderRef = (ref) => {
-    console.log('==============================================')
-    console.log('FUNCTION setCurrentFolderRef, props: ', ref)
-    this.setState({ currentFolderRef: ref, tempFolderPath: ref.location.path });
-  };
-
-  getFolderData = async (ref) => {
-    //reset folder first...
-    console.log('==============================================')
-    console.log('FUNCTION getFolderData, props: ', ref);
-    this.setState((prevState) => {
-      return {
-        ...prevState,
-        firebaseFolders: [],
-        firebaseFiles: [],
-      };
-    });
-    // //save to state folder ref from firebase storage
-    await ref.listAll().then((res) => {
-      let folders = [];
-      if (res.prefixes.length) {
-        res.prefixes.forEach((folderRef) => {
-          console.log('folder: ', folderRef.name);
-          folders.push(folderRef);
-          console.log(
-            'folders: ',
-            folders.map((item) => {
-              return item.name;
-            })
-          );
-        });
-      }
-
-      let files = [];
-      if (res.items.length) {
-        res.items.forEach((itemRef) => {
-          // All the items under listRef.
-          console.log('file: ', itemRef.name);
-          files.push(itemRef);
-          console.log(
-            'files: ',
-            files.map((item) => {
-              return item.name;
-            })
-          );
-        });
-      }      
-
-      this.setState((prevState) => {
-        return {
-          ...prevState,
-          firebaseFolders: folders,
-          firebaseFiles: files,
-        };
+    ref.listAll().then((res) => {
+      //if the current folder does NOT have folders
+      res.prefixes.forEach((folderRef) => {
+        this.findFoldersForBuild(folderRef);
       });
-    });
-  };
-
-  addFolderHandler = (event) => {
-    console.log('==============================================')
-    console.log('FUNCTION addFolderHandler');
-    event.preventDefault();
-    console.log('this.state.currentFolderRef.location.path:', this.state.currentFolderRef.location.path);
-    this.setState({ createFolderModal: true, errorModalMessage: false, createFolderName: ''});
-  };
-
-  //new folder needs to be specific for the currentFolderRef
-  addFolder = (folderRef) => {
-    console.log('===================================');
-    console.log('FUNCTION addFolder');
-    console.log('this.state.currentFolderRef.location.path:', this.state.currentFolderRef.location.path);
-    this.setState((prevState)=>{
-      
-      //can we find it in firebase?
-      console.log('try find in firebaseFolders');
-      let foundInFirebaseIndex = prevState.firebaseFolders.findIndex((item)=>{
-        console.log('compare - item.name: ', item.name,' | folderRef: ', folderRef.name);
-        return item.name === folderRef.name;
-      });
-      console.log('foundInFirebaseIndex: ', foundInFirebaseIndex);
-
-      //if found in firebase...
-      if(foundInFirebaseIndex > -1){
-        console.log('FOLDER EXISTS');
-        this.setState({errorModalMessage: 'Path already exists'});
-        return prevState;
-      } 
-
-      //current folder match...
-      //try find current folder in placeholderFolders...
-      
-
-      let placeholderFolderAllExceptMatch = [...prevState.placeholderFolders.filter(item=>{
-        return item.pathRef !== this.state.currentFolderRef;
-      })];
-
-      let placeholderFolderMatch = prevState.placeholderFolders.find(item=>{
-        return item.pathRef === this.state.currentFolderRef;
-      });
-
-      let placeholderFolderMatchIndex = prevState.placeholderFolders.findIndex(item=>{  //note placeholderFolders stores object {path:, ref:, folders:[]}
-        return item.pathRef === this.state.currentFolderRef;
-      });
-      
-      console.log('placeholderFolderMatchIndex: ', placeholderFolderMatchIndex);
-      
-      //not found in placeholderFolders?...add!
-      if(placeholderFolderMatchIndex === -1){
-        console.log('NOT FOUND, adding to pathfolders');
-        console.log('folderRef: ', folderRef);
-        let obj={pathRef: this.state.currentFolderRef, pathfolders: [folderRef]};
-        
-        return { placeholderFolders: [...prevState.placeholderFolders, obj], 
-        //firebaseAndPlaceholderFolders:firebaseAndPlaceholderFolders, 
-        createFolderModal: false}
-      }
-      //FOUND current folder in placeholderFolders
-      else{
-        //index in pathfolders
-        let foundIndex = prevState.placeholderFolders[placeholderFolderMatchIndex].pathfolders.findIndex((item)=>{
-          return item === folderRef;
-        });
-
-        //folder found in pathfolders
-        if(foundIndex > -1){
-          console.log('FOLDER EXISTS');
-          this.setState({errorModalMessage: 'Path already exists'});
-          return prevState;
-        }
-        //not found in pathfolders
-        else{
-          console.log('FOLDER DOES NOT EXIST YET');         
-          let isFound = placeholderFolderMatch.pathfolders.findIndex(item=>{
-            return item === folderRef;
-          });
-          if(isFound === -1){
-            let updatedFolders = [...placeholderFolderMatch.pathfolders, folderRef];
-            placeholderFolderMatch.pathfolders = updatedFolders;
-          }
-          return { placeholderFolders: [...placeholderFolderAllExceptMatch, placeholderFolderMatch], createFolderModal: false}
-        }
-      }
     });
   };
 
@@ -396,6 +290,198 @@ class Upload extends PureComponent {
     // console.log('FUNCTION uploadUrlOutHandler');
     this.setState({ uploadUrlOver: false });
   };
+
+  errorConfirmedHandler = () => {
+    console.log('==============================================')
+    console.log('FUNCTION errorConfirmedHandler');
+    this.setState({ errorModal: null });
+  };
+
+  editBreadcrumbModal = () => {
+    console.log('==============================================')
+    console.log('FUNCTION editBreadcrumbModal');
+    this.setState((prevState) => {
+      return {
+        editBreadcrumbModal: true,
+        tempFolderPath: prevState.currentFolderRef.location.path, //reset the value when modal is opened
+        errorModalMessage: null,
+      };
+    });
+  };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// -------------------------------------------------------------------
+//UPLOAD
+// -------------------------------------------------------------------
+  findDuplicateFile = (file) => {
+    console.log('==============================================')
+    console.log('FUNCTION findDuplicateFile');
+    return this.state.selectedFiles.find((existingFile) => {
+      const isDuplicate =
+        existingFile.name === file.name &&
+        existingFile.lastModified === file.lastModified &&
+        existingFile.size === file.size &&
+        existingFile.type === file.type;
+      console.log('IS DUPLICATE? ', isDuplicate);
+      return isDuplicate;
+    });
+  };
+
+  fileChangedHandler = (event) => {
+    console.log('==============================================')
+    console.log('FUNCTION fileChangedHandler');
+    event.preventDefault();
+    event.persist();
+    const files = event.target.files;
+
+    let existingFiles = [];
+
+    //finds duplicates from current selection
+    Array.from(files).forEach((file) => {
+      const existingFile = this.findDuplicateFile(file);
+      if (existingFile) {
+        console.error('Existing file:', existingFile);
+        return;
+      }
+      existingFiles.push(file);
+      console.warn('Added file:', file);
+    });
+    console.log('EXISTING: ', existingFiles);
+    this.setState(
+      (prevState) => {
+        console.log('waypoint1!!!!');
+        return {
+          selectedFiles: [...prevState.selectedFiles, ...existingFiles],
+        };
+      },
+      () => {
+        console.log('waypoint2!!!!');
+        console.log('this.state.selectedFiles: ', this.state.selectedFiles);
+        this.state.selectedFiles.forEach((item, index) => {
+          console.log('uploadHandler item: ', item.name);
+          let file = this.state.selectedFiles[index];
+          let fileName = this.state.selectedFiles[index].name;
+          // console.log('FILE: ', file, '| filename: ', fileName);
+          let fileRef = this.state.currentFolderRef.child(fileName);
+    
+          //using .fullPath
+          //let path = fileRef.fullPath; //path is images/{filename}
+          //put() takes files via javascript File and Blob api and uploads them to cloud storage
+          let uploadTask = fileRef.put(file);
+    
+          uploadTask.on(
+            'state_changed', //or firebase.storage.TaskEvent.STATE_CHANGED
+            (snapshot) => {
+              var progress =
+                (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+              console.log('UPLOAD PROGRESS: ', progress);
+            },
+            (error) => {
+              console.log('error');
+            },
+            () => {
+              //callback after completion
+              console.log('uploaded file.');
+              this.getFolderData(this.state.currentFolderRef);
+            }
+          );
+        });
+      }
+    );
+
+    //there is no items to add or remove as upload items go straight to cloud or are removed straight from cloud
+    // this.state.selectedFiles.forEach((item, index) => {
+    //   this.context.addinput(event, this.props.name, item);
+    // });
+
+    //FILEREADER...
+    //use file reference by instantiating a FileReader object to read contents into memeory,
+    //when load finishes, the reader's onload event is fired
+    //and its 'result' attr can be used to access the file data
+
+    //options:
+    //FileReader.readAsBinaryString(Blob|File)
+    //FileReader.readAsText(Blob|File, opt_encoding)
+    //FileReader.readAsDataURL(Blob|File)
+    //FileReader.readAsArrayBuffer(Blob|File)
+    /*
+        Once one of these read methods is called on your FileReader object can be used to track its progress. 
+        - onloadstart 
+        - onload 
+        - onabort 
+        - onerror 
+        - onloadend 
+        */
+
+    // let reader = new FileReader();
+
+    // reader.readAsDataURL(this.state.selectedFiles[i]);
+  };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// -------------------------------------------------------------------
+//Checkbox related
+// -------------------------------------------------------------------
 
   fileCheckHandler = (index, isChecked, event = null) => {
     console.log('===================================');
@@ -541,111 +627,164 @@ class Upload extends PureComponent {
     }
   };
 
-  findDuplicateFile = (file) => {
-    console.log('==============================================')
-    console.log('FUNCTION findDuplicateFile');
-    return this.state.selectedFiles.find((existingFile) => {
-      const isDuplicate =
-        existingFile.name === file.name &&
-        existingFile.lastModified === file.lastModified &&
-        existingFile.size === file.size &&
-        existingFile.type === file.type;
-      console.log('IS DUPLICATE? ', isDuplicate);
-      return isDuplicate;
-    });
-  };
 
-  fileChangedHandler = (event) => {
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+// -------------------------------------------------------------------
+//ADD folder
+// -------------------------------------------------------------------
+  addFolderHandler = (event) => {
     console.log('==============================================')
-    console.log('FUNCTION fileChangedHandler');
+    console.log('FUNCTION addFolderHandler');
     event.preventDefault();
-    event.persist();
-    const files = event.target.files;
-
-    let existingFiles = [];
-
-    //finds duplicates from current selection
-    Array.from(files).forEach((file) => {
-      const existingFile = this.findDuplicateFile(file);
-      if (existingFile) {
-        console.error('Existing file:', existingFile);
-        return;
-      }
-      existingFiles.push(file);
-      console.warn('Added file:', file);
-    });
-    console.log('EXISTING: ', existingFiles);
-    this.setState(
-      (prevState) => {
-        console.log('waypoint1!!!!');
-        return {
-          selectedFiles: [...prevState.selectedFiles, ...existingFiles],
-        };
-      },
-      () => {
-        console.log('waypoint2!!!!');
-        console.log('this.state.selectedFiles: ', this.state.selectedFiles);
-        this.state.selectedFiles.forEach((item, index) => {
-          console.log('uploadHandler item: ', item.name);
-          let file = this.state.selectedFiles[index];
-          let fileName = this.state.selectedFiles[index].name;
-          // console.log('FILE: ', file, '| filename: ', fileName);
-          let fileRef = this.state.currentFolderRef.child(fileName);
-    
-          //using .fullPath
-          //let path = fileRef.fullPath; //path is images/{filename}
-          //put() takes files via javascript File and Blob api and uploads them to cloud storage
-          let uploadTask = fileRef.put(file);
-    
-          uploadTask.on(
-            'state_changed', //or firebase.storage.TaskEvent.STATE_CHANGED
-            (snapshot) => {
-              var progress =
-                (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-              console.log('UPLOAD PROGRESS: ', progress);
-            },
-            (error) => {
-              console.log('error');
-            },
-            () => {
-              //callback after completion
-              console.log('uploaded file.');
-              this.getFolderData(this.state.currentFolderRef);
-            }
-          );
-        });
-      }
-    );
-
-    //there is no items to add or remove as upload items go straight to cloud or are removed straight from cloud
-    // this.state.selectedFiles.forEach((item, index) => {
-    //   this.context.addinput(event, this.props.name, item);
-    // });
-
-    //FILEREADER...
-    //use file reference by instantiating a FileReader object to read contents into memeory,
-    //when load finishes, the reader's onload event is fired
-    //and its 'result' attr can be used to access the file data
-
-    //options:
-    //FileReader.readAsBinaryString(Blob|File)
-    //FileReader.readAsText(Blob|File, opt_encoding)
-    //FileReader.readAsDataURL(Blob|File)
-    //FileReader.readAsArrayBuffer(Blob|File)
-    /*
-        Once one of these read methods is called on your FileReader object can be used to track its progress. 
-        - onloadstart 
-        - onload 
-        - onabort 
-        - onerror 
-        - onloadend 
-        */
-
-    // let reader = new FileReader();
-
-    // reader.readAsDataURL(this.state.selectedFiles[i]);
+    console.log('this.state.currentFolderRef.location.path:', this.state.currentFolderRef.location.path);
+    this.setState({ createFolderModal: true, errorModalMessage: false, createFolderName: ''});
   };
 
+  //new folder needs to be specific for the currentFolderRef
+  addFolder = (folderRef) => {
+    console.log('===================================');
+    console.log('FUNCTION addFolder');
+    console.log('this.state.currentFolderRef.location.path:', this.state.currentFolderRef.location.path);
+    this.setState((prevState)=>{
+      
+      //can we find it in firebase?
+      console.log('try find in firebaseFolders');
+      let foundInFirebaseIndex = prevState.firebaseFolders.findIndex((item)=>{
+        console.log('compare - item.name: ', item.name,' | folderRef: ', folderRef.name);
+        return item.name === folderRef.name;
+      });
+      console.log('foundInFirebaseIndex: ', foundInFirebaseIndex);
+
+      //if found in firebase...
+      if(foundInFirebaseIndex > -1){
+        console.log('FOLDER EXISTS');
+        this.setState({errorModalMessage: 'Path already exists'});
+        return prevState;
+      } 
+
+      //current folder match...
+      //try find current folder in placeholderFolders...
+      
+
+      let placeholderFolderAllExceptMatch = [...prevState.placeholderFolders.filter(item=>{
+        return item.pathRef !== this.state.currentFolderRef;
+      })];
+
+      let placeholderFolderMatch = prevState.placeholderFolders.find(item=>{
+        return item.pathRef === this.state.currentFolderRef;
+      });
+
+      let placeholderFolderMatchIndex = prevState.placeholderFolders.findIndex(item=>{  //note placeholderFolders stores object {path:, ref:, folders:[]}
+        return item.pathRef === this.state.currentFolderRef;
+      });
+      
+      console.log('placeholderFolderMatchIndex: ', placeholderFolderMatchIndex);
+      
+      //not found in placeholderFolders?...add!
+      if(placeholderFolderMatchIndex === -1){
+        console.log('NOT FOUND, adding to pathfolders');
+        console.log('folderRef: ', folderRef);
+        let obj={pathRef: this.state.currentFolderRef, pathfolders: [folderRef]};
+        
+        return { placeholderFolders: [...prevState.placeholderFolders, obj], 
+        //firebaseAndPlaceholderFolders:firebaseAndPlaceholderFolders, 
+        createFolderModal: false}
+      }
+      //FOUND current folder in placeholderFolders
+      else{
+        //index in pathfolders
+        let foundIndex = prevState.placeholderFolders[placeholderFolderMatchIndex].pathfolders.findIndex((item)=>{
+          return item === folderRef;
+        });
+
+        //folder found in pathfolders
+        if(foundIndex > -1){
+          console.log('FOLDER EXISTS');
+          this.setState({errorModalMessage: 'Path already exists'});
+          return prevState;
+        }
+        //not found in pathfolders
+        else{
+          console.log('FOLDER DOES NOT EXIST YET');         
+          let isFound = placeholderFolderMatch.pathfolders.findIndex(item=>{
+            return item === folderRef;
+          });
+          if(isFound === -1){
+            let updatedFolders = [...placeholderFolderMatch.pathfolders, folderRef];
+            placeholderFolderMatch.pathfolders = updatedFolders;
+          }
+          return { placeholderFolders: [...placeholderFolderAllExceptMatch, placeholderFolderMatch], createFolderModal: false}
+        }
+      }
+    });
+  };
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+// -------------------------------------------------------------------
+//DELETE folder
+// -------------------------------------------------------------------
   deleteFolder = async (ref)=>{
     console.log('==============================================')
     console.log('FUNCTION deleteFolder');
@@ -766,6 +905,45 @@ class Upload extends PureComponent {
     }
   };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+// -------------------------------------------------------------------
+//RENDER
+// -------------------------------------------------------------------
   render() {
     console.log('==============================================')
     console.log('FUNCTION render');
