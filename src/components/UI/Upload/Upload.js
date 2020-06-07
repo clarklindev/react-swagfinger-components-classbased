@@ -47,7 +47,7 @@ class Upload extends PureComponent {
     allFolderList: [],  //all firebase folders from current ref onwards(recursive)
     firebaseFolders: [], //should store refs of current folder
     firebaseFiles: [], //should store refs of current folder
-
+    firebaseRootRef: null,
     //local state
     currentFolderDrilldownRefs: [], //for edit modal
     currentFolderRef: null, //set when changeFolderPath() called
@@ -82,18 +82,21 @@ class Upload extends PureComponent {
     const query = new URLSearchParams(this.props.location.search);
     const id = query.get('id'); //get id in url query params
 
-    let path = this.storageRef;
+    let ref = this.storageRef;
 
     if (id) {
       console.log('EXISTS - id: ', id);
       // //current id folder
-      path = this.storageRef.child(id);
+      ref = this.storageRef.child(id);
     } else {
-      path = this.storageRef;
+      ref = this.storageRef;
     }
 
-    this.changeFolderPath(path);
-    this.getAllFolders(path);
+    this.setState({firebaseRootRef: ref}, ()=>{
+      this.changeFolderPath(ref);
+      this.getAllFolders(ref);
+    });
+    
   }
 
   changeFolderPath = async (ref) => {
@@ -275,9 +278,11 @@ class Upload extends PureComponent {
   }
 
   //resets state.allFolderList
-  getAllFolders = (ref)=>{
+  getAllFolders = (ref=null)=>{
+    console.log('==============================================')
+    console.log('FUNCTION getAllFolders, props: ', ref);
     this.setState({allFolderList:[]});
-    this.findFoldersForBuild(ref);
+    this.findFoldersForBuild(ref===null? this.state.firebaseRootRef : ref);
   }
   
   //RECURSIVE - gets all folders from ref onwards saving refs
@@ -963,20 +968,19 @@ class Upload extends PureComponent {
 // -------------------------------------------------------------------
 
   render() {
-    console.log('==============================================')
-    console.log('FUNCTION render');
-    console.log('\n\n allFolderList *(firebase folder recursive): ', this.state.allFolderList);
-    console.log('\n\n firebaseFolders:', this.state.firebaseFolders);
-    console.log('\n\n firebaseFiles:', this.state.firebaseFiles);
-    console.log('\n\n placeholderFolders: ', this.state.placeholderFolders);
-    console.log('\n\n currentFolderDrilldownRefs: ', this.state.currentFolderDrilldownRefs);
-    console.log('\n\n currentFolderRef: ', this.state.currentFolderRef);
-    console.log('\n\n currentFolderPath: ', this.state.currentFolderPath);
-    console.log('\n');
-    console.log('\n\n checkedPlaceholderFolders: ', this.state.checkedPlaceholderFolders);
-    console.log('\n\n checkedFolders: ', this.state.checkedFolders);
-    console.log('\n\n checkedFiles: ', this.state.checkedFiles);
-    console.log('\n=====');
+    console.log('%c==============================================', 'background:green;color:white');
+    console.log('%cFUNCTION render', 'background:green;color:white');
+    console.log(`%c\n allFolderList *(firebase folder recursive): ${this.state.allFolderList}`, `background:green;color:white`);
+    console.log(`%c\n firebaseFolders: ${this.state.firebaseFolders}`, 'background:green;color:white');
+    console.log(`%c\n firebaseFiles: ${this.state.firebaseFiles}`, 'background:green;color:white');
+    console.log(`%c\n placeholderFolders: ${this.state.placeholderFolders}`, 'background:green;color:white');
+    console.log(`%c\n currentFolderDrilldownRefs: ${this.state.currentFolderDrilldownRefs}`, 'background:green;color:white');
+    console.log(`%c\n currentFolderRef: ${this.state.currentFolderRef}`, 'background:green;color:white');
+    console.log(`%c\n currentFolderPath: ${this.state.currentFolderPath}`, 'background:green;color:white');
+    console.log(`%c\n checkedPlaceholderFolders: ${this.state.checkedPlaceholderFolders}`, 'background:green;color:white');
+    console.log(`%c\n checkedFolders: ${this.state.checkedFolders}`, 'background:green;color:white');
+    console.log(`%c\n checkedFiles: ${this.state.checkedFiles}`, 'background:green;color:white');
+    console.log(`%c\n=====`, 'background:green;color:white');
     //sort out placeholder folders
     let placeholderMatchIndex=-1;
     let pathFolders = [];
@@ -1152,7 +1156,13 @@ class Upload extends PureComponent {
                       ' selected'}
                   </span>
                 </div>
-                <Button type="Action" onClick={this.deleteSelected}>
+                <Button type="Action" onClick={(event)=>{
+                  this.deleteSelected(event);
+
+                  //update folders
+                  this.getAllFolders();
+                  
+                  }}>
                   Delete
                 </Button>
               </React.Fragment>
@@ -1295,6 +1305,8 @@ class Upload extends PureComponent {
             console.log('continue');
             const newRef = this.state.currentFolderRef.child(this.state.createFolderName);
             this.addFolder(newRef);
+            //refresh list of all firebase folders
+            this.getAllFolders();
           }}
         >
           <Input
