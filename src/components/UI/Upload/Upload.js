@@ -140,10 +140,10 @@ class Upload extends PureComponent {
   };  
 
   setCurrentFolderRef = (ref) => {
-    console.log('%cSTART==============================================', 'background:pink; color:white');
-    console.log(`%cFUNCTION setCurrentFolderRef, props: ${ref}`, 'background:pink; color:white');
+    console.log('%cSTART==============================================', 'background:pink; color:black');
+    console.log(`%cFUNCTION setCurrentFolderRef, props: ${ref}`, 'background:pink; color:black');
     this.setState({ currentFolderRef: ref, currentFolderPath: ref.location.path });
-    console.log('%cEND==============================================', 'background:pink; color:white')
+    console.log('%cEND==============================================', 'background:pink; color:black')
 
   };
 
