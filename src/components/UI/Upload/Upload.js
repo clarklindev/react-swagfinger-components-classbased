@@ -197,22 +197,26 @@ class Upload extends PureComponent {
         res.prefixes.forEach((folderRef) => {
           console.log(`%cfolder: ${folderRef}.name`, 'background:cyan; color:black');
           folders.push(folderRef);
-          console.log(`%cfolder name: ${folders.map((item) => { return item.name; })}`,'background:cyan; color:black');
+          console.log(`%call folder name: ${folders.map((item) => { return item.name; })}`,'background:cyan; color:black');
         });
       }
-      console.log(`%cfolders: ${folders}`,'background:cyan; color:black');
-
+      folders.forEach(item=>{
+        console.log(`%cfolders: ${item}`,'background:cyan; color:black');
+      });
+      
       let files = [];
       if (res.items.length) {
         res.items.forEach((itemRef) => {
           // All the items under listRef.
           console.log(`%cfile: ${itemRef.name}`,'background:cyan; color:black');
           files.push(itemRef);
-          console.log(`%cfile name: ${files.map((item) => { return item.name;})}`,'background:cyan; color:black');
+          console.log(`%call file name: ${files.map((item) => { return item.name;})}`,'background:cyan; color:black');
         });
       }      
-      console.log(`%cfiles: ${files}`,'background:cyan; color:black');
-
+      files.forEach(item=>{
+        console.log(`%cfiles: ${item}`,'background:cyan; color:black');
+      });
+      
       this.setState((prevState) => {
         return {
           ...prevState,
@@ -300,15 +304,21 @@ class Upload extends PureComponent {
   };
 
   uploadUrlOverHandler = (event) => {
-    // console.log('===================================');
-    // console.log('%cFUNCTION uploadUrlOverHandler');
-    this.setState({ uploadUrlOver: true });
+    if(this.state.uploadUrlOver === false){
+      console.log('%cSTART===================================', 'background:black; color:red');
+      console.log('%cFUNCTION uploadUrlOverHandler', 'background:black; color:red');
+      console.log(`%cEvent target :${event.target}`, 'background:black; color:red;')
+      this.setState({uploadUrlOver: true });
+      console.log('%cEND===================================', 'background:black; color:red');
+    }
   };
 
   uploadUrlOutHandler = (event) => {
-    // console.log('===================================');
-    // console.log('%cUNCTION uploadUrlOutHandler');
-    this.setState({ uploadUrlOver: false });
+    console.log('%cSTART===================================', 'background:black; color:red');
+    console.log('%cFUNCTION uploadUrlOutHandler', 'background:black; color:red');
+    console.log(`%cEvent target :${event.target}`, 'background:black; color:red;')
+    this.setState({uploadUrlOver: false });
+    console.log('%cEND===================================', 'background:black; color:red');
   };
 
   errorConfirmedHandler = () => {
@@ -968,7 +978,7 @@ class Upload extends PureComponent {
 // -------------------------------------------------------------------
 
   render() {
-    console.log('%c==============================================', 'background:green;color:white');
+    console.log('%c\n\n\n\n\n\n\nSTART==============================================', 'background:green;color:white');
     console.log('%cFUNCTION render', 'background:green;color:white');
     console.log(`%callFolderList *(firebase folder recursive): ${this.state.allFolderList}`, `background:green;color:white`);
     console.log(`%cfirebaseFolders: ${this.state.firebaseFolders}`, 'background:green;color:white');
@@ -1121,14 +1131,12 @@ class Upload extends PureComponent {
       this.state.uploadUrlOver === true
         ? classes.UploadUrlOver
         : classes.UploadUrlOut;
-    console.log('%c==============================================', 'background:green;color:white');
+    console.log('%cEND==============================================', 'background:green;color:white');
     return (
       <div className={classes.Upload}>
         <div className={[classes.Border].join(' ')}>
           <div
             className={[classes.UploadHeader, isIndeterminateClass].join(' ')}
-            onMouseOver={this.uploadUrlOverHandler}
-            onMouseOut={this.uploadUrlOutHandler}
           >
             {this.state.mainIndeterminate === true ||
             (this.getCheckFoldersLength() + this.getCheckedFilesLength() + this.getCheckPlaceholderFoldersPathLength() ===
@@ -1167,7 +1175,15 @@ class Upload extends PureComponent {
               </React.Fragment>
             ) : (
               <React.Fragment>
-                <div className={classes.UploadUrl}>
+                <div className={classes.UploadHeaderUrl} 
+                  onMouseOver={(event)=>{
+                    event.stopPropagation();
+                    this.uploadUrlOverHandler(event);
+                  }}
+                  onMouseLeave={(event)=>{
+                    event.stopPropagation();
+                    this.uploadUrlOutHandler(event);
+                  }}>
                   <Breadcrumb
                     path={this.state.currentFolderDrilldownRefs}
                     onClick={(ref) => this.changeFolderPath(ref)}
@@ -1175,14 +1191,14 @@ class Upload extends PureComponent {
                   ></Breadcrumb>
 
                   <div
-                    className={[classes.Divider, isHoverUploadUrl].join(' ')}
+                    className={[classes.UploadEdit, isHoverUploadUrl].join(' ')}
                     title="edit"
                     onClick={() => this.editBreadcrumbModal()}
                   >
                     <Icon iconstyle="fas" code="edit" size="sm" />
                   </div>
                 </div>
-                <div className={[classes.UploadActionButtons].join(' ')}>
+                <div className={[classes.UploadHeaderActionButtons].join(' ')}>
                   <input
                     ref={this.uploadRef}
                     type="file"
@@ -1194,7 +1210,10 @@ class Upload extends PureComponent {
                     }
                     }
                   />
+
+                  {/* UPLOAD FILE */}
                   <Button
+                    className={classes.UploadHeaderUploadFile}
                     type="Action"
                     onClick={(event) => {
                       event.preventDefault();
@@ -1205,8 +1224,11 @@ class Upload extends PureComponent {
                     <Icon iconstyle="fas" code="arrow-circle-up" size="lg" />
                     Upload file
                   </Button>
+
+                  {/* NEW FOLDER */}
                   <Button
-                    type="LastItemRight"
+                    className={classes.UploadHeaderNewFolder}
+                    type='LastItemRight'
                     onClick={this.addFolderHandler}
                     title="new folder"
                   >

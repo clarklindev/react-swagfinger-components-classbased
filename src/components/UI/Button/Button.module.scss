@@ -58,10 +58,9 @@
   }
 
   &.LastItemRight {
-    padding-left: var(--paddinginput);
-    padding-top: var(--paddinginput);
-    padding-bottom: var (--paddinginput);
-    padding-right: 0;
+    height: auto;
+    padding:0;
+    margin: var(--paddinginput) 0 var(--paddinginput) var(--paddinginput);
   }
 
   &.WithBorder {
