@@ -92,8 +92,10 @@ class Upload extends PureComponent {
     } else {
       ref = this.storageRef;
     }
-
-    this.setState({firebaseRootRef: ref}, ()=>{
+    this.setState((prevState)=>{
+      console.log(`%cSETSTATE: {firebaseRootRef:${ref}}`, 'background:yellow; color:red');
+      return {firebaseRootRef: ref}
+    }, ()=>{
       this.changeFolderPath(ref);
       this.getAllFolders(ref);
     });
@@ -107,12 +109,19 @@ class Upload extends PureComponent {
     this.setCurrentFolderRef(ref); //sets state.currentFolderRef , state.currentFolderPath
 
     //reset checked folders and files
-    this.setState({
-      mainChecked: false,
-      mainIndeterminate: false,
-      checkedFolders: [], //all checked folders in current folder
-      checkedFiles: [], //all checked files in current folder
-      checkedPlaceholderFolders:[] //all checked temporary folders (not in firebase yet) in current folder
+    this.setState((prevState)=>{
+      console.log(`%cSETSTATE: mainChecked:${false}`, 'background:yellow; color:red');
+      console.log(`%cSETSTATE: mainIndeterminate:${false}`, 'background:yellow; color:red');
+      console.log(`%cSETSTATE: checkedFolders:${[]}`, 'background:yellow; color:red');
+      console.log(`%cSETSTATE: checkedFiles:${[]}`, 'background:yellow; color:red');
+      console.log(`%cSETSTATE: checkedPlaceholderFolders:${[]}`, 'background:yellow; color:red');
+      return {
+        mainChecked: false,
+        mainIndeterminate: false,
+        checkedFolders: [], //all checked folders in current folder
+        checkedFiles: [], //all checked files in current folder
+        checkedPlaceholderFolders:[] //all checked temporary folders (not in firebase yet) in current folder
+      } 
     });
 
     //go through exisiting references, look for current reference (===) the ref from props,
@@ -142,7 +151,11 @@ class Upload extends PureComponent {
   setCurrentFolderRef = (ref) => {
     console.log('%cSTART==============================================', 'background:pink; color:black');
     console.log(`%cFUNCTION setCurrentFolderRef, props: ${ref}`, 'background:pink; color:black');
-    this.setState({ currentFolderRef: ref, currentFolderPath: ref.location.path });
+    this.setState((prevState)=>{
+      console.log(`%cSETSTATE: currentFolderRef:${ref}`, 'background:yellow; color:red');
+      console.log(`%cSETSTATE: currentFolderPath:${ref.location.path}`, 'background:yellow; color:red');
+      return{ currentFolderRef: ref, currentFolderPath: ref.location.path }
+    });
     console.log('%cEND==============================================', 'background:pink; color:black')
 
   };
@@ -157,7 +170,10 @@ class Upload extends PureComponent {
       0,
       index + 1
     );
-    this.setState({ currentFolderDrilldownRefs: updatedFolders });
+    this.setState((prevState)=>{
+      console.log(`%cSETSTATE: currentFolderDrilldownRefs:${updatedFolders}`, 'background:yellow; color:red');
+      return{ currentFolderDrilldownRefs: updatedFolders }
+    });
     console.log('%cEND==============================================', 'background:purple; color:white')
   };
 
@@ -165,6 +181,7 @@ class Upload extends PureComponent {
     console.log('%cSTART==============================================', 'background:purple; color:white');
     console.log(`%cFUNCTION addCurrentFolderToDrilldown, props: ${ref}`, 'background:purple; color:white');
     this.setState((prevState) => {
+      console.log(`%cSETSTATE: currentFolderDrilldownRefs: ${[...prevState.currentFolderDrilldownRefs,ref]}`, 'background:yellow; color:red');
       return {
         currentFolderDrilldownRefs: [
           ...prevState.currentFolderDrilldownRefs,
@@ -180,8 +197,9 @@ class Upload extends PureComponent {
     //reset folder first...
     console.log('%cSTART==============================================', 'background:cyan; color:black');
     console.log(`%cFUNCTION getFolderData, props: ${ref}`, 'background:cyan; color:black');
-
     this.setState((prevState) => {
+      console.log(`%cSETSTATE: firebaseFolders: ${[]}`, 'background:yellow; color:red');
+      console.log(`%cSETSTATE: firebaseFiles: ${[]}`, 'background:yellow; color:red');
       return {
         ...prevState,
         firebaseFolders: [],
@@ -216,8 +234,9 @@ class Upload extends PureComponent {
       files.forEach(item=>{
         console.log(`%cfiles: ${item}`,'background:cyan; color:black');
       });
-      
       this.setState((prevState) => {
+        console.log(`%cSETSTATE: firebaseFolders: ${folders}`, 'background:yellow; color:red');
+        console.log(`%cSETSTATE: firebaseFiles: ${files}`, 'background:yellow; color:red');
         return {
           ...prevState,
           firebaseFolders: folders,
@@ -270,7 +289,10 @@ class Upload extends PureComponent {
         placeholderFolderMatch.pathfolders = filtered;	
 
         //set state
-        this.setState({placeholderFolders: [...placeholderFolderAllExceptMatch, placeholderFolderMatch]})
+        this.setState((prevState)=>{
+          console.log(`%cSETSTATE: placeholderFolders: ${[...placeholderFolderAllExceptMatch, placeholderFolderMatch]}`, 'background:yellow; color:red');
+          return {placeholderFolders: [...placeholderFolderAllExceptMatch, placeholderFolderMatch]}
+        });
 
       }	
     }
@@ -281,7 +303,10 @@ class Upload extends PureComponent {
   getAllFolders = (ref=null)=>{
     console.log(`%cSTART==============================================`, 'background:magenta; color:white');
     console.log(`%cFUNCTION getAllFolders, props: ${ref}`, 'background:magenta; color:white');
-    this.setState({allFolderList:[]});
+    this.setState((prevState)=>{
+      console.log(`%cSETSTATE: allFolderList: ${[]}`, 'background:yellow; color:red');
+      return {allFolderList:[]}
+    });
     this.findFoldersForBuild(ref===null? this.state.firebaseRootRef : ref);
     console.log(`%cEND==============================================`, 'background:magenta; color:white');
   }
@@ -291,6 +316,7 @@ class Upload extends PureComponent {
     console.log('%cSTART==============================================', 'background:brown; color:white');
     console.log(`%cFUNCTION findFoldersForBuild, props: ${ref}`, 'background:brown; color:white');
     this.setState((prevState) => {
+      console.log(`%cSETSTATE: allFolderList: ${[...prevState.allFolderList, ref]}`, 'background:yellow; color:red');
       return { allFolderList: [...prevState.allFolderList, ref] };
     });
 
@@ -308,7 +334,10 @@ class Upload extends PureComponent {
       console.log('%cSTART===================================', 'background:black; color:red');
       console.log('%cFUNCTION uploadUrlOverHandler', 'background:black; color:red');
       console.log(`%cEvent target :${event.target}`, 'background:black; color:red;')
-      this.setState({uploadUrlOver: true });
+      this.setState((prevState)=>{
+        console.log(`%cSETSTATE: uploadUrlOver: ${true}`, 'background:yellow; color:red');
+        return {uploadUrlOver: true };
+      });
       console.log('%cEND===================================', 'background:black; color:red');
     }
   };
@@ -316,27 +345,38 @@ class Upload extends PureComponent {
   uploadUrlOutHandler = (event) => {
     console.log('%cSTART===================================', 'background:black; color:red');
     console.log('%cFUNCTION uploadUrlOutHandler', 'background:black; color:red');
-    console.log(`%cEvent target :${event.target}`, 'background:black; color:red;')
-    this.setState({uploadUrlOver: false });
+    console.log(`%cEvent target :${event.target}`, 'background:black; color:red;');
+    this.setState((prevState)=>{
+      console.log(`%cSETSTATE: uploadUrlOver: ${false}`, 'background:yellow; color:red');
+      return {uploadUrlOver: false };
+    });
     console.log('%cEND===================================', 'background:black; color:red');
   };
 
   errorConfirmedHandler = () => {
-    console.log('==============================================')
-    console.log('%cFUNCTION errorConfirmedHandler');
-    this.setState({ errorModal: null });
+    console.log('%cSTART==============================================', 'background:grey; color:white');
+    console.log('%cFUNCTION errorConfirmedHandler', 'background:grey; color:white');
+    this.setState((prevState)=>{
+      console.log(`%cSETSTATE: errorModal: null`, 'background:yellow; color:red');
+      return { errorModal: null }
+    });
+    console.log('%cEND==============================================', 'background:grey; color:white');
   };
 
   editBreadcrumbModal = () => {
-    console.log('==============================================')
-    console.log('%cFUNCTION editBreadcrumbModal');
+    console.log('%cSTART==============================================', 'background:gold; color:white');
+    console.log('%cFUNCTION editBreadcrumbModal', 'background:gold; color:white');
     this.setState((prevState) => {
+      console.log(`%cSETSTATE: editBreadcrumbModal: ${true}`, 'background:yellow; color:red');
+      console.log(`%cSETSTATE: currentFolderPath: ${prevState.currentFolderRef.location.path}, `, 'background:yellow; color:red');
+      console.log(`%cSETSTATE: errorModalMessage: ${null}`, 'background:yellow; color:red');
       return {
         editBreadcrumbModal: true,
         currentFolderPath: prevState.currentFolderRef.location.path, //reset the value when modal is opened
         errorModalMessage: null,
       };
     });
+    console.log('%cEND==============================================', 'background:gold; color:white');
   };
 
 
@@ -379,22 +419,23 @@ class Upload extends PureComponent {
 //UPLOAD
 // -------------------------------------------------------------------
   findDuplicateFile = (file) => {
-    console.log('==============================================')
-    console.log('FUNCTION findDuplicateFile');
+    console.log('%c==============================================', 'background:mistyrose; color:yellow');
+    console.log('%cFUNCTION findDuplicateFile', 'background:mistyrose; color:yellow');
+    console.log('%c==============================================', 'background:mistyrose;color:yellow');
     return this.state.selectedFiles.find((existingFile) => {
       const isDuplicate =
         existingFile.name === file.name &&
         existingFile.lastModified === file.lastModified &&
         existingFile.size === file.size &&
         existingFile.type === file.type;
-      console.log('IS DUPLICATE? ', isDuplicate);
+      console.log(`%cIS DUPLICATE? ${isDuplicate}`, 'background:mistyrose; color:yellow');
       return isDuplicate;
     });
   };
 
   fileChangedHandler = (event) => {
-    console.log('==============================================')
-    console.log('FUNCTION fileChangedHandler');
+    console.log('%cSTART==============================================', 'background:salmon; color:white');
+    console.log(`%cFUNCTION fileChangedHandler`, 'background:salmon; color:white');
     event.preventDefault();
     event.persist();
     const files = event.target.files;
@@ -415,12 +456,15 @@ class Upload extends PureComponent {
     this.setState(
       (prevState) => {
         console.log('waypoint1!!!!');
+        console.log(`%cSETSTATE: selectedFiles: ${[...toUpload]}`, 'background:yellow; color:red');
         return {
           selectedFiles: [...toUpload],
         };
       },
+
+      //callback
       () => {
-        console.log('waypoint2!!!!');
+        console.log('CALLBACK (waypoint2)!!!!');
         console.log('this.state.selectedFiles: ', this.state.selectedFiles);
         this.state.selectedFiles.forEach((item, index) => {
           console.log('uploadHandler item: ', item.name);
@@ -453,6 +497,8 @@ class Upload extends PureComponent {
         });
       }
     );
+    console.log('%cEND==============================================', 'background:salmon, color:white');
+
 
     //there is no items to add or remove as upload items go straight to cloud or are removed straight from cloud
     // this.state.selectedFiles.forEach((item, index) => {
@@ -520,6 +566,7 @@ class Upload extends PureComponent {
     this.setState((prevState) => {
       let files = [...prevState.checkedFiles];
       files[index] = isChecked;
+      console.log(`%cSETSTATE: checkedFiles: ${files}`, 'background:yellow; color:red');
       return { checkedFiles: files };
     }, this.checkIndeterminate);
   };
@@ -530,6 +577,7 @@ class Upload extends PureComponent {
     this.setState((prevState) => {
       let folders = [...prevState.checkedFolders];
       folders[index] = isChecked;
+      console.log(`%cSETSTATE: checkedFolders: ${folders}`, 'background:yellow; color:red');
       return { checkedFolders: folders };
     }, this.checkIndeterminate);
   };
@@ -541,13 +589,14 @@ class Upload extends PureComponent {
       let placeholderFolders = [...prevState.checkedPlaceholderFolders];
       placeholderFolders[index] = isChecked;
       console.log('placeholderFolders: ', placeholderFolders);
+      console.log(`%cSETSTATE: checkedPlaceholderFolders: ${placeholderFolders}`, 'background:yellow; color:red');
       return { checkedPlaceholderFolders: placeholderFolders };
     }, this.checkIndeterminate);
   }
 
   toggleCheckAllFolders = (isChecked) => {
-    console.log('==============================================')
-    console.log('FUNCTION toggleCheckAllFolders, props: ', isChecked);
+    console.log('%c==============================================', 'background:lime; color:yellow')
+    console.log(`%cFUNCTION toggleCheckAllFolders, props: ${isChecked}`, 'background:lime; color:yellow')
     this.setState((prevState) => {
       //check all firebase folders
       let folders = [...prevState.firebaseFolders];
@@ -571,33 +620,40 @@ class Upload extends PureComponent {
       }
 
       console.log('checkAllFolders: ', resultFolders, resultPathFolders);
+      console.log(`%cSETSTATE: checkedFolders: ${resultFolders}`, 'background:yellow; color:red');
+      console.log(`%cSETSTATE: checkedPlaceholderFolders: ${resultPathFolders}`, 'background:yellow; color:red');
       return { checkedFolders: resultFolders, checkedPlaceholderFolders:resultPathFolders };
     });
   };
 
   toggleCheckAllFiles = (isChecked) => {
-    console.log('==============================================')
-    console.log('FUNCTION toggleCheckAllFiles, props: ', isChecked);
+    console.log('%cSTART==============================================','background:mediumorchid; color:white');
+    console.log(`%cFUNCTION toggleCheckAllFiles, props: ${isChecked}`,'background:mediumorchid; color:white');
     this.setState((prevState) => {
       let files = [...prevState.firebaseFiles];
       let result = files.map((item) => {
         return isChecked;
       });
       console.log('checkedFiles: ', result);
+      console.log(`%cSETSTATE: checkedFiles: ${result}`, 'background:yellow; color:red');
       return { checkedFiles: result };
     });
+    console.log('%cEND==============================================','background:mediumorchid; color:white');
   };
 
   toggleMainChecked = (val) => {
-    console.log('==============================================')
-    console.log('FUNCTION toggleMainChecked, props: ', val);
+    console.log('%cSTART==============================================','background:mediumorchid; color:white');
+    console.log(`%cFUNCTION toggleMainChecked, props: ${val}`,'background:mediumorchid; color:white');
 
     this.setState((prevState) => {
+      console.log(`%cSETSTATE: mainChecked: ${ val ? val : !prevState.mainChecked}`, 'background:yellow; color:red');
+      console.log(`%cSETSTATE: mainIndeterminate: false`, 'background:yellow; color:red');
       return {
         mainChecked: val ? val : !prevState.mainChecked,
         mainIndeterminate: false,
       };
     });
+    console.log('%cEND==============================================','background:mediumorchid; color:white');
   };
 
   getCheckPlaceholderFoldersPathLength = () => {
@@ -648,12 +704,24 @@ class Upload extends PureComponent {
     let allItems = this.state.firebaseFiles.length + this.state.firebaseFolders.length + pathfolders.length;
 
     if (checkedItems === allItems) {
-      this.setState({ mainIndeterminate: false, mainChecked: true });
+      this.setState((prevState)=>{
+        console.log(`%cSETSTATE: mainIndeterminate: ${false}`, 'background:yellow; color:red');
+        console.log(`%cSETSTATE: mainChecked: ${true}`, 'background:yellow; color:red');
+        return { mainIndeterminate: false, mainChecked: true }
+      });
     } else if (checkedItems === 0) {
-      this.setState({ mainIndeterminate: false, mainChecked: false });
+      this.setState((prevState)=> {
+        console.log(`%cSETSTATE: mainIndeterminate: ${false}`, 'background:yellow; color:red');
+        console.log(`%cSETSTATE: mainChecked: ${false}`, 'background:yellow; color:red');
+        return { mainIndeterminate: false, mainChecked: false }
+      });
     } else if (checkedItems < allItems) {
       console.log('INDETERMINATE STATE!!');
-      this.setState({ mainIndeterminate: true, mainChecked: true });
+      this.setState((prevState)=>{
+        console.log(`%cSETSTATE: mainIndeterminate: ${true}`, 'background:yellow; color:red');
+        console.log(`%cSETSTATE: mainChecked: ${true}`, 'background:yellow; color:red');
+        return{ mainIndeterminate: true, mainChecked: true }
+      });
     }
   };
 
@@ -699,7 +767,13 @@ class Upload extends PureComponent {
     console.log('%cFUNCTION addFolderHandler', 'background:yellow; color:black');
     event.preventDefault();
     console.log(`%cthis.state.currentFolderRef.location.path: ${this.state.currentFolderRef.location.path}`, 'background:yellow; color:black');
-    this.setState({ createFolderModal: true, errorModalMessage: false, createFolderName: ''});
+    
+    this.setState((prevState)=>{
+      console.log(`%cSETSTATE: createFolderModal: ${true}`, 'background:yellow; color:red');
+      console.log(`%cSETSTATE: errorModalMessage: ${false}`, 'background:yellow; color:red');
+      console.log(`%cSETSTATE: createFolderName: ${''}`, 'background:yellow; color:red');
+      return{ createFolderModal: true, errorModalMessage: false, createFolderName: ''}
+    });
     console.log('%cEND==============================================', 'background:yellow; color:black');
   };
 
@@ -721,7 +795,10 @@ class Upload extends PureComponent {
       //if found in firebase...
       if(foundInFirebaseIndex > -1){
         console.log(`%cFOLDER EXISTS`, 'background:lime; color:black');
-        this.setState({errorModalMessage: 'Path already exists'});
+        this.setState((prevState)=>{
+          console.log(`%cSETSTATE: errorModalMessage: 'Path already exists'`, 'background:yellow; color:red');
+          return{errorModalMessage: 'Path already exists'}
+        });
         return prevState;
       } 
 
@@ -748,7 +825,8 @@ class Upload extends PureComponent {
         console.log('%cNOT FOUND, adding to pathfolders', 'background:lime; color:black');
         console.log(`%cfolderRef: ${folderRef}`, 'background:lime; color:black');
         let obj={pathRef: this.state.currentFolderRef, pathfolders: [folderRef]};
-        
+        console.log(`%cSETSTATE: placeholderFolders: ${[...prevState.placeholderFolders, obj]}`, 'background:yellow; color:red');
+        console.log(`%cSETSTATE: createFolderModal: false`, 'background:yellow; color:red');
         return { placeholderFolders: [...prevState.placeholderFolders, obj], 
         //firebaseAndPlaceholderFolders:firebaseAndPlaceholderFolders, 
         createFolderModal: false}
@@ -763,6 +841,7 @@ class Upload extends PureComponent {
         //folder found in pathfolders
         if(foundIndex > -1){
           console.log(`%cFOLDER EXISTS`, 'background:lime; color:black');
+          console.log(`%cSETSTATE: errorModalMessage: 'Path already exists'`, 'background:yellow; color:red');
           this.setState({errorModalMessage: 'Path already exists'});
           return prevState;
         }
@@ -776,6 +855,8 @@ class Upload extends PureComponent {
             let updatedFolders = [...placeholderFolderMatch.pathfolders, folderRef];
             placeholderFolderMatch.pathfolders = updatedFolders;
           }
+          console.log(`%cSETSTATE: placeholderFolders: ${[...placeholderFolderAllExceptMatch, placeholderFolderMatch]}`, 'background:yellow; color:red');
+          console.log(`%cSETSTATE: createFolderModal: false`, 'background:yellow; color:red');
           return { placeholderFolders: [...placeholderFolderAllExceptMatch, placeholderFolderMatch], createFolderModal: false}
         }
       }
@@ -849,10 +930,15 @@ class Upload extends PureComponent {
       if (this.state.checkedFiles[index] === true) {
         await item.delete();
         await this.getFolderData(this.state.currentFolderRef);
-        this.setState({
-          mainIndeterminate: false,
-          mainChecked: false,
-          checkedFiles: [],
+        this.setState((prevState)=>{
+          console.log(`%cSETSTATE: mainIndeterminate: ${false}`, 'background:yellow; color:red');
+          console.log(`%cSETSTATE: mainChecked: ${false}`, 'background:yellow; color:red');
+          console.log(`%cSETSTATE: checkedFiles: ${[]}`, 'background:yellow; color:red');
+          return {
+            mainIndeterminate: false,
+            mainChecked: false,
+            checkedFiles: [],
+          }
         });
       }
     });
@@ -864,6 +950,9 @@ class Upload extends PureComponent {
         await this.deleteFolder(item);//recursively go through folders and delete files
         await this.getFolderData(this.state.currentFolderRef); 
         this.setState(prevState=>{
+          console.log(`%cSETSTATE: mainIndeterminate: ${false}`, 'background:yellow; color:red');
+          console.log(`%cSETSTATE: mainChecked: ${false}`, 'background:yellow; color:red');
+          console.log(`%cSETSTATE: checkedFiles: ${[]}`, 'background:yellow; color:red');
           return {
             mainIndeterminate: false,
             mainChecked: false,
@@ -931,7 +1020,11 @@ class Upload extends PureComponent {
         let updatedPlaceholderFolders = [...removeDud]
 
         //we have now cut out all those pathfolders that were checked...
-        this.setState({placeholderFolders: updatedPlaceholderFolders ,checkedPlaceholderFolders:[]})
+        this.setState((prevState)=>{
+          console.log(`%cSETSTATE: placeholderFolders: ${updatedPlaceholderFolders}`, 'background:yellow; color:red');
+          console.log(`%cSETSTATE: checkedPlaceholderFolders: ${[]}`, 'background:yellow; color:red');
+          return {placeholderFolders: updatedPlaceholderFolders ,checkedPlaceholderFolders:[]}
+        });
       }
     }
     console.log('%cEND==============================================', 'background:grey; color:yellow');
@@ -1319,7 +1412,10 @@ class Upload extends PureComponent {
           show={this.state.createFolderModal}
           isInteractive={true}
           modalClosed={() => {
-            this.setState({ createFolderModal: false });
+            this.setState((prevState)=>{
+              console.log(`%cSETSTATE: createFolderModal: ${false}`, 'background:yellow; color:red');
+              return{ createFolderModal: false }
+            });
           }}
           continue={() => {
             console.clear();
@@ -1339,6 +1435,8 @@ class Upload extends PureComponent {
               let targetVal = event.target.value;
 
               this.setState((prevState) => {
+                console.log(`%cSETSTATE: errorModalMessage: ${null}`, 'background:yellow; color:red');
+                console.log(`%cSETSTATE: createFolderName: ${targetVal}`, 'background:yellow; color:red');
                 return {
                   errorModalMessage: null,
                   createFolderName: targetVal,
@@ -1356,9 +1454,13 @@ class Upload extends PureComponent {
           show={this.state.editBreadcrumbModal}
           isInteractive={true}
           modalClosed={() => {
-            this.setState({
-              editBreadcrumbModal: false,
-              errorModalMessage: null,
+            this.setState((prevState)=>{
+              console.log(`%cSETSTATE: editBreadcrumbModal: ${false}`, 'background:yellow; color:red');  
+              console.log(`%cSETSTATE: errorModalMessage: ${null}`, 'background:yellow; color:red');  
+              return{
+                editBreadcrumbModal: false,
+                errorModalMessage: null,
+              }
             });
           }}
           continue={() => {
@@ -1376,24 +1478,33 @@ class Upload extends PureComponent {
                   //found in drilldown...so it exists, navigate to it
                   this.changeFolderPath(item);
                   //on continue, navigate to new ref
-                  this.setState({
-                    editBreadcrumbModal: false,
-                    errorModalMessage: null,
-                  });
+                  this.setState((prevState)=>{
+                    console.log(`%cSETSTATE: editBreadcrumbModal: ${false}`, 'background:yellow; color:red');
+                    console.log(`%cSETSTATE: errorModalMessage: ${null}`, 'background:yellow; color:red');    
+                    return{
+                      editBreadcrumbModal: false,
+                      errorModalMessage: null,
+                    }
+                  }); 
                 } else if (
                   this.state.currentFolderPath[
                     this.state.currentFolderPath.length - 1
                   ] === '/'
                 ) {
                   console.error('path does not exist');
-                  this.setState({
-                    errorModalMessage:
-                      'Remove trailing "/" character from path',
+                  this.setState((prevState)=>{
+                    console.log(`%cSETSTATE: errorModalMessage: ${'Remove trailing "/" character from path'}`, 'background:yellow; color:red');    
+                    return{
+                      errorModalMessage:'Remove trailing "/" character from path',
+                    }
                   });
                 } else {
                   console.error('path does not exist');
-                  this.setState({
-                    errorModalMessage: 'Path does not exist',
+                  this.setState((prevState)=>{
+                    console.log(`%cSETSTATE: errorModalMessage: ${'Path does not exist'}`, 'background:yellow; color:red');    
+                    return {
+                      errorModalMessage: 'Path does not exist',
+                    }
                   });
                 }
               });
@@ -1406,24 +1517,34 @@ class Upload extends PureComponent {
                   //found in drilldown...so it exists, navigate to it
                   this.changeFolderPath(item);
                   //on continue, navigate to new ref
-                  this.setState({
-                    editBreadcrumbModal: false,
-                    errorModalMessage: null,
-                  });
+                  this.setState((prevState)=>{
+                    console.log(`%cSETSTATE: editBreadcrumbModal: ${false}`, 'background:yellow; color:red');
+                    console.log(`%cSETSTATE: errorModalMessage: ${null}`, 'background:yellow; color:red');    
+                    return{
+                      editBreadcrumbModal: false,
+                      errorModalMessage: null,
+                    }
+                  }); 
                 } else if (
                   this.state.currentFolderPath[
                     this.state.currentFolderPath.length - 1
                   ] === '/'
                 ) {
                   console.error('path does not exist');
-                  this.setState({
-                    errorModalMessage:
-                      'Remove trailing "/" character from path',
+                  this.setState((prevState)=>{
+                    console.log(`%cSETSTATE: errorModalMessage: ${'Remove trailing "/" character from path'}`, 'background:yellow; color:red');    
+                    return{
+                      errorModalMessage:'Remove trailing "/" character from path',
+                    }
                   });
+
                 } else {
                   console.error('path does not exist');
-                  this.setState({
-                    errorModalMessage: 'Path does not exist',
+                  this.setState((prevState)=>{
+                    console.log(`%cSETSTATE: errorModalMessage: ${'Path does not exist'}`, 'background:yellow; color:red');    
+                    return{
+                      errorModalMessage:'Path does not exist',
+                    }
                   });
                 }
               });
@@ -1440,7 +1561,10 @@ class Upload extends PureComponent {
             onChange={(event) => {
               event.preventDefault();
               console.log('typed: ', event.target.value);
-              this.setState({ currentFolderPath: event.target.value });
+              this.setState((prevState)=>{
+                console.log(`%cSETSTATE: currentFolderPath: ${event.target.value}`, 'background:yellow; color:red');    
+                return{ currentFolderPath: event.target.value }
+              });
             }}
           />
           <div className={classes.Errors}>{this.state.errorModalMessage}</div>

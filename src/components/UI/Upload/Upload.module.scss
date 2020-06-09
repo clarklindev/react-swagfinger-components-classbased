@@ -11,7 +11,6 @@
 
   .UploadHeader {
     min-height: 40px;
-    //padding: var(--paddinginput);
     align-items: center;
     display: flex;
     flex-basis: 1;
@@ -22,6 +21,7 @@
 
     &.StyleUploadIndeterminate {
       background-color: var(--coloraction);
+      padding: var(--paddingdefault);
     }
   }
 
