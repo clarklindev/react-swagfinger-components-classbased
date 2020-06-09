@@ -20,8 +20,8 @@ import 'firebase/storage';
 
 class Upload extends PureComponent {
   constructor(props) {
-    console.log('%c==============================================', 'background:white; color:red')
-    console.log('%cCONSTRUCTOR Upload', 'background:white; color:red');
+    console.log('NOTE: console.log() happens before setState() as setState() is async');
+    console.log('%cSTART CONSTRUCTOR Upload==============================================', 'background:white; color:red')
     super(props);
     this.firebaseConfig = {
       apiKey: 'AIzaSyBcmwi6R0CaeY9l1jfEUo0u71MZsVxldKo',
@@ -34,13 +34,13 @@ class Upload extends PureComponent {
       measurementId: 'G-QJZQEZMV2J',
     };
     try {
-      console.log('%cinitializing firebase', 'background:white; color:red');
+      console.log('\t%cinitializing firebase', 'background:white; color:red');
       firebase.initializeApp(this.firebaseConfig);
     } catch {
-      console.log('%calready exists...', 'background:white; color:red');
+      console.log('\t%calready exists...', 'background:white; color:red');
     }
     this.uploadRef = React.createRef();
-    console.log('%c==============================================', 'background:white; color:red')
+    console.log('%cEND==============================================', 'background:white; color:red')
   }
 
   state = {
@@ -72,9 +72,8 @@ class Upload extends PureComponent {
 
   };
 
-  componentDidMount() {
-    console.log('%c==============================================', 'background:white; color:red')
-    console.log('%cFUNCTION componentDidMount', 'background:white; color:red');
+  async componentDidMount() {
+    console.log('%cSTART FUNCTION componentDidMount==============================================', 'background:white; color:red')
     //get from storage folders
     // Get a reference to the storage service, which is used to create references in your storage bucket
     this.storage = firebase.storage();
@@ -86,36 +85,34 @@ class Upload extends PureComponent {
     let ref = this.storageRef;
 
     if (id) {
-      console.log(`%cEXISTS - id: ${id}`, 'background:white; color:red');
+      console.log(`\t%cEXISTS - id: ${id}`, 'background:white; color:red');
       // //current id folder
       ref = this.storageRef.child(id);
     } else {
       ref = this.storageRef;
     }
+    console.log(`\t%cSETSTATE: {firebaseRootRef:${ref}}`, 'background:yellow; color:red');
     this.setState((prevState)=>{
-      console.log(`%cSETSTATE: {firebaseRootRef:${ref}}`, 'background:yellow; color:red');
       return {firebaseRootRef: ref}
-    }, ()=>{
-      this.changeFolderPath(ref);
-      this.getAllFolders(ref);
     });
-    console.log('%c==============================================', 'background:white; color:red')
+    console.log('%cEND==============================================', 'background:white; color:red');
+    await this.changeFolderPath(ref);
+    await this.getAllFolders(ref);
   }
 
   changeFolderPath = async (ref) => {
-    console.log('%c\n\n\n\n***************************************************************', 'background:orange; color:white')
-    console.log('%cSTART==============================================', 'background:orange; color:white')
-    console.log(`%cFUNCTION changeFolderPath, props: ${ref}`, 'background:orange; color:white');
-    this.setCurrentFolderRef(ref); //sets state.currentFolderRef , state.currentFolderPath
-
+    console.log('%cSTART FUNCTION changeFolderPath==============================================', 'background:orange; color:white')
+    console.log(`\t%cprops: ${ref}`, 'background:orange; color:white');
+    await this.setCurrentFolderRef(ref); //sets state.currentFolderRef , state.currentFolderPath
+    
+    console.log(`\t%cSETSTATE: `, 'background:yellow; color:red');
+    console.log(`\t%cmainChecked:${false}`, 'background:yellow; color:red');
+    console.log(`\t%cmainIndeterminate:${false}`, 'background:yellow; color:red');
+    console.log(`\t%ccheckedFolders:[]`, 'background:yellow; color:red');
+    console.log(`\t%ccheckedFiles:[]`, 'background:yellow; color:red');
+    console.log(`\t%ccheckedPlaceholderFolders:[]`, 'background:yellow; color:red');
     //reset checked folders and files
-    this.setState((prevState)=>{
-      console.log(`%cSETSTATE`, 'background:yellow; color:red');
-      console.log(`%cmainChecked:${false}`, 'background:yellow; color:red');
-      console.log(`%cmainIndeterminate:${false}`, 'background:yellow; color:red');
-      console.log(`%ccheckedFolders:${[]}`, 'background:yellow; color:red');
-      console.log(`%ccheckedFiles:${[]}`, 'background:yellow; color:red');
-      console.log(`%ccheckedPlaceholderFolders:${[]}`, 'background:yellow; color:red');
+    await this.setState((prevState)=>{
       return {
         mainChecked: false,
         mainIndeterminate: false,
@@ -124,42 +121,36 @@ class Upload extends PureComponent {
         checkedPlaceholderFolders:[] //all checked temporary folders (not in firebase yet) in current folder
       } 
     });
-
+    
     //go through exisiting references, look for current reference (===) the ref from props,
     let index = this.state.currentFolderDrilldownRefs.findIndex((item) => {
       return item === ref;
     });
-    console.log('index:', index);
-
+    console.log(`\t%cindex in currentFolderDrilldownRefs: ${index}`, 'background:orange; color:white');
     //if it is found, then slice off from currentFolderDrilldownRefs onwards...(we navigated back)...
-    if (index > -1) {
-      //slice() returns new array..
-      this.updateFolderDrilldown(ref);
-    }
     //else if not found, then add to currentFolderDrilldownRefs.
-    else {
-      this.addCurrentFolderToDrilldown(ref);
-    }
-    console.log('before getFolderData...');
+    (index > -1) ? this.updateFolderDrilldown(ref) : this.addCurrentFolderToDrilldown(ref);
+
+    console.log(`\t%cbefore getFolderData...`, 'background:orange; color:white');
     await this.getFolderData(ref);// from ref.. sets firebaseFolders, firebaseFiles
-    console.log('after getFolderData...');
-    console.log('!! state.firebaseFolders: ', this.state.firebaseFolders);
-    console.log('!! state.firebaseFiles: ', this.state.firebaseFiles);
-    this.removeDuplicateFolders();
-    console.log('%cEND==============================================', 'background:orange; color:white')
+    console.log(`\t%cafter getFolderData...`, 'background:orange; color:white');
+
+    console.log(`\t%c!! state.firebaseFolders: ${this.state.firebaseFolders}`, 'background:orange; color:white');
+    console.log(`\t%c!! state.firebaseFiles: ${this.state.firebaseFiles}`, 'background:orange; color:white');
+    await this.removeDuplicateFolders();
+    console.log('%cEND==============================================', 'background:orange; color:white') 
   };  
 
   setCurrentFolderRef = (ref) => {
-    console.log('%cSTART==============================================', 'background:pink; color:black');
-    console.log(`%cFUNCTION setCurrentFolderRef, props: ${ref}`, 'background:pink; color:black');
-    this.setState((prevState)=>{
-      console.log(`%cSETSTATE`, 'background:yellow; color:red');
-      console.log(`currentFolderRef:${ref}`, 'background:yellow; color:red');
-      console.log(`currentFolderPath:${ref.location.path}`, 'background:yellow; color:red');
-      return{ currentFolderRef: ref, currentFolderPath: ref.location.path }
+    console.log('%cSTART FUNCTION setCurrentFolderRef==============================================', 'background:pink; color:black');
+    console.log(`\t%cprops: ${ref}`, 'background:pink; color:black');
+    console.log(`\t%cSETSTATE:`, 'background:yellow; color:red');
+    console.log(`\t%ccurrentFolderRef:${ref}`, 'background:yellow; color:red');
+    console.log(`\t%ccurrentFolderPath:${ref.location.path}`, 'background:yellow; color:red');
+    this.setState((prevState)=>{   
+      return { currentFolderRef: ref, currentFolderPath: ref.location.path }
     });
-    console.log('%cEND==============================================', 'background:pink; color:black')
-
+    console.log('%cEND==============================================', 'background:pink; color:black');
   };
 
   updateFolderDrilldown = (ref) => {
@@ -172,18 +163,18 @@ class Upload extends PureComponent {
       0,
       index + 1
     );
+    console.log(`\t%cSETSTATE: currentFolderDrilldownRefs:${updatedFolders}`, 'background:yellow; color:red');
     this.setState((prevState)=>{
-      console.log(`%cSETSTATE: currentFolderDrilldownRefs:${updatedFolders}`, 'background:yellow; color:red');
       return{ currentFolderDrilldownRefs: updatedFolders }
     });
     console.log('%cEND==============================================', 'background:purple; color:white')
   };
 
   addCurrentFolderToDrilldown = (ref) => {
-    console.log('%cSTART==============================================', 'background:purple; color:white');
-    console.log(`%cFUNCTION addCurrentFolderToDrilldown, props: ${ref}`, 'background:purple; color:white');
+    console.log('%cSTART FUNCTION addCurrentFolderToDrilldown==============================================', 'background:purple; color:white');
+    console.log(`\t%cprops: ${ref}`, 'background:purple; color:white');
+    console.log(`\t%cSETSTATE: currentFolderDrilldownRefs: ${[this.state.currentFolderDrilldownRefs,ref]}`, 'background:yellow; color:red');
     this.setState((prevState) => {
-      console.log(`%cSETSTATE: currentFolderDrilldownRefs: ${[...prevState.currentFolderDrilldownRefs,ref]}`, 'background:yellow; color:red');
       return {
         currentFolderDrilldownRefs: [
           ...prevState.currentFolderDrilldownRefs,
@@ -191,56 +182,57 @@ class Upload extends PureComponent {
         ],
       };
     });
-    console.log('%cEND==============================================', 'background:purple; color:white')
+    console.log('%cEND==============================================', 'background:purple; color:white');
   };
   
   //sets state.firebaseFolders, state.firebaseFiles
   getFolderData = async (ref) => {
     //reset folder first...
-    console.log('%cSTART==============================================', 'background:cyan; color:black');
-    console.log(`%cFUNCTION getFolderData, props: ${ref}`, 'background:cyan; color:black');
-    this.setState((prevState) => {
-      console.log(`%cSETSTATE:`, 'background:yellow; color:red');
-      console.log(`%cfirebaseFolders: ${[]}`, 'background:yellow; color:red');
-      console.log(`%cfirebaseFiles: ${[]}`, 'background:yellow; color:red');
+    console.log('%cSTART FUNCTION getFolderData==============================================', 'background:cyan; color:black');
+    console.log(`\t%cprops: ${ref}`, 'background:cyan; color:black');
+    console.log(`\t%cSETSTATE:`, 'background:yellow; color:red');
+    console.log(`\t%cfirebaseFolders: []`, 'background:yellow; color:red');
+    console.log(`\t%cfirebaseFiles: []`, 'background:yellow; color:red');
+    await this.setState((prevState) => {
       return {
         ...prevState,
         firebaseFolders: [],
         firebaseFiles: [],
       };
     });
-    console.log("%creset firebaseFolders to []", 'background:cyan; color:black');
-    console.log('%creset firebaseFiles to []', 'background:cyan; color:black');
+    console.log("\t%creset firebaseFolders to []", 'background:cyan; color:black');
+    console.log('\t%creset firebaseFiles to []', 'background:cyan; color:black');
     // //save to state folder ref from firebase storage
     await ref.listAll().then((res) => {
+      console.log('\t%cref.listAll() ...', 'background:cyan; color:black');
       let folders = [];
       if (res.prefixes.length) {
         res.prefixes.forEach((folderRef) => {
-          console.log(`%cfolder: ${folderRef}.name`, 'background:cyan; color:black');
+          //console.log(`\t%cfolder: ${folderRef.name}`, 'background:cyan; color:black');
           folders.push(folderRef);
-          console.log(`%call folder name: ${folders.map((item) => { return item.name; })}`,'background:cyan; color:black');
+          //console.log(`\t%call folder name: ${folders.map((item) => { return item.name; })}`,'background:cyan; color:black');
         });
       }
       folders.forEach(item=>{
-        console.log(`%cfolders: ${item}`,'background:cyan; color:black');
+        console.log(`\t%cfolders: ${item}`,'background:cyan; color:black');
       });
       
       let files = [];
       if (res.items.length) {
         res.items.forEach((itemRef) => {
           // All the items under listRef.
-          console.log(`%cfile: ${itemRef.name}`,'background:cyan; color:black');
+          //console.log(`\t%cfile: ${itemRef.name}`,'background:cyan; color:black');
           files.push(itemRef);
-          console.log(`%call file name: ${files.map((item) => { return item.name;})}`,'background:cyan; color:black');
+          //console.log(`\t%call file name: ${files.map((item) => { return item.name;})}`,'background:cyan; color:black');
         });
       }      
       files.forEach(item=>{
-        console.log(`%cfiles: ${item}`,'background:cyan; color:black');
+        console.log(`\t%cfiles: ${item}`,'background:cyan; color:black');
       });
+      console.log(`\t%cSETSTATE:`, 'background:yellow; color:red');
+      console.log(`\t%cfirebaseFolders: folders`, 'background:yellow; color:red');
+      console.log(`\t%cfirebaseFiles: files`, 'background:yellow; color:red');
       this.setState((prevState) => {
-        console.log(`%cSETSTATE:`, 'background:yellow; color:red');
-        console.log(`%cfirebaseFolders: ${folders}`, 'background:yellow; color:red');
-        console.log(`%cfirebaseFiles: ${files}`, 'background:yellow; color:red');
         return {
           ...prevState,
           firebaseFolders: folders,
@@ -253,8 +245,7 @@ class Upload extends PureComponent {
 
   //removes the placeholder folders if the firbase folder with same name exists
   removeDuplicateFolders = ()=>{
-    console.log('%cSTART==============================================', 'background:blue; color:white');
-    console.log('%cFUNCTION removeDuplicateFolders', 'background:blue; color:white');
+    console.log('%cSTART FUNCTION removeDuplicateFolders==============================================', 'background:blue; color:white');
     //sort out placeholder folders	
     let placeholderFolderAllExceptMatch = [...this.state.placeholderFolders.filter(item=>{
       return item.pathRef !== this.state.currentFolderRef;
@@ -263,38 +254,38 @@ class Upload extends PureComponent {
     let placeholderFolderMatch = this.state.placeholderFolders.find(item=>{
       return item.pathRef === this.state.currentFolderRef;
     });
-    console.log(`%cplaceholderFolderMatch: ${placeholderFolderMatch}`, 'background:blue; color:white');
+    console.log(`\t%cplaceholderFolderMatch: ${placeholderFolderMatch}`, 'background:blue; color:white');
 
     let placeholderMatchIndex=-1;	
-    console.log(`%cthis.state.currentFolderRef: ${this.state.currentFolderRef}`, 'background:blue; color:white');
+    console.log(`\t%cthis.state.currentFolderRef: ${this.state.currentFolderRef}`, 'background:blue; color:white');
     if(this.state.placeholderFolders.length > 0){	
-      console.log(`%cSOMETHING HERE...`, 'background:blue; color:white');
+      console.log(`\t%cSOMETHING HERE...`, 'background:blue; color:white');
       placeholderMatchIndex = this.state.placeholderFolders.findIndex((item)=>{	
-        console.log(`%citem.pathRef: ${item.pathRef}`, 'background:blue; color:white');
+        console.log(`\t%citem.pathRef: ${item.pathRef}`, 'background:blue; color:white');
         return (item.pathRef === this.state.currentFolderRef);	
       });	
-      console.log(`%cplacehodlerMatchIndex: ${placeholderMatchIndex}`, 'background:blue; color:white');
+      console.log(`\t%cplacehodlerMatchIndex: ${placeholderMatchIndex}`, 'background:blue; color:white');
       //if found in placeholder...
       if(placeholderMatchIndex > -1){	
         //look in the pathfolders of placeholder (exclude the same name)
         let filtered = [...this.state.placeholderFolders[placeholderMatchIndex].pathfolders.filter(ref=>{	
           //go thru firebase folders and see if there is a match to 'folder' name	
-          console.log(`%cref.location.path: ${ref.location.path}`, 'background:blue; color:white');
+          console.log(`\t%cref.location.path: ${ref.location.path}`, 'background:blue; color:white');
           let isFound = this.state.firebaseFolders.find(folderref=>{	
             return folderref.location.path === ref.location.path;	
           });	
-          console.log(`%cISFOUND: ${isFound}`, 'background:blue; color:white');
+          console.log(`\t%cISFOUND: ${isFound}`, 'background:blue; color:white');
           //if found, return false
           return (isFound === undefined) ? true : false;
         })];
         
-        console.log(`%cUPDATED CHILDFOLDERS: ${filtered}`, 'background:blue; color:white');
+        console.log(`\t%cUPDATED CHILDFOLDERS: ${filtered}`, 'background:blue; color:white');
 
         placeholderFolderMatch.pathfolders = filtered;	
 
         //set state
+        console.log(`\t%cSETSTATE: placeholderFolders: ${[...placeholderFolderAllExceptMatch, placeholderFolderMatch]}`, 'background:yellow; color:red');
         this.setState((prevState)=>{
-          console.log(`%cSETSTATE: placeholderFolders: ${[...placeholderFolderAllExceptMatch, placeholderFolderMatch]}`, 'background:yellow; color:red');
           return {placeholderFolders: [...placeholderFolderAllExceptMatch, placeholderFolderMatch]}
         });
 
@@ -305,32 +296,32 @@ class Upload extends PureComponent {
 
   //resets state.allFolderList
   getAllFolders = (ref=null)=>{
-    console.log(`%cSTART==============================================`, 'background:magenta; color:white');
-    console.log(`%cFUNCTION getAllFolders, props: ${ref}`, 'background:magenta; color:white');
+    console.log(`%cSTART FUNCTION getAllFolders==============================================`, 'background:magenta; color:white');
+    console.log(`\t%cprops: ${ref}`, 'background:magenta; color:white');
+    let allArray = this.findFoldersForBuild(ref===null? this.state.firebaseRootRef : ref, []);
+    console.log(`\t%callArray: ${allArray}`, 'background:magenta; color:white');
+    console.log(`\t%cSETSTATE: allFolderList: ${allArray}`, 'background:yellow; color:red');
     this.setState((prevState)=>{
-      console.log(`%cSETSTATE: allFolderList: ${[]}`, 'background:yellow; color:red');
-      return {allFolderList:[]}
+      return {allFolderList:allArray}
     });
-    this.findFoldersForBuild(ref===null? this.state.firebaseRootRef : ref);
     console.log(`%cEND==============================================`, 'background:magenta; color:white');
   }
   
   //RECURSIVE - gets all folders from ref onwards saving refs
-  findFoldersForBuild = (ref) => {
-    console.log('%cSTART==============================================', 'background:brown; color:white');
-    console.log(`%cFUNCTION findFoldersForBuild, props: ${ref}`, 'background:brown; color:white');
-    this.setState((prevState) => {
-      console.log(`%cSETSTATE: allFolderList: ${[...prevState.allFolderList, ref]}`, 'background:yellow; color:red');
-      return { allFolderList: [...prevState.allFolderList, ref] };
-    });
-
+  findFoldersForBuild = (ref, arr) => {
+    console.log('%cSTART FUNCTION findFoldersForBuild==============================================', 'background:brown; color:white');
+    console.log(`\t%cprops: ${ref}`, 'background:brown; color:white');
+    arr.push(ref);
+    console.log(`\t%cSETSTATE: allFolderList: ${[this.state.allFolderList, ref]}`, 'background:yellow; color:red');
     ref.listAll().then((res) => {
       //if the current folder does NOT have folders
       res.prefixes.forEach((folderRef) => {
-        this.findFoldersForBuild(folderRef);
+        this.findFoldersForBuild(folderRef, arr);
       });
     });
     console.log('%cEND==============================================', 'background:brown; color:white');
+    return arr;
+
   };
 
   uploadUrlOverHandler = (event) => {
@@ -947,7 +938,7 @@ class Upload extends PureComponent {
           console.log(`%cSETSTATE:`, 'background:yellow; color:red');
           console.log(`%cmainIndeterminate: ${false}`, 'background:yellow; color:red');
           console.log(`%cmainChecked: ${false}`, 'background:yellow; color:red');
-          console.log(`%ccheckedFiles: ${[]}`, 'background:yellow; color:red');
+          console.log(`%ccheckedFiles: []`, 'background:yellow; color:red');
           return {
             mainIndeterminate: false,
             mainChecked: false,
@@ -967,7 +958,7 @@ class Upload extends PureComponent {
           console.log(`%cSETSTATE:`, 'background:yellow; color:red');
           console.log(`%cmainIndeterminate: ${false}`, 'background:yellow; color:red');
           console.log(`%cmainChecked: ${false}`, 'background:yellow; color:red');
-          console.log(`%ccheckedFiles: ${[]}`, 'background:yellow; color:red');
+          console.log(`%ccheckedFiles: []`, 'background:yellow; color:red');
           return {
             mainIndeterminate: false,
             mainChecked: false,
@@ -1038,7 +1029,7 @@ class Upload extends PureComponent {
         this.setState((prevState)=>{
           console.log(`%cSETSTATE:`, 'background:yellow; color:red');
           console.log(`%cplaceholderFolders: ${updatedPlaceholderFolders}`, 'background:yellow; color:red');
-          console.log(`%ccheckedPlaceholderFolders: ${[]}`, 'background:yellow; color:red');
+          console.log(`%ccheckedPlaceholderFolders: []`, 'background:yellow; color:red');
           return {placeholderFolders: updatedPlaceholderFolders ,checkedPlaceholderFolders:[]}
         });
       }
@@ -1087,29 +1078,29 @@ class Upload extends PureComponent {
 // -------------------------------------------------------------------
 
   render() {
-    console.log('%c\n\n\n\n\n\n\nSTART==============================================', 'background:green;color:white');
-    console.log('%cFUNCTION render', 'background:green;color:white');
-    console.log(`%callFolderList *(firebase folder recursive): ${this.state.allFolderList}`, `background:green;color:white`);
-    console.log(`%cfirebaseFolders: ${this.state.firebaseFolders}`, 'background:green;color:white');
-    console.log(`%cfirebaseFiles: ${this.state.firebaseFiles}`, 'background:green;color:white');
-    console.log(`%cplaceholderFolders: ${this.state.placeholderFolders}`, 'background:green;color:white');
-    console.log(`%ccurrentFolderDrilldownRefs: ${this.state.currentFolderDrilldownRefs}`, 'background:green;color:white');
-    console.log(`%ccurrentFolderRef: ${this.state.currentFolderRef}`, 'background:green;color:white');
-    console.log(`%ccurrentFolderPath: ${this.state.currentFolderPath}`, 'background:green;color:white');
-    console.log(`%ccheckedPlaceholderFolders: ${this.state.checkedPlaceholderFolders}`, 'background:green;color:white');
-    console.log(`%ccheckedFolders: ${this.state.checkedFolders}`, 'background:green;color:white');
-    console.log(`%ccheckedFiles: ${this.state.checkedFiles}`, 'background:green;color:white');
+    console.log('%cSTART FUNCTION render==============================================', 'background:green;color:white');
+    console.log(`\t%cfirebaseRootRef: ${this.state.firebaseRootRef}`, `background:green;color:white`);
+    console.log(`\t%callFolderList *(firebase folder recursive): ${this.state.allFolderList}`, `background:green;color:white`);
+    console.log(`\t%cfirebaseFolders: ${this.state.firebaseFolders}`, 'background:green;color:white');
+    console.log(`\t%cfirebaseFiles: ${this.state.firebaseFiles}`, 'background:green;color:white');
+    console.log(`\t%cplaceholderFolders: ${this.state.placeholderFolders}`, 'background:green;color:white');
+    console.log(`\t%ccurrentFolderDrilldownRefs: ${this.state.currentFolderDrilldownRefs}`, 'background:green;color:white');
+    console.log(`\t%ccurrentFolderRef: ${this.state.currentFolderRef}`, 'background:green;color:white');
+    console.log(`\t%ccurrentFolderPath: ${this.state.currentFolderPath}`, 'background:green;color:white');
+    console.log(`\t%ccheckedPlaceholderFolders: ${this.state.checkedPlaceholderFolders}`, 'background:green;color:white');
+    console.log(`\t%ccheckedFolders: ${this.state.checkedFolders}`, 'background:green;color:white');
+    console.log(`\t%ccheckedFiles: ${this.state.checkedFiles}`, 'background:green;color:white');
     //sort out placeholder folders
     let placeholderMatchIndex=-1;
     let pathFolders = [];
 
     if(this.state.placeholderFolders.length){
-      console.log('SOMETHING HERE...')
+      console.log('\t%cSOMETHING HERE...','background:green;color:white');
       placeholderMatchIndex = this.state.placeholderFolders.findIndex((item)=>{
         return (item.pathRef.location.path === this.state.currentFolderRef.location.path);
       });
       
-      console.log('placeholderMatchIndex: ', placeholderMatchIndex);
+      console.log(`\t%cplaceholderMatchIndex: ${placeholderMatchIndex}`, 'background:green;color:white');
     
       if(placeholderMatchIndex > -1){
         pathFolders = this.state.placeholderFolders[placeholderMatchIndex].pathfolders;
@@ -1120,7 +1111,7 @@ class Upload extends PureComponent {
       
       //placeholderFolders
       ...pathFolders.map((item, index)=>{
-        console.log('pathfolder:', item);
+        console.log(`\t%cpathfolder: ${item}`,'background:green;color:white');
         let key = this.state.currentFolderRef.location.path+'_placeholderfolder_'+index;
         //console.log('key: ', key);
 
@@ -1195,8 +1186,8 @@ class Upload extends PureComponent {
     })
 
     //console.log('this.state.firebaseAndPlaceholderFolders: ', this.state.firebaseAndPlaceholderFolders);
-    console.log('sortedDOM: ', sortedDOM);
-    console.log('this.state.firebaseFiles: ', this.state.firebaseFiles);
+    console.log(`\t%csortedDOM: ${sortedDOM}`,'background:green;color:white');
+    console.log(`\t%cthis.state.firebaseFiles: ${this.state.firebaseFiles}`,'background:green;color:white');
     let currentFolderData = [
       ...sortedDOM,
       //=====================================
