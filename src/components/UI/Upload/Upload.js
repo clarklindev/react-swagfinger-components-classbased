@@ -92,7 +92,7 @@ class Upload extends PureComponent {
       ref = this.storageRef;
     }
     console.log(`\t%cSETSTATE: {firebaseRootRef:${ref}}`, 'background:yellow; color:red');
-    this.setState((prevState)=>{
+    await this.setState((prevState)=>{
       return {firebaseRootRef: ref}
     });
     console.log('%cEND==============================================', 'background:white; color:red');
@@ -129,7 +129,7 @@ class Upload extends PureComponent {
     console.log(`\t%cindex in currentFolderDrilldownRefs: ${index}`, 'background:orange; color:white');
     //if it is found, then slice off from currentFolderDrilldownRefs onwards...(we navigated back)...
     //else if not found, then add to currentFolderDrilldownRefs.
-    (index > -1) ? this.updateFolderDrilldown(ref) : this.addCurrentFolderToDrilldown(ref);
+    (index > -1) ? await this.updateFolderDrilldown(ref) : await this.addCurrentFolderToDrilldown(ref);
 
     console.log(`\t%cbefore getFolderData...`, 'background:orange; color:white');
     await this.getFolderData(ref);// from ref.. sets firebaseFolders, firebaseFiles
@@ -141,19 +141,19 @@ class Upload extends PureComponent {
     console.log('%cEND==============================================', 'background:orange; color:white') 
   };  
 
-  setCurrentFolderRef = (ref) => {
+  setCurrentFolderRef = async (ref) => {
     console.log('%cSTART FUNCTION setCurrentFolderRef==============================================', 'background:pink; color:black');
     console.log(`\t%cprops: ${ref}`, 'background:pink; color:black');
     console.log(`\t%cSETSTATE:`, 'background:yellow; color:red');
     console.log(`\t%ccurrentFolderRef:${ref}`, 'background:yellow; color:red');
     console.log(`\t%ccurrentFolderPath:${ref.location.path}`, 'background:yellow; color:red');
-    this.setState((prevState)=>{   
+    await this.setState((prevState)=>{   
       return { currentFolderRef: ref, currentFolderPath: ref.location.path }
     });
     console.log('%cEND==============================================', 'background:pink; color:black');
   };
 
-  updateFolderDrilldown = (ref) => {
+  updateFolderDrilldown = async (ref) => {
     console.log('%cSTART==============================================', 'background:purple; color:white');
     console.log(`%cFUNCTION updateFolderDrilldown, props: ${ref}`, 'background:purple; color:white');
     let index = this.state.currentFolderDrilldownRefs.findIndex((item) => {
@@ -164,17 +164,17 @@ class Upload extends PureComponent {
       index + 1
     );
     console.log(`\t%cSETSTATE: currentFolderDrilldownRefs:${updatedFolders}`, 'background:yellow; color:red');
-    this.setState((prevState)=>{
+    await this.setState((prevState)=>{
       return{ currentFolderDrilldownRefs: updatedFolders }
     });
     console.log('%cEND==============================================', 'background:purple; color:white')
   };
 
-  addCurrentFolderToDrilldown = (ref) => {
+  addCurrentFolderToDrilldown = async (ref) => {
     console.log('%cSTART FUNCTION addCurrentFolderToDrilldown==============================================', 'background:purple; color:white');
     console.log(`\t%cprops: ${ref}`, 'background:purple; color:white');
     console.log(`\t%cSETSTATE: currentFolderDrilldownRefs: ${[this.state.currentFolderDrilldownRefs,ref]}`, 'background:yellow; color:red');
-    this.setState((prevState) => {
+    await this.setState((prevState) => {
       return {
         currentFolderDrilldownRefs: [
           ...prevState.currentFolderDrilldownRefs,
@@ -203,7 +203,7 @@ class Upload extends PureComponent {
     console.log("\t%creset firebaseFolders to []", 'background:cyan; color:black');
     console.log('\t%creset firebaseFiles to []', 'background:cyan; color:black');
     // //save to state folder ref from firebase storage
-    await ref.listAll().then((res) => {
+    await ref.listAll().then( async (res) => {
       console.log('\t%cref.listAll() ...', 'background:cyan; color:black');
       let folders = [];
       if (res.prefixes.length) {
@@ -232,7 +232,7 @@ class Upload extends PureComponent {
       console.log(`\t%cSETSTATE:`, 'background:yellow; color:red');
       console.log(`\t%cfirebaseFolders: folders`, 'background:yellow; color:red');
       console.log(`\t%cfirebaseFiles: files`, 'background:yellow; color:red');
-      this.setState((prevState) => {
+      await this.setState((prevState) => {
         return {
           ...prevState,
           firebaseFolders: folders,
@@ -244,7 +244,7 @@ class Upload extends PureComponent {
   };
 
   //removes the placeholder folders if the firbase folder with same name exists
-  removeDuplicateFolders = ()=>{
+  removeDuplicateFolders = async ()=>{
     console.log('%cSTART FUNCTION removeDuplicateFolders==============================================', 'background:blue; color:white');
     //sort out placeholder folders	
     let placeholderFolderAllExceptMatch = [...this.state.placeholderFolders.filter(item=>{
@@ -295,25 +295,25 @@ class Upload extends PureComponent {
   }
 
   //resets state.allFolderList
-  getAllFolders = (ref=null)=>{
+  getAllFolders = async (ref=null)=>{
     console.log(`%cSTART FUNCTION getAllFolders==============================================`, 'background:magenta; color:white');
     console.log(`\t%cprops: ${ref}`, 'background:magenta; color:white');
-    let allArray = this.findFoldersForBuild(ref===null? this.state.firebaseRootRef : ref, []);
+    let allArray = await this.findFoldersForBuild(ref===null? this.state.firebaseRootRef : ref, []);
     console.log(`\t%callArray: ${allArray}`, 'background:magenta; color:white');
     console.log(`\t%cSETSTATE: allFolderList: ${allArray}`, 'background:yellow; color:red');
-    this.setState((prevState)=>{
+    await this.setState((prevState)=>{
       return {allFolderList:allArray}
     });
     console.log(`%cEND==============================================`, 'background:magenta; color:white');
   }
   
   //RECURSIVE - gets all folders from ref onwards saving refs
-  findFoldersForBuild = (ref, arr) => {
+  findFoldersForBuild = async (ref, arr) => {
     console.log('%cSTART FUNCTION findFoldersForBuild==============================================', 'background:brown; color:white');
     console.log(`\t%cprops: ${ref}`, 'background:brown; color:white');
     arr.push(ref);
     console.log(`\t%cSETSTATE: allFolderList: ${[this.state.allFolderList, ref]}`, 'background:yellow; color:red');
-    ref.listAll().then((res) => {
+    await ref.listAll().then((res) => {
       //if the current folder does NOT have folders
       res.prefixes.forEach((folderRef) => {
         this.findFoldersForBuild(folderRef, arr);
@@ -429,11 +429,9 @@ class Upload extends PureComponent {
     });
   };
 
-  fileChangedHandler = (event) => {
-    console.log('%cSTART==============================================', 'background:salmon; color:white');
-    console.log(`%cFUNCTION fileChangedHandler`, 'background:salmon; color:white');
+  fileChangedHandler = async (event) => {
+    console.log('%cSTART FUNCTION fileChangedHandler==============================================', 'background:salmon; color:white');
     event.preventDefault();
-    event.persist();
     const files = event.target.files;
 
     let toUpload = [];
@@ -446,55 +444,56 @@ class Upload extends PureComponent {
       //   return;
       // }
       toUpload.push(file);
-      console.warn('Added file:', file);
+      console.warn(`\t%cAdded file:${file}`, 'background:salmon; color:white');
     });
-    console.log('FILES TO UPLOAD: ', toUpload);
-    this.setState(
+    console.log(`\t%cFILES TO UPLOAD: ${toUpload}`, 'background:salmon; color:white');
+    console.log('\t%cwaypoint1!!!!', 'background:salmon; color:white');
+    await this.setState(
       (prevState) => {
-        console.log('waypoint1!!!!');
-        console.log(`%cSETSTATE: selectedFiles: ${[...toUpload]}`, 'background:yellow; color:red');
+        console.log(`\t%cSETSTATE: selectedFiles: ${[...toUpload]}`, 'background:yellow; color:red');
         return {
           selectedFiles: [...toUpload],
         };
-      },
-
-      //callback
-      () => {
-        console.log('CALLBACK (waypoint2)!!!!');
-        console.log('this.state.selectedFiles: ', this.state.selectedFiles);
-        this.state.selectedFiles.forEach((item, index) => {
-          console.log('uploadHandler item: ', item.name);
-          let file = this.state.selectedFiles[index];
-          let fileName = this.state.selectedFiles[index].name;
-          // console.log('FILE: ', file, '| filename: ', fileName);
-          let fileRef = this.state.currentFolderRef.child(fileName);
+      }
+    );
+    console.log(`\t%cCALLBACK (waypoint2)!!!!'`, 'background:salmon; color:white');
+    console.log(`\t%cthis.state.selectedFiles: ${this.state.selectedFiles}`, 'background:salmon; color:white');
     
-          //using .fullPath
-          //let path = fileRef.fullPath; //path is images/{filename}
-          //put() takes files via javascript File and Blob api and uploads them to cloud storage
-          let uploadTask = fileRef.put(file);
-    
+    await Promise.all(this.state.selectedFiles.map( 
+      (item, index) => {
+        console.log(`\t%cuploadHandler item: ${item.name}`, 'background:salmon; color:white');
+        let file = this.state.selectedFiles[index];
+        let fileName = this.state.selectedFiles[index].name;
+        // console.log('FILE: ', file, '| filename: ', fileName);
+        let fileRef = this.state.currentFolderRef.child(fileName);
+        //using .fullPath
+        //let path = fileRef.fullPath; //path is images/{filename}
+        //put() takes files via javascript File and Blob api and uploads them to cloud storage
+        let uploadTask = fileRef.put(file);
+        return new Promise((resolve, reject)=>{
           uploadTask.on(
             'state_changed', //or firebase.storage.TaskEvent.STATE_CHANGED
             (snapshot) => {
               var progress =
                 (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-              console.log('UPLOAD PROGRESS: ', progress);
+              console.log(`\t%cUPLOAD PROGRESS: ${progress}`, 'background:salmon; color:white');
+            }, (error)=>{
+              reject(new Error('FAIL!!'));
             },
-            (error) => {
-              console.log('error');
-            },
-            () => {
-              //callback after completion
-              console.log('uploaded file.');
-              this.getFolderData(this.state.currentFolderRef);
+            async ()=>{
+              console.log('\t%cCOMPLETED!!', 'background:salmon; color:white');
+              await this.getFolderData(this.state.currentFolderRef);
+              resolve();
             }
           );
         });
       }
-    );
-    console.log('%cEND==============================================', 'background:salmon, color:white');
-
+    )).then(()=>{
+      console.log('\t%cDONE', 'background:salmon; color:white');
+      console.log('%c==============================================', 'background:salmon; color:white');
+    });
+    
+   
 
     //there is no items to add or remove as upload items go straight to cloud or are removed straight from cloud
     // this.state.selectedFiles.forEach((item, index) => {
@@ -763,42 +762,40 @@ class Upload extends PureComponent {
 // -------------------------------------------------------------------
 //ADD folder
 // -------------------------------------------------------------------
-  addFolderHandler = (event) => {
-    console.log('%cSTART==============================================', 'background:yellow; color:black');
-    console.log('%cFUNCTION addFolderHandler', 'background:yellow; color:black');
+  addFolderHandler = async (event) => {
+    console.log('%cSTART FUNCTION addFolderHandler==============================================', 'background:orangered; color:white');
     event.preventDefault();
-    console.log(`%cthis.state.currentFolderRef.location.path: ${this.state.currentFolderRef.location.path}`, 'background:yellow; color:black');
+    console.log(`\t%cthis.state.currentFolderRef.location.path: ${this.state.currentFolderRef.location.path}`, 'background:orangered; color:white');
     
-    this.setState((prevState)=>{
-      console.log(`%cSETSTATE:`, 'background:yellow; color:red');
-      console.log(`%ccreateFolderModal: ${true}`, 'background:yellow; color:red');
-      console.log(`%cerrorModalMessage: ${false}`, 'background:yellow; color:red');
-      console.log(`%ccreateFolderName: ${''}`, 'background:yellow; color:red');
+    await this.setState((prevState)=>{
+      console.log(`\t%cSETSTATE:`, 'background:yellow; color:red');
+      console.log(`\t%ccreateFolderModal: ${true}`, 'background:yellow; color:red');
+      console.log(`\t%cerrorModalMessage: ${false}`, 'background:yellow; color:red');
+      console.log(`\t%ccreateFolderName: ${''}`, 'background:yellow; color:red');
       return{ createFolderModal: true, errorModalMessage: false, createFolderName: ''}
     });
-    console.log('%cEND==============================================', 'background:yellow; color:black');
+    console.log('%cEND==============================================', 'background:orangered; color:white');
   };
 
   //new folder needs to be specific for the currentFolderRef
-  addFolder = (folderRef) => {
-    console.log('%cSTART==============================================', 'background:lime; color:black');
-    console.log('%cFUNCTION addFolder', 'background:lime; color:black');
-    console.log(`%cthis.state.currentFolderRef.location.path:${this.state.currentFolderRef.location.path}`, 'background:lime; color:black');
-    this.setState((prevState)=>{
+  addFolder = async (folderRef) => {
+    console.log('%cSTART FUNCTION addFolder==============================================', 'background:lime; color:black');
+    console.log(`\t%cthis.state.currentFolderRef.location.path:${this.state.currentFolderRef.location.path}`, 'background:lime; color:black');
+    await this.setState((prevState)=>{
       
       //can we find it in firebase?
-      console.log(`%ctry find in firebaseFolders`, 'background:lime; color:black');
+      console.log(`\t%ctry find in firebaseFolders`, 'background:lime; color:black');
       let foundInFirebaseIndex = prevState.firebaseFolders.findIndex((item)=>{
-        console.log(`%ccompare - item.name: ${item.name} | folderRef: ${folderRef.name}`, 'background:lime; color:black');
+        console.log(`\t%ccompare - item.name: ${item.name} | folderRef: ${folderRef.name}`, 'background:lime; color:black');
         return item.name === folderRef.name;
       });
-      console.log(`%cfoundInFirebaseIndex: ${foundInFirebaseIndex}`, 'background:lime; color:black');
+      console.log(`\t%cfoundInFirebaseIndex: ${foundInFirebaseIndex}`, 'background:lime; color:black');
 
       //if found in firebase...
       if(foundInFirebaseIndex > -1){
-        console.log(`%cFOLDER EXISTS`, 'background:lime; color:black');
-        this.setState((prevState)=>{
-          console.log(`%cSETSTATE: errorModalMessage: 'Path already exists'`, 'background:yellow; color:red');
+        console.log(`\t%cFOLDER EXISTS`, 'background:lime; color:black');
+        this.setState( (prevState)=>{
+          console.log(`\t%cSETSTATE: errorModalMessage: 'Path already exists'`, 'background:yellow; color:red');
           return{errorModalMessage: 'Path already exists'}
         });
         return prevState;
@@ -806,8 +803,6 @@ class Upload extends PureComponent {
 
       //current folder match...
       //try find current folder in placeholderFolders...
-      
-
       let placeholderFolderAllExceptMatch = [...prevState.placeholderFolders.filter(item=>{
         return item.pathRef !== this.state.currentFolderRef;
       })];
@@ -820,19 +815,17 @@ class Upload extends PureComponent {
         return item.pathRef === this.state.currentFolderRef;
       });
       
-      console.log(`%cplaceholderFolderMatchIndex: ${placeholderFolderMatchIndex}`, 'background:lime; color:black');
+      console.log(`\t%cplaceholderFolderMatchIndex: ${placeholderFolderMatchIndex}`, 'background:lime; color:black');
       
       //not found in placeholderFolders?...add!
       if(placeholderFolderMatchIndex === -1){
-        console.log('%cNOT FOUND, adding to pathfolders', 'background:lime; color:black');
-        console.log(`%cfolderRef: ${folderRef}`, 'background:lime; color:black');
+        console.log('\t%cNOT FOUND, adding to pathfolders', 'background:lime; color:black');
+        console.log(`\t%cfolderRef: ${folderRef}`, 'background:lime; color:black');
         let obj={pathRef: this.state.currentFolderRef, pathfolders: [folderRef]};
-        console.log(`%cSETSTATE:`, 'background:yellow; color:red');
-        console.log(`%cplaceholderFolders: ${[...prevState.placeholderFolders, obj]}`, 'background:yellow; color:red');
-        console.log(`%ccreateFolderModal: false`, 'background:yellow; color:red');
-        return { placeholderFolders: [...prevState.placeholderFolders, obj], 
-        //firebaseAndPlaceholderFolders:firebaseAndPlaceholderFolders, 
-        createFolderModal: false}
+        console.log(`\t%cSETSTATE:`, 'background:yellow; color:red');
+        console.log(`\t%cplaceholderFolders: ${[...prevState.placeholderFolders, obj]}`, 'background:yellow; color:red');
+        console.log(`\t%ccreateFolderModal: false`, 'background:yellow; color:red');
+        return { placeholderFolders: [...prevState.placeholderFolders, obj], createFolderModal: false}
       }
       //FOUND current folder in placeholderFolders
       else{
@@ -843,14 +836,14 @@ class Upload extends PureComponent {
 
         //folder found in pathfolders
         if(foundIndex > -1){
-          console.log(`%cFOLDER EXISTS`, 'background:lime; color:black');
-          console.log(`%cSETSTATE: errorModalMessage: 'Path already exists'`, 'background:yellow; color:red');
+          console.log(`\t%cFOLDER EXISTS`, 'background:lime; color:black');
+          console.log(`\t%cSETSTATE: errorModalMessage: 'Path already exists'`, 'background:yellow; color:red');
           this.setState({errorModalMessage: 'Path already exists'});
           return prevState;
         }
         //not found in pathfolders
         else{
-          console.log(`%cFOLDER DOES NOT EXIST YET`, 'background:lime; color:black');
+          console.log(`\t%cFOLDER DOES NOT EXIST YET`, 'background:lime; color:black');
           let isFound = placeholderFolderMatch.pathfolders.findIndex(item=>{
             return item === folderRef;
           });
@@ -858,15 +851,14 @@ class Upload extends PureComponent {
             let updatedFolders = [...placeholderFolderMatch.pathfolders, folderRef];
             placeholderFolderMatch.pathfolders = updatedFolders;
           }
-          console.log(`%cSETSTATE:`, 'background:yellow; color:red');
-          console.log(`%cplaceholderFolders: ${[...placeholderFolderAllExceptMatch, placeholderFolderMatch]}`, 'background:yellow; color:red');
-          console.log(`%ccreateFolderModal: false`, 'background:yellow; color:red');
+          console.log(`\t%cSETSTATE:`, 'background:yellow; color:red');
+          console.log(`\t%cplaceholderFolders: ${[...placeholderFolderAllExceptMatch, placeholderFolderMatch]}`, 'background:yellow; color:red');
+          console.log(`\t%ccreateFolderModal: false`, 'background:yellow; color:red');
           return { placeholderFolders: [...placeholderFolderAllExceptMatch, placeholderFolderMatch], createFolderModal: false}
         }
       }
-    },()=>{
-      console.log(`%cEND==============================================`, 'background:lime; color:black');
     });
+    console.log(`%cEND==============================================`, 'background:lime; color:black');
   };
   
   
@@ -1424,13 +1416,13 @@ class Upload extends PureComponent {
               return{ createFolderModal: false }
             });
           }}
-          continue={() => {
+          continue={async () => {
             console.clear();
             console.log('continue');
             const newRef = this.state.currentFolderRef.child(this.state.createFolderName);
-            this.addFolder(newRef);
+            await this.addFolder(newRef);
             //refresh list of all firebase folders
-            this.getAllFolders();
+            await this.getAllFolders();
           }}
         >
           <Input
