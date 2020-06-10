@@ -1286,8 +1286,8 @@ class Upload extends PureComponent {
                       ' selected'}
                   </span>
                 </div>
-                <Button type="Action" onClick={(event)=>{
-                  this.deleteSelected(event);
+                <Button type="Action" onClick={async (event)=>{
+                  await this.deleteSelected(event);
 
                   //update folders
                   this.getAllFolders();
@@ -1463,10 +1463,10 @@ class Upload extends PureComponent {
           label="Create folder"
           show={this.state.createFolderModal}
           isInteractive={true}
-          modalClosed={() => {
-            this.setState((prevState)=>{
+          modalClosed={async () => {
+            await this.setState((prevState)=>{
               console.log(`%cSETSTATE: createFolderModal: ${false}`, 'background:yellow; color:red');
-              return{ createFolderModal: false }
+              return{ createFolderModal: false };
             });
           }}
           continue={async () => {
@@ -1481,12 +1481,12 @@ class Upload extends PureComponent {
           <Input
             value={{ data: this.state.createFolderName }}
             placeholder="Folder name"
-            onChange={(event) => {
+            onChange={async (event) => {
               event.preventDefault();
               console.log('typed: ', event.target.value);
               let targetVal = event.target.value;
 
-              this.setState((prevState) => {
+              await this.setState((prevState) => {
                 console.log(`%cSETSTATE: errorModalMessage: ${null}`, 'background:yellow; color:red');
                 console.log(`%cSETSTATE: createFolderName: ${targetVal}`, 'background:yellow; color:red');
                 return {
@@ -1520,8 +1520,8 @@ class Upload extends PureComponent {
           label="Edit folder path"
           show={this.state.editBreadcrumbModal}
           isInteractive={true}
-          modalClosed={() => {
-            this.setState((prevState)=>{
+          modalClosed={async () => {
+            await this.setState((prevState)=>{
               console.log(`%cSETSTATE:`, 'background:yellow; color:red');  
               console.log(`%ceditBreadcrumbModal: ${false}`, 'background:yellow; color:red');  
               console.log(`%cerrorModalMessage: ${null}`, 'background:yellow; color:red');  
@@ -1531,22 +1531,22 @@ class Upload extends PureComponent {
               }
             });
           }}
-          continue={() => {
+          continue={async () => {
             console.log('continue');
             //go through directory list
             //navigate if folders exists..
             //ie. check all paths in directory list
             try {
-              this.state.allFolderList.forEach((item, index) => {
+              this.state.allFolderList.forEach(async (item, index) => {
                 console.log(
                   `allFolderList item: index:[${index}]`,
                   item.location.path
                 );
                 if (item.location.path === this.state.currentFolderPath) {
                   //found in drilldown...so it exists, navigate to it
-                  this.changeFolderPath(item);
+                  await this.changeFolderPath(item);
                   //on continue, navigate to new ref
-                  this.setState((prevState)=>{
+                  await this.setState((prevState)=>{
                     console.log(`%cSETSTATE:`, 'background:yellow; color:red');  
                     console.log(`%ceditBreadcrumbModal: ${false}`, 'background:yellow; color:red');
                     console.log(`%cerrorModalMessage: ${null}`, 'background:yellow; color:red');    
@@ -1561,7 +1561,7 @@ class Upload extends PureComponent {
                   ] === '/'
                 ) {
                   console.error('path does not exist');
-                  this.setState((prevState)=>{
+                  await this.setState((prevState)=>{
                     console.log(`%cSETSTATE: errorModalMessage: ${'Remove trailing "/" character from path'}`, 'background:yellow; color:red');    
                     return{
                       errorModalMessage:'Remove trailing "/" character from path',
@@ -1569,7 +1569,7 @@ class Upload extends PureComponent {
                   });
                 } else {
                   console.error('path does not exist');
-                  this.setState((prevState)=>{
+                  await this.setState((prevState)=>{
                     console.log(`%cSETSTATE: errorModalMessage: ${'Path does not exist'}`, 'background:yellow; color:red');    
                     return {
                       errorModalMessage: 'Path does not exist',
@@ -1579,14 +1579,14 @@ class Upload extends PureComponent {
               });
             } catch {
               //go thru drilldown,
-              this.state.currentFolderDrilldownRefs.forEach((item) => {
+              this.state.currentFolderDrilldownRefs.forEach(async (item) => {
                 //compare to drilldown ref.location.path, if found, that is the new ref
 
                 if (item.location.path === this.state.currentFolderPath) {
                   //found in drilldown...so it exists, navigate to it
                   this.changeFolderPath(item);
                   //on continue, navigate to new ref
-                  this.setState((prevState)=>{
+                  await this.setState((prevState)=>{
                     console.log(`%cSETSTATE:`, 'background:yellow; color:red');  
                     console.log(`%ceditBreadcrumbModal: ${false}`, 'background:yellow; color:red');
                     console.log(`%cerrorModalMessage: ${null}`, 'background:yellow; color:red');    
@@ -1601,7 +1601,7 @@ class Upload extends PureComponent {
                   ] === '/'
                 ) {
                   console.error('path does not exist');
-                  this.setState((prevState)=>{
+                  await this.setState((prevState)=>{
                     console.log(`%cSETSTATE: errorModalMessage: ${'Remove trailing "/" character from path'}`, 'background:yellow; color:red');    
                     return{
                       errorModalMessage:'Remove trailing "/" character from path',
@@ -1610,7 +1610,7 @@ class Upload extends PureComponent {
 
                 } else {
                   console.error('path does not exist');
-                  this.setState((prevState)=>{
+                  await this.setState((prevState)=>{
                     console.log(`%cSETSTATE: errorModalMessage: ${'Path does not exist'}`, 'background:yellow; color:red');    
                     return{
                       errorModalMessage:'Path does not exist',
@@ -1629,6 +1629,7 @@ class Upload extends PureComponent {
             }}
             placeholder="Folder"
             onChange={(event) => {
+              event.persist();
               event.preventDefault();
               console.log('typed: ', event.target.value);
               this.setState((prevState)=>{
