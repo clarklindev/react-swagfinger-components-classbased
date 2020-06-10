@@ -171,8 +171,8 @@ class Upload extends PureComponent {
   };
 
   addCurrentFolderToDrilldown = async (ref) => {
-    console.log('%cSTART FUNCTION addCurrentFolderToDrilldown==============================================', 'background:purple; color:white');
-    console.log(`\t%cprops: ${ref}`, 'background:purple; color:white');
+    console.log('%cSTART FUNCTION addCurrentFolderToDrilldown==============================================', 'background:tomato; color:white');
+    console.log(`\t%cprops: ${ref}`, 'background:tomato; color:white');
     console.log(`\t%cSETSTATE: currentFolderDrilldownRefs: ${[this.state.currentFolderDrilldownRefs,ref]}`, 'background:yellow; color:red');
     await this.setState((prevState) => {
       return {
@@ -182,7 +182,7 @@ class Upload extends PureComponent {
         ],
       };
     });
-    console.log('%cEND==============================================', 'background:purple; color:white');
+    console.log('%cEND==============================================', 'background:tomato; color:white');
   };
   
   //sets state.firebaseFolders, state.firebaseFiles
@@ -315,8 +315,8 @@ class Upload extends PureComponent {
     console.log(`\t%cSETSTATE: allFolderList: ${[this.state.allFolderList, ref]}`, 'background:yellow; color:red');
     await ref.listAll().then((res) => {
       //if the current folder does NOT have folders
-      res.prefixes.forEach((folderRef) => {
-        this.findFoldersForBuild(folderRef, arr);
+      res.prefixes.forEach(async(folderRef) => {
+        await this.findFoldersForBuild(folderRef, arr);
       });
     });
     console.log('%cEND==============================================', 'background:brown; color:white');
@@ -566,9 +566,9 @@ class Upload extends PureComponent {
   };
 
   folderCheckHandler = async (index, isChecked, event = null) => {
-    console.log('%cSTART FUNCTION folderCheckHandler===================================','background:aquamarine; color:yellow');
-    console.log(`\t%cprops: ${index}, ${isChecked}`,'background:aquamarine; color:yellow');
-    console.log('\t%conChangeHandler CLICKED: ', index, isChecked,'background:aquamarine; color:yellow');
+    console.log('%cSTART FUNCTION folderCheckHandler===================================','background:yellowgreen; color:yellow');
+    console.log(`\t%cprops: ${index}, ${isChecked}`,'background:yellowgreen; color:yellow');
+    console.log('\t%conChangeHandler CLICKED: ', index, isChecked,'background:yellowgreen; color:yellow');
     await this.setState((prevState) => {
       let folders = [...prevState.checkedFolders];
       folders[index] = isChecked;
@@ -576,22 +576,22 @@ class Upload extends PureComponent {
       return { checkedFolders: folders };
     });
     await this.checkIndeterminate();
-    console.log('%cEND==============================================','background:aquamarine; color:yellow');
+    console.log('%cEND==============================================','background:yellowgreen; color:yellow');
   };
 
   placeholderFolderCheckHandler = async (index, isChecked, event = null)=>{
-    console.log('%cSTART FUNCTION placeholderFolderCheckHandler===================================','background:aquamarine; color:yellow');
-    console.log(`\t%cprops: ${index}, ${isChecked}`,'background:aquamarine; color:yellow');
-    console.log(`\t%conChangeHandler CLICKED: ', ${index}, ${isChecked}`,'background:aquamarine; color:yellow');
+    console.log('%cSTART FUNCTION placeholderFolderCheckHandler===================================','background:darkseagreen; color:yellow');
+    console.log(`\t%cprops: ${index}, ${isChecked}`,'background:darkseagreen; color:yellow');
+    console.log(`\t%conChangeHandler CLICKED: ', ${index}, ${isChecked}`,'background:darkseagreen; color:yellow');
     await this.setState((prevState) => {
       let placeholderFolders = [...prevState.checkedPlaceholderFolders];
       placeholderFolders[index] = isChecked;
-      console.log(`\t%cplaceholderFolders: ${placeholderFolders}`,'background:aquamarine; color:yellow');
+      console.log(`\t%cplaceholderFolders: ${placeholderFolders}`,'background:darkseagreen; color:yellow');
       console.log(`\t%cSETSTATE: checkedPlaceholderFolders: ${placeholderFolders}`, 'background:yellow; color:red');
       return { checkedPlaceholderFolders: placeholderFolders };
     });
     await this.checkIndeterminate();
-    console.log('%cEND==============================================','background:aquamarine; color:yellow');
+    console.log('%cEND==============================================','background:darkseagreen; color:yellow');
   }
 
   toggleCheckAllFolders = async (isChecked) => {
