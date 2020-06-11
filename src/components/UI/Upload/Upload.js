@@ -791,7 +791,7 @@ class Upload extends PureComponent {
     console.log(`\t%cthis.state.currentFolderRef.location.path:${this.state.currentFolderRef.location.path}`, 'background:lime; color:black');
     await this.setState((prevState)=>{
       
-      //can we find it in firebase?
+      //can we find it in same directory from firebase?
       console.log(`\t%ctry find in firebaseFolders`, 'background:lime; color:black');
       let foundInFirebaseIndex = prevState.firebaseFolders.findIndex((item)=>{
         console.log(`\t%ccompare - item.name: ${item.name} | folderRef: ${folderRef.name}`, 'background:lime; color:black');
@@ -811,10 +811,6 @@ class Upload extends PureComponent {
 
       //current folder match...
       //try find current folder in placeholderFolders...
-      let placeholderFolderAllExceptMatch = [...prevState.placeholderFolders.filter(item=>{
-        return item.pathRef !== this.state.currentFolderRef;
-      })];
-
       let placeholderFolderMatch = prevState.placeholderFolders.find(item=>{
         return item.pathRef === this.state.currentFolderRef;
       });
@@ -822,10 +818,13 @@ class Upload extends PureComponent {
       let placeholderFolderMatchIndex = prevState.placeholderFolders.findIndex(item=>{  //note placeholderFolders stores object {path:, ref:, folders:[]}
         return item.pathRef === this.state.currentFolderRef;
       });
-      
       console.log(`\t%cplaceholderFolderMatchIndex: ${placeholderFolderMatchIndex}`, 'background:lime; color:black');
+
+      let placeholderFolderAllExceptMatch = [...prevState.placeholderFolders.filter(item=>{
+        return item.pathRef !== this.state.currentFolderRef;
+      })];
       
-      //not found in placeholderFolders?...add!
+      //not found in placeholderFolders?...add to plaecholderFolders!
       if(placeholderFolderMatchIndex === -1){
         console.log('\t%cNOT FOUND, adding to pathfolders', 'background:lime; color:black');
         console.log(`\t%cfolderRef: ${folderRef}`, 'background:lime; color:black');
@@ -833,7 +832,7 @@ class Upload extends PureComponent {
         console.log(`\t%cSETSTATE:`, 'background:yellow; color:red');
         console.log(`\t%cplaceholderFolders: ${[...prevState.placeholderFolders, obj]}`, 'background:yellow; color:red');
         console.log(`\t%ccreateFolderModal: false`, 'background:yellow; color:red');
-        return { placeholderFolders: [...prevState.placeholderFolders, obj], createFolderModal: false}
+        return { placeholderFolders: [...prevState.placeholderFolders, obj], createFolderName:'', createFolderModal: false}
       }
       //FOUND current folder in placeholderFolders
       else{
@@ -1074,20 +1073,32 @@ class Upload extends PureComponent {
 // -------------------------------------------------------------------
 //RENDER
 // -------------------------------------------------------------------
-
   render() {
     console.log('%cSTART FUNCTION render==============================================', 'background:green;color:white');
     console.log(`\t%cfirebaseRootRef: ${this.state.firebaseRootRef}`, `background:green;color:white`);
     console.log(`\t%callFolderList *(firebase folder recursive): ${this.state.allFolderList}`, `background:green;color:white`);
     console.log(`\t%cfirebaseFolders: ${this.state.firebaseFolders}`, 'background:green;color:white');
     console.log(`\t%cfirebaseFiles: ${this.state.firebaseFiles}`, 'background:green;color:white');
-    console.log(`\t%cplaceholderFolders: ${this.state.placeholderFolders}`, 'background:green;color:white');
+    console.log('\n');
     console.log(`\t%ccurrentFolderDrilldownRefs: ${this.state.currentFolderDrilldownRefs}`, 'background:green;color:white');
     console.log(`\t%ccurrentFolderRef: ${this.state.currentFolderRef}`, 'background:green;color:white');
     console.log(`\t%ccurrentFolderPath: ${this.state.currentFolderPath}`, 'background:green;color:white');
+    console.log(`\t%cplaceholderFolders: ${this.state.placeholderFolders}`, 'background:green;color:white');
+    console.log(`\t%cselectedFiles: ${this.state.selectedFiles}`, 'background:green;color:white');
+    console.log(`\t%cuploadUrlOver: ${this.state.uploadUrlOver}`, 'background:green;color:white');
+    console.log(`\n`);
+    console.log(`\t%cmainChecked: ${this.state.mainChecked}`, 'background:green;color:white');
+    console.log(`\t%cmainIndeterminate: ${this.state.mainIndeterminate}`, 'background:green;color:white');
     console.log(`\t%ccheckedPlaceholderFolders: ${this.state.checkedPlaceholderFolders}`, 'background:green;color:white');
     console.log(`\t%ccheckedFolders: ${this.state.checkedFolders}`, 'background:green;color:white');
     console.log(`\t%ccheckedFiles: ${this.state.checkedFiles}`, 'background:green;color:white');
+    console.log(`\n`);
+    console.log(`\t%ccreateFolderName: ${this.state.createFolderName}`, 'background:green;color:white');
+    console.log(`\t%ccreateFolderModal: ${this.state.createFolderModal}`, 'background:green;color:white');
+    console.log(`\t%ceditBreadcrumbModal: ${this.state.editBreadcrumbModal}`, 'background:green;color:white');
+    console.log(`\t%cerrorModalMessage: ${this.state.errorModalMessage}`, 'background:green;color:white');
+    console.log('===');
+    
     //sort out placeholder folders
     let placeholderMatchIndex=-1;
     let pathFolders = [];
@@ -1376,7 +1387,9 @@ class Upload extends PureComponent {
                     <Button
                       className={classes.UploadHeaderNewFolder}
                       type='LastItemRight'
-                      onClick={this.addFolderHandler}
+                      onClick={
+                        this.addFolderHandler
+                      }
                       title="new folder"
                     >
                       <Icon iconstyle="fas" code="folder-plus" size="lg" />
@@ -1401,7 +1414,7 @@ class Upload extends PureComponent {
                   index={0}
                   checked={this.state.mainChecked}
                   indeterminate={this.state.mainIndeterminate}
-                  isDisabled={currentFolderData.length ? false:true}
+                  isDisabled={currentFolderData.length > 0 ? false:true}
                   onChange={async () => {
                     await this.toggleMainChecked(!this.state.mainChecked);//when this is async/await call, state.mainChecked updates here...
 
