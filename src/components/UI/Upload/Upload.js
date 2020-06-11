@@ -103,41 +103,47 @@ class Upload extends PureComponent {
   changeFolderPath = async (ref) => {
     console.log('%cSTART FUNCTION changeFolderPath==============================================', 'background:orange; color:white')
     console.log(`\t%cprops: ${ref}`, 'background:orange; color:white');
-    await this.setCurrentFolderRef(ref); //sets state.currentFolderRef , state.currentFolderPath
-    
-    console.log(`\t%cSETSTATE: `, 'background:yellow; color:red');
-    console.log(`\t%cmainChecked:${false}`, 'background:yellow; color:red');
-    console.log(`\t%cmainIndeterminate:${false}`, 'background:yellow; color:red');
-    console.log(`\t%ccheckedFolders:[]`, 'background:yellow; color:red');
-    console.log(`\t%ccheckedFiles:[]`, 'background:yellow; color:red');
-    console.log(`\t%ccheckedPlaceholderFolders:[]`, 'background:yellow; color:red');
-    //reset checked folders and files
-    await this.setState((prevState)=>{
-      return {
-        mainChecked: false,
-        mainIndeterminate: false,
-        checkedFolders: [], //all checked folders in current folder
-        checkedFiles: [], //all checked files in current folder
-        checkedPlaceholderFolders:[] //all checked temporary folders (not in firebase yet) in current folder
-      } 
-    });
-    
-    //go through exisiting references, look for current reference (===) the ref from props,
-    let index = this.state.currentFolderDrilldownRefs.findIndex((item) => {
-      return item === ref;
-    });
-    console.log(`\t%cindex in currentFolderDrilldownRefs: ${index}`, 'background:orange; color:white');
-    //if it is found, then slice off from currentFolderDrilldownRefs onwards...(we navigated back)...
-    //else if not found, then add to currentFolderDrilldownRefs.
-    (index > -1) ? await this.updateFolderDrilldown(ref) : await this.addCurrentFolderToDrilldown(ref);
 
-    console.log(`\t%cbefore getFolderData...`, 'background:orange; color:white');
-    await this.getFolderData(ref);// from ref.. sets firebaseFolders, firebaseFiles
-    console.log(`\t%cafter getFolderData...`, 'background:orange; color:white');
+    if(ref !== this.state.currentFolderRef){
+      await this.setCurrentFolderRef(ref); //sets state.currentFolderRef , state.currentFolderPath
+      console.log(`\t%cSETSTATE: `, 'background:yellow; color:red');
+      console.log(`\t%cmainChecked:${false}`, 'background:yellow; color:red');
+      console.log(`\t%cmainIndeterminate:${false}`, 'background:yellow; color:red');
+      console.log(`\t%ccheckedFolders:[]`, 'background:yellow; color:red');
+      console.log(`\t%ccheckedFiles:[]`, 'background:yellow; color:red');
+      console.log(`\t%ccheckedPlaceholderFolders:[]`, 'background:yellow; color:red');
+      //reset checked folders and files
+      await this.setState((prevState)=>{
+        return {
+          mainChecked: false,
+          mainIndeterminate: false,
+          checkedFolders: [], //all checked folders in current folder
+          checkedFiles: [], //all checked files in current folder
+          checkedPlaceholderFolders:[] //all checked temporary folders (not in firebase yet) in current folder
+        } 
+      });
+      
+      //go through exisiting references, look for current reference (===) the ref from props,
+      let index = this.state.currentFolderDrilldownRefs.findIndex((item) => {
+        return item === ref;
+      });
+      console.log(`\t%cindex in currentFolderDrilldownRefs: ${index}`, 'background:orange; color:white');
+      //if it is found, then slice off from currentFolderDrilldownRefs onwards...(we navigated back)...
+      //else if not found, then add to currentFolderDrilldownRefs.
+      (index > -1) ? await this.updateFolderDrilldown(ref) : await this.addCurrentFolderToDrilldown(ref);
 
-    console.log(`\t%c!! state.firebaseFolders: ${this.state.firebaseFolders}`, 'background:orange; color:white');
-    console.log(`\t%c!! state.firebaseFiles: ${this.state.firebaseFiles}`, 'background:orange; color:white');
-    await this.removeDuplicateFolders();
+      console.log(`\t%cbefore getFolderData...`, 'background:orange; color:white');
+      await this.getFolderData(ref);// from ref.. sets firebaseFolders, firebaseFiles
+      console.log(`\t%cafter getFolderData...`, 'background:orange; color:white');
+
+      console.log(`\t%c!! state.firebaseFolders: ${this.state.firebaseFolders}`, 'background:orange; color:white');
+      console.log(`\t%c!! state.firebaseFiles: ${this.state.firebaseFiles}`, 'background:orange; color:white');
+      await this.removeDuplicateFolders();
+    }
+    else{
+      console.log(`\t%cSAME FOLDER...DO NOTHING`, 'background:orange; color:white');
+    }
+    
     console.log('%cEND==============================================', 'background:orange; color:white') 
   };  
 
@@ -960,9 +966,9 @@ class Upload extends PureComponent {
       }
     });
 
-    let placeholderFolderAllExceptMatch = this.state.placeholderFolders.filter(item=>{
-      return item.pathRef !== this.state.currentFolderRef;
-    });
+    // let placeholderFolderAllExceptMatch = this.state.placeholderFolders.filter(item=>{
+    //   return item.pathRef !== this.state.currentFolderRef;
+    // });
 
     //cleanup Placeholders
     let placeholderFolderMatch = this.state.placeholderFolders.find(item=>{
@@ -1258,14 +1264,20 @@ class Upload extends PureComponent {
     return (
       <div className={classes.Upload}>
         <div className={[classes.Border].join(' ')}>
-          <div
-            className={[classes.UploadHeader, isIndeterminateClass].join(' ')}
-          >
+          <div className={[classes.UploadHeader, isIndeterminateClass].join(' ')}>
+
+
+
+
+
+
+            {/*DELETE/CANCEL SELECT WHEN ITEMS ARE SELECTED */}
             {this.state.mainIndeterminate === true ||
             (this.getCheckFoldersLength() + this.getCheckedFilesLength() + this.getCheckPlaceholderFoldersPathLength() ===
               this.state.firebaseFiles.length + this.state.firebaseFolders.length + pathFolders.length &&
-              this.state.firebaseFiles.length + this.state.firebaseFolders.length + pathFolders.length > 0) ? (
-              <React.Fragment>
+              this.state.firebaseFiles.length + this.state.firebaseFolders.length + pathFolders.length > 0) ? 
+              
+              (<React.Fragment>
                 <div className={classes.UploadIndeterminate}>
                   <Button
                     type="CheckboxSize"
@@ -1288,80 +1300,100 @@ class Upload extends PureComponent {
                 </div>
                 <Button type="Action" onClick={async (event)=>{
                   await this.deleteSelected(event);
-
                   //update folders
                   this.getAllFolders();
-                  
-                  }}>
+                }}>
                   Delete
                 </Button>
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                <div className={classes.UploadHeaderUrl} 
-                  onMouseOver={(event)=>{
-                    event.stopPropagation();
-                    this.uploadUrlOverHandler(event);
-                  }}
-                  onMouseLeave={(event)=>{
-                    event.stopPropagation();
-                    this.uploadUrlOutHandler(event);
-                  }}>
-                  <Breadcrumb
-                    path={this.state.currentFolderDrilldownRefs}
-                    onClick={(ref) => this.changeFolderPath(ref)}
-                    onEdit={() => this.editBreadcrumbModal()}
-                  ></Breadcrumb>
+              </React.Fragment>) : 
+            
 
-                  <div
-                    className={[classes.UploadEdit, isHoverUploadUrl].join(' ')}
-                    title="edit"
-                    onClick={() => this.editBreadcrumbModal()}
-                  >
-                    <Icon iconstyle="fas" code="edit" size="sm" />
-                  </div>
-                </div>
-                <div className={[classes.UploadHeaderActionButtons].join(' ')}>
-                  <input
-                    ref={this.uploadRef}
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    onChange={(event)=>{
-                      console.clear();
-                      this.fileChangedHandler(event);
-                    }
-                    }
-                  />
 
-                  {/* UPLOAD FILE */}
-                  <Button
-                    className={classes.UploadHeaderUploadFile}
-                    type="Action"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      this.uploadRef.current.click();
+
+
+
+
+              // BREADCRUMB + EDIT BUTTON
+              (<React.Fragment>
+                  <div className={classes.UploadHeaderUrl} 
+                    onMouseOver={(event)=>{
+                      event.stopPropagation();
+                      this.uploadUrlOverHandler(event);
                     }}
-                    title="upload"
-                  >
-                    <Icon iconstyle="fas" code="arrow-circle-up" size="lg" />
-                    Upload file
-                  </Button>
+                    onMouseLeave={(event)=>{
+                      event.stopPropagation();
+                      this.uploadUrlOutHandler(event);
+                    }}>
+                    <Breadcrumb
+                      path={this.state.currentFolderDrilldownRefs}
+                      onClick={(ref) => this.changeFolderPath(ref)}
+                      onEdit={() => this.editBreadcrumbModal()}
+                    ></Breadcrumb>
 
-                  {/* NEW FOLDER */}
-                  <Button
-                    className={classes.UploadHeaderNewFolder}
-                    type='LastItemRight'
-                    onClick={this.addFolderHandler}
-                    title="new folder"
-                  >
-                    <Icon iconstyle="fas" code="folder-plus" size="lg" />
-                  </Button>
-                </div>
-              </React.Fragment>
-            )}
+                    <div
+                      className={[classes.UploadEdit, isHoverUploadUrl].join(' ')}
+                      title="edit"
+                      onClick={() => this.editBreadcrumbModal()}
+                    >
+                      <Icon iconstyle="fas" code="edit" size="sm" />
+                    </div>
+                  </div>
+
+
+
+
+
+
+                  {/* UPLOAD FILE + NEW FOLDER BUTTON */}
+                  <div className={[classes.UploadHeaderActionButtons].join(' ')}>
+                    <input
+                      ref={this.uploadRef}
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={(event)=>{
+                        console.clear();
+                        this.fileChangedHandler(event);
+                      }
+                      }
+                    />
+
+                    {/* UPLOAD FILE */}
+                    <Button
+                      className={classes.UploadHeaderUploadFile}
+                      type="Action"
+                      onClick={(event) => {
+                        event.preventDefault();
+                        this.uploadRef.current.click();
+                      }}
+                      title="upload"
+                    >
+                      <Icon iconstyle="fas" code="arrow-circle-up" size="lg" />
+                      Upload file
+                    </Button>
+
+                    {/* NEW FOLDER */}
+                    <Button
+                      className={classes.UploadHeaderNewFolder}
+                      type='LastItemRight'
+                      onClick={this.addFolderHandler}
+                      title="new folder"
+                    >
+                      <Icon iconstyle="fas" code="folder-plus" size="lg" />
+                    </Button>
+                  </div>
+                </React.Fragment>
+              )
+            }
           </div>
 
+
+
+
+
+
+
+          {/* INTERMINATE STATE BUTTON */}
           <React.Fragment>
             <div className={classes.UploadBodyHeader}>
               <div className={classes.HeaderRow}>
@@ -1382,6 +1414,15 @@ class Upload extends PureComponent {
               </div>
             </div>
 
+
+
+
+
+
+
+
+
+            {/* UPLOAD BODY... FILES/FOLDERS ETC */}
             <div className={classes.UploadBody}>
               {
                 // > 1 because else it is the root node
@@ -1465,13 +1506,13 @@ class Upload extends PureComponent {
           isInteractive={true}
           modalClosed={async () => {
             await this.setState((prevState)=>{
-              console.log(`%cSETSTATE: createFolderModal: ${false}`, 'background:yellow; color:red');
+              console.log(`\t%cSETSTATE: createFolderModal: ${false}`, 'background:yellow; color:red');
               return{ createFolderModal: false };
             });
           }}
           continue={async () => {
             console.clear();
-            console.log('continue');
+            console.log('\t%ccontinue', 'background:green;color:white');
             const newRef = this.state.currentFolderRef.child(this.state.createFolderName);
             await this.addFolder(newRef);
             //refresh list of all firebase folders
@@ -1483,12 +1524,13 @@ class Upload extends PureComponent {
             placeholder="Folder name"
             onChange={async (event) => {
               event.preventDefault();
-              console.log('typed: ', event.target.value);
+              console.log(`\t%ctyped: ${event.target.value}`, 'background:green;color:white');
               let targetVal = event.target.value;
 
               await this.setState((prevState) => {
-                console.log(`%cSETSTATE: errorModalMessage: ${null}`, 'background:yellow; color:red');
-                console.log(`%cSETSTATE: createFolderName: ${targetVal}`, 'background:yellow; color:red');
+                console.log(`\t%cSETSTATE:`, 'background:yellow; color:red');
+                console.log(`\t%cerrorModalMessage: ${null}`, 'background:yellow; color:red');
+                console.log(`\t%ccreateFolderName: ${targetVal}`, 'background:yellow; color:red');
                 return {
                   errorModalMessage: null,
                   createFolderName: targetVal,
@@ -1522,9 +1564,9 @@ class Upload extends PureComponent {
           isInteractive={true}
           modalClosed={async () => {
             await this.setState((prevState)=>{
-              console.log(`%cSETSTATE:`, 'background:yellow; color:red');  
-              console.log(`%ceditBreadcrumbModal: ${false}`, 'background:yellow; color:red');  
-              console.log(`%cerrorModalMessage: ${null}`, 'background:yellow; color:red');  
+              console.log(`\t%cSETSTATE:`, 'background:yellow; color:red');  
+              console.log(`\t%ceditBreadcrumbModal: ${false}`, 'background:yellow; color:red');  
+              console.log(`\t%cerrorModalMessage: ${null}`, 'background:yellow; color:red');  
               return{
                 editBreadcrumbModal: false,
                 errorModalMessage: null,
@@ -1532,24 +1574,21 @@ class Upload extends PureComponent {
             });
           }}
           continue={async () => {
-            console.log('continue');
+            console.log('\t%ccontinue' , 'background:green;color:white');
             //go through directory list
             //navigate if folders exists..
             //ie. check all paths in directory list
             try {
               this.state.allFolderList.forEach(async (item, index) => {
-                console.log(
-                  `allFolderList item: index:[${index}]`,
-                  item.location.path
-                );
+                console.log(`\t%callFolderList item: index:[${index}] ${item.location.path}`, 'background:green;color:white');
                 if (item.location.path === this.state.currentFolderPath) {
                   //found in drilldown...so it exists, navigate to it
                   await this.changeFolderPath(item);
                   //on continue, navigate to new ref
                   await this.setState((prevState)=>{
-                    console.log(`%cSETSTATE:`, 'background:yellow; color:red');  
-                    console.log(`%ceditBreadcrumbModal: ${false}`, 'background:yellow; color:red');
-                    console.log(`%cerrorModalMessage: ${null}`, 'background:yellow; color:red');    
+                    console.log(`\t%cSETSTATE:`, 'background:yellow; color:red');  
+                    console.log(`\t%ceditBreadcrumbModal: ${false}`, 'background:yellow; color:red');
+                    console.log(`\t%cerrorModalMessage: ${null}`, 'background:yellow; color:red');    
                     return{
                       editBreadcrumbModal: false,
                       errorModalMessage: null,
@@ -1560,9 +1599,9 @@ class Upload extends PureComponent {
                     this.state.currentFolderPath.length - 1
                   ] === '/'
                 ) {
-                  console.error('path does not exist');
+                  console.error('\t%cpath does not exist', 'background:green;color:white');
                   await this.setState((prevState)=>{
-                    console.log(`%cSETSTATE: errorModalMessage: ${'Remove trailing "/" character from path'}`, 'background:yellow; color:red');    
+                    console.log(`\t%cSETSTATE: errorModalMessage: ${'Remove trailing "/" character from path'}`, 'background:yellow; color:red');    
                     return{
                       errorModalMessage:'Remove trailing "/" character from path',
                     }
@@ -1570,7 +1609,7 @@ class Upload extends PureComponent {
                 } else {
                   console.error('path does not exist');
                   await this.setState((prevState)=>{
-                    console.log(`%cSETSTATE: errorModalMessage: ${'Path does not exist'}`, 'background:yellow; color:red');    
+                    console.log(`\t%cSETSTATE: errorModalMessage: ${'Path does not exist'}`, 'background:yellow; color:red');    
                     return {
                       errorModalMessage: 'Path does not exist',
                     }
@@ -1587,9 +1626,9 @@ class Upload extends PureComponent {
                   this.changeFolderPath(item);
                   //on continue, navigate to new ref
                   await this.setState((prevState)=>{
-                    console.log(`%cSETSTATE:`, 'background:yellow; color:red');  
-                    console.log(`%ceditBreadcrumbModal: ${false}`, 'background:yellow; color:red');
-                    console.log(`%cerrorModalMessage: ${null}`, 'background:yellow; color:red');    
+                    console.log(`\t%cSETSTATE:`, 'background:yellow; color:red');  
+                    console.log(`\t%ceditBreadcrumbModal: ${false}`, 'background:yellow; color:red');
+                    console.log(`\t%cerrorModalMessage: ${null}`, 'background:yellow; color:red');    
                     return{
                       editBreadcrumbModal: false,
                       errorModalMessage: null,
@@ -1602,7 +1641,7 @@ class Upload extends PureComponent {
                 ) {
                   console.error('path does not exist');
                   await this.setState((prevState)=>{
-                    console.log(`%cSETSTATE: errorModalMessage: ${'Remove trailing "/" character from path'}`, 'background:yellow; color:red');    
+                    console.log(`\t%cSETSTATE: errorModalMessage: ${'Remove trailing "/" character from path'}`, 'background:yellow; color:red');    
                     return{
                       errorModalMessage:'Remove trailing "/" character from path',
                     }
@@ -1611,7 +1650,7 @@ class Upload extends PureComponent {
                 } else {
                   console.error('path does not exist');
                   await this.setState((prevState)=>{
-                    console.log(`%cSETSTATE: errorModalMessage: ${'Path does not exist'}`, 'background:yellow; color:red');    
+                    console.log(`\t%cSETSTATE: errorModalMessage: ${'Path does not exist'}`, 'background:yellow; color:red');    
                     return{
                       errorModalMessage:'Path does not exist',
                     }
@@ -1631,9 +1670,9 @@ class Upload extends PureComponent {
             onChange={(event) => {
               event.persist();
               event.preventDefault();
-              console.log('typed: ', event.target.value);
+              console.log(`\t%ctyped: ${event.target.value}`, 'background:green;color:white');
               this.setState((prevState)=>{
-                console.log(`%cSETSTATE: currentFolderPath: ${event.target.value}`, 'background:yellow; color:red');    
+                console.log(`\t%cSETSTATE: currentFolderPath: ${event.target.value}`, 'background:yellow; color:red');    
                 return{ currentFolderPath: event.target.value }
               });
             }}

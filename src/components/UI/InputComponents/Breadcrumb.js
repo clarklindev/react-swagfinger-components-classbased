@@ -16,7 +16,7 @@ class Breadcrumb extends Component {
         <div className={classes.Breadcrumb}>
           <div
             className={classes.BreadcrumbLink}
-            onClick={(event) => this.props.onClick()}
+            onClick={(event) => this.props.onClick(this.props.path[0])}
             title={currentNavPathName}
           >
             {currentNavPathName}
