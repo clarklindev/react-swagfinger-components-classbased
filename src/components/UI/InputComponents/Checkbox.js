@@ -9,11 +9,12 @@ class Checkbox extends Component {
   }
 
   state = {
-    checked: this.props.checked
+    checked: this.props.checked,
+    isDisabled: this.props.isDisabled
   };
 
   componentDidMount() {
-    this.setState({ checked: this.props.checked });
+    this.setState({ checked: this.props.checked, isDisabled: this.props.isDisabled });
   }
 
   componentDidUpdate() {
@@ -21,6 +22,10 @@ class Checkbox extends Component {
       //console.log('COMPONENT DID UPDATE');
       this.setState({ checked: this.props.checked });
       this.checkboxRef.current.checked = this.props.checked;
+    }
+
+    if(this.state.isDisabled !== this.props.isDisabled){
+      this.setState({isDisabled :this.props.isDisabled});
     }
 
     if (this.props.indeterminate === true) {
@@ -42,6 +47,7 @@ class Checkbox extends Component {
             onChange={event => {
               this.props.onChange(this.props.index, event.target.checked);
             }}
+            disabled={this.state.isDisabled}
           />
           {/* {this.checkboxRef.current.indeterminate ? (
             <span className={[classes.Intermediate].join(' ')}></span>

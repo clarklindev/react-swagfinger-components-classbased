@@ -1401,6 +1401,7 @@ class Upload extends PureComponent {
                   index={0}
                   checked={this.state.mainChecked}
                   indeterminate={this.state.mainIndeterminate}
+                  isDisabled={currentFolderData.length ? false:true}
                   onChange={async () => {
                     await this.toggleMainChecked(!this.state.mainChecked);//when this is async/await call, state.mainChecked updates here...
 
