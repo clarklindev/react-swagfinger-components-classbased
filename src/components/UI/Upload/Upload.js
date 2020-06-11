@@ -1259,9 +1259,9 @@ class Upload extends PureComponent {
     //CHECK
     let isIndeterminateClass =
       this.state.mainIndeterminate === true ||
-      (this.getCheckFoldersLength() + this.getCheckedFilesLength() ===
-        this.state.firebaseFiles.length + this.state.firebaseFolders.length &&
-        this.state.firebaseFiles.length + this.state.firebaseFolders.length > 0)
+      (this.getCheckFoldersLength() + this.getCheckedFilesLength() + this.getCheckPlaceholderFoldersPathLength() ===
+        this.state.firebaseFiles.length + this.state.firebaseFolders.length + pathFolders.length &&
+        this.state.firebaseFiles.length + this.state.firebaseFolders.length + pathFolders.length > 0)
         ? classes.StyleUploadIndeterminate
         : null;
 
