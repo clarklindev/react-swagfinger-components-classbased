@@ -832,7 +832,7 @@ class Upload extends PureComponent {
         console.log(`\t%cSETSTATE:`, 'background:yellow; color:red');
         console.log(`\t%cplaceholderFolders: ${[...prevState.placeholderFolders, obj]}`, 'background:yellow; color:red');
         console.log(`\t%ccreateFolderModal: false`, 'background:yellow; color:red');
-        return { placeholderFolders: [...prevState.placeholderFolders, obj], createFolderName:'', createFolderModal: false}
+        return { placeholderFolders: [...prevState.placeholderFolders, obj], createFolderName:'', createFolderModal: false, selectedFiles:[]}
       }
       //FOUND current folder in placeholderFolders
       else{
@@ -966,74 +966,91 @@ class Upload extends PureComponent {
       }
     });
 
-    // let placeholderFolderAllExceptMatch = this.state.placeholderFolders.filter(item=>{
-    //   return item.pathRef !== this.state.currentFolderRef;
-    // });
 
-    //cleanup Placeholders
-    let placeholderFolderMatch = this.state.placeholderFolders.find(item=>{
-      return item.pathRef === this.state.currentFolderRef;
-    });
-    console.log(`\t%cplaceholderFolderMatch: ${placeholderFolderMatch}`, 'background:grey; color:yellow');
 
-    let placeholderMatchIndex=-1;	
-    console.log(`\t%cthis.state.currentFolderRef: ${this.state.currentFolderRef}`, 'background:grey; color:yellow');
+    //WHAT IF WE DELETED A PLACEHOLDER?
+    //1. remove from pathfolders of current directory
+    //2. remove from placeholderFolders all children related to the folder we selected
+    //3. remove from placeholderFolder's pathfolders all paths that have the selected for delete as parent...
     if(this.state.placeholderFolders.length){	
-      console.log('\t%cSOMETHING HERE...', 'background:grey; color:yellow');
+      //get the pathfolders of currentfolder to find out what was selected...
+      let placeholderFolderMatch = this.state.placeholderFolders.find(item=>{
+        return item.pathRef === this.state.currentFolderRef;
+      });
+      console.log(`\t%cplaceholderFolderMatch: ${placeholderFolderMatch}`, 'background:grey; color:yellow');
+      
+      let placeholderMatchIndex=-1;
       placeholderMatchIndex = this.state.placeholderFolders.findIndex((item)=>{	
         console.log(`\t%citem.pathRef: ${item.pathRef}`, 'background:grey; color:yellow');
         return (item.pathRef === this.state.currentFolderRef);	
       });	
       console.log(`\t%cplacehodlerMatchIndex: ${placeholderMatchIndex}`, 'background:grey; color:yellow');
-      //if found in placeholder...
+      let checked = [];
       if(placeholderMatchIndex > -1){	
-        //go through placeholderFolders, check if .location.path includes pathfolders[index].name
-        //try find 'name' in all the rest of placeholdFolders
-
-        let cleanedUpPlaceholders = this.state.placeholderFolders.filter(item=>{
-
-          let includeItem = placeholderFolderMatch.pathfolders.some((ref,index)=>{	
-            return (item.pathRef.location.path.includes(ref.location.path) && this.state.checkedPlaceholderFolders[index] === true);
-          });
-
-          console.log(`\t%cis checked and in path?  ${includeItem}`, 'background:grey; color:yellow');
-
-          return !includeItem;
-        });
-
-        console.log(`\t%ccleanedUpPlaceholders: ${cleanedUpPlaceholders}`, 'background:grey; color:yellow');
-        let removeDud = cleanedUpPlaceholders.filter(item=>{
-        console.log(`\t%citem.pathRef.location.path: ${item.pathRef.location.path}`, 'background:grey; color:yellow');
-        console.log(`\t%cthis.state.currentFolderRef.location.path: ${this.state.currentFolderRef.location.path}`, 'background:grey; color:yellow');
-        console.log(`\t%citem.pathfolders: ${item.pathfolders}`, 'background:grey; color:yellow');
-        console.log(`\t%citem.pathfolders.length: ${item.pathfolders.length}`, 'background:grey; color:yellow');
-          return !(item.pathRef.location.path === this.state.currentFolderRef.location.path);
-        });
-
-        console.log(`\t%cremoveDud: ${removeDud}`, 'background:grey; color:yellow');
-
-        //look in the pathfolders of placeholder (exclude the same name)
-        let filtered = placeholderFolderMatch.pathfolders.filter((ref,index)=>{	
-          if(this.state.checkedPlaceholderFolders[index] === true){
-            //it was checked...we need to delete it from pathfolders
-            return false;
-          }
-          return true;
-        });
-        placeholderFolderMatch.pathfolders = filtered;
-        let updatedPlaceholderFolders = [...removeDud]
-
-        //we have now cut out all those pathfolders that were checked...
-        await this.setState((prevState)=>{
-          console.log(`\t%cSETSTATE:`, 'background:yellow; color:red');
-          console.log(`\t%cplaceholderFolders: ${updatedPlaceholderFolders}`, 'background:yellow; color:red');
-          console.log(`\t%ccheckedPlaceholderFolders: []`, 'background:yellow; color:red');
-          return {placeholderFolders: updatedPlaceholderFolders ,checkedPlaceholderFolders:[]}
+        checked = this.state.placeholderFolders[placeholderMatchIndex].pathfolders.filter((ref,index)=>{
+          return this.state.checkedPlaceholderFolders[index] === true ? true : false;
         });
       }
+      
+      //delete the selected reference from:
+      //1. remove from pathfolders of current directory
+      //2. remove from placeholderFolders all children related to the folder we selected
+      //3. remove from placeholderFolder's pathfolders all paths that have the selected for delete as parent...
+     let updatedPlaceholderFolders = this.state.placeholderFolders.filter(placeholder=>{
+
+        //each placeholder's pathfolders with checked items removed
+        let updatedPathFolders = placeholder.pathfolders.filter(pathRef=>{
+          //try find checkedRef.location.path in pathRef.location.path
+          let foundMatch = checked.some(checkRef=>{
+            return pathRef.location.path.includes(checkRef.location.path);
+          });
+          console.log('foundMatch:', foundMatch, 'ie. return: ', !foundMatch);
+          return !foundMatch;
+        });
+        console.log('updatedPathFolders:',updatedPathFolders);
+        placeholder.pathfolders = [...updatedPathFolders];
+        
+        //try find checkedref.location.path in placeholder.pathRef.location.path
+        //includeItem is true if matched
+        let includeItem = checked.some(checkRef=>{
+          return placeholder.pathRef.location.path.includes(checkRef.location.path);
+        });
+        
+        if(includeItem === true || placeholder.pathfolders.length === 0){
+          return false;
+        }
+        return true;
+      });
+      console.log('updatedPlaceholderFolders:', updatedPlaceholderFolders);
+
+      await this.setState((prevState)=>{
+        console.log(`\t%cSETSTATE:`, 'background:yellow; color:red');
+        console.log(`\t%cplaceholderFolders: ${updatedPlaceholderFolders}`, 'background:yellow; color:red');
+        console.log(`\t%ccheckedPlaceholderFolders: []`, 'background:yellow; color:red');
+        return {placeholderFolders: updatedPlaceholderFolders, mainChecked:false, mainIndeterminate:false, checkedPlaceholderFolders:[]}
+      });
     }
     console.log('%cEND==============================================', 'background:grey; color:yellow');
   };
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+       
+
+
+
 
 
 
@@ -1084,7 +1101,7 @@ class Upload extends PureComponent {
     console.log(`\t%ccurrentFolderDrilldownRefs: ${this.state.currentFolderDrilldownRefs}`, 'background:green;color:white');
     console.log(`\t%ccurrentFolderRef: ${this.state.currentFolderRef}`, 'background:green;color:white');
     console.log(`\t%ccurrentFolderPath: ${this.state.currentFolderPath}`, 'background:green;color:white');
-    console.log(`\t%cplaceholderFolders: ${this.state.placeholderFolders}`, 'background:green;color:white');
+    console.log('\tplaceholderFolders:', this.state.placeholderFolders);
     console.log(`\t%cselectedFiles: ${this.state.selectedFiles}`, 'background:green;color:white');
     console.log(`\t%cuploadUrlOver: ${this.state.uploadUrlOver}`, 'background:green;color:white');
     console.log(`\n`);
