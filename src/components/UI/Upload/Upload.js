@@ -824,7 +824,7 @@ class Upload extends PureComponent {
         return item.pathRef !== this.state.currentFolderRef;
       })];
       
-      //not found in placeholderFolders?...add to plaecholderFolders!
+      //not found in placeholderFolders?...add to placeholderFolders!
       if(placeholderFolderMatchIndex === -1){
         console.log('\t%cNOT FOUND, adding to pathfolders', 'background:lime; color:black');
         console.log(`\t%cfolderRef: ${folderRef}`, 'background:lime; color:black');
@@ -837,8 +837,9 @@ class Upload extends PureComponent {
       //FOUND current folder in placeholderFolders
       else{
         //index in pathfolders
+        console.log(folderRef.location.path);
         let foundIndex = prevState.placeholderFolders[placeholderFolderMatchIndex].pathfolders.findIndex((item)=>{
-          return item === folderRef;
+          return item.location.path === folderRef.location.path;
         });
 
         //folder found in pathfolders
