@@ -793,6 +793,7 @@ class Upload extends PureComponent {
   addFolder = async (folderRef) => {
     console.log('%cSTART FUNCTION addFolder==============================================', 'background:lime; color:black');
     console.log(`\t%cthis.state.currentFolderRef.location.path:${this.state.currentFolderRef.location.path}`, 'background:lime; color:black');
+
     await this.setState((prevState)=>{
       
       //can we find it in same directory from firebase?
@@ -1550,10 +1551,15 @@ class Upload extends PureComponent {
           continue={async () => {
             console.clear();
             console.log('\t%ccontinue', 'background:green;color:white');
-            const newRef = this.state.currentFolderRef.child(this.state.createFolderName);
-            await this.addFolder(newRef);
-            //refresh list of all firebase folders
-            await this.getAllFolders();
+            if(this.state.createFolderName.trim() !== ""){
+              const newRef = this.state.currentFolderRef.child(this.state.createFolderName);
+              await this.addFolder(newRef);
+              //refresh list of all firebase folders
+              await this.getAllFolders();
+            }
+            else{
+              this.setState({errorModalMessage: 'Enter a foldername'});
+            }
           }}
         >
           <Input
@@ -1670,10 +1676,12 @@ class Upload extends PureComponent {
                   return true;
                 }
               });
+
               if(foundIndex >-1){
                 isFoundPath = this.state.placeholderFolders[index].pathfolders[foundIndex];
               }
             });
+            console.log('isFoundPath: ', isFoundPath);
             if(isFoundPath!== undefined){
               await this.changeFolderPath(isFoundPath);
               await this.setState((prevState)=>{
@@ -1687,16 +1695,6 @@ class Upload extends PureComponent {
               });
             }
 
-            if(isFoundFirebaseIndex === -1 && isFoundPlaceholderIndex === -1 && isFoundPath === undefined) {
-              console.error('path does not exist');
-              await this.setState((prevState)=>{
-                console.log(`\t%cSETSTATE: errorModalMessage: ${'Path does not exist'}`, 'background:yellow; color:red');    
-                return {
-                  errorModalMessage: 'Path does not exist',
-                }
-              });
-            }
-
             if (this.state.tempFolderPath[this.state.currentFolderPath.length - 1] === '/') {
               console.error('\t%cpath does not exist', 'background:green;color:white');
               await this.setState((prevState)=>{
@@ -1706,6 +1704,16 @@ class Upload extends PureComponent {
                 }
               });
             }
+
+            if(isFoundFirebaseIndex === -1 && isFoundPlaceholderIndex === -1 && isFoundPath === undefined) {
+              console.error('path does not exist');
+              await this.setState((prevState)=>{
+                console.log(`\t%cSETSTATE: errorModalMessage: ${'Path does not exist'}`, 'background:yellow; color:red');    
+                return {
+                  errorModalMessage: 'Path does not exist',
+                }
+              });
+            }            
 
           }}
         >
