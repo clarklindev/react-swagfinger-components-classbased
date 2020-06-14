@@ -1619,16 +1619,18 @@ class Upload extends PureComponent {
             //navigate if folders exists..
             //ie. check all paths in directory list
             console.log('this.state.allFolderList: ', this.state.allFolderList);
-            let isFoundIndex = this.state.allFolderList.findIndex((item, index) => {
+
+            //try find in firebase paths
+            let isFoundFirebaseIndex = this.state.allFolderList.findIndex((item, index) => {
               console.log(`\t%callFolderList item: index:[${index}] ${item.location.path}`, 'background:green;color:white');
               console.log('item.location.path: ', item.location.path);
               console.log('this.state.tempFolderPath: ', this.state.tempFolderPath);
               return (item.location.path === this.state.tempFolderPath) ? true : false;
             });
-            console.log('isFoundIndex: ', isFoundIndex);
-            if(isFoundIndex > -1){
+            console.log('isFoundFirebaseIndex: ', isFoundFirebaseIndex);
+            if(isFoundFirebaseIndex > -1){
               //found in drilldown...so it exists, navigate to it
-              await this.changeFolderPath(this.state.allFolderList[isFoundIndex]);
+              await this.changeFolderPath(this.state.allFolderList[isFoundFirebaseIndex]);
               //on continue, navigate to new ref
               await this.setState((prevState)=>{
                 console.log(`\t%cSETSTATE:`, 'background:yellow; color:red');  
@@ -1640,7 +1642,52 @@ class Upload extends PureComponent {
                 }
               });
             }
-            else if(isFoundIndex === -1) {
+
+            //try find in placeholder paths
+            let isFoundPlaceholderIndex = this.state.placeholderFolders.findIndex(placeholder=>{
+              return (placeholder.pathRef.location.path === this.state.tempFolderPath) ? true: false;
+            });
+            console.log('isFoundPlaceholderIndex: ', isFoundPlaceholderIndex);
+            if(isFoundPlaceholderIndex > -1){
+              await this.changeFolderPath(this.state.placeholderFolders[isFoundPlaceholderIndex].pathRef);
+              //on continue, navigate to new ref
+              await this.setState((prevState)=>{
+                console.log(`\t%cSETSTATE:`, 'background:yellow; color:red');  
+                console.log(`\t%ceditBreadcrumbModal: ${false}`, 'background:yellow; color:red');
+                console.log(`\t%cerrorModalMessage: ${null}`, 'background:yellow; color:red');    
+                return{
+                  editBreadcrumbModal: false,
+                  errorModalMessage: null,
+                }
+              });
+            }
+
+            //try find in placeholderFolders pathfolders
+            let isFoundPath = undefined;
+            this.state.placeholderFolders.forEach((placeholder, index)=>{
+              let foundIndex = placeholder.pathfolders.findIndex(pathRef=>{
+                if(pathRef.location.path === this.state.tempFolderPath){
+                  return true;
+                }
+              });
+              if(foundIndex >-1){
+                isFoundPath = this.state.placeholderFolders[index].pathfolders[foundIndex];
+              }
+            });
+            if(isFoundPath!== undefined){
+              await this.changeFolderPath(isFoundPath);
+              await this.setState((prevState)=>{
+                console.log(`\t%cSETSTATE:`, 'background:yellow; color:red');  
+                console.log(`\t%ceditBreadcrumbModal: ${false}`, 'background:yellow; color:red');
+                console.log(`\t%cerrorModalMessage: ${null}`, 'background:yellow; color:red');    
+                return{
+                  editBreadcrumbModal: false,
+                  errorModalMessage: null,
+                }
+              });
+            }
+
+            if(isFoundFirebaseIndex === -1 && isFoundPlaceholderIndex === -1 && isFoundPath === undefined) {
               console.error('path does not exist');
               await this.setState((prevState)=>{
                 console.log(`\t%cSETSTATE: errorModalMessage: ${'Path does not exist'}`, 'background:yellow; color:red');    
@@ -1649,6 +1696,7 @@ class Upload extends PureComponent {
                 }
               });
             }
+
             if (this.state.tempFolderPath[this.state.currentFolderPath.length - 1] === '/') {
               console.error('\t%cpath does not exist', 'background:green;color:white');
               await this.setState((prevState)=>{
