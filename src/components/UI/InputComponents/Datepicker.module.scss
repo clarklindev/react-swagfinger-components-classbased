@@ -61,9 +61,9 @@
       //note: without the card padding, use 2x and 1x paddingdefault instead of 3x
       width: calc(
         min(
-          calc(100% - 3 * var(--paddingdefault) - 2 * var(--borderwidth)),
+          calc(100% - 4 * var(--paddingdefault) - 2 * var(--borderwidth)),
           calc(
-            var(--maxwidth) - 3 * var(--paddingdefault) - 2 * var(--borderwidth)
+            var(--maxwidth) - 4 * var(--paddingdefault) - 2 * var(--borderwidth)
           )
         )
       );

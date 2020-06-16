@@ -89,9 +89,7 @@ class Upload extends PureComponent {
       console.log(`\t%cEXISTS - id: ${id}`, 'background:white; color:red');
       // //current id folder
       ref = this.storageRef.child(id);
-    } else {
-      ref = this.storageRef;
-    }
+    } 
     console.log(`\t%cSETSTATE: {firebaseRootRef:${ref}}`, 'background:yellow; color:red');
     await this.setState((prevState)=>{
       return {firebaseRootRef: ref}
@@ -1106,7 +1104,7 @@ class Upload extends PureComponent {
     console.log(`\t%ccurrentFolderDrilldownRefs: ${this.state.currentFolderDrilldownRefs}`, 'background:green;color:white');
     console.log(`\t%ccurrentFolderRef: ${this.state.currentFolderRef}`, 'background:green;color:white');
     console.log(`\t%ccurrentFolderPath: ${this.state.currentFolderPath}`, 'background:green;color:white');
-    console.log(`\t%cplaceholderFolders: ${this.state.placeholderFolders}`, 'background:green;color:white');
+    console.log('\t%cplaceholderFolders:',this.state.placeholderFolders);
     console.log(`\t%cselectedFiles: ${this.state.selectedFiles}`, 'background:green;color:white');
     console.log(`\t%cuploadUrlOver: ${this.state.uploadUrlOver}`, 'background:green;color:white');
     console.log(`\n`);

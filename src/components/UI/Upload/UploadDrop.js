@@ -171,6 +171,40 @@ class UploadDrop extends Component {
     // this.state.selectedFiles.forEach((item, index) => {
     //   this.context.addinput(event, this.props.name, item);
     // });
+    //FILEREADER...
+    //use file reference by instantiating a FileReader object to read contents into memeory,
+    //when load finishes, the reader's onload event is fired
+    //and its 'result' attr can be used to access the file data
+
+    //options:
+    //FileReader.readAsBinaryString(Blob|File)
+    //FileReader.readAsText(Blob|File, opt_encoding)
+    //FileReader.readAsDataURL(Blob|File)
+    //FileReader.readAsArrayBuffer(Blob|File)
+    /*
+    Once one of these read methods is called on your FileReader object can be used to track its progress. 
+    - onloadstart 
+    - onprogress 
+    - onload 
+    - onabort 
+    - onerror 
+    - onloadend 
+    */
+
+    // let reader = new FileReader();
+
+    // reader.readAsDataURL(this.state.selectedFiles[i]);
+    // let file = this.state.selectedFiles[index];
+    // let fileName = this.state.selectedFiles[index].name;
+    // console.log('FILE: ', file, '| filename: ', fileName);
+    // let fileRef = this.imagesRef.child(fileName);
+
+    //using .fullPath
+    // let path = fileRef.fullPath; //path is images/{filename}
+    // //put() takes files via javascript File and Blob api and uploads them to cloud storage
+    // fileRef.put(file).then(function(snapshot) {
+    //   console.log('uploaded file.');
+    // });
   };
 
   render() {
@@ -197,41 +231,6 @@ class UploadDrop extends Component {
           'this.state.selectedFiles[index]:',
           this.state.selectedFiles[index]
         );
-
-        //FILEREADER...
-        //use file reference by instantiating a FileReader object to read contents into memeory,
-        //when load finishes, the reader's onload event is fired
-        //and its 'result' attr can be used to access the file data
-
-        //options:
-        //FileReader.readAsBinaryString(Blob|File)
-        //FileReader.readAsText(Blob|File, opt_encoding)
-        //FileReader.readAsDataURL(Blob|File)
-        //FileReader.readAsArrayBuffer(Blob|File)
-        /*
-        Once one of these read methods is called on your FileReader object can be used to track its progress. 
-        - onloadstart 
-        - onprogress 
-        - onload 
-        - onabort 
-        - onerror 
-        - onloadend 
-        */
-
-        // let reader = new FileReader();
-
-        // reader.readAsDataURL(this.state.selectedFiles[i]);
-        // let file = this.state.selectedFiles[index];
-        // let fileName = this.state.selectedFiles[index].name;
-        // console.log('FILE: ', file, '| filename: ', fileName);
-        // let fileRef = this.imagesRef.child(fileName);
-
-        //using .fullPath
-        // let path = fileRef.fullPath; //path is images/{filename}
-        // //put() takes files via javascript File and Blob api and uploads them to cloud storage
-        // fileRef.put(file).then(function(snapshot) {
-        //   console.log('uploaded file.');
-        // });
 
         return (
           <UploadListItem
