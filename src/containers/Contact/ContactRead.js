@@ -51,6 +51,7 @@ class ContactRead extends Component {
     id: null,
     isLoading: true,
     firebaseFolders: null,
+    activeTab: 'profile',
   };
 
   async componentDidMount() {
@@ -122,101 +123,103 @@ class ContactRead extends Component {
 
   render() {
     let data = null;
-    switch (this.state.activeTab) {
-      case 'profile':
-        data = (
-          <React.Fragment>
-            <ComponentFactory
-              data={{
-                label: 'Name',
-                component: 'input',
-                value: { data: this.props.activeContact['name'] },
-                readOnly: true,
-              }}
-            />
-            <ComponentFactory
-              data={{
-                label: 'Last name',
-                component: 'input',
-                value: { data: this.props.activeContact['lastname'] },
-                readOnly: true,
-              }}
-            />
-            <ComponentFactory
-              data={{
-                label: 'Contact number',
-                component: 'list',
-                value: {
-                  data: this.props.activeContact['contactnumbers'].map(
-                    (each, index) => {
-                      return each !== '' ? (
-                        <ListItem displayText={each}></ListItem>
-                      ) : undefined;
-                    }
-                  ),
-                },
-              }}
-            />
-            <ComponentFactory
-              data={{
-                label: 'Email',
-                component: 'list',
-                value: {
-                  data: this.props.activeContact['emails'].map(
-                    (each, index) => {
-                      return each !== '' ? (
-                        <ListItem displayText={each}></ListItem>
-                      ) : undefined;
-                    }
-                  ),
-                },
-              }}
-            />
-            <ComponentFactory
-              data={{
-                label: 'Contact Preference',
-                component: 'input',
-                value: {
-                  data: this.props.activeContact['contactpreference'],
-                },
-                readOnly: true,
-              }}
-            />
-          </React.Fragment>
-        );
-        break;
-      case 'history':
-        data = (
-          <React.Fragment>
-            <Accordion
-              allowMultiOpen={true}
-              openOnStartIndex={-1} //zero-index, negative value or invalid index to not open on start,
-              onClick={(folderRef, index) => {
-                console.log('CLICKED: ', folderRef);
-                this.getFiles(folderRef, index);
-              }}
-            >
-              {this.state.firebaseFolders.map((item, index) => {
-                return (
-                  <div
-                    key={'file' + index}
-                    label={item.folder.name}
-                    firebaseRef={item.folder}
-                  >
-                    <List
-                      value={{
-                        data: item.files,
-                      }}
-                    ></List>
-                  </div>
-                );
-              })}
-            </Accordion>
-          </React.Fragment>
-        );
-        break;
-      default:
-        data = undefined;
+    if (this.props.activeContact) {
+      switch (this.state.activeTab) {
+        case 'profile':
+          data = (
+            <React.Fragment>
+              <ComponentFactory
+                data={{
+                  label: 'Name',
+                  component: 'input',
+                  value: { data: this.props.activeContact['name'] },
+                  readOnly: true,
+                }}
+              />
+              <ComponentFactory
+                data={{
+                  label: 'Last name',
+                  component: 'input',
+                  value: { data: this.props.activeContact['lastname'] },
+                  readOnly: true,
+                }}
+              />
+              <ComponentFactory
+                data={{
+                  label: 'Contact number',
+                  component: 'list',
+                  value: {
+                    data: this.props.activeContact['contactnumbers'].map(
+                      (each, index) => {
+                        return each !== '' ? (
+                          <ListItem displayText={each}></ListItem>
+                        ) : undefined;
+                      }
+                    ),
+                  },
+                }}
+              />
+              <ComponentFactory
+                data={{
+                  label: 'Email',
+                  component: 'list',
+                  value: {
+                    data: this.props.activeContact['emails'].map(
+                      (each, index) => {
+                        return each !== '' ? (
+                          <ListItem displayText={each}></ListItem>
+                        ) : undefined;
+                      }
+                    ),
+                  },
+                }}
+              />
+              <ComponentFactory
+                data={{
+                  label: 'Contact Preference',
+                  component: 'input',
+                  value: {
+                    data: this.props.activeContact['contactpreference'],
+                  },
+                  readOnly: true,
+                }}
+              />
+            </React.Fragment>
+          );
+          break;
+        case 'history':
+          data = (
+            <React.Fragment>
+              <Accordion
+                allowMultiOpen={true}
+                openOnStartIndex={-1} //zero-index, negative value or invalid index to not open on start,
+                onClick={(folderRef, index) => {
+                  console.log('CLICKED: ', folderRef);
+                  this.getFiles(folderRef, index);
+                }}
+              >
+                {this.state.firebaseFolders.map((item, index) => {
+                  return (
+                    <div
+                      key={'file' + index}
+                      label={item.folder.name}
+                      firebaseRef={item.folder}
+                    >
+                      <List
+                        value={{
+                          data: item.files,
+                        }}
+                      ></List>
+                    </div>
+                  );
+                })}
+              </Accordion>
+            </React.Fragment>
+          );
+          break;
+        default:
+          data = undefined;
+      }
     }
 
     return (

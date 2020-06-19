@@ -1,14 +1,18 @@
 .Tab {
-  .Tablistitem {
-    display: inline-block;
-    list-style: none;
-    margin-bottom: -1px;
-    padding: 0.5rem 0.75rem;
-  }
+  padding: var(--paddingdefault);
+  margin: 0 var(--margindefault) 0 0;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 12px;
 
-  .Tablistactive {
-    background-color: white;
-    border: solid #ccc;
-    border-width: 1px 1px 0 1px;
-  }
+  color: white;
+  background: rgba(0, 0, 0, 0.2);
+  //border: 1px solid transparent;
+  border-radius: var(--borderradius);
+  cursor: pointer;
+}
+.Tablistactive {
+  background-color: black;
+  //border: solid #ccc;
+  border-width: 1px 1px 0 1px;
 }

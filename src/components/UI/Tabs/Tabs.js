@@ -4,9 +4,12 @@ import PropTypes from 'prop-types';
 import classes from './Tabs.module.scss';
 
 class Tabs extends Component {
-  state = {
-    activeTab: this.props.tabheaders[0],
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      activeTab: this.props.tabheaders[0],
+    };
+  }
 
   onClickTabItem = (tab) => {
     console.log('TAB: ', tab);
