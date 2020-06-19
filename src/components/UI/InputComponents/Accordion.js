@@ -99,7 +99,7 @@ class Accordion extends PureComponent {
                 className={classes.AccordionTitle}
                 onClick={(event) => {
                   this.onClickHandler(index, event);
-                  this.props.onClick(item.props.firebaseRef);
+                  this.props.onClick(item.props.firebaseRef, index);
                 }}
               >
                 {item.props.label}

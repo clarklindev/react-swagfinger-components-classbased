@@ -51,7 +51,6 @@ class ContactRead extends Component {
     id: null,
     isLoading: true,
     firebaseFolders: null,
-    firebaseFiles: [],
   };
 
   async componentDidMount() {
@@ -73,17 +72,22 @@ class ContactRead extends Component {
       'background:yellow; color:red'
     );
     let res = await ref.child('public').listAll();
-    let folders = [];
+
+    //folders is an array of objects {folder, files:[]}
+    let firebaseFolders = [];
     if (res.prefixes.length) {
       res.prefixes.forEach((folder) => {
         //get content for each folder
-        folders.push(folder);
+        firebaseFolders.push({ folder: folder, files: [] });
       });
-      console.log('FOLDERS: ', folders);
+      console.log('FOLDERS: ', firebaseFolders);
     }
 
     await this.setState((prevState) => {
-      return { firebaseRootRef: ref, firebaseFolders: folders };
+      return {
+        firebaseRootRef: ref,
+        firebaseFolders: firebaseFolders,
+      };
     });
   }
 
@@ -91,22 +95,29 @@ class ContactRead extends Component {
     this.setState({ activeTab: clicked });
   };
 
-  getFiles = async (ref) => {
-    console.log('getFiles function');
-    let res = await ref.listAll();
-    if (res.items.length) {
-      this.setState({
-        firebaseFiles: res.items.map((file, index) => {
-          return (
-            <ListItem
-              key={'file' + index}
-              displayText={file.name}
-              title={file.name}
-            />
-          );
-        }),
+  getFiles = async (folderRef, index) => {
+    console.log('getFiles function:', index);
+    let res = await folderRef.listAll();
+
+    this.setState((prevState) => {
+      let oldFolders = [...prevState.firebaseFolders];
+      console.log('BASE: ', oldFolders);
+
+      oldFolders[index].files = res.items.map((file, index) => {
+        return (
+          <ListItem
+            key={'file' + index}
+            displayText={file.name}
+            title={file.name}
+          />
+        );
       });
-    }
+      console.log('OLD FOLDERS: '.oldFolders);
+
+      return {
+        firebaseFolders: oldFolders,
+      };
+    });
   };
 
   render() {
@@ -180,19 +191,23 @@ class ContactRead extends Component {
             <Accordion
               allowMultiOpen={true}
               openOnStartIndex={-1} //zero-index, negative value or invalid index to not open on start,
-              onClick={(ref) => {
-                console.log('CLICKED: ', ref);
-                this.getFiles(ref);
+              onClick={(folderRef, index) => {
+                console.log('CLICKED: ', folderRef);
+                this.getFiles(folderRef, index);
               }}
             >
               {this.state.firebaseFolders.map((item, index) => {
                 return (
                   <div
                     key={'file' + index}
-                    label={item.name}
-                    firebaseRef={item}
+                    label={item.folder.name}
+                    firebaseRef={item.folder}
                   >
-                    <List value={{ data: this.state.firebaseFiles }}></List>
+                    <List
+                      value={{
+                        data: item.files,
+                      }}
+                    ></List>
                   </div>
                 );
               })}
