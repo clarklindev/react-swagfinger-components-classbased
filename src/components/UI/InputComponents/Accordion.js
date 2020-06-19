@@ -3,7 +3,7 @@ import classes from './Accordion.module.scss';
 import Icon from './Icon';
 class Accordion extends PureComponent {
   state = {
-    isActive: []
+    isActive: [],
   };
 
   constructor(props) {
@@ -23,7 +23,7 @@ class Accordion extends PureComponent {
         item.style.maxHeight = 0;
       }
 
-      this.setState(prevState => {
+      this.setState((prevState) => {
         let oldState = prevState.isActive;
         let copiedState = [...oldState];
         copiedState[index] =
@@ -49,7 +49,7 @@ class Accordion extends PureComponent {
       }
 
       if (this.state.isActive[index] === undefined) {
-        this.setState(prevState => {
+        this.setState((prevState) => {
           let oldState = prevState.isActive;
           let copiedState = [...oldState];
           copiedState[index] =
@@ -65,7 +65,7 @@ class Accordion extends PureComponent {
 
   onClickHandler = (index, event) => {
     console.log(index);
-    this.setState(prevState => {
+    this.setState((prevState) => {
       let dataClone = [...prevState.isActive];
       let updatedClone = dataClone.map((value, i) => {
         if (i === index) {
@@ -76,7 +76,7 @@ class Accordion extends PureComponent {
       });
       console.log('updatedClone: ', updatedClone);
       return {
-        isActive: updatedClone
+        isActive: updatedClone,
       };
     });
   };
@@ -84,7 +84,7 @@ class Accordion extends PureComponent {
   render() {
     return (
       <div className={classes.Accordion} ref={this.accordionRef}>
-        {this.props.value.map((item, index) => {
+        {this.props.children.map((item, index) => {
           console.log('prop: ', item);
           let additionalClasses = [];
           if (this.state.isActive[index] === true) {
@@ -97,9 +97,12 @@ class Accordion extends PureComponent {
             >
               <div
                 className={classes.AccordionTitle}
-                onClick={event => this.onClickHandler(index, event)}
+                onClick={(event) => {
+                  this.onClickHandler(index, event);
+                  this.props.onClick(item.props.firebaseRef);
+                }}
               >
-                {item.title}
+                {item.props.label}
                 <Icon
                   iconstyle='fas'
                   code={
@@ -113,10 +116,10 @@ class Accordion extends PureComponent {
               <div
                 className={[
                   classes.AccordionContent,
-                  ...additionalClasses
+                  ...additionalClasses,
                 ].join(' ')}
               >
-                {item.content}
+                {item.props.children}
               </div>
             </div>
           );

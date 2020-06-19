@@ -5,6 +5,7 @@ import * as actions from '../../store/actions/index';
 
 import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
 import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
+import Accordion from '../../components/UI/InputComponents/Accordion';
 import List from '../../components/UI/InputComponents/List';
 import ListItem from '../../components/UI/InputComponents/ListItem';
 import Spinner from '../../components/UI/Loaders/Spinner';
@@ -49,7 +50,8 @@ class ContactRead extends Component {
   state = {
     id: null,
     isLoading: true,
-    fileList: [],
+    firebaseFolders: null,
+    firebaseFiles: [],
   };
 
   async componentDidMount() {
@@ -70,211 +72,136 @@ class ContactRead extends Component {
       `\t%cSETSTATE: {firebaseRootRef:${ref}}`,
       'background:yellow; color:red'
     );
-    await this.setState((prevState) => {
-      return { firebaseRootRef: ref };
-    });
-
-    let files = [];
-    await ref
-      .child('public')
-      .listAll()
-      .then(async (res) => {
-        if (res.items.length) {
-          res.items.forEach((itemRef) => {
-            // All the items under listRef.
-            //console.log(`\t%cfile: ${itemRef.name}`,'background:cyan; color:black');
-            files.push(itemRef);
-
-            //console.log(`\t%call file name: ${files.map((item) => { return item.name;})}`,'background:cyan; color:black');
-          });
-        }
-        files.forEach((item) => {
-          console.log(`\t%cfiles: ${item}`, 'background:cyan; color:black');
-        });
+    let res = await ref.child('public').listAll();
+    let folders = [];
+    if (res.prefixes.length) {
+      res.prefixes.forEach((folder) => {
+        //get content for each folder
+        folders.push(folder);
       });
-    console.log('FILES: ', files);
-    let filesHTML = files.map((item, index) => {
-      console.log('item.name: ', item.name);
-      return (
-        <React.Fragment key={'filehtml' + index}>
-          <ListItem title={item.name} displayText={item.name}></ListItem>
-        </React.Fragment>
-      );
-    });
+      console.log('FOLDERS: ', folders);
+    }
+
     await this.setState((prevState) => {
-      return { fileList: filesHTML };
+      return { firebaseRootRef: ref, firebaseFolders: folders };
     });
   }
 
-  render() {
-    /* full contact details */
-    let contact = null;
-    let files = null;
-    let fileList = this.state.fileList;
+  tabClickHandler = (clicked) => {
+    this.setState({ activeTab: clicked });
+  };
 
-    if (this.props.activeContact) {
-      let contactnumbers = this.props.activeContact['contactnumbers'].map(
-        (each, index) => {
-          return each !== '' ? (
-            <ListItem displayText={each}></ListItem>
-          ) : undefined;
-        }
-      );
-      let emails = this.props.activeContact['emails'].map((each, index) => {
-        return each !== '' ? (
-          <ListItem displayText={each}></ListItem>
-        ) : undefined;
+  getFiles = async (ref) => {
+    console.log('getFiles function');
+    let res = await ref.listAll();
+    if (res.items.length) {
+      this.setState({
+        firebaseFiles: res.items.map((file, index) => {
+          return (
+            <ListItem
+              key={'file' + index}
+              displayText={file.name}
+              title={file.name}
+            />
+          );
+        }),
       });
+    }
+  };
 
-      // note the order of the render is important hence why manually setting the content order
-      contact = (
-        <React.Fragment>
-          <ComponentFactory
-            data={{
-              label: 'Name',
-              component: 'input',
-              value: { data: this.props.activeContact['name'] },
-              readOnly: true,
-            }}
-          />
-          <ComponentFactory
-            data={{
-              label: 'Last name',
-              component: 'input',
-              value: { data: this.props.activeContact['lastname'] },
-              readOnly: true,
-            }}
-          />
-          {/* <ComponentFactory
-            data={{
-              label: 'Gender',
-              elementtype: 'input',
-              value: { data: this.props.activeContact['gender'] },
-              readOnly: true
-            }}
-          /> */}
-          {/* <ComponentFactory
-            data={{
-              label: 'Height',
-              elementtype: 'input',
-              value: { data: this.props.activeContact['height'] },
-              readOnly: true
-            }}
-          /> */}
-          {/* <ComponentFactory
-            data={{
-              label: 'Weight',
-              elementtype: 'input',
-              value: { data: this.props.activeContact['weight'] },
-              readOnly: true
-            }}
-          /> */}
-          {/* <ComponentFactory
-            data={{
-              label: 'Salary',
-              elementtype: 'input',
-              value: { data: this.props.activeContact['salary'].join('-') },
-              readOnly: true
-            }}
-          /> */}
-          {/* <ComponentFactory
-            data={{
-              label: 'Date of birth',
-              elementtype: 'input',
-              value: {
-                data: this.props.activeContact['dateofbirth']
-              },
-              readOnly: true
-            }}
-          /> */}
-          <ComponentFactory
-            data={{
-              label: 'Contact number',
-              component: 'list',
-              value: { data: contactnumbers },
-            }}
-          />
-
-          <ComponentFactory
-            data={{
-              label: 'Email',
-              component: 'list',
-              value: { data: emails },
-            }}
-          />
-
-          {/* <ComponentFactory
-            data={{
-              label: 'Contact Preference',
-              elementtype: 'input',
-              value: { data: this.props.activeContact['contactpreference'] },
-              readOnly: true
-            }}
-          /> */}
-          {/* <ComponentFactory
-            data={{
-              label: 'Newsletter',
-              elementtype: 'input',
-              value: {
-                data: this.props.activeContact['newsletter']
-                  .filter((each) => {
-                    return each.value === true;
-                  })
-                  .map((item) => {
-                    return item.key;
-                  })
-                  .join(', ')
-              },
-              readOnly: true
-            }}
-          /> */}
-          {/* <ComponentFactory
-            data={{
-              label: 'Social Media',
-              elementtype: 'list',
-              value: {
-                data: this.props.activeContact['socialmedia'].map((each) => {
-                  return (
-                    <InputWithInput
-                      attribute={each.key}
-                      value={each.value}
-                      readOnly></InputWithInput>
-                  );
-                })
-              },
-              readOnly: true
-            }}
-          /> */}
-          {/* <ComponentFactory
-            data={{
-              label: 'Notes',
-              elementtype: 'input',
-              value: { data: this.props.activeContact['notes'] },
-              readOnly: true
-            }}
-          /> */}
-          {/* <ComponentFactory
-            data={{
-              label: 'Hide profile',
-              elementtype: 'input',
-              value: { data: this.props.activeContact['privateprofile'] },
-              readOnly: true
-            }}
-          /> */}
-        </React.Fragment>
-      );
-
-      files = (
-        <React.Fragment>
-          <ComponentFactory
-            data={{
-              label: 'Files',
-              component: 'list',
-              value: { data: fileList },
-            }}
-          />
-        </React.Fragment>
-      );
+  render() {
+    let data = null;
+    switch (this.state.activeTab) {
+      case 'profile':
+        data = (
+          <React.Fragment>
+            <ComponentFactory
+              data={{
+                label: 'Name',
+                component: 'input',
+                value: { data: this.props.activeContact['name'] },
+                readOnly: true,
+              }}
+            />
+            <ComponentFactory
+              data={{
+                label: 'Last name',
+                component: 'input',
+                value: { data: this.props.activeContact['lastname'] },
+                readOnly: true,
+              }}
+            />
+            <ComponentFactory
+              data={{
+                label: 'Contact number',
+                component: 'list',
+                value: {
+                  data: this.props.activeContact['contactnumbers'].map(
+                    (each, index) => {
+                      return each !== '' ? (
+                        <ListItem displayText={each}></ListItem>
+                      ) : undefined;
+                    }
+                  ),
+                },
+              }}
+            />
+            <ComponentFactory
+              data={{
+                label: 'Email',
+                component: 'list',
+                value: {
+                  data: this.props.activeContact['emails'].map(
+                    (each, index) => {
+                      return each !== '' ? (
+                        <ListItem displayText={each}></ListItem>
+                      ) : undefined;
+                    }
+                  ),
+                },
+              }}
+            />
+            <ComponentFactory
+              data={{
+                label: 'Contact Preference',
+                component: 'input',
+                value: {
+                  data: this.props.activeContact['contactpreference'],
+                },
+                readOnly: true,
+              }}
+            />
+          </React.Fragment>
+        );
+        break;
+      case 'history':
+        data = (
+          <React.Fragment>
+            <Accordion
+              allowMultiOpen={true}
+              openOnStartIndex={-1} //zero-index, negative value or invalid index to not open on start,
+              onClick={(ref) => {
+                console.log('CLICKED: ', ref);
+                this.getFiles(ref);
+              }}
+            >
+              {this.state.firebaseFolders.map((item, index) => {
+                return (
+                  <div
+                    key={'file' + index}
+                    label={item.name}
+                    firebaseRef={item}
+                  >
+                    <List value={{ data: this.state.firebaseFiles }}></List>
+                  </div>
+                );
+              })}
+            </Accordion>
+          </React.Fragment>
+        );
+        break;
+      default:
+        data = undefined;
     }
 
     return (
@@ -282,15 +209,12 @@ class ContactRead extends Component {
         {this.props.isLoading && !this.props.activeContact ? (
           <Spinner />
         ) : (
-          <DefaultPageLayout label='Contact'>
-            <Tabs>
-              <div label='a'>
-                <Card>{contact}</Card>
-              </div>
-              <div label='b'>
-                <Card>{files}</Card>
-              </div>
-            </Tabs>
+          <DefaultPageLayout label='CLIENT'>
+            <Tabs
+              tabheaders={['profile', 'history']}
+              onClick={this.tabClickHandler}
+            />
+            <Card>{data}</Card>
           </DefaultPageLayout>
         )}
       </div>

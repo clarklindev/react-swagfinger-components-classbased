@@ -7,20 +7,20 @@ class Faq extends Component {
     super(props);
 
     this.config = {
-      value: [
-        { title: <strong>question1</strong>, content: 'content1' },
-        { title: <strong>question2</strong>, content: 'content2' },
-        { title: <strong>question3</strong>, content: 'content3' }
-      ],
       allowMultiOpen: false,
-      openOnStartIndex: -1 //zero-index, negative value or invalid index to not open on start,
+      openOnStartIndex: -1, //zero-index, negative value or invalid index to not open on start,
+      onClick: () => {},
     };
   }
   render() {
     return (
       <div className={classes.Faq}>
         <DefaultPageLayout label={'FAQ'}>
-          <Accordion {...this.config}></Accordion>
+          <Accordion {...this.config}>
+            <div label={<strong>question1</strong>}>content1</div>
+            <div label={<strong>question2</strong>}>content2</div>
+            <div label={<strong>question3</strong>}>content3</div>
+          </Accordion>
         </DefaultPageLayout>
       </div>
     );
