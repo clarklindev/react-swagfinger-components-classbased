@@ -2044,7 +2044,8 @@ class Upload extends PureComponent {
                 await oldRef.delete();
                 console.log('uploaded a blob file!');
               });
-              await this.getAllFolders(this.state.firebaseRootRef);
+              //DOESNT NEED TO CALL THIS AS ITS ONLY GOT TO DO WITH FOLDERS
+              //await this.getAllFolders(this.state.firebaseRootRef);
               await this.getFolderData(this.state.currentFolderRef);
 
               await this.setState((prevState) => {
