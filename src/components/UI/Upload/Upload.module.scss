@@ -9,6 +9,14 @@
     border-radius: var(--borderradius);
   }
 
+  .ButtonGroup {
+    display: flex;
+    flex-direction: row;
+    button {
+      margin-left: var(--paddingdefault);
+    }
+  }
+
   .UploadHeader {
     min-height: 40px;
     align-items: center;
@@ -38,9 +46,9 @@
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
-    align-self:stretch;
-    flex-grow:1;
-    flex-basis:1;
+    align-self: stretch;
+    flex-grow: 1;
+    flex-basis: 1;
     color: var(--colordefault);
     padding: 0 0 0 10px;
     .UploadUrlOver {
@@ -51,8 +59,8 @@
       display: none;
     }
 
-    .UploadEdit{
-      margin:var(--margindefault);
+    .UploadEdit {
+      margin: var(--margindefault);
     }
   }
 
@@ -100,7 +108,7 @@
 
   .NavigateUpOneFolder {
     //margin-left: 37px;
-    display:block;
+    display: block;
   }
 
   .FlexGroupRow {
