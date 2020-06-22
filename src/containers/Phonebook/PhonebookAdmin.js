@@ -21,12 +21,12 @@ class PhonebookAdmin extends Component {
     this.className = Utils.getClassNameString([
       classes.PhonebookAdmin,
       PhonebookAdmin.name,
-      this.props.className
+      this.props.className,
     ]);
   }
 
   state = {
-    filterText: ''
+    filterText: '',
   };
 
   searchClearHandler = () => {
@@ -47,7 +47,7 @@ class PhonebookAdmin extends Component {
     //navigate programatically
     this.props.history.push({
       pathname: `/contactupdate`,
-      search: `?id=${id}`
+      search: `?id=${id}`,
     });
   };
 
@@ -129,12 +129,14 @@ class PhonebookAdmin extends Component {
                   key={id}
                   id={id}
                   displayText={entry}
-                  extraText={extra}>
+                  extraText={extra}
+                >
                   <div className={classes.ContactButtons}>
                     <Button
                       type='WithBorder'
                       title='Edit'
-                      onClick={this.editContactHandler.bind(this, id)}>
+                      onClick={this.editContactHandler.bind(this, id)}
+                    >
                       <Icon iconstyle='far' code='edit' size='sm' />
                     </Button>
 
@@ -145,7 +147,8 @@ class PhonebookAdmin extends Component {
                         this,
                         this.props.token,
                         id
-                      )}>
+                      )}
+                    >
                       <Icon iconstyle='far' code='trash-alt' size='sm' />
                     </Button>
                   </div>
@@ -164,15 +167,16 @@ class PhonebookAdmin extends Component {
               <InputContext.Provider
                 value={{
                   changed: this.searchChangedHandler,
-                  clear: this.searchClearHandler
-                }}>
+                  clear: this.searchClearHandler,
+                }}
+              >
                 <SearchFilter value={this.state.filterText} />
               </InputContext.Provider>
               <ComponentFactory
                 data={{
                   component: 'list',
                   label: 'Contacts',
-                  value: { data: filtered }
+                  value: { data: filtered },
                 }}
               />
               <Button
@@ -180,7 +184,8 @@ class PhonebookAdmin extends Component {
                 title='Add'
                 onClick={() => {
                   this.props.history.push('contactcreate');
-                }}>
+                }}
+              >
                 <Icon iconstyle='fas' code='plus' size='sm' />
                 <p>Add Contact</p>
               </Button>
@@ -196,7 +201,7 @@ const mapStateToProps = (state) => {
   return {
     storedPhonebook: state.contact.phoneBook,
     isLoading: state.contact.loading,
-    token: state.auth.token
+    token: state.auth.token,
   };
 };
 
@@ -204,7 +209,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onContactDeleted: (token, id) => {
       dispatch(actions.processContactDelete(token, id));
-    }
+    },
   };
 };
 

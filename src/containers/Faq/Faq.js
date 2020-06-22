@@ -9,6 +9,7 @@ class Faq extends Component {
     this.config = {
       allowMultiOpen: false,
       openOnStartIndex: -1, //zero-index, negative value or invalid index to not open on start,
+      hovereffect: true,
       onClick: () => {},
     };
   }
