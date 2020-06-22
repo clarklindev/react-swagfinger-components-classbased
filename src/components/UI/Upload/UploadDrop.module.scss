@@ -8,9 +8,12 @@
     display: flex;
     flex-grow: 1;
     flex-basis: 1;
+    flex-direction: column;
     box-sizing: border-box;
     align-items: center;
     justify-content: space-between;
+    align-items: flex-start;
+
     text-align: left;
     color: var(--colordefault);
     input {
@@ -29,6 +32,9 @@
     &.Dragging {
       background-color: var(--colorplaceholder);
       color: white;
+    }
+    @media only screen and (min-width: 480px) {
+      flex-direction: row;
     }
   }
   .UploadLabel {
