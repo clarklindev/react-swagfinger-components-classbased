@@ -193,6 +193,7 @@ class ContactRead extends Component {
             <React.Fragment>
               <Accordion
                 allowMultiOpen={true}
+                hovereffect={true}
                 openOnStartIndex={-1} //zero-index, negative value or invalid index to not open on start,
                 onClick={(folderRef, index) => {
                   console.log('CLICKED: ', folderRef);

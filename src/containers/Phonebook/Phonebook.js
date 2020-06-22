@@ -19,12 +19,12 @@ class Phonebook extends Component {
     this.className = Utils.getClassNameString([
       classes.Phonebook,
       Phonebook.name,
-      this.props.className
+      this.props.className,
     ]);
   }
 
   state = {
-    filterText: ''
+    filterText: '',
   };
 
   searchClearHandler = () => {
@@ -35,7 +35,7 @@ class Phonebook extends Component {
     //navigate programatically
     this.props.history.push({
       pathname: `/contactread`,
-      search: `?id=${id}`
+      search: `?id=${id}`,
     });
   };
 
@@ -117,9 +117,11 @@ class Phonebook extends Component {
             className={classes.ListItem}
             key={`${id}`}
             id={`${id}`}
+            hovereffect={true}
             displayText={entry}
             extraText={extra}
-            onClick={(event) => this.contactClickHandler(id, event)}></ListItem>
+            onClick={(event) => this.contactClickHandler(id, event)}
+          ></ListItem>
         );
       });
 
@@ -133,15 +135,16 @@ class Phonebook extends Component {
               <InputContext.Provider
                 value={{
                   changed: this.searchChangedHandler, //newval, name, index
-                  clear: this.searchClearHandler
-                }}>
+                  clear: this.searchClearHandler,
+                }}
+              >
                 <SearchFilter value={this.state.filterText} />
               </InputContext.Provider>
               <ComponentFactory
                 data={{
                   label: 'Contacts',
                   component: 'list',
-                  value: { data: filtered }
+                  value: { data: filtered },
                 }}
               />
             </Card>
@@ -153,13 +156,13 @@ class Phonebook extends Component {
 }
 
 Phonebook.propTypes = {
-  storedPhonebook: PropTypes.array
+  storedPhonebook: PropTypes.array,
 };
 
 const mapStateToProps = (state) => {
   return {
     storedPhonebook: state.contact.phoneBook,
-    isLoading: state.contact.loading
+    isLoading: state.contact.loading,
   };
 };
 

@@ -11,7 +11,12 @@
     border-radius: var(--borderradius);
     margin-bottom: calc(var(--margindefault) * 0.5);
     background-color: white;
+    &.AccordionItemHover:hover {
+      border-color: var(--colorborderhover);
+      cursor: pointer;
+    }
   }
+
   .AccordionTitle {
     padding: var(--paddingdefault);
     display: flex;

@@ -90,9 +90,13 @@ class Accordion extends PureComponent {
           if (this.state.isActive[index] === true) {
             additionalClasses.push(classes.Active);
           }
+          let styleClasses = [];
+          if (this.props.hovereffect === true) {
+            styleClasses = [classes.AccordionItemHover];
+          }
           return (
             <div
-              className={classes.AccordionItem}
+              className={[classes.AccordionItem, ...styleClasses].join(' ')}
               key={'accordionitem' + index}
             >
               <div
