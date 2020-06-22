@@ -12,6 +12,9 @@ import Icon from '../InputComponents/Icon';
 import Checkbox from '../InputComponents/Checkbox';
 import Breadcrumb from '../InputComponents/Breadcrumb';
 
+//helpers
+import * as Blob from '../../../shared/blob';
+
 //firebase imports
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
@@ -1454,24 +1457,6 @@ class Upload extends PureComponent {
     });
   };
 
-  getFileBlob = (url) => {
-    console.log('url:', url);
-    return new Promise(function (resolve, reject) {
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', `https://cors-anywhere.herokuapp.com/${url}`);
-      xhr.responseType = 'blob';
-      xhr.onload = function () {
-        var status = xhr.status;
-        if (status === 200) {
-          resolve(xhr.response);
-        } else {
-          reject(status);
-        }
-      };
-      xhr.send();
-    });
-  };
-
   // -------------------------------------------------------------------
   //RENDER
   // -------------------------------------------------------------------
@@ -2039,7 +2024,7 @@ class Upload extends PureComponent {
               console.log('adding new file..................');
               console.log('newREF:', newRef);
               await oldRef.getDownloadURL().then(async (url) => {
-                const renameBlogFile = await this.getFileBlob(url);
+                const renameBlogFile = await Blob.getFileBlob(url);
                 await newRef.put(renameBlogFile);
                 await oldRef.delete();
                 console.log('uploaded a blob file!');

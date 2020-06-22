@@ -111,10 +111,13 @@ class ContactRead extends Component {
             displayText={file.name}
             title={file.name}
             hovereffect={true}
+            onClick={() => {
+              console.log('clicked');
+            }}
           />
         );
       });
-      console.log('OLD FOLDERS: '.oldFolders);
+      console.log('OLD FOLDERS: ', oldFolders);
 
       return {
         firebaseFolders: oldFolders,
