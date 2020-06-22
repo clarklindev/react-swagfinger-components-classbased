@@ -110,6 +110,7 @@ class ContactRead extends Component {
             key={'file' + index}
             displayText={file.name}
             title={file.name}
+            hovereffect={true}
           />
         );
       });
