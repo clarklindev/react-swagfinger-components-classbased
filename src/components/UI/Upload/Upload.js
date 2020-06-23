@@ -1639,7 +1639,7 @@ class Upload extends PureComponent {
                 console.log('CHANGING FOLDER :)');
                 this.changeFolderPath(item);
               }}
-              title='get link'
+              title={item.name}
             >
               <GroupHorizontal>
                 <Icon iconstyle='far' code='folder' size='lg' />
@@ -1656,8 +1656,9 @@ class Upload extends PureComponent {
                       `gs://${item.location.bucket}/${item.location.path}`
                     );
                   }}
+                  title='copy to clipboard'
                 >
-                  <Icon iconstyle='fas' code='link' size='sm' />
+                  <Icon iconstyle='far' code='copy' size='sm' />
                 </Button>
               </GroupHorizontal>
             </ListItem>
@@ -1711,6 +1712,7 @@ class Upload extends PureComponent {
                 console.log('URL: ', url);
                 window.open(url, '_blank');
               }}
+              title={item.name}
             >
               <GroupHorizontal>
                 <Icon iconstyle='far' code='file' size='lg' />
@@ -1720,16 +1722,17 @@ class Upload extends PureComponent {
                 <Button
                   className={buttonStyle.NoStyle}
                   onClick={async (event) => {
-                    event.preventDefault();
                     event.stopPropagation();
-                    console.log('Open external link clicked');
+                    console.log('VIEW CLICKED: ', item);
                     const url = await FirebaseHelper.urlFromRef(item);
-                    Clipboard.copyStringToClipboard(url);
+                    console.log('URL: ', url);
+                    window.open(url, '_blank');
                   }}
                   title='open as external link'
                 >
                   <Icon iconstyle='fas' code='external-link-alt' size='sm' />
                 </Button>
+
                 {/* downloads assets to drive */}
                 <Button
                   className={buttonStyle.NoStyle}
@@ -1740,9 +1743,9 @@ class Upload extends PureComponent {
                     const url = await FirebaseHelper.urlFromRef(item);
                     Clipboard.copyStringToClipboard(url);
                   }}
-                  title='get link'
+                  title='copy to clipboard'
                 >
-                  <Icon iconstyle='fas' code='link' size='sm' />
+                  <Icon iconstyle='far' code='copy' size='sm' />
                 </Button>
               </GroupHorizontal>
             </ListItem>
