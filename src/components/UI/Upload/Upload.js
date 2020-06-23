@@ -1639,7 +1639,7 @@ class Upload extends PureComponent {
                 console.log('CHANGING FOLDER :)');
                 this.changeFolderPath(item);
               }}
-              title={item.name}
+              title='get link'
             >
               <GroupHorizontal>
                 <Icon iconstyle='far' code='folder' size='lg' />
@@ -1657,7 +1657,7 @@ class Upload extends PureComponent {
                     );
                   }}
                 >
-                  <Icon iconstyle='far' code='copy' size='sm' />
+                  <Icon iconstyle='fas' code='link' size='sm' />
                 </Button>
               </GroupHorizontal>
             </ListItem>
@@ -1717,6 +1717,19 @@ class Upload extends PureComponent {
                 <p>{item.name}</p>
               </GroupHorizontal>
               <GroupHorizontal spacing='left'>
+                <Button
+                  className={buttonStyle.NoStyle}
+                  onClick={async (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    console.log('Open external link clicked');
+                    const url = await FirebaseHelper.urlFromRef(item);
+                    Clipboard.copyStringToClipboard(url);
+                  }}
+                  title='open as external link'
+                >
+                  <Icon iconstyle='fas' code='external-link-alt' size='sm' />
+                </Button>
                 {/* downloads assets to drive */}
                 <Button
                   className={buttonStyle.NoStyle}
@@ -1727,8 +1740,9 @@ class Upload extends PureComponent {
                     const url = await FirebaseHelper.urlFromRef(item);
                     Clipboard.copyStringToClipboard(url);
                   }}
+                  title='get link'
                 >
-                  <Icon iconstyle='far' code='copy' size='sm' />
+                  <Icon iconstyle='fas' code='link' size='sm' />
                 </Button>
               </GroupHorizontal>
             </ListItem>

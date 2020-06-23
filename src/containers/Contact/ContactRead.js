@@ -137,6 +137,19 @@ class ContactRead extends Component {
               <p>{file.name}</p>
             </GroupHorizontal>
             <GroupHorizontal spacing='left'>
+              <Button
+                className={buttonStyle.NoStyle}
+                onClick={async (event) => {
+                  event.stopPropagation();
+                  console.log('VIEW CLICKED: ', file);
+                  const url = await FirebaseHelper.urlFromRef(file);
+                  console.log('URL: ', url);
+                  window.open(url, '_blank');
+                }}
+                title='open as external link'
+              >
+                <Icon iconstyle='fas' code='external-link-alt' size='sm' />
+              </Button>
               {/* downloads assets to drive */}
               <Button
                 className={buttonStyle.NoStyle}
@@ -156,6 +169,7 @@ class ContactRead extends Component {
                   window.URL.revokeObjectURL(a.href);
                   document.body.removeChild(a);
                 }}
+                title='download file'
               >
                 <Icon iconstyle='fas' code='download' size='sm' />
               </Button>
@@ -206,8 +220,9 @@ class ContactRead extends Component {
                               this.props.activeContact['name']
                             );
                           }}
+                          title='copy to clipboard'
                         >
-                          <Icon iconstyle='far' code='copy' size='sm' />
+                          <Icon iconstyle='far' code='clipboard' size='sm' />
                         </Button>
                       </GroupHorizontal>
                     </ListItem>
@@ -234,8 +249,9 @@ class ContactRead extends Component {
                               this.props.activeContact['lastname']
                             );
                           }}
+                          title='copy to clipboard'
                         >
-                          <Icon iconstyle='far' code='copy' size='sm' />
+                          <Icon iconstyle='far' code='clipboard' size='sm' />
                         </Button>
                       </GroupHorizontal>
                     </ListItem>
@@ -264,8 +280,13 @@ class ContactRead extends Component {
                                   console.log('Copy to clipboard');
                                   Clipboard.copyStringToClipboard(each);
                                 }}
+                                title='copy to clipboard'
                               >
-                                <Icon iconstyle='far' code='copy' size='sm' />
+                                <Icon
+                                  iconstyle='far'
+                                  code='clipboard'
+                                  size='sm'
+                                />
                               </Button>
                             </GroupHorizontal>
                           </ListItem>
@@ -296,8 +317,13 @@ class ContactRead extends Component {
                                   console.log('Copy to clipboard');
                                   Clipboard.copyStringToClipboard(each);
                                 }}
+                                title='copy to clipboard'
                               >
-                                <Icon iconstyle='far' code='copy' size='sm' />
+                                <Icon
+                                  iconstyle='far'
+                                  code='clipboard'
+                                  size='sm'
+                                />
                               </Button>
                             </GroupHorizontal>
                           </ListItem>

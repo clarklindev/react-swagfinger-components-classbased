@@ -24,6 +24,8 @@ import {
   faEdit as faEditSolid,
   faLevelUpAlt,
   faDownload,
+  faLink,
+  faExternalLinkAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faEdit,
@@ -32,6 +34,7 @@ import {
   faFolder,
   faFile,
   faCopy, //copy
+  faClipboard, //clipboard
 } from '@fortawesome/free-regular-svg-icons';
 
 import Utils from '../../../Utils';
@@ -62,7 +65,10 @@ library.add(
   faEllipsisH, //ellipsis
   faLevelUpAlt, //navigate one folder up
   faDownload, //download
-  faCopy //copy
+  faCopy, //copy
+  faLink, // link/url
+  faClipboard, //clipboard
+  faExternalLinkAlt //external link
 );
 
 class Icon extends Component {
