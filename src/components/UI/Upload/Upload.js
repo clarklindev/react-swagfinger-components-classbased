@@ -13,12 +13,19 @@ import Breadcrumb from '../InputComponents/Breadcrumb';
 
 //helpers
 import * as Blob from '../../../shared/blob';
+import * as FirebaseHelper from '../../../shared/firebaseHelper';
 import * as styles from '../../../shared/align.module.scss';
+import * as Clipboard from '../../../shared/clipboard';
+
 //firebase imports
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 import 'firebase/storage';
+
+//styling
+import buttonStyle from '../../UI/Button/Button.module.scss';
+import GroupHorizontal from '../../../hoc/Layout/GroupHorizontal';
 
 class Upload extends PureComponent {
   constructor(props) {
@@ -1625,7 +1632,7 @@ class Upload extends PureComponent {
               checked={this.state.checkedFolders[index]}
             ></Checkbox>
             <ListItem
-              aligntype={styles.FlexStart}
+              aligntype={styles.FlexSpaced}
               hovereffect={true}
               onClick={() => {
                 console.clear();
@@ -1634,8 +1641,25 @@ class Upload extends PureComponent {
               }}
               title={item.name}
             >
-              <Icon iconstyle='far' code='folder' size='lg' />
-              <p>{item.name}/</p>
+              <GroupHorizontal>
+                <Icon iconstyle='far' code='folder' size='lg' />
+                <p>{item.name}/</p>
+              </GroupHorizontal>
+              <GroupHorizontal>
+                <Button
+                  className={buttonStyle.NoStyle}
+                  onClick={async (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    const clipboard = Clipboard.copyStringToClipboard(
+                      `gs://${item.location.bucket}/${item.location.path}`
+                    );
+                  }}
+                >
+                  <Icon iconstyle='far' code='copy' size='sm' />
+                </Button>
+              </GroupHorizontal>
             </ListItem>
           </React.Fragment>
         );
@@ -1677,12 +1701,38 @@ class Upload extends PureComponent {
               checked={this.state.checkedFiles[index]}
             ></Checkbox>
             <ListItem
-              aligntype={styles.FlexStart}
+              aligntype={styles.FlexSpaced}
               hovereffect={true}
-              //onClick={() => this.changeFolderPath(item)}
+              onClick={async (event) => {
+                {
+                  /* opens up asset in new window */
+                }
+                event.stopPropagation();
+                console.log('VIEW CLICKED: ', item);
+                const url = await FirebaseHelper.urlFromRef(item);
+                console.log('URL: ', url);
+                window.open(url, '_blank');
+              }}
             >
-              <Icon iconstyle='far' code='file' size='lg' />
-              <p>{item.name}</p>
+              <GroupHorizontal>
+                <Icon iconstyle='far' code='file' size='lg' />
+                <p>{item.name}</p>
+              </GroupHorizontal>
+              <GroupHorizontal spacing='left'>
+                {/* downloads assets to drive */}
+                <Button
+                  className={buttonStyle.NoStyle}
+                  onClick={async (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    console.log('Copy to clipboard CLICKED');
+                    const url = await FirebaseHelper.urlFromRef(item);
+                    const clipboard = Clipboard.copyStringToClipboard(url);
+                  }}
+                >
+                  <Icon iconstyle='far' code='copy' size='sm' />
+                </Button>
+              </GroupHorizontal>
             </ListItem>
           </React.Fragment>
         );

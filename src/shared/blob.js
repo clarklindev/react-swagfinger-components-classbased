@@ -15,5 +15,3 @@ export const getFileBlob = (url) => {
     xhr.send();
   });
 };
-
-export default Blob;

@@ -23,6 +23,7 @@ import {
   faEllipsisH,
   faEdit as faEditSolid,
   faLevelUpAlt,
+  faDownload,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faEdit,
@@ -30,6 +31,7 @@ import {
   faCalendarAlt,
   faFolder,
   faFile,
+  faCopy, //copy
 } from '@fortawesome/free-regular-svg-icons';
 
 import Utils from '../../../Utils';
@@ -58,7 +60,9 @@ library.add(
   faFolderPlus,
   faFile, //file,
   faEllipsisH, //ellipsis
-  faLevelUpAlt //navigate one folder up
+  faLevelUpAlt, //navigate one folder up
+  faDownload, //download
+  faCopy //copy
 );
 
 class Icon extends Component {

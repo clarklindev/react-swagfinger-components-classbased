@@ -14,6 +14,17 @@ import Spinner from '../../components/UI/Loaders/Spinner';
 import { connect } from 'react-redux';
 import Card from '../../components/UI/Card/Card';
 import Tabs from '../../components/UI/Tabs/Tabs';
+import Button from '../../components/UI/Button/Button';
+import Icon from '../../components/UI/InputComponents/Icon';
+
+//styling
+import buttonStyle from '../../components/UI/Button/Button.module.scss';
+import GroupHorizontal from '../../hoc/Layout/GroupHorizontal';
+
+//helpers
+import * as Blob from '../../shared/blob';
+import * as FirebaseHelper from '../../shared/firebaseHelper';
+import * as Clipboard from '../../shared/clipboard';
 
 //firebase imports
 import * as firebase from 'firebase/app';
@@ -110,14 +121,49 @@ class ContactRead extends Component {
         return (
           <ListItem
             key={'file' + index}
-            displayText={file.name}
             title={file.name}
             hovereffect={true}
-            aligntype={styles.FlexStart}
-            onClick={() => {
-              console.log('clicked');
+            aligntype={styles.FlexSpaced}
+            onClick={async (event) => {
+              {
+                /* opens up asset in new window */
+              }
+              event.stopPropagation();
+              console.log('VIEW CLICKED: ', file);
+              const url = await FirebaseHelper.urlFromRef(file);
+              console.log('URL: ', url);
+              window.open(url, '_blank');
             }}
-          />
+          >
+            <GroupHorizontal>
+              <Icon iconstyle='far' code='file' size='lg' />
+              <p>{file.name}</p>
+            </GroupHorizontal>
+            <GroupHorizontal spacing='left'>
+              {/* downloads assets to drive */}
+              <Button
+                className={buttonStyle.NoStyle}
+                onClick={async (event) => {
+                  event.stopPropagation();
+                  console.log('DOWNLOAD CLICKED');
+                  const url = await FirebaseHelper.urlFromRef(file);
+                  const blob = await Blob.getFileBlob(url);
+                  const dl = window.URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  document.body.appendChild(a);
+                  a.href = dl;
+                  a.download = file.name;
+                  a.click();
+
+                  // Cleanup
+                  window.URL.revokeObjectURL(a.href);
+                  document.body.removeChild(a);
+                }}
+              >
+                <Icon iconstyle='fas' code='download' size='sm' />
+              </Button>
+            </GroupHorizontal>
+          </ListItem>
         );
       });
       console.log('OLD FOLDERS: ', oldFolders);
@@ -135,19 +181,68 @@ class ContactRead extends Component {
         case 'profile':
           data = (
             <React.Fragment>
-              <ComponentFactory
+              {/* <ComponentFactory
                 data={{
                   label: 'Name',
                   component: 'input',
                   value: { data: this.props.activeContact['name'] },
                   readOnly: true,
                 }}
+              /> */}
+              <ComponentFactory
+                data={{
+                  label: 'Name',
+                  component: 'raw',
+                  value: (
+                    <ListItem aligntype={styles.FlexSpaced}>
+                      <GroupHorizontal>
+                        <p>{this.props.activeContact['name']}</p>
+                      </GroupHorizontal>
+                      <GroupHorizontal>
+                        <Button
+                          className={buttonStyle.NoStyle}
+                          onClick={async (event) => {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            console.log('Copy to clipboard');
+                            const clipboard = Clipboard.copyStringToClipboard(
+                              this.props.activeContact['name']
+                            );
+                          }}
+                        >
+                          <Icon iconstyle='far' code='copy' size='sm' />
+                        </Button>
+                      </GroupHorizontal>
+                    </ListItem>
+                  ),
+                }}
               />
               <ComponentFactory
                 data={{
                   label: 'Last name',
-                  component: 'input',
-                  value: { data: this.props.activeContact['lastname'] },
+                  component: 'raw',
+                  value: (
+                    <ListItem aligntype={styles.FlexSpaced}>
+                      <GroupHorizontal>
+                        <p>{this.props.activeContact['lastname']}</p>
+                      </GroupHorizontal>
+                      <GroupHorizontal>
+                        <Button
+                          className={buttonStyle.NoStyle}
+                          onClick={async (event) => {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            console.log('DOWNLOAD CLICKED');
+                            const clipboard = Clipboard.copyStringToClipboard(
+                              this.props.activeContact['lastname']
+                            );
+                          }}
+                        >
+                          <Icon iconstyle='far' code='copy' size='sm' />
+                        </Button>
+                      </GroupHorizontal>
+                    </ListItem>
+                  ),
                   readOnly: true,
                 }}
               />
@@ -159,7 +254,26 @@ class ContactRead extends Component {
                     data: this.props.activeContact['contactnumbers'].map(
                       (each, index) => {
                         return each !== '' ? (
-                          <ListItem displayText={each}></ListItem>
+                          <ListItem aligntype={styles.FlexSpaced}>
+                            <GroupHorizontal>
+                              <p>{each}</p>
+                            </GroupHorizontal>
+                            <GroupHorizontal>
+                              <Button
+                                className={buttonStyle.NoStyle}
+                                onClick={async (event) => {
+                                  event.preventDefault();
+                                  event.stopPropagation();
+                                  console.log('DOWNLOAD CLICKED');
+                                  const clipboard = Clipboard.copyStringToClipboard(
+                                    each
+                                  );
+                                }}
+                              >
+                                <Icon iconstyle='far' code='copy' size='sm' />
+                              </Button>
+                            </GroupHorizontal>
+                          </ListItem>
                         ) : undefined;
                       }
                     ),
@@ -174,7 +288,26 @@ class ContactRead extends Component {
                     data: this.props.activeContact['emails'].map(
                       (each, index) => {
                         return each !== '' ? (
-                          <ListItem displayText={each}></ListItem>
+                          <ListItem aligntype={styles.FlexSpaced}>
+                            <GroupHorizontal>
+                              <p>{each}</p>
+                            </GroupHorizontal>
+                            <GroupHorizontal>
+                              <Button
+                                className={buttonStyle.NoStyle}
+                                onClick={async (event) => {
+                                  event.preventDefault();
+                                  event.stopPropagation();
+                                  console.log('DOWNLOAD CLICKED');
+                                  const clipboard = Clipboard.copyStringToClipboard(
+                                    each
+                                  );
+                                }}
+                              >
+                                <Icon iconstyle='far' code='copy' size='sm' />
+                              </Button>
+                            </GroupHorizontal>
+                          </ListItem>
                         ) : undefined;
                       }
                     ),

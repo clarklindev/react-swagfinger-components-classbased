@@ -1,0 +1,12 @@
+.GroupHorizontal {
+  &.Spacingleft {
+    > * {
+      padding-left: var(--paddingdefault);
+    }
+  }
+  &.Spacingright {
+    > * {
+      padding-right: var(--paddingdefault);
+    }
+  }
+}
