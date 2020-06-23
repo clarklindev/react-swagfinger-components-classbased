@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import classes from './ContactRead.module.scss';
+import * as styles from '../../shared/align.module.scss';
+
 import Utils from '../../Utils';
 import * as actions from '../../store/actions/index';
 
@@ -111,6 +113,7 @@ class ContactRead extends Component {
             displayText={file.name}
             title={file.name}
             hovereffect={true}
+            aligntype={styles.FlexStart}
             onClick={() => {
               console.log('clicked');
             }}

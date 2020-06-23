@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import classes from './Upload.module.scss';
-
 import Modal from '../Modal/Modal';
 import Input from '../InputComponents/Input';
 import List from '../InputComponents/List';
@@ -14,7 +13,7 @@ import Breadcrumb from '../InputComponents/Breadcrumb';
 
 //helpers
 import * as Blob from '../../../shared/blob';
-
+import * as styles from '../../../shared/align.module.scss';
 //firebase imports
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
@@ -1594,7 +1593,7 @@ class Upload extends PureComponent {
               checked={this.state.checkedPlaceholderFolders[index]}
             ></Checkbox>
             <ListItem
-              aligntype='FlexStart'
+              aligntype={styles.FlexStart}
               hovereffect={true}
               onClick={() => {
                 console.clear();
@@ -1626,7 +1625,7 @@ class Upload extends PureComponent {
               checked={this.state.checkedFolders[index]}
             ></Checkbox>
             <ListItem
-              aligntype='FlexStart'
+              aligntype={styles.FlexStart}
               hovereffect={true}
               onClick={() => {
                 console.clear();
@@ -1678,7 +1677,7 @@ class Upload extends PureComponent {
               checked={this.state.checkedFiles[index]}
             ></Checkbox>
             <ListItem
-              aligntype='FlexStart'
+              aligntype={styles.FlexStart}
               hovereffect={true}
               //onClick={() => this.changeFolderPath(item)}
             >
@@ -1883,7 +1882,7 @@ class Upload extends PureComponent {
                     ].join(' ')}
                   >
                     <ListItem
-                      aligntype='FlexStart'
+                      aligntype={styles.FlexStart}
                       hovereffect={true}
                       onClick={() => {
                         //get current index on drilldown,

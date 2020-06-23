@@ -23,7 +23,6 @@
     flex-grow: 1;
     align-items: center;
     flex-direction: row;
-    justify-content: space-between;
     font: inherit;
     font-size: var(--fontsizedefault);
     box-sizing: border-box;
@@ -41,11 +40,5 @@
     padding: 0px;
     font-weight: bold;
     color: var(--colorhighlight);
-  }
-
-  .FlexStart {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
   }
 }

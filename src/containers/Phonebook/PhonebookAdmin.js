@@ -5,6 +5,8 @@ import ListItem from '../../components/UI/InputComponents/ListItem';
 import * as actions from '../../store/actions/index';
 
 import classes from './PhonebookAdmin.module.scss';
+import * as styles from '../../shared/align.module.scss';
+
 import Utils from '../../Utils';
 import SearchFilter from '../../components/UI/InputComponents/SearchFilter';
 import Icon from '../../components/UI/InputComponents/Icon';
@@ -130,6 +132,7 @@ class PhonebookAdmin extends Component {
                   id={id}
                   displayText={entry}
                   extraText={extra}
+                  aligntype={styles.FlexSpaced}
                 >
                   <div className={classes.ContactButtons}>
                     <Button

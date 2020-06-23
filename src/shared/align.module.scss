@@ -1,0 +1,11 @@
+.FlexStart {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.FlexSpaced {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
