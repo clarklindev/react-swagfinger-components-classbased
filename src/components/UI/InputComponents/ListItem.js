@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import classes from './ListItem.module.scss';
 import '../../../shared/align.module.scss'; //align classes
 import Utils from '../../../Utils';
-import { faPray } from '@fortawesome/free-solid-svg-icons';
 class ListItem extends Component {
   constructor(props) {
     super(props);

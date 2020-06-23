@@ -125,9 +125,6 @@ class ContactRead extends Component {
             hovereffect={true}
             aligntype={styles.FlexSpaced}
             onClick={async (event) => {
-              {
-                /* opens up asset in new window */
-              }
               event.stopPropagation();
               console.log('VIEW CLICKED: ', file);
               const url = await FirebaseHelper.urlFromRef(file);
@@ -205,7 +202,7 @@ class ContactRead extends Component {
                             event.preventDefault();
                             event.stopPropagation();
                             console.log('Copy to clipboard');
-                            const clipboard = Clipboard.copyStringToClipboard(
+                            Clipboard.copyStringToClipboard(
                               this.props.activeContact['name']
                             );
                           }}
@@ -232,8 +229,8 @@ class ContactRead extends Component {
                           onClick={async (event) => {
                             event.preventDefault();
                             event.stopPropagation();
-                            console.log('DOWNLOAD CLICKED');
-                            const clipboard = Clipboard.copyStringToClipboard(
+                            console.log('Copy to clipboard');
+                            Clipboard.copyStringToClipboard(
                               this.props.activeContact['lastname']
                             );
                           }}
@@ -264,10 +261,8 @@ class ContactRead extends Component {
                                 onClick={async (event) => {
                                   event.preventDefault();
                                   event.stopPropagation();
-                                  console.log('DOWNLOAD CLICKED');
-                                  const clipboard = Clipboard.copyStringToClipboard(
-                                    each
-                                  );
+                                  console.log('Copy to clipboard');
+                                  Clipboard.copyStringToClipboard(each);
                                 }}
                               >
                                 <Icon iconstyle='far' code='copy' size='sm' />
@@ -298,10 +293,8 @@ class ContactRead extends Component {
                                 onClick={async (event) => {
                                   event.preventDefault();
                                   event.stopPropagation();
-                                  console.log('DOWNLOAD CLICKED');
-                                  const clipboard = Clipboard.copyStringToClipboard(
-                                    each
-                                  );
+                                  console.log('Copy to clipboard');
+                                  Clipboard.copyStringToClipboard(each);
                                 }}
                               >
                                 <Icon iconstyle='far' code='copy' size='sm' />

@@ -1652,7 +1652,7 @@ class Upload extends PureComponent {
                     event.preventDefault();
                     event.stopPropagation();
 
-                    const clipboard = Clipboard.copyStringToClipboard(
+                    Clipboard.copyStringToClipboard(
                       `gs://${item.location.bucket}/${item.location.path}`
                     );
                   }}
@@ -1704,9 +1704,7 @@ class Upload extends PureComponent {
               aligntype={styles.FlexSpaced}
               hovereffect={true}
               onClick={async (event) => {
-                {
-                  /* opens up asset in new window */
-                }
+                /* opens up asset in new window */
                 event.stopPropagation();
                 console.log('VIEW CLICKED: ', item);
                 const url = await FirebaseHelper.urlFromRef(item);
@@ -1727,7 +1725,7 @@ class Upload extends PureComponent {
                     event.stopPropagation();
                     console.log('Copy to clipboard CLICKED');
                     const url = await FirebaseHelper.urlFromRef(item);
-                    const clipboard = Clipboard.copyStringToClipboard(url);
+                    Clipboard.copyStringToClipboard(url);
                   }}
                 >
                   <Icon iconstyle='far' code='copy' size='sm' />
