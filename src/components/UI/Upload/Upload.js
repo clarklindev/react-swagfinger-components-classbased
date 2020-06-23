@@ -1722,6 +1722,7 @@ class Upload extends PureComponent {
                 <Button
                   className={buttonStyle.NoStyle}
                   onClick={async (event) => {
+                    event.preventDefault();
                     event.stopPropagation();
                     console.log('VIEW CLICKED: ', item);
                     const url = await FirebaseHelper.urlFromRef(item);

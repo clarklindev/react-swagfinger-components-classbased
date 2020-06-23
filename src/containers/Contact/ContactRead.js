@@ -125,6 +125,7 @@ class ContactRead extends Component {
             hovereffect={true}
             aligntype={styles.FlexSpaced}
             onClick={async (event) => {
+              event.preventDefault();
               event.stopPropagation();
               console.log('VIEW CLICKED: ', file);
               const url = await FirebaseHelper.urlFromRef(file);
@@ -140,6 +141,7 @@ class ContactRead extends Component {
               <Button
                 className={buttonStyle.NoStyle}
                 onClick={async (event) => {
+                  event.preventDefault();
                   event.stopPropagation();
                   console.log('VIEW CLICKED: ', file);
                   const url = await FirebaseHelper.urlFromRef(file);
@@ -154,6 +156,7 @@ class ContactRead extends Component {
               <Button
                 className={buttonStyle.NoStyle}
                 onClick={async (event) => {
+                  event.preventDefault();
                   event.stopPropagation();
                   console.log('DOWNLOAD CLICKED');
                   const url = await FirebaseHelper.urlFromRef(file);
