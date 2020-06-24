@@ -1,0 +1,79 @@
+//justify-content
+.JustifyContentFlexStart {
+  justify-content: flex-start;
+}
+.JustifyContentFlexEnd {
+  justify-content: flex-end;
+}
+.JustifyContentCenter {
+  justify-content: center;
+}
+.JustifyContentSpaceBetween {
+  justify-content: space-between;
+}
+.JustifyContentSpaceAround {
+  justify-content: space-around;
+}
+.JustifyContentSpaceEvenly {
+  justify-content: space-evenly;
+}
+
+// align-items
+.AlignItemsStretch {
+  align-items: stretch;
+}
+.AlignItemsFlexStart {
+  align-items: flex-start;
+}
+.AlignItemsFlexEnd {
+  align-items: flex-end;
+}
+.AlignItemsCenter {
+  align-items: center;
+}
+.AlignItemsBaseline {
+  align-items: baseline;
+}
+
+//align-content
+.AlignContentFlexStart {
+  align-content: flex-start;
+}
+.AlignContentFlexEnd {
+  align-content: flex-end;
+}
+.AlignContentCenter {
+  align-content: center;
+}
+.AlignContentSpaceAround {
+  align-content: space-around;
+}
+.AlignContentSpaceBetween {
+  align-content: space-between;
+}
+.AlignContentSpaceEvenly {
+  align-content: space-evenly;
+}
+.AlignContentStretch {
+  align-content: stretch;
+}
+
+//align-self
+.AlignSelfAuto {
+  align-self: auto;
+}
+.AlignSelfFlexStart {
+  align-self: flex-start;
+}
+.AlignSelfFlexEnd {
+  align-self: flex-end;
+}
+.AlignSelfCenter {
+  align-self: center;
+}
+.AlignSelfBaseline {
+  align-self: baseline;
+}
+.AlignSelfStretch {
+  align-self: stretch;
+}

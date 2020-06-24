@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ListItem from '../../components/UI/InputComponents/ListItem';
 import classes from './Phonebook.module.scss';
-import * as styles from '../../shared/align.module.scss';
+import * as align from '../../shared/alignFlex.module.scss';
 import { connect } from 'react-redux';
 
 import Utils from '../../Utils';
@@ -121,7 +121,7 @@ class Phonebook extends Component {
             hovereffect={true}
             displayText={entry}
             extraText={extra}
-            aligntype={styles.FlexStart}
+            align={align.JustifyContentFlexStart}
             onClick={(event) => this.contactClickHandler(id, event)}
           ></ListItem>
         );

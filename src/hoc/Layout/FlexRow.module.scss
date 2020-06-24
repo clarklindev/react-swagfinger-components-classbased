@@ -1,4 +1,7 @@
-.GroupHorizontal {
+.FlexRow {
+  display: flex;
+  flex-direction: row;
+
   &.Spacingleft {
     > * {
       padding-left: var(--paddingdefault);

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classes from './ContactRead.module.scss';
-import * as styles from '../../shared/align.module.scss';
+import * as align from '../../shared/alignFlex.module.scss';
 
 import Utils from '../../Utils';
 import * as actions from '../../store/actions/index';
@@ -19,7 +19,7 @@ import Icon from '../../components/UI/InputComponents/Icon';
 
 //styling
 import buttonStyle from '../../components/UI/Button/Button.module.scss';
-import GroupHorizontal from '../../hoc/Layout/GroupHorizontal';
+import FlexRow from '../../hoc/Layout/FlexRow';
 
 //helpers
 import * as Blob from '../../shared/blob';
@@ -123,7 +123,7 @@ class ContactRead extends Component {
             key={'file' + index}
             title={file.name}
             hovereffect={true}
-            aligntype={styles.FlexSpaced}
+            align={align.JustifyContentSpaceBetween}
             onClick={async (event) => {
               event.preventDefault();
               event.stopPropagation();
@@ -133,11 +133,11 @@ class ContactRead extends Component {
               window.open(url, '_blank');
             }}
           >
-            <GroupHorizontal>
+            <FlexRow>
               <Icon iconstyle='far' code='file' size='lg' />
               <p>{file.name}</p>
-            </GroupHorizontal>
-            <GroupHorizontal spacing='left'>
+            </FlexRow>
+            <FlexRow spacing='left'>
               <Button
                 className={buttonStyle.NoStyle}
                 onClick={async (event) => {
@@ -176,7 +176,7 @@ class ContactRead extends Component {
               >
                 <Icon iconstyle='fas' code='download' size='sm' />
               </Button>
-            </GroupHorizontal>
+            </FlexRow>
           </ListItem>
         );
       });
@@ -208,11 +208,11 @@ class ContactRead extends Component {
                   label: 'Name',
                   component: 'raw',
                   value: (
-                    <ListItem aligntype={styles.FlexSpaced}>
-                      <GroupHorizontal>
+                    <ListItem align={align.JustifyContentSpaceBetween}>
+                      <FlexRow>
                         <p>{this.props.activeContact['name']}</p>
-                      </GroupHorizontal>
-                      <GroupHorizontal>
+                      </FlexRow>
+                      <FlexRow>
                         <Button
                           className={buttonStyle.NoStyle}
                           onClick={async (event) => {
@@ -227,7 +227,7 @@ class ContactRead extends Component {
                         >
                           <Icon iconstyle='far' code='clipboard' size='sm' />
                         </Button>
-                      </GroupHorizontal>
+                      </FlexRow>
                     </ListItem>
                   ),
                 }}
@@ -237,11 +237,11 @@ class ContactRead extends Component {
                   label: 'Last name',
                   component: 'raw',
                   value: (
-                    <ListItem aligntype={styles.FlexSpaced}>
-                      <GroupHorizontal>
+                    <ListItem align={align.JustifyContentSpaceBetween}>
+                      <FlexRow>
                         <p>{this.props.activeContact['lastname']}</p>
-                      </GroupHorizontal>
-                      <GroupHorizontal>
+                      </FlexRow>
+                      <FlexRow>
                         <Button
                           className={buttonStyle.NoStyle}
                           onClick={async (event) => {
@@ -256,7 +256,7 @@ class ContactRead extends Component {
                         >
                           <Icon iconstyle='far' code='clipboard' size='sm' />
                         </Button>
-                      </GroupHorizontal>
+                      </FlexRow>
                     </ListItem>
                   ),
                   readOnly: true,
@@ -270,11 +270,11 @@ class ContactRead extends Component {
                     data: this.props.activeContact['contactnumbers'].map(
                       (each, index) => {
                         return each !== '' ? (
-                          <ListItem aligntype={styles.FlexSpaced}>
-                            <GroupHorizontal>
+                          <ListItem align={align.JustifyContentSpaceBetween}>
+                            <FlexRow>
                               <p>{each}</p>
-                            </GroupHorizontal>
-                            <GroupHorizontal>
+                            </FlexRow>
+                            <FlexRow>
                               <Button
                                 className={buttonStyle.NoStyle}
                                 onClick={async (event) => {
@@ -291,7 +291,7 @@ class ContactRead extends Component {
                                   size='sm'
                                 />
                               </Button>
-                            </GroupHorizontal>
+                            </FlexRow>
                           </ListItem>
                         ) : undefined;
                       }
@@ -307,11 +307,11 @@ class ContactRead extends Component {
                     data: this.props.activeContact['emails'].map(
                       (each, index) => {
                         return each !== '' ? (
-                          <ListItem aligntype={styles.FlexSpaced}>
-                            <GroupHorizontal>
+                          <ListItem align={align.JustifyContentSpaceBetween}>
+                            <FlexRow>
                               <p>{each}</p>
-                            </GroupHorizontal>
-                            <GroupHorizontal>
+                            </FlexRow>
+                            <FlexRow>
                               <Button
                                 className={buttonStyle.NoStyle}
                                 onClick={async (event) => {
@@ -328,7 +328,7 @@ class ContactRead extends Component {
                                   size='sm'
                                 />
                               </Button>
-                            </GroupHorizontal>
+                            </FlexRow>
                           </ListItem>
                         ) : undefined;
                       }

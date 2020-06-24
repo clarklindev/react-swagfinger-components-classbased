@@ -14,7 +14,6 @@ import Breadcrumb from '../InputComponents/Breadcrumb';
 //helpers
 import * as Blob from '../../../shared/blob';
 import * as FirebaseHelper from '../../../shared/firebaseHelper';
-import * as styles from '../../../shared/align.module.scss';
 import * as Clipboard from '../../../shared/clipboard';
 
 //firebase imports
@@ -25,7 +24,8 @@ import 'firebase/storage';
 
 //styling
 import buttonStyle from '../../UI/Button/Button.module.scss';
-import GroupHorizontal from '../../../hoc/Layout/GroupHorizontal';
+import FlexRow from '../../../hoc/Layout/FlexRow';
+import * as align from '../../../shared/alignFlex.module.scss';
 
 class Upload extends PureComponent {
   constructor(props) {
@@ -92,6 +92,7 @@ class Upload extends PureComponent {
     renameFileModal: false,
     renamedFilename: '',
     renamedFilenameExtension: '',
+    showClipboardModal: false,
   };
 
   async componentDidMount() {
@@ -1600,7 +1601,7 @@ class Upload extends PureComponent {
               checked={this.state.checkedPlaceholderFolders[index]}
             ></Checkbox>
             <ListItem
-              aligntype={styles.FlexStart}
+              align={align.JustifyContentFlexStart}
               hovereffect={true}
               onClick={() => {
                 console.clear();
@@ -1632,7 +1633,7 @@ class Upload extends PureComponent {
               checked={this.state.checkedFolders[index]}
             ></Checkbox>
             <ListItem
-              aligntype={styles.FlexSpaced}
+              align={align.JustifyContentSpaceBetween}
               hovereffect={true}
               onClick={() => {
                 console.clear();
@@ -1641,11 +1642,12 @@ class Upload extends PureComponent {
               }}
               title={item.name}
             >
-              <GroupHorizontal>
+              {/* flex-direction:row */}
+              <FlexRow>
                 <Icon iconstyle='far' code='folder' size='lg' />
                 <p>{item.name}/</p>
-              </GroupHorizontal>
-              <GroupHorizontal>
+              </FlexRow>
+              <FlexRow>
                 <Button
                   className={buttonStyle.NoStyle}
                   onClick={async (event) => {
@@ -1660,7 +1662,7 @@ class Upload extends PureComponent {
                 >
                   <Icon iconstyle='far' code='copy' size='sm' />
                 </Button>
-              </GroupHorizontal>
+              </FlexRow>
             </ListItem>
           </React.Fragment>
         );
@@ -1702,7 +1704,7 @@ class Upload extends PureComponent {
               checked={this.state.checkedFiles[index]}
             ></Checkbox>
             <ListItem
-              aligntype={styles.FlexSpaced}
+              align={align.JustifyContentSpaceBetween}
               hovereffect={true}
               onClick={async (event) => {
                 /* opens up asset in new window */
@@ -1714,11 +1716,11 @@ class Upload extends PureComponent {
               }}
               title={item.name}
             >
-              <GroupHorizontal>
+              <FlexRow>
                 <Icon iconstyle='far' code='file' size='lg' />
                 <p>{item.name}</p>
-              </GroupHorizontal>
-              <GroupHorizontal spacing='left'>
+              </FlexRow>
+              <FlexRow spacing='left'>
                 <Button
                   className={buttonStyle.NoStyle}
                   onClick={async (event) => {
@@ -1743,12 +1745,17 @@ class Upload extends PureComponent {
                     console.log('Copy to clipboard CLICKED');
                     const url = await FirebaseHelper.urlFromRef(item);
                     Clipboard.copyStringToClipboard(url);
+                    this.setState({ showClipboardModal: true }, () => {
+                      setTimeout(() => {
+                        this.setState({ showClipboardModal: false });
+                      }, 1000);
+                    });
                   }}
                   title='copy to clipboard'
                 >
                   <Icon iconstyle='far' code='copy' size='sm' />
                 </Button>
-              </GroupHorizontal>
+              </FlexRow>
             </ListItem>
           </React.Fragment>
         );
@@ -1948,7 +1955,7 @@ class Upload extends PureComponent {
                     ].join(' ')}
                   >
                     <ListItem
-                      aligntype={styles.FlexStart}
+                      align={align.JustifyContentFlexStart}
                       hovereffect={true}
                       onClick={() => {
                         //get current index on drilldown,
@@ -2356,6 +2363,11 @@ class Upload extends PureComponent {
             }}
           />
           <div className={classes.Errors}>{this.state.errorModalMessage}</div>
+        </Modal>
+
+        {/* copied to clipboard modal */}
+        <Modal show={this.state.showClipboardModal}>
+          <p>Copied to clipboard</p>
         </Modal>
       </div>
     );

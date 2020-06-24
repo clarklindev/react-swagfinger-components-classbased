@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classes from './ListItem.module.scss';
-import '../../../shared/align.module.scss'; //align classes
+import '../../../shared/alignFlex.module.scss'; //align classes
 import Utils from '../../../Utils';
 class ListItem extends Component {
   constructor(props) {
@@ -46,16 +46,14 @@ class ListItem extends Component {
       styleClasses = [classes.ListItemHover];
     }
 
-    console.log('ALIGN TYPE: ', this.props.aligntype);
+    console.log('ALIGN TYPE: ', this.props.align);
     return (
       <div
         className={[this.className, ...styleClasses].join(' ')}
         onClick={this.props.onClick}
         title={this.props.title}
       >
-        <div
-          className={[classes.ListItemWrapper, this.props.aligntype].join(' ')}
-        >
+        <div className={[classes.ListItemWrapper, this.props.align].join(' ')}>
           {displayText || hasExtraText ? (
             <div>
               {displayText}
