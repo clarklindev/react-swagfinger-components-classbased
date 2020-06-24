@@ -1885,7 +1885,7 @@ class Upload extends PureComponent {
                   <input
                     ref={this.uploadRef}
                     type='file'
-                    accept='image/*'
+                    accept='image/*, video/*, audio/*, application/pdf'
                     multiple
                     onChange={(event) => {
                       console.clear();
@@ -2367,7 +2367,9 @@ class Upload extends PureComponent {
 
         {/* copied to clipboard modal */}
         <Modal show={this.state.showClipboardModal}>
-          <p>Copied to clipboard</p>
+          <FlexRow justifyContent='center'>
+            <p>Copied to clipboard</p>
+          </FlexRow>
         </Modal>
       </div>
     );

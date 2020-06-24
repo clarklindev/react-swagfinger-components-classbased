@@ -121,7 +121,6 @@ class ContactRead extends Component {
         return (
           <ListItem
             key={'file' + index}
-            title={file.name}
             hovereffect={true}
             align={align.JustifyContentSpaceBetween}
             onClick={async (event) => {
@@ -132,6 +131,7 @@ class ContactRead extends Component {
               console.log('URL: ', url);
               window.open(url, '_blank');
             }}
+            title={file.name}
           >
             <FlexRow>
               <Icon iconstyle='far' code='file' size='lg' />
@@ -145,7 +145,6 @@ class ContactRead extends Component {
                   event.stopPropagation();
                   console.log('VIEW CLICKED: ', file);
                   const url = await FirebaseHelper.urlFromRef(file);
-                  console.log('URL: ', url);
                   window.open(url, '_blank');
                 }}
                 title='open as external link'
