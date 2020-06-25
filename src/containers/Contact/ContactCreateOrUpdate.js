@@ -192,7 +192,7 @@ class ContactCreateOrUpdate extends Component {
           });
         }
         //single value, store just the value.data in formData
-        else {
+        else if (this.state.form[key].value) {
           formData[key] = this.state.form[key].value.data;
         }
       }
@@ -202,6 +202,7 @@ class ContactCreateOrUpdate extends Component {
           formData,
           this.state.id,
           () => {
+            console.log('CALLBACK...');
             console.log('CONTACT UPDATED: ', formData);
             this.setState({ saving: false });
             this.redirect();
@@ -456,7 +457,7 @@ class ContactCreateOrUpdate extends Component {
               label={this.state.id ? 'Update Contact' : 'Create Contact'}
             >
               <Card>
-                <form onSubmit={this.onSubmitHandler} autoComplete="off">
+                <form onSubmit={this.onSubmitHandler} autoComplete='off'>
                   {/* input context provides context state/functions to formInputs */}
                   <InputContext.Provider
                     value={{
@@ -469,13 +470,13 @@ class ContactCreateOrUpdate extends Component {
                   </InputContext.Provider>
                   <input
                     ref={this.submitInputRef}
-                    type="submit"
-                    value="Submit"
+                    type='submit'
+                    value='Submit'
                     onMouseOver={(event) => this.onSubmitTest(event)}
                     // disabled={!this.state.formIsValid} //dont disable just handle with validation
                   />
                   <Button
-                    type="WithBorder"
+                    type='WithBorder'
                     onClick={(event) => {
                       console.log('Submit...');
                       event.preventDefault();

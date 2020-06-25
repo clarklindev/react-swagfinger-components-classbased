@@ -25,7 +25,7 @@ class App extends Component {
     this.props.onTryAutoSignup();
     this.props.onFetchContacts();
   }
-
+  componentDidUpdate() {}
   componentWillUnmount() {
     this.props.onFetchContactsCancel();
   }
@@ -68,7 +68,7 @@ class App extends Component {
 const mapStateToProps = (state) => {
   return {
     isAuthenticated: state.auth.token !== null,
-    isLoading: state.contact.loading
+    isLoading: state.contact.loading,
   };
 };
 
@@ -80,7 +80,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     onFetchContactsCancel: () => {
       dispatch(actions.fetchContactsCancel());
-    }
+    },
   };
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

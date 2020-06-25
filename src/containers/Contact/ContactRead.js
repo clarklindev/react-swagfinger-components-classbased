@@ -16,7 +16,7 @@ import Card from '../../components/UI/Card/Card';
 import Tabs from '../../components/UI/Tabs/Tabs';
 import Button from '../../components/UI/Button/Button';
 import Icon from '../../components/UI/InputComponents/Icon';
-
+import Modal from '../../components/UI/Modal/Modal';
 //styling
 import buttonStyle from '../../components/UI/Button/Button.module.scss';
 import FlexRow from '../../hoc/Layout/FlexRow';
@@ -65,6 +65,7 @@ class ContactRead extends Component {
     isLoading: true,
     firebaseFolders: null,
     activeTab: 'profile',
+    showClipboardModal: false,
   };
 
   async componentDidMount() {
@@ -221,6 +222,10 @@ class ContactRead extends Component {
                             Clipboard.copyStringToClipboard(
                               this.props.activeContact['name']
                             );
+                            this.setState({ showClipboardModal: true });
+                            setTimeout(() => {
+                              this.setState({ showClipboardModal: false });
+                            }, 1000);
                           }}
                           title='copy to clipboard'
                         >
@@ -247,6 +252,10 @@ class ContactRead extends Component {
                             event.preventDefault();
                             event.stopPropagation();
                             console.log('Copy to clipboard');
+                            this.setState({ showClipboardModal: true });
+                            setTimeout(() => {
+                              this.setState({ showClipboardModal: false });
+                            }, 1000);
                             Clipboard.copyStringToClipboard(
                               this.props.activeContact['lastname']
                             );
@@ -280,6 +289,12 @@ class ContactRead extends Component {
                                   event.preventDefault();
                                   event.stopPropagation();
                                   console.log('Copy to clipboard');
+                                  this.setState({ showClipboardModal: true });
+                                  setTimeout(() => {
+                                    this.setState({
+                                      showClipboardModal: false,
+                                    });
+                                  }, 1000);
                                   Clipboard.copyStringToClipboard(each);
                                 }}
                                 title='copy to clipboard'
@@ -318,6 +333,12 @@ class ContactRead extends Component {
                                   event.stopPropagation();
                                   console.log('Copy to clipboard');
                                   Clipboard.copyStringToClipboard(each);
+                                  this.setState({ showClipboardModal: true });
+                                  setTimeout(() => {
+                                    this.setState({
+                                      showClipboardModal: false,
+                                    });
+                                  }, 1000);
                                 }}
                                 title='copy to clipboard'
                               >
@@ -389,13 +410,20 @@ class ContactRead extends Component {
         {this.props.isLoading && !this.props.activeContact ? (
           <Spinner />
         ) : (
-          <DefaultPageLayout label='CLIENT'>
-            <Tabs
-              tabheaders={['profile', 'history']}
-              onClick={this.tabClickHandler}
-            />
-            <Card>{data}</Card>
-          </DefaultPageLayout>
+          <React.Fragment>
+            <Modal show={this.state.showClipboardModal}>
+              <FlexRow justifyContent='center'>
+                <p>Copied to clipboard</p>
+              </FlexRow>
+            </Modal>
+            <DefaultPageLayout label='CLIENT'>
+              <Tabs
+                tabheaders={['profile', 'history']}
+                onClick={this.tabClickHandler}
+              />
+              <Card>{data}</Card>
+            </DefaultPageLayout>
+          </React.Fragment>
         )}
       </div>
     );

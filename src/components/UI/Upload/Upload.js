@@ -1657,6 +1657,10 @@ class Upload extends PureComponent {
                     Clipboard.copyStringToClipboard(
                       `gs://${item.location.bucket}/${item.location.path}`
                     );
+                    this.setState({ showClipboardModal: true });
+                    setTimeout(() => {
+                      this.setState({ showClipboardModal: false });
+                    }, 1000);
                   }}
                   title='copy to clipboard'
                 >

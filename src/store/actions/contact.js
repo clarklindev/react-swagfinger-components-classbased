@@ -7,7 +7,7 @@ const source = axios.CancelToken.source();
 export const contactCreate = (contact) => {
   return {
     type: actionTypes.CONTACT_CREATE,
-    contactData: contact
+    contactData: contact,
   };
 };
 
@@ -21,7 +21,7 @@ export const processContactCreate = (token, contact, callback) => {
         dispatch(
           contactCreate({
             id: response.data.name,
-            ...contact
+            ...contact,
           })
         );
         callback();
@@ -51,24 +51,27 @@ export const processContactDelete = (token, id) => {
 export const contactUpdate = (contact, id) => {
   return {
     type: actionTypes.CONTACT_UPDATE,
-    contactData: { ...contact }
+    contactData: { ...contact, id },
   };
 };
 //async
 export const processContactUpdate = (token, contact, id, callback) => {
   console.log('UPDATTTTTTING: ', contact);
-  return (dispatch) => {
-    axiosInstance
-      .put(`/contacts/${id}.json?auth=` + token, contact)
-      .then((response) => {
-        console.log('UPDATTTTTTING THEN...: ', contact);
-        console.log(response);
-        dispatch(contactUpdate(contact, id));
-        callback();
-      })
-      .catch((error) => {
-        console.log('ERROR:', error);
-      });
+  return async (dispatch) => {
+    let response = await axiosInstance.put(
+      `/contacts/${id}.json?auth=` + token,
+      contact
+    );
+    console.log('UPDATTTTTTING THEN...: ', contact, '| id: ', id);
+    console.log('response: ', response);
+    await dispatch(contactUpdate(contact, id));
+    console.log('after dispatch...');
+    try {
+      console.log('callback...');
+      callback();
+    } catch (error) {
+      console.log('ERROR:', error);
+    }
   };
 };
 
@@ -76,21 +79,21 @@ export const processContactUpdate = (token, contact, id, callback) => {
 
 export const fetchContactsStart = () => {
   return {
-    type: actionTypes.FETCH_CONTACTS_START
+    type: actionTypes.FETCH_CONTACTS_START,
   };
 };
 
 export const fetchContactsSuccess = (contacts) => {
   return {
     type: actionTypes.FETCH_CONTACTS_SUCCESS,
-    contacts: contacts
+    contacts: contacts,
   };
 };
 
 export const fetchContactsFail = (error) => {
   return {
     type: actionTypes.FETCH_CONTACTS_FAIL,
-    error: error
+    error: error,
   };
 };
 
@@ -98,7 +101,7 @@ export const fetchContactsCancel = () => {
   source.cancel('Operation cancelled by the user.');
   console.log('REQUEST CANCELLED!!!');
   return {
-    type: actionTypes.FETCH_CONTACTS_CANCEL
+    type: actionTypes.FETCH_CONTACTS_CANCEL,
   };
 };
 
@@ -132,21 +135,21 @@ export const processFetchContacts = () => {
 
 export const fetchSingleContactStart = () => {
   return {
-    type: actionTypes.FETCH_SINGLECONTACT_START
+    type: actionTypes.FETCH_SINGLECONTACT_START,
   };
 };
 
 export const fetchSingleContactSuccess = (contact) => {
   return {
     type: actionTypes.FETCH_SINGLECONTACT_SUCCESS,
-    contactData: contact
+    contactData: contact,
   };
 };
 
 export const fetchSingleContactFail = (error) => {
   return {
     type: actionTypes.FETCH_SINGLECONTACT_FAIL,
-    error: error
+    error: error,
   };
 };
 

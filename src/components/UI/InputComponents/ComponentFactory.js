@@ -14,6 +14,7 @@ import Textarea from './Textarea';
 import Input from './Input';
 import Datepicker from './Datepicker';
 import Toggle from './Toggle';
+import Carousel from '../Carousel/Carousel';
 import Upload from '../Upload/Upload';
 import UploadDrop from '../Upload/UploadDrop';
 import Counter from './Counter';
@@ -44,59 +45,48 @@ class ComponentFactory extends Component {
       case 'input':
         this.inputElement = <Input {...this.props.data} />;
         break;
-
       case 'inputwithicon':
         this.inputElement = <InputWithIcon {...this.props.data} />;
         break;
-
       case 'textarea':
         this.inputElement = <Textarea {...this.props.data} />;
         break;
-
       case 'datepicker':
         this.inputElement = <Datepicker {...this.props.data} />;
         break;
-
       case 'radio':
         this.inputElement = <RadioCollection {...this.props.data} />;
         break;
-
       case 'select':
         this.inputElement = <Select {...this.props.data} />;
         break;
-
       case 'selectwithinput':
         this.inputElement = <MultiSelectWithInput {...this.props.data} />;
         break;
-
       case 'inputwithinput':
         this.inputElement = <InputWithInput {...this.props.data} />;
         break;
-
       case 'multiinput':
         this.inputElement = <MultiInput {...this.props.data} />;
         break;
-
       case 'checkbox':
         this.inputElement = <CheckboxCollection {...this.props.data} />;
         break;
-
       case 'counter':
         this.inputElement = <Counter {...this.props.data} />;
         break;
-
       case 'rangeslider':
         this.inputElement = <RangeSlider {...this.props.data} />;
         break;
-
       case 'multirangeslider':
         this.inputElement = <MultiRangeSlider {...this.props.data} />;
         break;
-
       case 'toggle':
         this.inputElement = <Toggle {...this.props.data} />;
         break;
-
+      case 'carousel':
+        this.inputElement = <Carousel {...this.props.data} />;
+        break;
       case 'upload':
         this.inputElement = <Upload {...this.props.data} />;
         break;

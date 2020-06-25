@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
 import ListItem from '../../components/UI/InputComponents/ListItem';
@@ -17,7 +17,7 @@ import Spinner from '../../components/UI/Loaders/Spinner';
 import Button from '../../components/UI/Button/Button';
 import Card from '../../components/UI/Card/Card';
 
-class PhonebookAdmin extends Component {
+class PhonebookAdmin extends PureComponent {
   constructor(props) {
     super(props);
     this.className = Utils.getClassNameString([
@@ -30,6 +30,18 @@ class PhonebookAdmin extends Component {
   state = {
     filterText: '',
   };
+  componentDidMount() {
+    console.log(
+      '\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n',
+      'PHONEBOOKADMIN MOUNTED!!'
+    );
+  }
+  componentDidUpdate() {
+    console.log(
+      '\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n',
+      'PHONEBOOKADMIN Updated!!'
+    );
+  }
 
   searchClearHandler = () => {
     this.setState({ filterText: '' });
@@ -54,6 +66,7 @@ class PhonebookAdmin extends Component {
   };
 
   render() {
+    console.log('PhonebookAdmin RENDER!!!!!!!!');
     let cleanedUpSearchText = this.state.filterText
       .replace(/\\/gi, '') //replace \ with empty
       .replace(/\./gi, '\\.'); //replace . with \.
