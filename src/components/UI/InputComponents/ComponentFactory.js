@@ -107,10 +107,8 @@ class ComponentFactory extends Component {
         break;
     }
 
-    this.label = this.props.data.elementconfig ? (
-      <label className={classes.Label}>
-        {this.props.data.elementconfig.label}
-      </label>
+    this.label = this.props.data ? (
+      <label className={classes.Label}>{this.props.data.label}</label>
     ) : null;
 
     return (
