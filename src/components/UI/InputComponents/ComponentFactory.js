@@ -14,7 +14,7 @@ import Textarea from './Textarea';
 import Input from './Input';
 import Datepicker from './Datepicker';
 import Toggle from './Toggle';
-import Carousel from '../Carousel/Carousel';
+import GalleryManager from './GalleryManager';
 import Upload from '../Upload/Upload';
 import UploadDrop from '../Upload/UploadDrop';
 import Counter from './Counter';
@@ -40,9 +40,9 @@ class ComponentFactory extends Component {
 
   render() {
     //add Invalid class if...
-
     switch (this.props.data.component) {
       case 'input':
+        console.log('props.data:', this.props.data);
         this.inputElement = <Input {...this.props.data} />;
         break;
       case 'inputwithicon':
@@ -84,8 +84,8 @@ class ComponentFactory extends Component {
       case 'toggle':
         this.inputElement = <Toggle {...this.props.data} />;
         break;
-      case 'carousel':
-        this.inputElement = <Carousel {...this.props.data} />;
+      case 'gallerymanager':
+        this.inputElement = <GalleryManager {...this.props.data} />;
         break;
       case 'upload':
         this.inputElement = <Upload {...this.props.data} />;
@@ -107,8 +107,10 @@ class ComponentFactory extends Component {
         break;
     }
 
-    this.label = this.props.data.label ? (
-      <label className={classes.Label}>{this.props.data.label}</label>
+    this.label = this.props.data.elementconfig ? (
+      <label className={classes.Label}>
+        {this.props.data.elementconfig.label}
+      </label>
     ) : null;
 
     return (
