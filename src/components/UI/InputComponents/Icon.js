@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import classes from './Icon.module.scss';
+import React, { Component } from "react";
+import classes from "./Icon.module.scss";
 // font awesome
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlus,
   faMinus,
@@ -26,7 +26,8 @@ import {
   faDownload,
   faLink,
   faExternalLinkAlt,
-} from '@fortawesome/free-solid-svg-icons';
+  faGripVertical,
+} from "@fortawesome/free-solid-svg-icons";
 import {
   faEdit,
   faTrashAlt as farFaTrashAlt,
@@ -35,9 +36,9 @@ import {
   faFile,
   faCopy, //copy
   faClipboard, //clipboard
-} from '@fortawesome/free-regular-svg-icons';
+} from "@fortawesome/free-regular-svg-icons";
 
-import Utils from '../../../Utils';
+import Utils from "../../../Utils";
 //add to fontawesome lib so we can reuse icons
 library.add(
   faChevronLeft,
@@ -68,7 +69,8 @@ library.add(
   faCopy, //copy
   faLink, // link/url
   faClipboard, //clipboard
-  faExternalLinkAlt //external link
+  faExternalLinkAlt, //external link
+  faGripVertical //draggable
 );
 
 class Icon extends Component {
@@ -83,10 +85,10 @@ class Icon extends Component {
 
     return (
       <div
-        className={[classList].join(' ')}
+        className={[classList].join(" ")}
         style={{
-          width: this.props.width ? this.props.width : 'auto',
-          height: this.props.height ? this.props.height : 'auto',
+          width: this.props.width ? this.props.width : "auto",
+          height: this.props.height ? this.props.height : "auto",
         }}
       >
         <FontAwesomeIcon

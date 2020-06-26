@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import classes from "./FlexRow.module.scss";
+import classes from "./FlexColumn.module.scss";
 import * as alignClasses from "../../shared/alignFlex";
 
-class FlexRow extends Component {
+class FlexColumn extends Component {
   render() {
     const spacingClasses = [];
     if (this.props.spacing === "left") {
@@ -28,7 +28,7 @@ class FlexRow extends Component {
     return (
       <div
         className={[
-          classes.FlexRow,
+          classes.FlexColumn,
           justifyContent,
           alignItems,
           alignContent,
@@ -42,4 +42,4 @@ class FlexRow extends Component {
   }
 }
 
-export default FlexRow;
+export default FlexColumn;

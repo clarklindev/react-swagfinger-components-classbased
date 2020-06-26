@@ -1,0 +1,15 @@
+.FlexColumn {
+  display: flex;
+  flex-direction: column;
+
+  &.Spacingtop {
+    > * {
+      padding-top: var(--paddingdefault);
+    }
+  }
+  &.Spacingbottom {
+    > * {
+      padding-bottom: var(--paddingdefault);
+    }
+  }
+}
