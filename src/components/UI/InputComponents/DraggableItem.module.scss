@@ -3,7 +3,7 @@
   flex-grow: 1;
   flex-basis: 1;
 
-  button:first-child {
+  & > button:first-child {
     background-color: var(--colorbackground);
     color: var(--colordefault);
     box-sizing: border-box;
@@ -11,5 +11,6 @@
     border-right: 1px solid var(--colorborder);
     border-top-left-radius: var(--borderradius);
     border-bottom-left-radius: var(--borderradius);
+    cursor: s-resize;
   }
 }

@@ -255,6 +255,39 @@ class ContactCreateOrUpdate extends Component {
       };
     });
   };
+  removeIdFromArray = (event, key, id) => {
+    event.preventDefault();
+    let updatedInputs = this.state.form[key].value.filter((item) => {
+      if (id === item.id) {
+        item.key = '';
+        item.value = '';
+      }
+      return item.id !== id;
+    });
+    console.log('updatedInputs: ', updatedInputs);
+
+    this.setState((prevState) => {
+      console.log('...prevState.form[key]: ', { ...prevState.form[key] });
+      console.log('...updatedInputs', [...updatedInputs]);
+      return {
+        form: {
+          ...prevState.form,
+          [key]: {
+            ...prevState.form[key],
+            value: [...updatedInputs],
+          },
+        },
+      };
+    });
+
+    this.setState((prevState) => {
+      let isValid = this.checkInputValidProperty(prevState.form);
+
+      return {
+        formIsValid: isValid,
+      };
+    });
+  };
 
   //remove checks the index of the input and removes it from the inputs array by index
   removeInputHandler = (event, key, index) => {
@@ -365,6 +398,25 @@ class ContactCreateOrUpdate extends Component {
     this.setState({ form: updatedForm, formIsValid: formValidCheck });
   };
 
+  // replace the array
+  replaceArrayHandler = (newval, key) => {
+    const updatedForm = {
+      ...this.state.form,
+    };
+
+    const updatedFormElement = {
+      ...updatedForm[key],
+    };
+
+    updatedFormElement.value = newval;
+
+    updatedForm[key] = updatedFormElement;
+
+    const formValidCheck = this.checkInputValidProperty(updatedForm);
+    // console.log('FORM VALIDITY: ', formValidCheck);
+    this.setState({ form: updatedForm, formIsValid: formValidCheck });
+  };
+
   //mutate .pristine prop of inputs to false
   //used to test inputs validity when mouse is over submit button
   onSubmitTest = (event) => {
@@ -463,7 +515,9 @@ class ContactCreateOrUpdate extends Component {
                     value={{
                       addinput: this.addInputHandler,
                       removeinput: this.removeInputHandler,
+                      removeidfromarray: this.removeIdFromArray,
                       changed: this.inputChangedHandler,
+                      replacearray: this.replaceArrayHandler,
                     }}
                   >
                     {formInputs}

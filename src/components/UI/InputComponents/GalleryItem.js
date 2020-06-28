@@ -1,15 +1,31 @@
 import React, { Component } from 'react';
 import classes from './GalleryItem.module.scss';
-import SelectToAccordion from './SelectToAccordion';
+import Button from '../Button/Button';
+import Icon from './Icon';
+import DraggableItem from './DraggableItem';
+import FlexRow from '../../../hoc/Layout/FlexRow';
 
 class GalleryItem extends Component {
   constructor(props) {
     super(props);
   }
+
   render() {
     return (
       <div className={classes.GalleryItem}>
-        
+        <DraggableItem>
+          <FlexRow justifyContent='space-between' flexGrow>
+            <div className={classes.DragContent}>{this.props.children}</div>
+            <Button
+              title='Delete'
+              type='WithPadding'
+              className={classes.RemoveButton}
+              onClick={(event) => this.props.onClick(event)}
+            >
+              <Icon iconstyle='far' code='trash-alt' size='sm' />
+            </Button>
+          </FlexRow>
+        </DraggableItem>
       </div>
     );
   }

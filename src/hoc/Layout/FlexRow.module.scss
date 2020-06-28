@@ -1,6 +1,13 @@
 .FlexRow {
   display: flex;
   flex-direction: row;
+  flex-basis: 1;
+  &.Flexgrow {
+    flex-grow: 1;
+  }
+  &.Flexshrink {
+    flex-shrink: 1;
+  }
 
   &.Spacingleft {
     > * {

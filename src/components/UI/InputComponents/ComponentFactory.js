@@ -42,7 +42,6 @@ class ComponentFactory extends Component {
     //add Invalid class if...
     switch (this.props.data.component) {
       case 'input':
-        console.log('props.data:', this.props.data);
         this.inputElement = <Input {...this.props.data} />;
         break;
       case 'inputwithicon':

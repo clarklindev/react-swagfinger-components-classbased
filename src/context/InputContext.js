@@ -4,8 +4,10 @@ const inputContext = React.createContext({
   addinput: () => {},
   removeinput: () => {},
   changed: () => {},
+  replacearray: () => {},
+  removeidarray: () => {},
   togglepasswordvisibility: () => {},
-  submitTest: false
+  submitTest: false,
 });
 
 export default inputContext;

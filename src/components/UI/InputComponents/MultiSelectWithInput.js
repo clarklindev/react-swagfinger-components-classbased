@@ -15,14 +15,14 @@ class MultiSelectWithInput extends PureComponent {
 
     this.className = Utils.getClassNameString([
       classes.MultiSelectWithInput,
-      MultiSelectWithInput.name
+      MultiSelectWithInput.name,
     ]);
 
     this.inputClasses = [classes.InputElement];
   }
 
   state = {
-    isOpenList: {} //keeping track of arrow direction on select input,
+    isOpenList: {}, //keeping track of arrow direction on select input,
     //we need this because we cannot set a class to render() else all instances arrows change at same time
   };
 
@@ -42,7 +42,7 @@ class MultiSelectWithInput extends PureComponent {
       // console.log('upated: ', updatedState);
       isOpenList[index] = updatedState;
       return {
-        isOpenList: isOpenList
+        isOpenList: isOpenList,
       };
     });
   };
@@ -55,7 +55,7 @@ class MultiSelectWithInput extends PureComponent {
       //console.log('upated: ', updatedState);
       isOpenList[index] = updatedState;
       return {
-        isOpenList: isOpenList
+        isOpenList: isOpenList,
       };
     });
   };
@@ -68,7 +68,7 @@ class MultiSelectWithInput extends PureComponent {
     this.context.changed(
       {
         key: val,
-        value: ''
+        value: '',
       },
       this.props.name,
       index
@@ -125,8 +125,9 @@ class MultiSelectWithInput extends PureComponent {
                   <div
                     className={[
                       classes.SelectAndInputWrapper,
-                      ...errorClasses
-                    ].join(' ')}>
+                      ...errorClasses,
+                    ].join(' ')}
+                  >
                     <select
                       name={this.props.name + index}
                       value={tempKey}
@@ -135,7 +136,8 @@ class MultiSelectWithInput extends PureComponent {
                       onBlur={(event) => {
                         this.onBlurHandler(index, event);
                       }}
-                      onChange={(event) => this.onChangeHandler(index, event)}>
+                      onChange={(event) => this.onChangeHandler(index, event)}
+                    >
                       {this.props.elementconfig.options.map((option, index) => (
                         <option key={option.value} value={option.value}>
                           {option.displaytext}
@@ -183,10 +185,11 @@ class MultiSelectWithInput extends PureComponent {
                       );
 
                       return {
-                        isOpenList: open
+                        isOpenList: open,
                       };
                     });
-                  }}>
+                  }}
+                >
                   <Icon iconstyle='far' code='trash-alt' size='sm' />
                 </Button>
               </div>
@@ -201,9 +204,10 @@ class MultiSelectWithInput extends PureComponent {
           onClick={(event) => {
             this.context.addinput(event, this.props.name, {
               key: '',
-              value: ''
+              value: '',
             });
-          }}>
+          }}
+        >
           <Icon iconstyle='fas' code='plus' size='sm' />
           <p>Add</p>
         </Button>
