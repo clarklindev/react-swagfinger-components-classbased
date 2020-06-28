@@ -11,19 +11,22 @@ class GalleryItem extends Component {
   }
 
   render() {
+    const removeButton = (
+      <Button
+        title='Delete'
+        type='WithPadding'
+        className={classes.RemoveButton}
+        onClick={(event) => this.props.onClick(event)}
+      >
+        <Icon iconstyle='far' code='trash-alt' size='sm' />
+      </Button>
+    );
     return (
       <div className={classes.GalleryItem}>
         <DraggableItem>
           <FlexRow justifyContent='space-between' flexGrow>
             <div className={classes.DragContent}>{this.props.children}</div>
-            <Button
-              title='Delete'
-              type='WithPadding'
-              className={classes.RemoveButton}
-              onClick={(event) => this.props.onClick(event)}
-            >
-              <Icon iconstyle='far' code='trash-alt' size='sm' />
-            </Button>
+            {removeButton}
           </FlexRow>
         </DraggableItem>
       </div>

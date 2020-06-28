@@ -31,6 +31,10 @@ class GalleryManager extends PureComponent {
     list: [],
   };
 
+  removeClickHandler = (event) => {
+    this.context.removeidfromarray(event, this.props.name, this.props.value.id);
+  };
+
   render() {
     console.log('render...', this.state.list);
     const addButton = (
@@ -63,13 +67,7 @@ class GalleryManager extends PureComponent {
                       name={this.props.name}
                       value={val.id}
                       index={index}
-                      onClick={(event) => {
-                        this.context.removeidfromarray(
-                          event,
-                          this.props.name,
-                          this.props.value.id
-                        );
-                      }}
+                      onClick={this.removeClickHandler}
                     >
                       {/* insert code here */}
                     </GalleryItem>
