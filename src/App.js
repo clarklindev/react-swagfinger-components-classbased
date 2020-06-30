@@ -11,6 +11,7 @@ import Auth from './containers/Auth/Auth';
 import PhonebookAdmin from './containers/Phonebook/PhonebookAdmin';
 import ContactRead from './containers/Contact/ContactRead';
 import ContactCreateOrUpdate from './containers/Contact/ContactCreateOrUpdate';
+import Appointment from './containers/Appointment/Appointment.js';
 import Logout from './containers/Auth/Logout/Logout';
 import Faq from './containers/Faq/Faq';
 
@@ -49,6 +50,7 @@ class App extends Component {
           <Route path='/faq' component={Faq} />
           <Route path='/phonebook' component={Phonebook} />
           <Route path='/contactread' component={ContactRead} />
+          <Route path='/appointment' component={Appointment} />
           <Route path='/phonebookadmin' component={PhonebookAdmin} />
           <Route path='/contactupdate' component={ContactCreateOrUpdate} />
           <Route path='/contactcreate' component={ContactCreateOrUpdate} />

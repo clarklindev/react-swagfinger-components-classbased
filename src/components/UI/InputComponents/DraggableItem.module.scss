@@ -1,7 +1,16 @@
 .DraggableItem {
+  border: 1px solid var(--colorborder);
+  border-radius: var(--borderradius);
   display: flex;
-  flex-grow: 1;
+  flex-direction: row;
   flex-basis: 1;
+  flex-grow: 1;
+  flex-shrink: 1;
+  box-sizing: content-box;
+  &.Invalid {
+    border: 1px solid red;
+    background-color: white;
+  }
 
   & .Icon {
     display: flex;

@@ -1,27 +1,21 @@
 .GalleryItem {
   display: flex;
-  border: 1px solid var(--colorborder);
-  border-radius: var(--borderradius);
-  display: flex;
   flex-direction: row;
-  flex-basis: 1;
   flex-grow: 1;
   flex-shrink: 1;
-  box-sizing: content-box;
-  &.Invalid {
-    border: 1px solid red;
-    background-color: white;
-  }
+  flex-basis: 1;
 
   .RemoveButton {
     box-sizing: border-box;
     flex-basis: 1;
     color: var(--colordefault);
-    border: 0;
-    border-top-right-radius: var(--borderradius);
-    border-bottom-right-radius: var(--borderradius);
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    border-left: 1px solid var(--colorborder);
+    border: 1px solid var(--colorborder);
+    border-radius: var(--borderradius);
+    // border-top-right-radius: var(--borderradius);
+    // border-bottom-right-radius: var(--borderradius);
+    // border-top-left-radius: 0;
+    // border-bottom-left-radius: 0;
+    // border-left: 1px solid var(--colorborder);
+    margin-left: calc(var(--margindefault) * 0.5);
   }
 }

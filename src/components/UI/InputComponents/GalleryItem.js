@@ -69,7 +69,7 @@ class GalleryItem extends Component {
     const removeButton = (
       <Button
         title='Delete'
-        type='WithPadding'
+        type='WithBorder'
         className={classes.RemoveButton}
         onClick={(event) => this.props.onRemove(event)}
       >
@@ -77,14 +77,17 @@ class GalleryItem extends Component {
       </Button>
     );
     return (
-      <div className={classes.GalleryItem}>
-        <DraggableItem>
-          <FlexRow justifyContent='space-between' flexGrow>
-            <div className={classes.DragContent}>{this.props.children}</div>
-            {removeButton}
-          </FlexRow>
-        </DraggableItem>
-      </div>
+      <React.Fragment>
+        <div className={classes.GalleryItem}>
+          <DraggableItem>
+            <FlexRow justifyContent='space-between' flexGrow>
+              <div className={classes.DragContent}>{this.props.children}</div>
+            </FlexRow>
+          </DraggableItem>
+
+          {removeButton}
+        </div>
+      </React.Fragment>
     );
   }
 }
