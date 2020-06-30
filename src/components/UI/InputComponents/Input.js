@@ -16,7 +16,7 @@ class Input extends PureComponent {
       Input.name,
       classes[props.type],
       'Input',
-      props.className
+      props.className,
     ]);
   }
 
@@ -54,11 +54,12 @@ class Input extends PureComponent {
         <div className={classes.FlexGroupColumn}>
           <input
             className={[this.className, tempClasses].join(' ')}
-            placeholder={this.props.placeholder}
+            placeholder={this.props.placeholder} //needed for multiinput ...props spread
             readOnly={this.props.readOnly}
             {...this.props.elementconfig}
             value={this.props.value.data}
             onChange={this.inputChangeHandler}
+            title={this.props.value.data}
           />
           {error}
         </div>

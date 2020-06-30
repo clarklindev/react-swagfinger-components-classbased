@@ -15,7 +15,7 @@ class MultiInput extends Component {
 
     this.className = Utils.getClassNameString([
       classes.MultiInput,
-      MultiInput.name
+      MultiInput.name,
     ]);
 
     this.inputClasses = [classes.InputElement];
@@ -36,7 +36,6 @@ class MultiInput extends Component {
             <div className={classes.FlexGroupRow} key={this.props.name + index}>
               <Input
                 className={classes.tempClasses}
-                placeholder={this.props.placeholder}
                 {...this.props.elementconfig}
                 validation={this.props.validation}
                 value={val}
@@ -54,9 +53,11 @@ class MultiInput extends Component {
                   title='Delete'
                   type='WithBorder'
                   className={classes.RemoveButton}
-                  onClick={(event) =>
-                    this.context.removeinput(event, this.props.name, index)
-                  }>
+                  onClick={(event) => {
+                    event.preventDefault();
+                    this.context.removeinput(this.props.name, index);
+                  }}
+                >
                   <Icon iconstyle='far' code='trash-alt' size='sm' />
                 </Button>
               ) : null}
@@ -66,7 +67,8 @@ class MultiInput extends Component {
         <Button
           title='Add'
           type='WithBorder'
-          onClick={(event) => this.context.addinput(event, this.props.name)}>
+          onClick={(event) => this.context.addinput(event, this.props.name)}
+        >
           <Icon iconstyle='fas' code='plus' size='sm' />
           <p>Add</p>
         </Button>
@@ -82,7 +84,7 @@ MultiInput.propTypes = {
   placeholder: PropTypes.string,
   elementconfig: PropTypes.object,
   name: PropTypes.string,
-  changed: PropTypes.func
+  changed: PropTypes.func,
 };
 
 export default MultiInput;

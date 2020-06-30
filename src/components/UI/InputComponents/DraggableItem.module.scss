@@ -3,7 +3,10 @@
   flex-grow: 1;
   flex-basis: 1;
 
-  & > button:first-child {
+  & .Icon {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     background-color: var(--colorbackground);
     color: var(--colordefault);
     box-sizing: border-box;

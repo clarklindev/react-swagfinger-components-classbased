@@ -175,7 +175,8 @@ class MultiSelectWithInput extends PureComponent {
                   type='WithBorder'
                   className={classes.RemoveButton}
                   onClick={(event) => {
-                    this.context.removeinput(event, this.props.name, index);
+                    event.preventDefault();
+                    this.context.removeinput(this.props.name, index);
 
                     this.setState((prevState) => {
                       let open = Object.keys(prevState.isOpenList).filter(

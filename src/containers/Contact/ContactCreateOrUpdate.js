@@ -6,6 +6,7 @@ import Utils from '../../Utils';
 import axios from '../../axios-contacts';
 import Modal from '../../components/UI/Modal/Modal';
 import * as actions from '../../store/actions/contact';
+import * as arrayHelper from '../../shared/arrayHelper';
 
 import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
 import InputContext from '../../context/InputContext';
@@ -49,6 +50,7 @@ class ContactCreateOrUpdate extends Component {
       let formatted = {};
 
       const dataObject = {
+        id: undefined,
         data: '',
         valid: false,
         errors: null,
@@ -117,6 +119,7 @@ class ContactCreateOrUpdate extends Component {
                   this.state.form[item].validation
                 );
                 return {
+                  id: undefined,
                   data: each,
                   valid: validation.isValid,
                   errors: validation.errors,
@@ -130,6 +133,7 @@ class ContactCreateOrUpdate extends Component {
                 this.state.form[item].validation
               );
               val = {
+                id: undefined,
                 data: response.data[item], //value at the key
                 valid: validation.isValid,
                 errors: validation.errors,
@@ -237,6 +241,7 @@ class ContactCreateOrUpdate extends Component {
           [key]: {
             ...prevState.form[key],
             value: prevState.form[key].value.concat({
+              id: undefined,
               data: data,
               valid: false,
               touched: false,
@@ -255,8 +260,7 @@ class ContactCreateOrUpdate extends Component {
       };
     });
   };
-  removeIdFromArray = (event, key, id) => {
-    event.preventDefault();
+  removeIdFromArrayHandler = (key, id) => {
     let updatedInputs = this.state.form[key].value.filter((item) => {
       if (id === item.id) {
         item.key = '';
@@ -290,9 +294,7 @@ class ContactCreateOrUpdate extends Component {
   };
 
   //remove checks the index of the input and removes it from the inputs array by index
-  removeInputHandler = (event, key, index) => {
-    event.preventDefault();
-
+  removeInputHandler = (key, index) => {
     let updatedInputs = this.state.form[key].value.filter((item, i) => {
       if (index === i) {
         console.log('WHAT TO REMOVE:', item);
@@ -367,6 +369,7 @@ class ContactCreateOrUpdate extends Component {
     //console.log('key: ', key);
     //console.log('validation: ', validation);
 
+    //each stored item gets assigned this obj
     let obj = {
       data: newval,
       touched: true,
@@ -417,6 +420,26 @@ class ContactCreateOrUpdate extends Component {
     this.setState({ form: updatedForm, formIsValid: formValidCheck });
   };
 
+  //only called by arrays
+  moveItemHandler = (key, fromIndex, toIndex) => {
+    const updatedForm = {
+      ...this.state.form,
+    };
+
+    const updatedFormElement = {
+      ...updatedForm[key],
+    };
+
+    //updatedFormElement.value stores an array
+    console.log('UpdateFormElement: ', updatedFormElement);
+    let arr = updatedFormElement.value;
+    let updatedArray = arrayHelper.moveItemInArray(arr, fromIndex, toIndex);
+    console.log('updated array: ', updatedArray);
+
+    updatedFormElement.value = updatedArray;
+    updatedForm[key] = updatedFormElement;
+    this.setState({ form: updatedForm });
+  };
   //mutate .pristine prop of inputs to false
   //used to test inputs validity when mouse is over submit button
   onSubmitTest = (event) => {
@@ -515,9 +538,10 @@ class ContactCreateOrUpdate extends Component {
                     value={{
                       addinput: this.addInputHandler,
                       removeinput: this.removeInputHandler,
-                      removeidfromarray: this.removeIdFromArray,
+                      removeidfromarray: this.removeIdFromArrayHandler,
                       changed: this.inputChangedHandler,
                       replacearray: this.replaceArrayHandler,
+                      moveiteminarray: this.moveItemHandler,
                     }}
                   >
                     {formInputs}

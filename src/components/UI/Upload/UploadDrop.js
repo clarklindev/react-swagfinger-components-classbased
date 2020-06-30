@@ -152,14 +152,14 @@ class UploadDrop extends Component {
     );
   };
 
-  removeFromList = (event, index) => {
+  removeFromList = (index) => {
     let updatedFiles = [
       ...this.state.selectedFiles.filter((item, i) => {
         return index !== i ? item : null;
       }),
     ];
     this.setState({ selectedFiles: updatedFiles });
-    this.context.removeinput(event, this.props.name, index);
+    this.context.removeinput(this.props.name, index);
   };
 
   uploadHandler = (event) => {
@@ -246,10 +246,10 @@ class UploadDrop extends Component {
                   <Button
                     onClick={(event) => {
                       event.preventDefault();
-                      this.removeFromList(event, index);
+                      this.removeFromList(index);
                     }}
                   >
-                    <Icon iconstyle="far" code="trash-alt" size="sm" />
+                    <Icon iconstyle='far' code='trash-alt' size='sm' />
                   </Button>
                 </div>
               </React.Fragment>
@@ -267,22 +267,22 @@ class UploadDrop extends Component {
         >
           <input
             ref={this.uploadDropRef}
-            type="file"
-            accept="image/*"
+            type='file'
+            accept='image/*'
             multiple
             onChange={this.fileChangedHandler}
           />
           <div className={classes.UploadLabel}>
             <Icon
               className={classes.Icon}
-              iconstyle="fas"
-              code="arrow-circle-up"
-              size="lg"
+              iconstyle='fas'
+              code='arrow-circle-up'
+              size='lg'
             />
             <p>Drag and drop files here</p>
           </div>
           <Button
-            type="WithBorder"
+            type='WithBorder'
             onClick={(event) => {
               event.preventDefault();
               this.uploadDropRef.current.click();
