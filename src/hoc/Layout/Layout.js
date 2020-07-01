@@ -6,7 +6,7 @@ import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
 import SideMenu from '../../components/Navigation/Sidemenu/SideMenu';
 class Layout extends Component {
   state = {
-    showSideMenu: false
+    showSideMenu: false,
   };
   sideMenuCloseHandler = () => {
     this.setState({ showSideMenu: false });
@@ -18,15 +18,19 @@ class Layout extends Component {
   render() {
     return (
       <React.Fragment>
-        <Toolbar
-          isAuth={this.props.isAuthenticated}
-          hamburgerButtonClicked={this.sideMenuOpenHandler}
-        />
-        <SideMenu
-          isAuth={this.props.isAuthenticated}
-          open={this.state.showSideMenu}
-          closed={this.sideMenuCloseHandler}
-        />
+        {this.props.hideToolbar ? null : (
+          <React.Fragment>
+            <Toolbar
+              isAuth={this.props.isAuthenticated}
+              hamburgerButtonClicked={this.sideMenuOpenHandler}
+            />
+            <SideMenu
+              isAuth={this.props.isAuthenticated}
+              open={this.state.showSideMenu}
+              closed={this.sideMenuCloseHandler}
+            />
+          </React.Fragment>
+        )}
         <main className={classes.Layout}>{this.props.children}</main>
       </React.Fragment>
     );
@@ -35,7 +39,8 @@ class Layout extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    isAuthenticated: state.auth.token !== null
+    isAuthenticated: state.auth.token !== null,
+    hideToolbar: state.contact.hideToolbar,
   };
 };
 

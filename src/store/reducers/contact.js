@@ -5,12 +5,13 @@ import { updateObject } from '../../shared/utility';
 const initialState = {
   phoneBook: [],
   activeContact: null,
-  loading: false
+  loading: false,
+  hideToolbar: false,
 };
 const addContact = (state, action) => {
   console.log('CONTACT ADDED');
   return updateObject(state, {
-    phoneBook: state.phoneBook.concat(action.contactData)
+    phoneBook: state.phoneBook.concat(action.contactData),
   });
 };
 
@@ -66,7 +67,7 @@ const fetchSingleContactStart = (state, action) => {
 const fetchSingleContactSuccess = (state, action) => {
   return updateObject(state, {
     loading: false,
-    activeContact: action.contactData
+    activeContact: action.contactData,
   });
 };
 
@@ -74,8 +75,12 @@ const fetchSingleContactFail = (state, action) => {
   return updateObject(state, {
     state,
     loading: false,
-    activeContact: null
+    activeContact: null,
   });
+};
+
+const shouldHideToolbar = (state, action) => {
+  return updateObject(state, { hideToolbar: action.show });
 };
 
 const reducer = (state = initialState, action) => {
@@ -112,6 +117,9 @@ const reducer = (state = initialState, action) => {
 
     case actionTypes.FETCH_SINGLECONTACT_FAIL:
       return fetchSingleContactFail(state, action);
+
+    case actionTypes.HAS_TOOLBAR:
+      return shouldHideToolbar(state, action);
     default:
       return state;
   }

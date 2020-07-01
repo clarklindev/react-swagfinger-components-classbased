@@ -69,6 +69,9 @@ class ContactRead extends Component {
   };
 
   async componentDidMount() {
+    //hide the toolbar
+    this.props.hideToolbar(true);
+
     //get from storage folders
     // Get a reference to the storage service, which is used to create references in your storage bucket
     this.storage = firebase.storage();
@@ -442,6 +445,10 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onFetchContact: (id) => {
       dispatch(actions.processFetchSingleContact(id));
+    },
+
+    hideToolbar: (bool) => {
+      dispatch(actions.hasToolbar(bool));
     },
   };
 };

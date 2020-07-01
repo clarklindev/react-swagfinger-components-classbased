@@ -4,6 +4,12 @@ import axios from 'axios';
 import axiosInstance from '../../axios-contacts';
 const source = axios.CancelToken.source();
 
+//=======================================================
+//toolbar
+export const hasToolbar = (hastoolbar) => {
+  return { type: actionTypes.HAS_TOOLBAR, show: hastoolbar };
+};
+//=======================================================
 export const contactCreate = (contact) => {
   return {
     type: actionTypes.CONTACT_CREATE,

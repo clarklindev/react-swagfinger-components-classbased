@@ -34,10 +34,11 @@ class Phonebook extends Component {
 
   contactClickHandler = (id, event) => {
     //navigate programatically
-    this.props.history.push({
-      pathname: `/contactread`,
-      search: `?id=${id}`,
-    });
+    // this.props.history.push({
+    //   pathname: `/contactread`,
+    //   search: `?id=${id}`,
+    // });
+    window.open(`/contactread?id=${id}`, '_blank');
   };
 
   searchChangedHandler = (newVal, name, index = null) => {

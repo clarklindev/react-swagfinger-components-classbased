@@ -7,6 +7,7 @@ import Layout from './hoc/Layout/Layout';
 //components
 import Phonebook from './containers/Phonebook/Phonebook';
 //containers
+import Home from './containers/Home/Home';
 import Auth from './containers/Auth/Auth';
 import PhonebookAdmin from './containers/Phonebook/PhonebookAdmin';
 import ContactRead from './containers/Contact/ContactRead';
@@ -35,10 +36,9 @@ class App extends Component {
     let routes = (
       <Switch>
         <Route path='/login' component={Auth} />
-        <Route path='/phonebook' component={Phonebook} />
         <Route path='/contactread' component={ContactRead} />
         <Route path='/faq' component={Faq} />
-        <Route path='/' exact component={Phonebook} />
+        <Route path='/' exact component={Home} />
         <Redirect to='/' />
       </Switch>
     );
@@ -48,9 +48,10 @@ class App extends Component {
         <Switch>
           <Route path='/logout' component={Logout} />
           <Route path='/faq' component={Faq} />
-          <Route path='/phonebook' component={Phonebook} />
+
           <Route path='/contactread' component={ContactRead} />
           <Route path='/appointment' component={Appointment} />
+          <Route path='/phonebook' component={Phonebook} />
           <Route path='/phonebookadmin' component={PhonebookAdmin} />
           <Route path='/contactupdate' component={ContactCreateOrUpdate} />
           <Route path='/contactcreate' component={ContactCreateOrUpdate} />
@@ -85,4 +86,5 @@ const mapDispatchToProps = (dispatch) => {
     },
   };
 };
+
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

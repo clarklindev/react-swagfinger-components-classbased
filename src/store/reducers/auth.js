@@ -6,7 +6,7 @@ const initialState = {
   userId: null,
   error: null,
   loading: false,
-  authRedirectPath: '/'
+  authRedirectPath: '/',
 };
 const authStart = (state, action) => {
   return updateObject(state, { error: null, loading: true });
@@ -18,27 +18,27 @@ const authSuccess = (state, action) => {
     userId: action.userId,
     error: null,
     loading: false,
-    authRedirectPath: '/'
+    authRedirectPath: '/',
   });
 };
 
 const authFail = (state, action) => {
   return updateObject(state, {
     error: action.error,
-    loading: false
+    loading: false,
   });
 };
 
 const authLogout = (state, action) => {
   return updateObject(state, {
     token: null,
-    userId: null
+    userId: null,
   });
 };
 
 const setAuthRedirectPath = (state, action) => {
   return updateObject(state, {
-    authRedirectPath: action.path
+    authRedirectPath: action.path,
   });
 };
 

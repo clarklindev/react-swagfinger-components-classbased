@@ -4,7 +4,8 @@ export {
   processContactUpdate,
   processFetchContacts,
   processFetchSingleContact,
-  fetchContactsCancel
+  fetchContactsCancel,
+  hasToolbar,
 } from './contact';
 
 export { auth, logout, setAuthRedirectPath, authCheckState } from './auth';
