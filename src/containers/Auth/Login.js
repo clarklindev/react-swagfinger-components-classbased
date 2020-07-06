@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-import classes from './Auth.module.scss';
+import classes from './Login.module.scss';
 import axios from 'axios';
 
 import * as actions from '../../store/actions/index';
@@ -25,25 +25,25 @@ class Auth extends Component {
     form: {
       email: {
         component: 'input',
-        name: 'email',
+        field: 'email',
         label: 'Email',
-        elementconfig: {
+        componentconfig: {
           type: 'text',
-          placeholder: 'Mail Address'
+          placeholder: 'Mail Address',
         },
         value: {
           data: '',
           valid: false,
           touched: false,
           pristine: true,
-          errors: null
-        }
+          errors: null,
+        },
       },
       password: {
         component: 'inputwithicon',
-        name: 'password',
+        field: 'password',
         label: 'Password',
-        elementconfig: {
+        componentconfig: {
           type: 'password',
           placeholder: 'Password',
           iconposition: 'right',
@@ -51,7 +51,7 @@ class Auth extends Component {
           iconcode: 'eye',
           iconsize: 'sm',
           hasdivider: 'false',
-          iconclick: () => this.togglePasswordVisibility
+          iconclick: () => this.togglePasswordVisibility,
         },
 
         value: {
@@ -59,13 +59,13 @@ class Auth extends Component {
           valid: false,
           touched: false,
           pristine: true,
-          errors: null
-        }
-      }
+          errors: null,
+        },
+      },
     },
     formIsValid: false,
     isSignUp: false,
-    isPasswordVisible: false
+    isPasswordVisible: false,
   };
   //------------------------------------------------------
   //------------------------------------------------------
@@ -83,7 +83,7 @@ class Auth extends Component {
     window.removeEventListener('keydown', this.keyListener);
   }
 
-  keyListener = event => {
+  keyListener = (event) => {
     if (event.key === 'Enter' || event.keyCode === 13 || event.which === 13) {
       console.log('key: ', event.key);
       this.onSubmitHandler(event);
@@ -92,9 +92,9 @@ class Auth extends Component {
 
   togglePasswordVisibility = () => {
     console.log('togglePassword!!!!');
-    this.setState(prevState => {
-      let obj = { ...this.state.form.password.elementconfig };
-      if (prevState.form.password.elementconfig.type === 'password') {
+    this.setState((prevState) => {
+      let obj = { ...this.state.form.password.componentconfig };
+      if (prevState.form.password.componentconfig.type === 'password') {
         obj.type = 'text';
         obj.iconcode = 'eye-slash';
       } else {
@@ -106,8 +106,8 @@ class Auth extends Component {
         isPasswordVisible: !prevState.isPasswordVisible,
         form: {
           ...prevState.form,
-          password: { ...prevState.form.password, elementconfig: obj }
-        }
+          password: { ...prevState.form.password, componentconfig: obj },
+        },
       };
     });
   };
@@ -115,14 +115,14 @@ class Auth extends Component {
   //------------------------------------------------------
   //checks the .valid property of each input in array or individual input
   //returns true/false if form object is valid/invalid
-  checkInputValidProperty = form => {
+  checkInputValidProperty = (form) => {
     // console.log('IS FORM VALID CHECK');
     let formIsValid = true;
 
     //each prop in contact
     for (let inputIdentifier in form) {
       //if the prop of contact has an element type of...
-      if (form[inputIdentifier].elementconfig.valuetype === 'array') {
+      if (form[inputIdentifier].componentconfig.valuetype === 'array') {
         for (let each of form[inputIdentifier].value) {
           formIsValid = each.valid && formIsValid;
         }
@@ -140,12 +140,12 @@ class Auth extends Component {
     // console.log('inputChangedHandler: ', inputIdentifier);
     //single contact
     const updatedForm = {
-      ...this.state.form
+      ...this.state.form,
     };
 
     //single prop of form
     const updatedFormElement = {
-      ...updatedForm[inputIdentifier]
+      ...updatedForm[inputIdentifier],
     };
 
     let validation = validationCheck(newval, updatedFormElement.validation);
@@ -172,7 +172,7 @@ class Auth extends Component {
     this.setState({ form: updatedForm, formIsValid: formValidCheck });
   };
 
-  onSubmitHandler = event => {
+  onSubmitHandler = (event) => {
     event.preventDefault(); //prevents reloading of page
     this.props.onAuth(
       this.state.form.email.value.data,
@@ -181,27 +181,27 @@ class Auth extends Component {
     );
   };
 
-  switchAuthModeHandler = event => {
+  switchAuthModeHandler = (event) => {
     event.preventDefault();
     console.log('switchAuthModeHandler!');
 
     let email = { ...this.state.form.email.value };
     email.data = '';
 
-    this.setState(prevState => {
+    this.setState((prevState) => {
       return {
         isSignUp: !prevState.isSignUp,
         form: {
           ...prevState.form,
           email: {
             ...prevState.form.email,
-            value: { ...prevState.form.email.value, data: '' }
+            value: { ...prevState.form.email.value, data: '' },
           },
           password: {
             ...prevState.form.password,
-            value: { ...prevState.form.password.value, data: '' }
-          }
-        }
+            value: { ...prevState.form.password.value, data: '' },
+          },
+        },
       };
     });
   };
@@ -211,7 +211,7 @@ class Auth extends Component {
     for (let key in this.state.form) {
       formElementsArray.push({
         id: key,
-        data: this.state.form[key]
+        data: this.state.form[key],
       });
     }
 
@@ -220,16 +220,14 @@ class Auth extends Component {
         type='LayoutNarrow'
         label={
           this.props.loading ? '' : this.state.isSignUp ? 'Sign-up' : 'Login'
-        }
-      >
+        }>
         <Card className='Card'>
           <form onSubmit={this.onSubmitHandler} autoComplete='off'>
             <InputContext.Provider
               value={{
-                changed: this.inputChangedHandler
-              }}
-            >
-              {formElementsArray.map(item => (
+                changed: this.inputChangedHandler,
+              }}>
+              {formElementsArray.map((item) => (
                 <ComponentFactory key={item.id} id={item.id} data={item.data} />
               ))}
               <div className={classes.ButtonWrapper}>
@@ -240,8 +238,7 @@ class Auth extends Component {
                   type='Action'
                   onClick={() => {
                     this.submitInputRef.current.click();
-                  }}
-                >
+                  }}>
                   Submit
                 </Button>
               </div>
@@ -256,8 +253,7 @@ class Auth extends Component {
             <Button
               className={classes.SwitchButton}
               type='WithPadding'
-              onClick={this.switchAuthModeHandler}
-            >
+              onClick={this.switchAuthModeHandler}>
               <span className={classes.ButtonText}>
                 {this.state.isSignUp ? 'Login' : 'Sign-up'}
               </span>
@@ -275,26 +271,26 @@ class Auth extends Component {
     if (this.props.isAuthenticated) {
       content = <Redirect to={this.props.authRedirectPath} />;
     } else {
-      content = <div className={classes.Auth}>{formAll}</div>;
+      content = <div className={classes.Login}>{formAll}</div>;
     }
     return content;
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     loading: state.auth.loading,
     error: state.auth.error,
     isAuthenticated: state.auth.token !== null,
-    authRedirectPath: state.auth.authRedirectPath
+    authRedirectPath: state.auth.authRedirectPath,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     onAuth: (email, password, isSignup) =>
       dispatch(actions.auth(email, password, isSignup)),
-    onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath('/'))
+    onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath('/')),
   };
 };
 export default connect(

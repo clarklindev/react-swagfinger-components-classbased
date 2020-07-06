@@ -21,43 +21,40 @@ class MultiInput extends Component {
     this.inputClasses = [classes.InputElement];
   }
   render() {
+    const { addinput, removeinput, changed } = this.context;
+    const { value, componentconfig, field, validation } = this.props;
     return (
       <div className={this.className}>
-        {this.props.value.map((val, index) => {
+        {value.map((val, index) => {
           let tempClasses = [...this.inputClasses];
           if (
-            this.props.validation.required &&
+            componentconfig.metadata[0].componentconfig.validation.isRequired &&
             !val.valid &&
             (val.touched || (!val.touched && !val.pristine))
           ) {
             tempClasses.push(classes.Invalid);
           }
           return (
-            <div className={classes.FlexGroupRow} key={this.props.name + index}>
+            <div className={classes.FlexGroupRow} key={field + index}>
               <Input
                 className={classes.tempClasses}
-                {...this.props.elementconfig}
-                validation={this.props.validation}
+                {...componentconfig}
+                validation={validation}
                 value={val}
                 onChange={(event) =>
                   //pass in the name of the prop, and the index (if array item)
-                  this.context.changed(
-                    event.target.value,
-                    this.props.name,
-                    index
-                  )
+                  changed(event.target.value, field, index)
                 }
               />
-              {this.props.value.length > 1 ? (
+              {value.length > 1 ? (
                 <Button
                   title='Delete'
                   type='WithBorder'
                   className={classes.RemoveButton}
                   onClick={(event) => {
                     event.preventDefault();
-                    this.context.removeinput(this.props.name, index);
-                  }}
-                >
+                    removeinput(field, index);
+                  }}>
                   <Icon iconstyle='far' code='trash-alt' size='sm' />
                 </Button>
               ) : null}
@@ -67,8 +64,7 @@ class MultiInput extends Component {
         <Button
           title='Add'
           type='WithBorder'
-          onClick={(event) => this.context.addinput(event, this.props.name)}
-        >
+          onClick={(event) => addinput(event, field)}>
           <Icon iconstyle='fas' code='plus' size='sm' />
           <p>Add</p>
         </Button>
@@ -82,8 +78,8 @@ MultiInput.propTypes = {
   value: PropTypes.array,
   validation: PropTypes.object,
   placeholder: PropTypes.string,
-  elementconfig: PropTypes.object,
-  name: PropTypes.string,
+  componentconfig: PropTypes.object,
+  field: PropTypes.string,
   changed: PropTypes.func,
 };
 

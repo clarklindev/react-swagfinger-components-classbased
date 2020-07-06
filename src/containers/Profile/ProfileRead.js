@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import classes from './ContactRead.module.scss';
+import classes from './ProfileRead.module.scss';
 import * as align from '../../shared/alignFlex.module.scss';
 
 import Utils from '../../Utils';
@@ -32,7 +32,7 @@ import 'firebase/firestore';
 import 'firebase/auth';
 import 'firebase/storage';
 
-class ContactRead extends Component {
+class ProfileRead extends Component {
   constructor(props) {
     super(props);
     this.firebaseConfig = {
@@ -54,8 +54,8 @@ class ContactRead extends Component {
     this.uploadRef = React.createRef();
 
     this.className = Utils.getClassNameString([
-      classes.ContactRead,
-      'ContactRead',
+      classes.ProfileRead,
+      'ProfileRead',
       props.className,
     ]);
   }
@@ -82,7 +82,7 @@ class ContactRead extends Component {
     const id = query.get('id');
     let ref = this.storageRef;
     if (id) {
-      this.props.onFetchContact(id);
+      this.props.onFetchProfile(id);
       ref = this.storageRef.child(id);
     }
     console.log(
@@ -135,8 +135,7 @@ class ContactRead extends Component {
               console.log('URL: ', url);
               window.open(url, '_blank');
             }}
-            title={file.name}
-          >
+            title={file.name}>
             <FlexRow>
               <Icon iconstyle='far' code='file' size='lg' />
               <p>{file.name}</p>
@@ -151,8 +150,7 @@ class ContactRead extends Component {
                   const url = await FirebaseHelper.urlFromRef(file);
                   window.open(url, '_blank');
                 }}
-                title='open as external link'
-              >
+                title='open as external link'>
                 <Icon iconstyle='fas' code='external-link-alt' size='sm' />
               </Button>
               {/* downloads assets to drive */}
@@ -175,8 +173,7 @@ class ContactRead extends Component {
                   window.URL.revokeObjectURL(a.href);
                   document.body.removeChild(a);
                 }}
-                title='download file'
-              >
+                title='download file'>
                 <Icon iconstyle='fas' code='download' size='sm' />
               </Button>
             </FlexRow>
@@ -193,7 +190,7 @@ class ContactRead extends Component {
 
   render() {
     let data = null;
-    if (this.props.activeContact) {
+    if (this.props.activeProfile) {
       switch (this.state.activeTab) {
         case 'profile':
           data = (
@@ -202,7 +199,7 @@ class ContactRead extends Component {
                 data={{
                   label: 'Name',
                   component: 'input',
-                  value: { data: this.props.activeContact['name'] },
+                  value: { data: this.props.activeProfile['name'] },
                   readOnly: true,
                 }}
               /> */}
@@ -213,7 +210,7 @@ class ContactRead extends Component {
                   value: (
                     <ListItem align={align.JustifyContentSpaceBetween}>
                       <FlexRow>
-                        <p>{this.props.activeContact['name']}</p>
+                        <p>{this.props.activeProfile['name']}</p>
                       </FlexRow>
                       <FlexRow>
                         <Button
@@ -223,15 +220,14 @@ class ContactRead extends Component {
                             event.stopPropagation();
                             console.log('Copy to clipboard');
                             Clipboard.copyStringToClipboard(
-                              this.props.activeContact['name']
+                              this.props.activeProfile['name']
                             );
                             this.setState({ showClipboardModal: true });
                             setTimeout(() => {
                               this.setState({ showClipboardModal: false });
                             }, 1000);
                           }}
-                          title='copy to clipboard'
-                        >
+                          title='copy to clipboard'>
                           <Icon iconstyle='far' code='clipboard' size='sm' />
                         </Button>
                       </FlexRow>
@@ -246,7 +242,7 @@ class ContactRead extends Component {
                   value: (
                     <ListItem align={align.JustifyContentSpaceBetween}>
                       <FlexRow>
-                        <p>{this.props.activeContact['lastname']}</p>
+                        <p>{this.props.activeProfile['lastname']}</p>
                       </FlexRow>
                       <FlexRow>
                         <Button
@@ -260,11 +256,10 @@ class ContactRead extends Component {
                               this.setState({ showClipboardModal: false });
                             }, 1000);
                             Clipboard.copyStringToClipboard(
-                              this.props.activeContact['lastname']
+                              this.props.activeProfile['lastname']
                             );
                           }}
-                          title='copy to clipboard'
-                        >
+                          title='copy to clipboard'>
                           <Icon iconstyle='far' code='clipboard' size='sm' />
                         </Button>
                       </FlexRow>
@@ -278,7 +273,7 @@ class ContactRead extends Component {
                   label: 'Contact number',
                   component: 'list',
                   value: {
-                    data: this.props.activeContact['contactnumbers'].map(
+                    data: this.props.activeProfile['contactnumbers'].map(
                       (each, index) => {
                         return each !== '' ? (
                           <ListItem align={align.JustifyContentSpaceBetween}>
@@ -300,8 +295,7 @@ class ContactRead extends Component {
                                   }, 1000);
                                   Clipboard.copyStringToClipboard(each);
                                 }}
-                                title='copy to clipboard'
-                              >
+                                title='copy to clipboard'>
                                 <Icon
                                   iconstyle='far'
                                   code='clipboard'
@@ -321,7 +315,7 @@ class ContactRead extends Component {
                   label: 'Email',
                   component: 'list',
                   value: {
-                    data: this.props.activeContact['emails'].map(
+                    data: this.props.activeProfile['emails'].map(
                       (each, index) => {
                         return each !== '' ? (
                           <ListItem align={align.JustifyContentSpaceBetween}>
@@ -343,8 +337,7 @@ class ContactRead extends Component {
                                     });
                                   }, 1000);
                                 }}
-                                title='copy to clipboard'
-                              >
+                                title='copy to clipboard'>
                                 <Icon
                                   iconstyle='far'
                                   code='clipboard'
@@ -364,7 +357,7 @@ class ContactRead extends Component {
                   label: 'Contact Preference',
                   component: 'input',
                   value: {
-                    data: this.props.activeContact['contactpreference'],
+                    data: this.props.activeProfile['contactpreference'],
                   },
                   readOnly: true,
                 }}
@@ -372,7 +365,7 @@ class ContactRead extends Component {
             </React.Fragment>
           );
           break;
-        case 'history':
+        case 'documents':
           data = (
             <React.Fragment>
               <Accordion
@@ -382,26 +375,26 @@ class ContactRead extends Component {
                 onClick={(folderRef, index) => {
                   console.log('CLICKED: ', folderRef);
                   this.getFiles(folderRef, index);
-                }}
-              >
+                }}>
                 {this.state.firebaseFolders.map((item, index) => {
                   return (
                     <div
                       key={'file' + index}
                       label={item.folder.name}
-                      firebaseRef={item.folder}
-                    >
+                      firebaseRef={item.folder}>
                       <List
                         value={{
                           data: item.files,
-                        }}
-                      ></List>
+                        }}></List>
                     </div>
                   );
                 })}
               </Accordion>
             </React.Fragment>
           );
+          break;
+        case 'appointments':
+          data = <React.Fragment></React.Fragment>;
           break;
         default:
           data = undefined;
@@ -410,7 +403,7 @@ class ContactRead extends Component {
 
     return (
       <div className={this.className}>
-        {this.props.isLoading && !this.props.activeContact ? (
+        {this.props.isLoading && !this.props.activeProfile ? (
           <Spinner />
         ) : (
           <React.Fragment>
@@ -419,13 +412,16 @@ class ContactRead extends Component {
                 <p>Copied to clipboard</p>
               </FlexRow>
             </Modal>
-            <DefaultPageLayout label='CLIENT'>
-              <Tabs
-                tabheaders={['profile', 'history']}
-                onClick={this.tabClickHandler}
-              />
-              <Card>{data}</Card>
-            </DefaultPageLayout>
+            {this.props.activeProfile ? (
+              <DefaultPageLayout
+                label={`${this.props.activeProfile['name']} ${this.props.activeProfile['lastname']}`}>
+                <Tabs
+                  tabheaders={['profile', 'documents', 'appointments']}
+                  onClick={this.tabClickHandler}
+                />
+                <Card>{data}</Card>
+              </DefaultPageLayout>
+            ) : null}
           </React.Fragment>
         )}
       </div>
@@ -435,16 +431,16 @@ class ContactRead extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    storedPhonebook: state.contact.phoneBook,
-    isLoading: state.contact.loading,
-    activeContact: state.contact.activeContact,
+    storedPhonebook: state.profile.phoneBook,
+    isLoading: state.profile.loading,
+    activeProfile: state.profile.activeProfile,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onFetchContact: (id) => {
-      dispatch(actions.processFetchSingleContact(id));
+    onFetchProfile: (id) => {
+      dispatch(actions.processFetchProfile(id));
     },
 
     hideToolbar: (bool) => {
@@ -453,4 +449,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ContactRead);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileRead);

@@ -4,7 +4,6 @@ import classes from './Phonebook.module.scss';
 import * as align from '../../shared/alignFlex.module.scss';
 import { connect } from 'react-redux';
 
-import Utils from '../../Utils';
 import SearchFilter from '../../components/UI/InputComponents/SearchFilter';
 import PropTypes from 'prop-types';
 import InputContext from '../../context/InputContext';
@@ -14,16 +13,6 @@ import Spinner from '../../components/UI/Loaders/Spinner';
 import Card from '../../components/UI/Card/Card';
 
 class Phonebook extends Component {
-  constructor(props) {
-    super(props);
-
-    this.className = Utils.getClassNameString([
-      classes.Phonebook,
-      Phonebook.name,
-      this.props.className,
-    ]);
-  }
-
   state = {
     filterText: '',
   };
@@ -32,13 +21,13 @@ class Phonebook extends Component {
     this.setState({ filterText: '' });
   };
 
-  contactClickHandler = (id, event) => {
+  profileClickHandler = (id, event) => {
     //navigate programatically
     // this.props.history.push({
-    //   pathname: `/contactread`,
+    //   pathname: `/profileread`,
     //   search: `?id=${id}`,
     // });
-    window.open(`/contactread?id=${id}`, '_blank');
+    window.open(`/profileread?id=${id}`, '_blank');
   };
 
   searchChangedHandler = (newVal, name, index = null) => {
@@ -123,8 +112,7 @@ class Phonebook extends Component {
             displayText={entry}
             extraText={extra}
             align={align.JustifyContentFlexStart}
-            onClick={(event) => this.contactClickHandler(id, event)}
-          ></ListItem>
+            onClick={(event) => this.profileClickHandler(id, event)}></ListItem>
         );
       });
 
@@ -139,8 +127,7 @@ class Phonebook extends Component {
                 value={{
                   changed: this.searchChangedHandler, //newval, name, index
                   clear: this.searchClearHandler,
-                }}
-              >
+                }}>
                 <SearchFilter value={this.state.filterText} />
               </InputContext.Provider>
               <ComponentFactory
@@ -158,15 +145,15 @@ class Phonebook extends Component {
   }
 }
 
-Phonebook.propTypes = {
-  storedPhonebook: PropTypes.array,
-};
-
 const mapStateToProps = (state) => {
   return {
-    storedPhonebook: state.contact.phoneBook,
-    isLoading: state.contact.loading,
+    storedPhonebook: state.profile.phoneBook,
+    isLoading: state.profile.loading,
   };
+};
+
+Phonebook.propTypes = {
+  storedPhonebook: PropTypes.array,
 };
 
 export default connect(mapStateToProps)(Phonebook);

@@ -13,7 +13,7 @@ class InputWithIcon extends Component {
 
     this.className = Utils.getClassNameString([
       classes.InputWithIcon,
-      InputWithIcon.name
+      InputWithIcon.name,
     ]);
   }
 
@@ -35,7 +35,7 @@ class InputWithIcon extends Component {
   changeHandler = (event) => {
     //console.log('TARGET VALUE: ', event.target.value);
     //console.log('props.name: ', this.props.name, 'value: ', event.target.value);
-    this.context.changed(event.target.value, this.props.name);
+    this.context.changed(event.target.value, this.props.field);
   };
 
   onClickHandler = (event) => {
@@ -46,8 +46,8 @@ class InputWithIcon extends Component {
     //console.log('this.props.value.data: ', this.props.value.data);
     let tempClasses = [];
     if (
-      this.props.elementtype !== 'multiinput' &&
-      this.props.elementtype !== 'select' &&
+      this.props.type !== 'multiinput' &&
+      this.props.type !== 'select' &&
       this.props.validation &&
       !this.props.value.valid &&
       (this.props.value.touched ||
@@ -63,12 +63,12 @@ class InputWithIcon extends Component {
         onClick={(event) => {
           console.log('BUTTON PRESS>..');
           event.preventDefault();
-          this.props.elementconfig.iconclick()();
+          this.props.componentconfig.iconclick()();
         }}>
         <Icon
-          iconstyle={this.props.elementconfig.iconstyle}
-          code={this.props.elementconfig.iconcode}
-          size={this.props.elementconfig.iconsize}
+          iconstyle={this.props.componentconfig.iconstyle}
+          code={this.props.componentconfig.iconcode}
+          size={this.props.componentconfig.iconsize}
         />
       </Button>
     );
@@ -77,7 +77,7 @@ class InputWithIcon extends Component {
         <Icon
           iconstyle='fas'
           code='times'
-          size={this.props.elementconfig.iconsize}
+          size={this.props.componentconfig.iconsize}
         />
       </Button>
     );
@@ -85,28 +85,28 @@ class InputWithIcon extends Component {
     const divider = <div className={classes.Divider} />;
     return (
       <div className={[this.className, ...tempClasses].join(' ')}>
-        {this.props.elementconfig.iconposition === 'left' ? (
+        {this.props.componentconfig.iconposition === 'left' ? (
           <React.Fragment>
             {buttonicon}
-            {this.props.elementconfig.hasdivider === true ? divider : null}
+            {this.props.componentconfig.hasdivider === true ? divider : null}
           </React.Fragment>
         ) : null}
         <input
-          className={classes['icon-' + this.props.elementconfig.iconposition]}
-          placeholder={this.props.elementconfig.placeholder}
-          type={this.props.elementconfig.type}
+          className={classes['icon-' + this.props.componentconfig.iconposition]}
+          placeholder={this.props.componentconfig.placeholder}
+          type={this.props.componentconfig.type}
           readOnly={this.props.readOnly}
           value={this.props.value.data}
           onChange={this.changeHandler}
         />
-        {this.props.elementconfig.iconposition === 'left' &&
-        this.props.elementconfig.type === 'search' &&
+        {this.props.componentconfig.iconposition === 'left' &&
+        this.props.componentconfig.type === 'search' &&
         this.props.value.data !== ''
           ? searchclose
           : null}
-        {this.props.elementconfig.iconposition === 'right' ? (
+        {this.props.componentconfig.iconposition === 'right' ? (
           <React.Fragment>
-            {this.props.elementconfig.hasdivider === true ? divider : null}
+            {this.props.componentconfig.hasdivider === true ? divider : null}
             {buttonicon}
           </React.Fragment>
         ) : null}

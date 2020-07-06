@@ -98,7 +98,7 @@ class ComponentFactory extends Component {
       case 'errorlist':
         this.inputElement = <ErrorList {...this.props.data} />;
         break;
-      case 'raw':
+      case 'raw': //custom html passed to data property
         this.inputElement = this.props.data.value;
         break;
       default:

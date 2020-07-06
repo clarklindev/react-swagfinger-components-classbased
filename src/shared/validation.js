@@ -7,7 +7,7 @@ export const CheckValidity = (value, rules) => {
     return true;
   }
 
-  if (rules.required) {
+  if (rules.isRequired) {
     isValid = value !== '';
     //console.log('VALUE: ', value);
     if (typeof value === 'object') {

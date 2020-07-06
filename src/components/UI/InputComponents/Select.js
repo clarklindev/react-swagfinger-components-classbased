@@ -15,30 +15,30 @@ class Select extends Component {
   }
 
   state = {
-    isOpen: false
+    isOpen: false,
   };
 
   onBlurHandler = () => {
     if (this.state.isOpen) {
-      this.setState(prevState => {
+      this.setState((prevState) => {
         // console.log('isOpen: ', false);
         return {
-          isOpen: false
+          isOpen: false,
         };
       });
     }
   };
-  onClickHandler = event => {
+  onClickHandler = (event) => {
     //console.log('SELECT onClickHandler..');
-    this.setState(prevState => {
+    this.setState((prevState) => {
       // console.log('isOpen: ', !this.state.isOpen);
       return {
-        isOpen: !prevState.isOpen
+        isOpen: !prevState.isOpen,
       };
     });
   };
 
-  onChangeHandler = event => {
+  onChangeHandler = (event) => {
     console.log('SELECT onChangeHandler...');
     // The selected option element
     this.context.changed(event.target.value, this.props.name);
@@ -80,10 +80,10 @@ class Select extends Component {
         >
           {/* the placeholder will never be present on an update if this is a required input */}
           <option key='placeholder' value='' disabled>
-            {this.props.elementconfig.placeholder}
+            {this.props.componentconfig.placeholder}
           </option>
 
-          {this.props.elementconfig.options.map(({ value, displaytext }) => (
+          {this.props.componentconfig.options.map(({ value, displaytext }) => (
             <option key={value} value={value}>
               {displaytext}
             </option>
@@ -104,14 +104,14 @@ Select.propTypes = {
     touched: PropTypes.bool,
     pristine: PropTypes.bool,
     data: PropTypes.string,
-    errors: PropTypes.array
+    errors: PropTypes.array,
   }),
   readOnly: PropTypes.bool,
-  elementconfig: PropTypes.shape({
+  componentconfig: PropTypes.shape({
     options: PropTypes.array,
     placeholder: PropTypes.string,
-    valuetype: PropTypes.oneOf(['singlevalue', 'array'])
-  })
+    valuetype: PropTypes.oneOf(['singlevalue', 'array']),
+  }),
 };
 
 export default Select;

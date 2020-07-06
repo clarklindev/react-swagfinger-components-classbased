@@ -22,14 +22,14 @@ class MultiRangeSlider extends Component {
     thumbwidth: 0,
     displayvalues: [],
     labelmin: '',
-    labelmax: ''
+    labelmax: '',
   };
 
   componentDidMount() {
     window.addEventListener('resize', this.updateDimensions);
     this.setState({
       railwidth: parseInt(this.railRef.current.offsetWidth),
-      thumbwidth: parseInt(this.sliderRef.current.offsetWidth)
+      thumbwidth: parseInt(this.sliderRef.current.offsetWidth),
     });
   }
 
@@ -40,7 +40,7 @@ class MultiRangeSlider extends Component {
   updateDimensions = () => {
     //console.log('update DIMENSIONS');
     this.setState({
-      railwidth: parseInt(this.railRef.current.offsetWidth)
+      railwidth: parseInt(this.railRef.current.offsetWidth),
     });
     let tempLabelMin = this.restrictActualBoundaries(this.state.labelmin, 0);
     let convertedMin = this.convertToDisplayValue(tempLabelMin, 0);
@@ -91,8 +91,8 @@ class MultiRangeSlider extends Component {
   }
 
   restrictActualBoundaries = (value, index = this.state.currentindex) => {
-    let min = this.props.elementconfig.options[0].value;
-    let max = this.props.elementconfig.options[1].value;
+    let min = this.props.componentconfig.options[0].value;
+    let max = this.props.componentconfig.options[1].value;
 
     //has a next node...set max to next nodes' slider value
     if (index === 0) {
@@ -137,8 +137,8 @@ class MultiRangeSlider extends Component {
 
   // converts ACTUAL value to DISPLAY value
   convertToDisplayValue = (value, index = this.state.currentindex) => {
-    let min = this.props.elementconfig.options[0].value;
-    let max = this.props.elementconfig.options[1].value;
+    let min = this.props.componentconfig.options[0].value;
+    let max = this.props.componentconfig.options[1].value;
     if (value === '') {
       if (index === 0) {
         value = min;
@@ -155,8 +155,8 @@ class MultiRangeSlider extends Component {
 
   //converts DISPLAY value to ACTUAL value
   convertToActualValue = (value, index = this.state.currentindex) => {
-    let min = this.props.elementconfig.options[0].value;
-    let max = this.props.elementconfig.options[1].value;
+    let min = this.props.componentconfig.options[0].value;
+    let max = this.props.componentconfig.options[1].value;
     if (value === '') {
       if (index === 0) {
         value = min;
@@ -179,7 +179,7 @@ class MultiRangeSlider extends Component {
       let updatedDisplayValues = [...prevState.displayvalues];
       updatedDisplayValues[index] = newValue;
       return {
-        displayvalues: updatedDisplayValues
+        displayvalues: updatedDisplayValues,
       };
     });
   };
@@ -275,7 +275,7 @@ class MultiRangeSlider extends Component {
       console.log('x clicked:', Utils.getClickPosition(event));
       let closestChildIndex = getclosest.index;
       this.setState({
-        currentindex: closestChildIndex
+        currentindex: closestChildIndex,
       });
       console.log('closestChildIndex: ', closestChildIndex);
       //---------------------------------------------------------
@@ -357,7 +357,7 @@ class MultiRangeSlider extends Component {
       errorMin = (
         <ErrorList
           value={{
-            data: this.props.value[0].errors
+            data: this.props.value[0].errors,
           }}
         />
       );
@@ -374,7 +374,7 @@ class MultiRangeSlider extends Component {
       errorMax = (
         <ErrorList
           value={{
-            data: this.props.value[1].errors
+            data: this.props.value[1].errors,
           }}
         />
       );
@@ -404,29 +404,37 @@ class MultiRangeSlider extends Component {
             <div
               className={[
                 classes.RailWrapper,
-                Utils.getClassNameString([...tempClassesMin, ...tempClassesMax])
-              ].join(' ')}>
+                Utils.getClassNameString([
+                  ...tempClassesMin,
+                  ...tempClassesMax,
+                ]),
+              ].join(' ')}
+            >
               {/* rail - item of which calculations are based on*/}
               <div
                 ref={this.railRef}
                 className={classes.Rail}
-                onClick={(event) => this.scrollClickHandler(event)}>
+                onClick={(event) => this.scrollClickHandler(event)}
+              >
                 {/* Sliders */}
-                {(this.props.elementconfig.options || []).map((each, index) => {
-                  return (
-                    <div
-                      className={classes.Slider}
-                      ref={this.sliderRef}
-                      key={index}
-                      style={{
-                        position: 'relative',
-                        left: this.state.displayvalues[index] + 'px'
-                      }}
-                      onMouseDown={(event) => {
-                        this.onMouseDownHandler(index, event);
-                      }}></div>
-                  );
-                })}
+                {(this.props.componentconfig.options || []).map(
+                  (each, index) => {
+                    return (
+                      <div
+                        className={classes.Slider}
+                        ref={this.sliderRef}
+                        key={index}
+                        style={{
+                          position: 'relative',
+                          left: this.state.displayvalues[index] + 'px',
+                        }}
+                        onMouseDown={(event) => {
+                          this.onMouseDownHandler(index, event);
+                        }}
+                      ></div>
+                    );
+                  }
+                )}
               </div>
             </div>
             {/* max label */}

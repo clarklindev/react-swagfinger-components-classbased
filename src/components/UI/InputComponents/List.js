@@ -1,16 +1,10 @@
 import React, { Component } from 'react';
 import classes from './List.module.scss';
-import Utils from '../../../Utils';
 
 class List extends Component {
   render() {
-    let classList = Utils.getClassNameString([
-      classes.List,
-      List.name,
-      this.props.className
-    ]);
     return (
-      <div className={classList}>
+      <div className={classes.List}>
         <ul>
           {(Array.from(this.props.value.data) || []).map((item, index) => {
             //console.log('ITEM: ', item);

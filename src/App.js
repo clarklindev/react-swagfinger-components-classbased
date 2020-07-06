@@ -4,16 +4,18 @@ import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 //js
 import Layout from './hoc/Layout/Layout';
-//components
-import Phonebook from './containers/Phonebook/Phonebook';
 //containers
 import Home from './containers/Home/Home';
-import Auth from './containers/Auth/Auth';
+import Login from './containers/Auth/Login';
+import Logout from './containers/Auth/Logout';
+
+import Phonebook from './containers/Phonebook/Phonebook';
 import PhonebookAdmin from './containers/Phonebook/PhonebookAdmin';
-import ContactRead from './containers/Contact/ContactRead';
-import ContactCreateOrUpdate from './containers/Contact/ContactCreateOrUpdate';
+
+import ProfileRead from './containers/Profile/ProfileRead';
+import ProfileCreateOrUpdate from './containers/Profile/ProfileCreateOrUpdate';
+
 import Appointment from './containers/Appointment/Appointment.js';
-import Logout from './containers/Auth/Logout/Logout';
 import Faq from './containers/Faq/Faq';
 
 //actions
@@ -25,41 +27,45 @@ import './sass-flexbox-grid.scss';
 class App extends Component {
   componentDidMount() {
     this.props.onTryAutoSignup();
-    this.props.onFetchContacts();
+    this.props.fetchProfilesHandler();
   }
-  componentDidUpdate() {}
   componentWillUnmount() {
-    this.props.onFetchContactsCancel();
+    this.props.fetchProfilesCancelHandler();
   }
 
   render() {
-    let routes = (
+    const unauthenticatedRoutes = (
       <Switch>
-        <Route path='/login' component={Auth} />
-        <Route path='/contactread' component={ContactRead} />
+        <Route path='/login' component={Login} />
+        <Route path='/profileread' component={ProfileRead} />
         <Route path='/faq' component={Faq} />
         <Route path='/' exact component={Home} />
         <Redirect to='/' />
       </Switch>
     );
 
-    if (this.props.isAuthenticated) {
-      routes = (
-        <Switch>
-          <Route path='/logout' component={Logout} />
-          <Route path='/faq' component={Faq} />
+    const authenticatedRoutes = (
+      <Switch>
+        <Route path='/logout' component={Logout} />
+        <Route path='/faq' component={Faq} />
+        <Route path='/appointment' component={Appointment} />
 
-          <Route path='/contactread' component={ContactRead} />
-          <Route path='/appointment' component={Appointment} />
-          <Route path='/phonebook' component={Phonebook} />
-          <Route path='/phonebookadmin' component={PhonebookAdmin} />
-          <Route path='/contactupdate' component={ContactCreateOrUpdate} />
-          <Route path='/contactcreate' component={ContactCreateOrUpdate} />
-          <Route path='/' exact component={PhonebookAdmin} />
-          <Redirect to='/' />
-        </Switch>
-      );
-    }
+        <Route path='/phonebook' component={Phonebook} />
+        <Route path='/phonebookadmin' component={PhonebookAdmin} />
+
+        <Route path='/profileread' component={ProfileRead} />
+        <Route path='/profileupdate' component={ProfileCreateOrUpdate} />
+        <Route path='/profilecreate' component={ProfileCreateOrUpdate} />
+
+        <Route path='/' exact component={PhonebookAdmin} />
+        <Redirect to='/' />
+      </Switch>
+    );
+
+    const routes = this.props.isAuthenticated
+      ? authenticatedRoutes
+      : unauthenticatedRoutes;
+
     return (
       <Layout>
         <div className='App'>{routes}</div>
@@ -71,18 +77,17 @@ class App extends Component {
 const mapStateToProps = (state) => {
   return {
     isAuthenticated: state.auth.token !== null,
-    isLoading: state.contact.loading,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onTryAutoSignup: () => dispatch(actions.authCheckState()),
-    onFetchContacts: () => {
-      dispatch(actions.processFetchContacts());
+    fetchProfilesHandler: () => {
+      dispatch(actions.processFetchProfiles());
     },
-    onFetchContactsCancel: () => {
-      dispatch(actions.fetchContactsCancel());
+    fetchProfilesCancelHandler: () => {
+      dispatch(actions.processFetchProfilesCancel());
     },
   };
 };

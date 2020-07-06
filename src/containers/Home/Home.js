@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 
 class Home extends Component {
+  async componentDidMount() {}
+
   render() {
-    return 'Home';
+    return '';
   }
 }
 

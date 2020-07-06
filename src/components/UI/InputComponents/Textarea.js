@@ -12,7 +12,7 @@ class Textarea extends Component {
 
     this.className = Utils.getClassNameString([
       classes.Textarea,
-      Textarea.name
+      Textarea.name,
     ]);
   }
   render() {
@@ -37,7 +37,7 @@ class Textarea extends Component {
           className={[this.className, ...tempClasses].join(' ')}
           placeholder={this.props.placeholder}
           readOnly={this.props.readOnly}
-          {...this.props.elementconfig}
+          {...this.props.componentconfig}
           value={this.props.value.data}
           onChange={(event) =>
             this.context.changed(event.target.value, this.props.name)

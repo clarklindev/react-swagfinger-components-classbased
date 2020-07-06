@@ -7,7 +7,7 @@ class CheckboxCollection extends PureComponent {
   static contextType = InputContext;
 
   state = {
-    checked: []
+    checked: [],
   };
 
   componentDidMount() {
@@ -16,15 +16,15 @@ class CheckboxCollection extends PureComponent {
     // );
     let status = [];
     if (this.props.value) {
-      status = this.props.elementconfig.options.map(each => {
+      status = this.props.componentconfig.options.map((each) => {
         return false;
       });
       //console.log('STATUS:', status);
 
-      status = (this.props.value || []).map(item => {
+      status = (this.props.value || []).map((item) => {
         return item.data === '' || item.data === undefined ? false : item.data;
       });
-     //console.log('STATUS:', status);
+      //console.log('STATUS:', status);
     }
     this.setState({ checked: status });
   }
@@ -33,7 +33,7 @@ class CheckboxCollection extends PureComponent {
     //console.log('\n==================================\n COMPONENTDIDUPDATE');
     if (this.props.value) {
       let status = [];
-      status = this.props.elementconfig.options.map(each => {
+      status = this.props.componentconfig.options.map((each) => {
         return false;
       });
       //console.log('STATUS:', status);
@@ -42,7 +42,7 @@ class CheckboxCollection extends PureComponent {
         let bool = item.data === '' ? false : item.data;
         //console.log(`item.data (${index}):`, bool);
         if (this.state.checked[index] !== item.data) {
-         //console.log('updating database: ', bool);
+          //console.log('updating database: ', bool);
           this.context.changed(bool, this.props.name, index);
         }
         return bool;
@@ -65,10 +65,10 @@ class CheckboxCollection extends PureComponent {
 
     return (
       <div className={classes.CheckboxCollection}>
-        {this.props.elementconfig.options.map((each, index) => {
+        {this.props.componentconfig.options.map((each, index) => {
           //console.log(
-            //`this.state.checked[${index}]: `,
-            //this.state.checked[index]
+          //`this.state.checked[${index}]: `,
+          //this.state.checked[index]
           //);
           return (
             <Checkbox
@@ -76,7 +76,7 @@ class CheckboxCollection extends PureComponent {
               key={this.props.name + index}
               label={each.displaytext}
               name={this.props.name}
-              value={this.props.elementconfig.options[index].value}
+              value={this.props.componentconfig.options[index].value}
               checked={this.state.checked[index] === false ? false : true}
               index={index}
               usecontext={true}

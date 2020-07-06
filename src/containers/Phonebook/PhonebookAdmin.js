@@ -1,46 +1,28 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
-import ListItem from '../../components/UI/InputComponents/ListItem';
-import * as actions from '../../store/actions/index';
-
 import classes from './PhonebookAdmin.module.scss';
 import * as align from '../../shared/alignFlex.module.scss';
 
-import Utils from '../../Utils';
-import SearchFilter from '../../components/UI/InputComponents/SearchFilter';
-import Icon from '../../components/UI/InputComponents/Icon';
+import * as actions from '../../store/actions/index';
 import InputContext from '../../context/InputContext';
+
 import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
+import Card from '../../components/UI/Card/Card';
 import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
+import SearchFilter from '../../components/UI/InputComponents/SearchFilter';
+import ListItem from '../../components/UI/InputComponents/ListItem';
+import Icon from '../../components/UI/InputComponents/Icon';
 import Spinner from '../../components/UI/Loaders/Spinner';
 import Button from '../../components/UI/Button/Button';
-import Card from '../../components/UI/Card/Card';
 
 class PhonebookAdmin extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.className = Utils.getClassNameString([
-      classes.PhonebookAdmin,
-      PhonebookAdmin.name,
-      this.props.className,
-    ]);
-  }
-
   state = {
     filterText: '',
   };
+
   componentDidMount() {
-    console.log(
-      '\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n',
-      'PHONEBOOKADMIN MOUNTED!!'
-    );
-  }
-  componentDidUpdate() {
-    console.log(
-      '\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n',
-      'PHONEBOOKADMIN Updated!!'
-    );
+    this.props.onResetId();
   }
 
   searchClearHandler = () => {
@@ -56,18 +38,25 @@ class PhonebookAdmin extends PureComponent {
     return str.replace(regex, (str) => `<span>${str}</span>`);
   };
 
-  editContactHandler = (id) => {
+  editProfileHandler = (id) => {
     console.log('clicked id: ', id);
     //navigate programatically
     this.props.history.push({
-      pathname: `/contactupdate`,
+      pathname: `/profileupdate`,
       search: `?id=${id}`,
     });
   };
 
   render() {
-    console.log('PhonebookAdmin RENDER!!!!!!!!');
-    let cleanedUpSearchText = this.state.filterText
+    const {
+      storedPhonebook,
+      token,
+      isLoading,
+      profileDeleteHandler,
+    } = this.props;
+    const { filterText } = this.state;
+
+    let cleanedUpSearchText = filterText
       .replace(/\\/gi, '') //replace \ with empty
       .replace(/\./gi, '\\.'); //replace . with \.
 
@@ -75,19 +64,19 @@ class PhonebookAdmin extends PureComponent {
 
     let filtered = null;
     filtered =
-      this.props.storedPhonebook !== undefined
-        ? this.props.storedPhonebook
+      storedPhonebook !== undefined
+        ? storedPhonebook
             .filter(({ name, lastname, contactnumbers, emails }) => {
               let combinedString = `${name} ${lastname}` //same as html presentation
                 .toLowerCase()
-                .includes(this.state.filterText.toLowerCase()); //match filterText
+                .includes(filterText.toLowerCase()); //match filterText
 
               let contactnumberString = contactnumbers.find((each) => {
-                return each.includes(this.state.filterText.toLowerCase());
+                return each.includes(filterText.toLowerCase());
               });
 
               let emailsString = emails.find((each) => {
-                return each.includes(this.state.filterText.toLowerCase());
+                return each.includes(filterText.toLowerCase());
               });
 
               return (
@@ -104,36 +93,27 @@ class PhonebookAdmin extends PureComponent {
               // at this stage every phonebookEntry contains a match from filterText
 
               let contactnumberString = contactnumbers.find((each) => {
-                return each.includes(this.state.filterText.toLowerCase());
+                return each.includes(filterText.toLowerCase());
               });
 
               let emailsString = emails.find((each) => {
-                return each.includes(this.state.filterText.toLowerCase());
+                return each.includes(filterText.toLowerCase());
               });
 
-              //console.log('contact numbers: ', contactnumberString);
-              //console.log('email numbers: ', emailsString);
-
               let entry =
-                this.state.filterText.length > 0
+                filterText.length > 0
                   ? this.regMatch(`${name} ${lastname}`, regex)
                   : `${name} ${lastname}`;
 
               let extra = null;
               let matchedNumber = null;
-              if (
-                contactnumberString !== undefined &&
-                this.state.filterText.length > 0
-              ) {
+              if (contactnumberString !== undefined && filterText.length > 0) {
                 matchedNumber = this.regMatch(contactnumberString, regex);
                 extra = matchedNumber;
               }
 
               let matchedEmail = null;
-              if (
-                emailsString !== undefined &&
-                this.state.filterText.length > 0
-              ) {
+              if (emailsString !== undefined && filterText.length > 0) {
                 matchedEmail = this.regMatch(emailsString, regex);
                 extra = matchedEmail;
               }
@@ -145,26 +125,19 @@ class PhonebookAdmin extends PureComponent {
                   id={id}
                   displayText={entry}
                   extraText={extra}
-                  align={align.JustifyContentSpaceBetween}
-                >
-                  <div className={classes.ContactButtons}>
+                  align={align.JustifyContentSpaceBetween}>
+                  <div className={classes.ProfileButtons}>
                     <Button
                       type='WithBorder'
                       title='Edit'
-                      onClick={this.editContactHandler.bind(this, id)}
-                    >
+                      onClick={this.editProfileHandler.bind(this, id)}>
                       <Icon iconstyle='far' code='edit' size='sm' />
                     </Button>
 
                     <Button
                       type='WithBorder'
                       title='Delete'
-                      onClick={this.props.onContactDeleted.bind(
-                        this,
-                        this.props.token,
-                        id
-                      )}
-                    >
+                      onClick={profileDeleteHandler.bind(this, token, id)}>
                       <Icon iconstyle='far' code='trash-alt' size='sm' />
                     </Button>
                   </div>
@@ -175,7 +148,7 @@ class PhonebookAdmin extends PureComponent {
 
     return (
       <div className={classes.PhonebookAdmin}>
-        {this.props.isLoading ? (
+        {isLoading ? (
           <Spinner />
         ) : (
           <DefaultPageLayout label='Phonebook Admin'>
@@ -184,8 +157,7 @@ class PhonebookAdmin extends PureComponent {
                 value={{
                   changed: this.searchChangedHandler,
                   clear: this.searchClearHandler,
-                }}
-              >
+                }}>
                 <SearchFilter value={this.state.filterText} />
               </InputContext.Provider>
               <ComponentFactory
@@ -199,11 +171,10 @@ class PhonebookAdmin extends PureComponent {
                 type='WithBorder'
                 title='Add'
                 onClick={() => {
-                  this.props.history.push('contactcreate');
-                }}
-              >
+                  this.props.history.push('profilecreate');
+                }}>
                 <Icon iconstyle='fas' code='plus' size='sm' />
-                <p>Add Contact</p>
+                <p>Add Profile</p>
               </Button>
             </Card>
           </DefaultPageLayout>
@@ -215,16 +186,22 @@ class PhonebookAdmin extends PureComponent {
 
 const mapStateToProps = (state) => {
   return {
-    storedPhonebook: state.contact.phoneBook,
-    isLoading: state.contact.loading,
+    //profile
+    storedPhonebook: state.profile.phoneBook,
+    isLoading: state.profile.loading,
+    //auth
     token: state.auth.token,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onContactDeleted: (token, id) => {
-      dispatch(actions.processContactDelete(token, id));
+    onResetId: () => {
+      console.log('mapDispatchToProps: onResetId');
+      dispatch(actions.processResetId());
+    },
+    profileDeleteHandler: (token, id) => {
+      dispatch(actions.processProfileDelete(token, id));
     },
   };
 };

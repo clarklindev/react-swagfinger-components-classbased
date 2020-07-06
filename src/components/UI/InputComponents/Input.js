@@ -30,7 +30,7 @@ class Input extends PureComponent {
       this.props.onChange(event);
     } else {
       //console.log('props.name: ', this.props.name);
-      this.context.changed(event.target.value, this.props.name);
+      this.context.changed(event.target.value, this.props.field);
     }
   };
   render() {
@@ -56,7 +56,7 @@ class Input extends PureComponent {
             className={[this.className, tempClasses].join(' ')}
             placeholder={this.props.placeholder} //needed for multiinput ...props spread
             readOnly={this.props.readOnly}
-            {...this.props.elementconfig}
+            {...this.props.componentconfig}
             value={this.props.value.data}
             onChange={this.inputChangeHandler}
             title={this.props.value.data}

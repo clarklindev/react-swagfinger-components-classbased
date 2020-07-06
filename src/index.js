@@ -6,9 +6,9 @@ import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
 import { BrowserRouter } from 'react-router-dom';
 //reducer
-import contactReducer from './store/reducers/contact';
+import profileReducer from './store/reducers/profile';
 import authReducer from './store/reducers/auth';
-
+import uiReducer from './store/reducers/ui';
 //app
 import App from './App';
 import './index.scss';
@@ -28,8 +28,9 @@ const logger = (store) => {
 };
 
 const rootReducer = combineReducers({
-  contact: contactReducer,
-  auth: authReducer
+  profile: profileReducer,
+  auth: authReducer,
+  ui: uiReducer,
 });
 const composeEnhancers =
   process.env.NODE_ENV === 'development'

@@ -17,11 +17,11 @@ class RangeSlider extends Component {
   onBlur = (event) => {
     let tempValue = event.target.value;
 
-    if (tempValue < this.props.elementconfig.min && tempValue !== '') {
-      tempValue = this.props.elementconfig.min;
+    if (tempValue < this.props.componentconfig.min && tempValue !== '') {
+      tempValue = this.props.componentconfig.min;
     }
-    if (tempValue > this.props.elementconfig.max && tempValue !== '') {
-      tempValue = this.props.elementconfig.max;
+    if (tempValue > this.props.componentconfig.max && tempValue !== '') {
+      tempValue = this.props.componentconfig.max;
     }
     if (isNaN(tempValue)) {
       tempValue = '';
@@ -56,17 +56,17 @@ class RangeSlider extends Component {
           <input
             type='range'
             className={[classes.Slider, ...tempClasses].join(' ')}
-            min={this.props.elementconfig.min}
-            max={this.props.elementconfig.max}
-            step={this.props.elementconfig.step}
+            min={this.props.componentconfig.min}
+            max={this.props.componentconfig.max}
+            step={this.props.componentconfig.step}
             value={this.props.value.data}
             onChange={(event) => this.onChange(event)}
           />
           <div className={classes.SliderValue}>
             <input
               className={[...tempClasses].join(' ')}
-              min={this.props.elementconfig.min}
-              max={this.props.elementconfig.max}
+              min={this.props.componentconfig.min}
+              max={this.props.componentconfig.max}
               value={this.props.value.data}
               onChange={(event) => this.onChange(event)}
               onBlur={(event) => {

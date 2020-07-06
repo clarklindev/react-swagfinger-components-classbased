@@ -138,11 +138,13 @@ class MultiSelectWithInput extends PureComponent {
                       }}
                       onChange={(event) => this.onChangeHandler(index, event)}
                     >
-                      {this.props.elementconfig.options.map((option, index) => (
-                        <option key={option.value} value={option.value}>
-                          {option.displaytext}
-                        </option>
-                      ))}
+                      {this.props.componentconfig.options.map(
+                        (option, index) => (
+                          <option key={option.value} value={option.value}>
+                            {option.displaytext}
+                          </option>
+                        )
+                      )}
                     </select>
                     {val.data === null ||
                     tempKey === undefined ||
