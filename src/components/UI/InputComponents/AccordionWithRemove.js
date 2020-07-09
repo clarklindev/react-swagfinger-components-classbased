@@ -28,7 +28,6 @@ class AccordionWithRemove extends PureComponent {
     ).forEach((item, index) => {
       if (this.state.isActive[index]) {
         item.style.maxHeight = item.scrollHeight + 'px';
-        //find the AccordionItem and also sets its maxHeight
       } else {
         item.style.maxHeight = 0;
       }
@@ -90,7 +89,7 @@ class AccordionWithRemove extends PureComponent {
                     this.onClickHandler(index, event);
                   }}>
                   <div className={classes.AccordionLabel}>
-                    {item.props.label}
+                    {item.props.label ? item.props.label : null}
                   </div>
                   <Icon
                     iconstyle='fas'

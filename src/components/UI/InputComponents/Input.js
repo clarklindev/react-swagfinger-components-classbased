@@ -36,17 +36,25 @@ class Input extends PureComponent {
   render() {
     let tempClasses = [];
     let error = null;
+    //props
+    const {
+      validation,
+      value,
+      readOnly,
+      placeholder,
+      componentconfig,
+    } = this.props;
+
     if (
-      this.props.validation &&
-      !this.props.value.valid &&
-      (this.props.value.touched ||
-        (!this.props.value.touched && !this.props.value.pristine))
+      validation &&
+      !value.valid &&
+      (value.touched || (!value.touched && !value.pristine))
     ) {
       // console.log('pushing invalid: ');
       tempClasses.push(classes.Invalid);
-      error = <ErrorList value={{ data: this.props.value.errors }} />;
+      error = <ErrorList value={{ data: value.errors }} />;
     }
-    if (this.props.readOnly) {
+    if (readOnly) {
       tempClasses.push(classes.ReadOnly);
     }
     return (
@@ -54,12 +62,12 @@ class Input extends PureComponent {
         <div className={classes.FlexGroupColumn}>
           <input
             className={[this.className, tempClasses].join(' ')}
-            placeholder={this.props.placeholder} //needed for multiinput ...props spread
-            readOnly={this.props.readOnly}
-            {...this.props.componentconfig}
-            value={this.props.value.data}
+            placeholder={placeholder} //needed for multiinput ...props spread
+            readOnly={readOnly}
+            {...componentconfig}
+            value={value.data} //receives an object with {data: value} property
             onChange={this.inputChangeHandler}
-            title={this.props.value.data}
+            title={value.data}
           />
           {error}
         </div>

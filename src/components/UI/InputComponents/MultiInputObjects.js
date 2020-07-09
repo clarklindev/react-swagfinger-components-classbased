@@ -33,32 +33,40 @@ class MultiInputObjects extends Component {
 
     const row = value.map((val, index) => {
       let tempClasses = [...this.inputClasses];
-      if (
-        componentconfig.metadata[0].validation.isRequired &&
-        !val.valid &&
-        (val.touched || (!val.touched && !val.pristine))
-      ) {
-        tempClasses.push(classes.Invalid);
-      }
-      return (
-        <div className={classes.FlexGroupRow} key={field + index}>
-          <Input
-            className={classes.tempClasses}
-            {...componentconfig}
-            validation={validation}
-            value={val}
-            onChange={(event) =>
-              //pass in the name of the prop, and the index (if array item)
-              changed(event.target.value, field, index)
-            }
-          />
-        </div>
-      );
+      console.log('is Obj:', val);
+      // if (
+      //   componentconfig.metadata[i].validation.isRequired &&
+      //   !value.valid &&
+      //   (value.touched || (!value.touched && !value.pristine))
+      // ) {
+      //   tempClasses.push(classes.Invalid);
+      // }
+
+      return Object.keys(val.data).map((each, i) => {
+        console.log('val.data[each]: ', val.data[each]);
+        return (
+          <div className={classes.FlexGroupRow} key={field + index + '_' + i}>
+            <Input
+              className={classes.tempClasses}
+              {...componentconfig}
+              // validation={validation}
+              value={{ data: val.data[each] }}
+              onChange={(event) =>
+                //pass in the name of the prop, and the index (if array item)
+                changed(event.target.value, field, index)
+              }
+            />
+          </div>
+        );
+      });
     });
+
+    console.log('ROW:', row);
 
     return (
       <div className={classes.MultiInputObjects}>
-        {componentconfig.metadata.length > 1 ? (
+        {row}
+        {/* {componentconfig.metadata.length > 1 ? (
           <React.Fragment>
             <AccordionWithRemove
               {...{
@@ -68,12 +76,13 @@ class MultiInputObjects extends Component {
                 onClick: () => {},
               }}
               removeButton={deleteButton}>
-              {row}
+              {row} 
             </AccordionWithRemove>
           </React.Fragment>
         ) : (
           <React.Fragment>{row}</React.Fragment>
-        )}
+        )} */}
+
         <Button
           title='Add'
           type='WithBorder'
