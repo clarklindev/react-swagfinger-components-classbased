@@ -1,9 +1,10 @@
 export const CheckValidity = (value, rules) => {
   //console.log('CheckValidity: ');
   let isValid = true;
-  let errors = [];
+  let errors = null;
 
   if (!rules) {
+    console.log('NO RULES???');
     return true;
   }
 

@@ -1,0 +1,43 @@
+.MultiInputObjects {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+
+  .RemoveButton {
+    margin-left: calc(var(--margindefault) * 0.5);
+  }
+
+  .InputElement {
+    line-height: var(--inputheight); //50px - (6px x2)
+    outline: none;
+    border: 1px solid var(--colorborder);
+    background-color: white;
+    border-radius: var(--borderradius);
+    font: inherit;
+    font-size: var(--fontsizedefault);
+    padding: var(--paddinginput);
+    box-sizing: border-box;
+    color: var(--colordefault);
+    flex-basis: 1;
+    flex-grow: 1;
+  }
+  &.Invalid {
+    border: 1px solid red;
+    background-color: white;
+  }
+  .FlexGroupRow {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: calc(var(--margindefault) * 0.5);
+    flex-basis: 1;
+    flex-grow: 1;
+    box-sizing: border-box;
+  }
+
+  .divider {
+    border: 1px solid red;
+    height: 1px;
+    width: 100%;
+  }
+}

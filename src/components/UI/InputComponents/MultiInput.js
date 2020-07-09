@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Utils from '../../../Utils';
 import classes from './MultiInput.module.scss';
 import InputContext from '../../../context/InputContext';
 import Icon from '../InputComponents/Icon';
@@ -13,22 +12,17 @@ class MultiInput extends Component {
   constructor(props) {
     super(props);
 
-    this.className = Utils.getClassNameString([
-      classes.MultiInput,
-      MultiInput.name,
-    ]);
-
     this.inputClasses = [classes.InputElement];
   }
   render() {
     const { addinput, removeinput, changed } = this.context;
     const { value, componentconfig, field, validation } = this.props;
     return (
-      <div className={this.className}>
+      <div className={classes.MultiInput}>
         {value.map((val, index) => {
           let tempClasses = [...this.inputClasses];
           if (
-            componentconfig.metadata[0].componentconfig.validation.isRequired &&
+            componentconfig.metadata[0].validation.isRequired &&
             !val.valid &&
             (val.touched || (!val.touched && !val.pristine))
           ) {

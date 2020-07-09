@@ -11,6 +11,7 @@ export const processResetId = () => {
   };
 };
 export const processFetchProfiles = () => {
+  console.log('processFetchProfiles');
   // async constant
   return (dispatch) => {
     dispatch(fetchProfilesStart());
@@ -43,7 +44,7 @@ export const processFetchProfilesCancel = () => {
   };
 };
 
-//single contact
+//single profile
 export const processFetchProfile = (queryparam) => {
   return (dispatch) => {
     dispatch(fetchProfileStart());
@@ -51,7 +52,7 @@ export const processFetchProfile = (queryparam) => {
       .get(`/data/profiles/${queryparam}.json`, { cancelToken: source.token })
       .then((response) => {
         console.log('RESPONSE', response);
-        dispatch(fetchProfileSuccess({ ...response.data }));
+        dispatch(fetchProfileSuccess(queryparam, { ...response.data }));
       })
       .catch((err) => {
         if (axios.isCancel(err)) {
@@ -237,11 +238,11 @@ export const fetchProfileStart = () => {
   };
 };
 
-export const fetchProfileSuccess = (profile) => {
+export const fetchProfileSuccess = (queryparam, profile) => {
   console.log('FUNCTION fetchSingleProfileSuccess');
   return {
     type: actionTypes.FETCH_PROFILE_SUCCESS,
-    profileData: profile,
+    data: { profile: profile, queryparam: queryparam },
   };
 };
 

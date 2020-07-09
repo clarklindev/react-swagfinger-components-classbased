@@ -1,0 +1,55 @@
+.AccordionWithRemove {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 1;
+  flex-grow: 1;
+  color: var(--colordefault);
+
+  .AccordionItem {
+    border: 1px solid var(--colorborder);
+    border-radius: var(--borderradius);
+    margin-bottom: calc(var(--margindefault) * 0.5);
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    box-sizing: border-box;
+    &.AccordionItemHover:hover {
+      border-color: var(--colorborderhover);
+      cursor: pointer;
+    }
+  }
+
+  .AccordionTitle {
+    padding: var(--paddingdefault);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-basis: 1;
+    cursor: pointer;
+    font: inherit;
+    font-size: var(--fontsizedefault);
+    height: var(--inputheight);
+    box-sizing: border-box;
+  }
+  .AccordionLabel {
+    flex-grow: 1;
+    display: flex;
+  }
+
+  .AccordionContent {
+    padding: 0 var(--paddingdefault);
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    max-height: 0px;
+    transition: all 0.5s, opacity 0.5s;
+    font: inherit;
+    font-size: var(--fontsizedefault);
+    &.Active {
+      padding: 0 var(--paddingdefault) var(--paddingdefault);
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+}

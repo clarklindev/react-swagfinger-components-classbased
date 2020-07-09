@@ -26,8 +26,16 @@ import './sass-flexbox-grid.scss';
 
 class App extends Component {
   componentDidMount() {
-    this.props.onTryAutoSignup();
-    this.props.fetchProfilesHandler();
+    this.props.onTryAutoSignin();
+  }
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.isAuthenticated &&
+      this.props.isAuthenticated !== prevProps.isAuthenticated //prevents multiple calls...
+    ) {
+      console.log('isAuthenticated');
+      this.props.fetchProfilesHandler();
+    }
   }
   componentWillUnmount() {
     this.props.fetchProfilesCancelHandler();
@@ -82,9 +90,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onTryAutoSignup: () => dispatch(actions.authCheckState()),
+    onTryAutoSignin: () => dispatch(actions.authCheckState()),
     fetchProfilesHandler: () => {
-      dispatch(actions.processFetchProfiles());
+      dispatch(actions.processFetchProfiles()); //redux => props.phoneBook
     },
     fetchProfilesCancelHandler: () => {
       dispatch(actions.processFetchProfilesCancel());

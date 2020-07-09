@@ -3,22 +3,22 @@ import * as actionTypes from '../actions/actionsTypes';
 import { updateObject } from '../../shared/utility';
 
 const initialState = {
-  phoneBook: [],
-  activeProfile: null, //the actual object with all the props of the form
+  phoneBook: [], //stores firebase data/profiles/id with an id prop
   loading: false,
   schema: [],
-  form: null, //without value propery,
-  formattedForm: null,
-  formattedFormWithData: null,
+
   urlQuerystringId: null,
+  activeProfile: null, //the actual object with all the props of the form
+  formattedForm: null, //without data
+  formattedFormWithData: null,
 };
 
 const resetId = (state, action) => {
   return updateObject(state, {
+    urlQuerystringId: null,
     activeProfile: null,
     formattedForm: null,
     formattedFormWithData: null,
-    urlQuerystringId: null,
   });
 };
 
@@ -101,9 +101,11 @@ const fetchProfileStart = (state, action) => {
 };
 
 const fetchProfileSuccess = (state, action) => {
+  console.log('fetchProfileSuccess: ', action.data.queryparam);
   return updateObject(state, {
     loading: false,
-    activeProfile: action.profileData,
+    activeProfile: action.data.profile,
+    urlQuerystringId: action.data.queryparam,
   });
 };
 

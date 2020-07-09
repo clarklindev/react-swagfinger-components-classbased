@@ -38,22 +38,24 @@ class PhonebookAdmin extends PureComponent {
     return str.replace(regex, (str) => `<span>${str}</span>`);
   };
 
+  addProfileHandler = () => {
+    console.log('FUNCTION addProfileHandler');
+    this.props.onProfileAdd(this.props.history);
+  };
+
   editProfileHandler = (id) => {
+    console.log('FUNCTION editProfileHandler');
     console.log('clicked id: ', id);
-    //navigate programatically
-    this.props.history.push({
-      pathname: `/profileupdate`,
-      search: `?id=${id}`,
-    });
+    this.props.onProfileEdit(this.props.history, id);
+  };
+
+  deleteProfileHandler = (token, id) => {
+    console.log('FUNCTION deleteProfileHandler');
+    this.props.onProfileDelete(token, id);
   };
 
   render() {
-    const {
-      storedPhonebook,
-      token,
-      isLoading,
-      profileDeleteHandler,
-    } = this.props;
+    const { storedPhonebook, token, isLoading } = this.props;
     const { filterText } = this.state;
 
     let cleanedUpSearchText = filterText
@@ -119,7 +121,6 @@ class PhonebookAdmin extends PureComponent {
               }
 
               return (
-                // ContactWrapper wraps each item in this.props.storedPhonebook
                 <ListItem
                   key={id}
                   id={id}
@@ -137,7 +138,7 @@ class PhonebookAdmin extends PureComponent {
                     <Button
                       type='WithBorder'
                       title='Delete'
-                      onClick={profileDeleteHandler.bind(this, token, id)}>
+                      onClick={this.deleteProfileHandler.bind(this, token, id)}>
                       <Icon iconstyle='far' code='trash-alt' size='sm' />
                     </Button>
                   </div>
@@ -158,7 +159,7 @@ class PhonebookAdmin extends PureComponent {
                   changed: this.searchChangedHandler,
                   clear: this.searchClearHandler,
                 }}>
-                <SearchFilter value={this.state.filterText} />
+                <SearchFilter value={filterText} />
               </InputContext.Provider>
               <ComponentFactory
                 data={{
@@ -170,9 +171,7 @@ class PhonebookAdmin extends PureComponent {
               <Button
                 type='WithBorder'
                 title='Add'
-                onClick={() => {
-                  this.props.history.push('profilecreate');
-                }}>
+                onClick={this.addProfileHandler}>
                 <Icon iconstyle='fas' code='plus' size='sm' />
                 <p>Add Profile</p>
               </Button>
@@ -200,7 +199,21 @@ const mapDispatchToProps = (dispatch) => {
       console.log('mapDispatchToProps: onResetId');
       dispatch(actions.processResetId());
     },
-    profileDeleteHandler: (token, id) => {
+
+    onProfileAdd: (history) => {
+      //redirect
+      history.push('profilecreate');
+    },
+
+    onProfileEdit: (history, id) => {
+      //redirect
+      history.push({
+        pathname: `/profileupdate`,
+        search: `?id=${id}`,
+      });
+    },
+
+    onProfileDelete: (token, id) => {
       dispatch(actions.processProfileDelete(token, id));
     },
   };

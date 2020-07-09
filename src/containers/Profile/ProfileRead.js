@@ -372,16 +372,16 @@ class ProfileRead extends Component {
                 allowMultiOpen={true}
                 hovereffect={true}
                 openOnStartIndex={-1} //zero-index, negative value or invalid index to not open on start,
-                onClick={(folderRef, index) => {
-                  console.log('CLICKED: ', folderRef);
-                  this.getFiles(folderRef, index);
-                }}>
+              >
                 {this.state.firebaseFolders.map((item, index) => {
                   return (
                     <div
                       key={'file' + index}
                       label={item.folder.name}
-                      firebaseRef={item.folder}>
+                      onClick={
+                        //console.log('CLICKED: ', folderRef);
+                        this.getFiles.bind(this, item.folder, index)
+                      }>
                       <List
                         value={{
                           data: item.files,

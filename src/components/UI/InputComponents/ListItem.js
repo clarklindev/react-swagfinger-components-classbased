@@ -46,13 +46,11 @@ class ListItem extends Component {
       styleClasses = [classes.ListItemHover];
     }
 
-    console.log('ALIGN TYPE: ', this.props.align);
     return (
       <div
         className={[this.className, ...styleClasses].join(' ')}
         onClick={this.props.onClick}
-        title={this.props.title}
-      >
+        title={this.props.title}>
         <div className={[classes.ListItemWrapper, this.props.align].join(' ')}>
           {displayText || hasExtraText ? (
             <div>

@@ -97,15 +97,18 @@ class Accordion extends PureComponent {
           return (
             <div
               className={[classes.AccordionItem, ...styleClasses].join(' ')}
-              key={'accordionitem' + index}
-            >
+              key={'accordionitem' + index}>
               <div
                 className={classes.AccordionTitle}
                 onClick={(event) => {
                   this.onClickHandler(index, event);
-                  this.props.onClick(item.props.firebaseRef, index);
-                }}
-              >
+                  if (item.props.onClick) {
+                    item.props.onClick();
+                  }
+                  if (this.props.onClick) {
+                    this.props.onClick();
+                  }
+                }}>
                 {item.props.label}
                 <Icon
                   iconstyle='fas'
@@ -121,8 +124,7 @@ class Accordion extends PureComponent {
                 className={[
                   classes.AccordionContent,
                   ...additionalClasses,
-                ].join(' ')}
-              >
+                ].join(' ')}>
                 {item.props.children}
               </div>
             </div>

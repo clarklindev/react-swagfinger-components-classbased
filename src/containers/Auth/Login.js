@@ -50,7 +50,7 @@ class Auth extends Component {
           iconstyle: 'fas',
           iconcode: 'eye',
           iconsize: 'sm',
-          hasdivider: 'false',
+          hasdivider: 'true',
           iconclick: () => this.togglePasswordVisibility,
         },
 
@@ -288,9 +288,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onAuth: (email, password, isSignup) =>
-      dispatch(actions.auth(email, password, isSignup)),
-    onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath('/')),
+    onAuth: (email, password, isSignup) => {
+      return dispatch(actions.auth(email, password, isSignup));
+    },
+    // onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath('/')),
   };
 };
 export default connect(
