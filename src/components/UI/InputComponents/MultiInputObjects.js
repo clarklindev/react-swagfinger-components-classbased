@@ -65,23 +65,18 @@ class MultiInputObjects extends Component {
 
     return (
       <div className={classes.MultiInputObjects}>
-        {row}
-        {/* {componentconfig.metadata.length > 1 ? (
-          <React.Fragment>
-            <AccordionWithRemove
-              {...{
-                allowMultiOpen: false,
-                openOnStartIndex: -1, //zero-index, negative value or invalid index to not open on start,
-                hovereffect: true,
-                onClick: () => {},
-              }}
-              removeButton={deleteButton}>
-              {row} 
-            </AccordionWithRemove>
-          </React.Fragment>
-        ) : (
-          <React.Fragment>{row}</React.Fragment>
-        )} */}
+        <React.Fragment>
+          <AccordionWithRemove
+            {...{
+              allowMultiOpen: false,
+              openOnStartIndex: -1, //zero-index, negative value or invalid index to not open on start,
+              hovereffect: true,
+              onClick: () => {},
+            }}
+            removeButton={deleteButton}>
+            {row}
+          </AccordionWithRemove>
+        </React.Fragment>
 
         <Button
           title='Add'

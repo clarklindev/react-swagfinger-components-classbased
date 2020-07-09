@@ -88,9 +88,7 @@ class AccordionWithRemove extends PureComponent {
                   onClick={(event) => {
                     this.onClickHandler(index, event);
                   }}>
-                  <div className={classes.AccordionLabel}>
-                    {item.props.label ? item.props.label : null}
-                  </div>
+                  <div className={classes.AccordionLabel}></div>
                   <Icon
                     iconstyle='fas'
                     code={
@@ -106,7 +104,7 @@ class AccordionWithRemove extends PureComponent {
                     classes.AccordionContent,
                     ...additionalClasses,
                   ].join(' ')}>
-                  {item.props.children}
+                  {item}
                 </div>
               </div>
               {this.props.removeButton ? this.props.removeButton : null}
