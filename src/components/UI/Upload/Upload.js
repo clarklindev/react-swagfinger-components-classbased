@@ -1598,8 +1598,7 @@ class Upload extends PureComponent {
                 this.placeholderFolderCheckHandler(index, checked)
               }
               index={index}
-              checked={this.state.checkedPlaceholderFolders[index]}
-            ></Checkbox>
+              checked={this.state.checkedPlaceholderFolders[index]}></Checkbox>
             <ListItem
               align={align.JustifyContentFlexStart}
               hovereffect={true}
@@ -1608,8 +1607,7 @@ class Upload extends PureComponent {
                 console.log('CHANGING FOLDER :)');
                 this.changeFolderPath(item);
               }}
-              title={item.name}
-            >
+              title={item.name}>
               <Icon iconstyle='far' code='folder' size='lg' />
               <p>{item.name}/</p>
             </ListItem>
@@ -1630,8 +1628,7 @@ class Upload extends PureComponent {
                 this.folderCheckHandler(index, checked)
               }
               index={index}
-              checked={this.state.checkedFolders[index]}
-            ></Checkbox>
+              checked={this.state.checkedFolders[index]}></Checkbox>
             <ListItem
               align={align.JustifyContentSpaceBetween}
               hovereffect={true}
@@ -1640,8 +1637,7 @@ class Upload extends PureComponent {
                 console.log('CHANGING FOLDER :)');
                 this.changeFolderPath(item);
               }}
-              title={item.name}
-            >
+              title={item.name}>
               {/* flex-direction:row */}
               <FlexRow>
                 <Icon iconstyle='far' code='folder' size='lg' />
@@ -1662,8 +1658,7 @@ class Upload extends PureComponent {
                       this.setState({ showClipboardModal: false });
                     }, 1000);
                   }}
-                  title='copy to clipboard'
-                >
+                  title='copy to clipboard'>
                   <Icon iconstyle='far' code='copy' size='sm' />
                 </Button>
               </FlexRow>
@@ -1705,8 +1700,7 @@ class Upload extends PureComponent {
                 this.fileCheckHandler(index, checked)
               }
               index={index}
-              checked={this.state.checkedFiles[index]}
-            ></Checkbox>
+              checked={this.state.checkedFiles[index]}></Checkbox>
             <ListItem
               align={align.JustifyContentSpaceBetween}
               hovereffect={true}
@@ -1718,13 +1712,12 @@ class Upload extends PureComponent {
                 console.log('URL: ', url);
                 window.open(url, '_blank');
               }}
-              title={item.name}
-            >
+              title={item.name}>
               <FlexRow>
                 <Icon iconstyle='far' code='file' size='lg' />
                 <p>{item.name}</p>
               </FlexRow>
-              <FlexRow spacing='left'>
+              <FlexRow spacingChildren='left'>
                 <Button
                   className={buttonStyle.NoStyle}
                   onClick={async (event) => {
@@ -1735,8 +1728,7 @@ class Upload extends PureComponent {
                     console.log('URL: ', url);
                     window.open(url, '_blank');
                   }}
-                  title='open as external link'
-                >
+                  title='open as external link'>
                   <Icon iconstyle='fas' code='external-link-alt' size='sm' />
                 </Button>
 
@@ -1755,8 +1747,7 @@ class Upload extends PureComponent {
                       }, 1000);
                     });
                   }}
-                  title='copy to clipboard'
-                >
+                  title='copy to clipboard'>
                   <Icon iconstyle='far' code='copy' size='sm' />
                 </Button>
               </FlexRow>
@@ -1796,8 +1787,7 @@ class Upload extends PureComponent {
       <div className={classes.Upload}>
         <div className={[classes.Border].join(' ')}>
           <div
-            className={[classes.UploadHeader, isIndeterminateClass].join(' ')}
-          >
+            className={[classes.UploadHeader, isIndeterminateClass].join(' ')}>
             {/*DELETE/CANCEL SELECT WHEN ITEMS ARE SELECTED */}
             {this.state.mainIndeterminate === true ||
             (this.getCheckFoldersLength() +
@@ -1820,8 +1810,7 @@ class Upload extends PureComponent {
                       await this.toggleMainChecked(false);
                       await this.toggleCheckAllFolders(false);
                       await this.toggleCheckAllFiles(false);
-                    }}
-                  >
+                    }}>
                     <Icon iconstyle='fas' code='times' size='lg' />
                   </Button>
                   <span>
@@ -1837,8 +1826,7 @@ class Upload extends PureComponent {
                       type='Action'
                       onClick={(event) => {
                         this.renameFileHandler(event);
-                      }}
-                    >
+                      }}>
                       Rename
                     </Button>
                   ) : null}
@@ -1849,8 +1837,7 @@ class Upload extends PureComponent {
                       await this.deleteSelected(event);
                       //update folders
                       this.getAllFolders();
-                    }}
-                  >
+                    }}>
                     Delete
                   </Button>
                 </div>
@@ -1867,19 +1854,16 @@ class Upload extends PureComponent {
                   onMouseLeave={(event) => {
                     event.stopPropagation();
                     this.uploadUrlOutHandler(event);
-                  }}
-                >
+                  }}>
                   <Breadcrumb
                     path={this.state.currentFolderDrilldownRefs}
                     onClick={(ref) => this.changeFolderPath(ref)}
-                    onEdit={() => this.editBreadcrumbModal()}
-                  ></Breadcrumb>
+                    onEdit={() => this.editBreadcrumbModal()}></Breadcrumb>
 
                   <div
                     className={[classes.UploadEdit, isHoverUploadUrl].join(' ')}
                     title='edit'
-                    onClick={() => this.editBreadcrumbModal()}
-                  >
+                    onClick={() => this.editBreadcrumbModal()}>
                     <Icon iconstyle='fas' code='edit' size='sm' />
                   </div>
                 </div>
@@ -1905,8 +1889,7 @@ class Upload extends PureComponent {
                       event.preventDefault();
                       this.uploadRef.current.click();
                     }}
-                    title='upload'
-                  >
+                    title='upload'>
                     <Icon iconstyle='fas' code='arrow-circle-up' size='lg' />
                     Upload file
                   </Button>
@@ -1916,8 +1899,7 @@ class Upload extends PureComponent {
                     className={classes.UploadHeaderNewFolder}
                     type='LastItemRight'
                     onClick={this.addFolderHandler}
-                    title='new folder'
-                  >
+                    title='new folder'>
                     <Icon iconstyle='fas' code='folder-plus' size='lg' />
                   </Button>
                 </div>
@@ -1941,8 +1923,7 @@ class Upload extends PureComponent {
                     //when NOT async/await, these following calls should use !this.state.mainChecked
                     await this.toggleCheckAllFolders(this.state.mainChecked);
                     await this.toggleCheckAllFiles(this.state.mainChecked);
-                  }}
-                ></Checkbox>
+                  }}></Checkbox>
                 <span className={classes.LabelName}>Name</span>
               </div>
             </div>
@@ -1956,8 +1937,7 @@ class Upload extends PureComponent {
                     className={[
                       classes.FlexGroupRow,
                       classes.NavigateUpOneFolder,
-                    ].join(' ')}
-                  >
+                    ].join(' ')}>
                     <ListItem
                       align={align.JustifyContentFlexStart}
                       hovereffect={true}
@@ -1976,8 +1956,7 @@ class Upload extends PureComponent {
                         this.changeFolderPath(
                           this.state.currentFolderDrilldownRefs[index - 1]
                         );
-                      }}
-                    >
+                      }}>
                       <Icon
                         iconstyle='fas'
                         code='level-up-alt'
@@ -1994,8 +1973,7 @@ class Upload extends PureComponent {
                 <List
                   value={{
                     data: currentFolderData,
-                  }}
-                ></List>
+                  }}></List>
               ) : (
                 'There are no files here yet'
               )}
@@ -2033,8 +2011,7 @@ class Upload extends PureComponent {
             } else {
               this.setState({ errorModalMessage: 'Enter a foldername' });
             }
-          }}
-        >
+          }}>
           <Input
             value={{ data: this.state.createFolderName }}
             placeholder='Folder name'
@@ -2127,8 +2104,7 @@ class Upload extends PureComponent {
             } else {
               this.setState({ errorModalMessage: 'Enter new file name' });
             }
-          }}
-        >
+          }}>
           <Input
             value={{ data: this.state.renamedFilename }}
             placeholder='New file name'
@@ -2343,8 +2319,7 @@ class Upload extends PureComponent {
                 };
               });
             }
-          }}
-        >
+          }}>
           <Input
             value={{
               data: this.state.tempFolderPath,

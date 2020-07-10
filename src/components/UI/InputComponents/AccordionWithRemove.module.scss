@@ -7,6 +7,7 @@
 
   .AccordionItem {
     border: 1px solid var(--colorborder);
+    border-bottom: 0px;
     border-radius: var(--borderradius);
     margin-bottom: calc(var(--margindefault) * 0.5);
     background-color: white;
@@ -52,6 +53,9 @@
       padding: var(--paddingdefault);
       visibility: visible;
       opacity: 1;
+      border-bottom: 1px solid var(--colorborder);
+      border-bottom-left-radius: var(--borderradius);
+      border-bottom-right-radius: var(--borderradius);
     }
   }
 }

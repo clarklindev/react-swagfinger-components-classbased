@@ -6,6 +6,8 @@ import PropTypes from 'prop-types';
 import Button from '../../UI/Button/Button';
 import Input from '../../UI/InputComponents/Input';
 import AccordionWithRemove from '../../UI/InputComponents/AccordionWithRemove';
+import FlexColumn from '../../../hoc/Layout/FlexColumn';
+import FlexRow from '../../../hoc/Layout/FlexRow';
 
 class MultiInputObjects extends Component {
   static contextType = InputContext;
@@ -45,18 +47,24 @@ class MultiInputObjects extends Component {
       return Object.keys(val.data).map((each, i) => {
         console.log('val.data[each]: ', val.data[each]);
         return (
-          <div className={classes.FlexGroupRow} key={field + index + '_' + i}>
-            <Input
-              className={classes.tempClasses}
-              {...componentconfig}
-              // validation={validation}
-              value={{ data: val.data[each] }}
-              onChange={(event) =>
-                //pass in the name of the prop, and the index (if array item)
-                changed(event.target.value, field, index)
-              }
-            />
-          </div>
+          <FlexRow
+            flexGrow
+            spacing='bottom-notlast'
+            key={field + index + '_' + i}>
+            <FlexColumn flexGrow spacing='bottom'>
+              <label className={classes.Label}>{each}</label>
+              <Input
+                className={classes.tempClasses}
+                {...componentconfig}
+                // validation={validation}
+                value={{ data: val.data[each] }}
+                onChange={(event) =>
+                  //pass in the name of the prop, and the index (if array item)
+                  changed(event.target.value, field, index)
+                }
+              />
+            </FlexColumn>
+          </FlexRow>
         );
       });
     });

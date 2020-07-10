@@ -140,7 +140,7 @@ class ProfileRead extends Component {
               <Icon iconstyle='far' code='file' size='lg' />
               <p>{file.name}</p>
             </FlexRow>
-            <FlexRow spacing='left'>
+            <FlexRow spacingChildren='left'>
               <Button
                 className={buttonStyle.NoStyle}
                 onClick={async (event) => {

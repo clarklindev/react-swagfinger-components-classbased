@@ -1,15 +1,52 @@
 .FlexColumn {
   display: flex;
   flex-direction: column;
+  flex-basis: 1;
 
-  &.Spacingtop {
+  &.Flexgrow {
+    flex-grow: 1;
+  }
+  &.Flexshrink {
+    flex-shrink: 1;
+  }
+
+  //children spacing
+  &.SpacingChildrenLeft {
+    > * {
+      padding-left: var(--paddingdefault);
+    }
+  }
+  &.SpacingChildrenRight {
+    > * {
+      padding-right: var(--paddingdefault);
+    }
+  }
+  &.SpacingChildrenTop {
     > * {
       padding-top: var(--paddingdefault);
     }
   }
-  &.Spacingbottom {
+  &.SpacingChildrenBottom {
     > * {
       padding-bottom: var(--paddingdefault);
     }
+  }
+
+  //self
+  &.SpacingLeft {
+    padding-left: var(--paddingdefault);
+  }
+  &.SpacingRight {
+    padding-right: var(--paddingdefault);
+  }
+  &.SpacingTop {
+    padding-top: var(--paddingdefault);
+  }
+  &.SpacingBottom {
+    padding-bottom: var(--paddingdefault);
+  }
+
+  &.SpacingBottomNotLast {
+    padding-bottom: var(--paddingdefault);
   }
 }

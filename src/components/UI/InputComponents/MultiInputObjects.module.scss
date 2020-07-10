@@ -7,7 +7,15 @@
   .RemoveButton {
     margin-left: calc(var(--margindefault) * 0.5);
   }
-
+  .Label {
+    color: var(--colorheader);
+    font-weight: 600;
+    font-size: 0.7em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 10px;
+    text-align: left;
+  }
   .InputElement {
     line-height: var(--inputheight); //50px - (6px x2)
     outline: none;

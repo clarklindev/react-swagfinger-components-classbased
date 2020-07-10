@@ -2,21 +2,51 @@
   display: flex;
   flex-direction: row;
   flex-basis: 1;
+
   &.Flexgrow {
     flex-grow: 1;
   }
   &.Flexshrink {
     flex-shrink: 1;
   }
-
-  &.Spacingleft {
+  &.SpacingChildrenLeft {
     > * {
       padding-left: var(--paddingdefault);
     }
   }
-  &.Spacingright {
+  &.SpacingChildrenRight {
     > * {
       padding-right: var(--paddingdefault);
+    }
+  }
+  &.SpacingChildrenTop {
+    > * {
+      padding-top: var(--paddingdefault);
+    }
+  }
+  &.SpacingChildrenBottom {
+    > * {
+      padding-bottom: var(--paddingdefault);
+    }
+  }
+
+  //self
+  &.SpacingLeft {
+    padding-left: var(--paddingdefault);
+  }
+  &.SpacingRight {
+    padding-right: var(--paddingdefault);
+  }
+  &.SpacingTop {
+    padding-top: var(--paddingdefault);
+  }
+  &.SpacingBottom {
+    padding-bottom: var(--paddingdefault);
+  }
+  &.SpacingBottomNotLast {
+    padding-bottom: var(--paddingdefault);
+    &:last-child {
+      padding-bottom: 0;
     }
   }
 }
