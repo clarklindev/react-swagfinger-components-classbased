@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import classes from './AccordionWithRemove.module.scss';
 import Icon from './Icon';
 import FlexRow from '../../../hoc/Layout/FlexRow';
+import DraggableItem from './DraggableItem';
 class AccordionWithRemove extends PureComponent {
   state = {
     isActive: [],
@@ -80,25 +81,31 @@ class AccordionWithRemove extends PureComponent {
             styleClasses = [classes.AccordionItemHover];
           }
           return (
-            <FlexRow>
+            <FlexRow key={this.props.field + index}>
               <div
                 className={[classes.AccordionItem, ...styleClasses].join(' ')}>
-                <div
-                  className={classes.AccordionTitle}
-                  onClick={(event) => {
-                    this.onClickHandler(index, event);
-                  }}>
-                  <div className={classes.AccordionLabel}></div>
-                  <Icon
-                    iconstyle='fas'
-                    code={
-                      this.state.isActive[index] === true
-                        ? 'chevron-up'
-                        : 'chevron-down'
-                    }
-                    size='sm'
-                  />
-                </div>
+                <DraggableItem
+                  style={[
+                    'Embedded',
+                    this.state.isActive[index] ? ['Active'] : null,
+                  ]}>
+                  <div
+                    className={classes.AccordionTitle}
+                    onClick={(event) => {
+                      this.onClickHandler(index, event);
+                    }}>
+                    <div className={classes.AccordionLabel}></div>
+                    <Icon
+                      iconstyle='fas'
+                      code={
+                        this.state.isActive[index] === true
+                          ? 'chevron-up'
+                          : 'chevron-down'
+                      }
+                      size='sm'
+                    />
+                  </div>
+                </DraggableItem>
                 <div
                   className={[
                     classes.AccordionContent,

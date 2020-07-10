@@ -611,7 +611,7 @@ class ProfileCreateOrUpdate extends Component {
                     ref={this.submitInputRef}
                     type='submit'
                     value='Submit'
-                    onMouseOver={(event) => this.onSubmitTest(event)}
+                    onMouseOver={(event) => {} /*this.onSubmitTest(event)*/}
                     // disabled={!this.state.formIsValid} //dont disable just handle with validation
                   />
                   <Button
@@ -627,7 +627,7 @@ class ProfileCreateOrUpdate extends Component {
                         bubbles: true,
                         cancelable: true,
                       });
-                      this.submitInputRef.current.dispatchEvent(event);
+                      //this.submitInputRef.current.dispatchEvent(event);
                     }}>
                     Submit
                   </Button>

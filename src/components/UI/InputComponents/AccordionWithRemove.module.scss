@@ -26,6 +26,7 @@
     flex-direction: row;
     justify-content: space-between;
     flex-basis: 1;
+    flex-grow: 1;
     cursor: pointer;
     font: inherit;
     font-size: var(--fontsizedefault);
@@ -34,6 +35,7 @@
   }
   .AccordionLabel {
     flex-grow: 1;
+    flex-basis: 1;
     display: flex;
   }
 
@@ -47,7 +49,7 @@
     font: inherit;
     font-size: var(--fontsizedefault);
     &.Active {
-      padding: 0 var(--paddingdefault) var(--paddingdefault);
+      padding: var(--paddingdefault);
       visibility: visible;
       opacity: 1;
     }

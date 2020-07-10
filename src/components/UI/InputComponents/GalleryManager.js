@@ -88,16 +88,16 @@ class GalleryManager extends PureComponent {
     // console.log('updated array:', updateArray);
     //this.setState({ list: updateArray });
     this.context.moveiteminarray(
-      this.props.name,
+      this.props.field,
       this.state.clickIndex,
       this.state.toIndex
     );
   };
 
-  removeClickHandler = (event, name, index) => {
+  removeClickHandler = (event, field, index) => {
     event.stopPropagation();
     event.preventDefault();
-    this.context.removeinput(name, index);
+    this.context.removeinput(field, index);
   };
 
   render() {
@@ -113,7 +113,7 @@ class GalleryManager extends PureComponent {
           console.log('AddButton clicked');
           this.context.addinput(
             event,
-            this.props.name,
+            this.props.field,
 
             //this.is what is stored..to access value, value.data.value
             {
@@ -121,8 +121,7 @@ class GalleryManager extends PureComponent {
               value: '',
             }
           );
-        }}
-      >
+        }}>
         <Icon iconstyle='fas' code='plus' size='sm' />
         <p>Add</p>
       </Button>
@@ -130,7 +129,7 @@ class GalleryManager extends PureComponent {
 
     const listHTML = this.state.list.map((val, index) => (
       <li
-        key={this.props.name + index}
+        key={this.props.field + index}
         draggable
         onDragStart={(event) => this.dragStartHandler(event, index)}
         onDragEnter={(event) => this.dragEnterHandler(event, index)} //event triggers once
@@ -139,13 +138,11 @@ class GalleryManager extends PureComponent {
         onDrop={(event) => {
           this.dropHandler(event);
         }}
-        onDragEnd={(event) => this.dragEndHandler(event, index)}
-      >
+        onDragEnd={(event) => this.dragEndHandler(event, index)}>
         <GalleryItem
           onRemove={(event) => {
-            this.removeClickHandler(event, this.props.name, index);
-          }}
-        >
+            this.removeClickHandler(event, this.props.field, index);
+          }}>
           {/* insert code here */}
           <input
             className={classes.InputElement}
@@ -154,13 +151,13 @@ class GalleryManager extends PureComponent {
               //pass in the name of the prop, and the index (if array item)
               this.context.changed(
                 { value: event.target.value },
-                this.props.name,
+                this.props.field,
                 index
               )
             }
             title={val.data.value}
             value={val.data.value}
-            name={this.props.name}
+            field={this.props.field}
           />
         </GalleryItem>
       </li>
