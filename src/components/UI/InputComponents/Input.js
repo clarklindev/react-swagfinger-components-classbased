@@ -56,7 +56,7 @@ class Input extends PureComponent {
     } = this.props;
 
     if (
-      componentconfig.validation.isRequired &&
+      validation &&
       !value.valid &&
       (value.touched || (!value.touched && !value.pristine))
     ) {

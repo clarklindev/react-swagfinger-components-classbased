@@ -27,6 +27,7 @@ class PhonebookAdmin extends PureComponent {
   searchClearHandler = () => {
     this.setState({ filterText: '' });
   };
+
   searchChangedHandler = (type, name, newVal) => {
     console.log('searchChangedHandler:', newVal);
     this.setState({ filterText: newVal });
