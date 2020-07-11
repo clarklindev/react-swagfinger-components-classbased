@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import classes from './InputWithIcon.module.scss';
-import Utils from '../../../Utils';
 import InputContext from '../../../context/InputContext';
 import Icon from './Icon';
 import Button from '../Button/Button';
@@ -10,11 +9,6 @@ class InputWithIcon extends Component {
 
   constructor(props) {
     super(props);
-
-    this.className = Utils.getClassNameString([
-      classes.InputWithIcon,
-      InputWithIcon.name,
-    ]);
   }
 
   componentDidMount() {
@@ -35,19 +29,15 @@ class InputWithIcon extends Component {
   changeHandler = (event) => {
     //console.log('TARGET VALUE: ', event.target.value);
     //console.log('props.name: ', this.props.name, 'value: ', event.target.value);
-    this.context.changed(event.target.value, this.props.field);
-  };
-
-  onClickHandler = (event) => {
-    this.context.clear();
+    this.context.changed(this.props.type, this.props.name, event.target.value);
   };
 
   render() {
     //console.log('this.props.value.data: ', this.props.value.data);
     let tempClasses = [];
     if (
-      this.props.type !== 'multiinput' &&
-      this.props.type !== 'select' &&
+      // this.props.type !== 'multiinput' &&
+      // this.props.type !== 'select' &&
       this.props.validation &&
       !this.props.value.valid &&
       (this.props.value.touched ||
@@ -72,19 +62,10 @@ class InputWithIcon extends Component {
         />
       </Button>
     );
-    const searchclose = (
-      <Button type='NoStyle' onClick={this.onClickHandler}>
-        <Icon
-          iconstyle='fas'
-          code='times'
-          size={this.props.componentconfig.iconsize}
-        />
-      </Button>
-    );
 
     const divider = <div className={classes.Divider} />;
     return (
-      <div className={[this.className, ...tempClasses].join(' ')}>
+      <div className={[classes.InputWithIcon, ...tempClasses].join(' ')}>
         {this.props.componentconfig.iconposition === 'left' ? (
           <React.Fragment>
             {buttonicon}
@@ -99,11 +80,7 @@ class InputWithIcon extends Component {
           value={this.props.value.data}
           onChange={this.changeHandler}
         />
-        {this.props.componentconfig.iconposition === 'left' &&
-        this.props.componentconfig.type === 'search' &&
-        this.props.value.data !== ''
-          ? searchclose
-          : null}
+        {this.props.clearSearch ? this.props.clearSearch : null}
         {this.props.componentconfig.iconposition === 'right' ? (
           <React.Fragment>
             {this.props.componentconfig.hasdivider === true ? divider : null}

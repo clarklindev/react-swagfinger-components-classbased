@@ -12,7 +12,13 @@ export {
 } from './profile';
 
 //auth
-export { auth, logout, setAuthRedirectPath, authCheckState } from './auth';
+export {
+  auth,
+  logout,
+  setAuthRedirectPath,
+  authCheckState,
+  fetchLoginSchema,
+} from './auth';
 
 //ui
 export { hasToolbar } from './ui';

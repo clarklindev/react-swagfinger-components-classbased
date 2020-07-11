@@ -10,7 +10,6 @@ import InputContext from '../../context/InputContext';
 import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
 import Card from '../../components/UI/Card/Card';
 import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
-import SearchFilter from '../../components/UI/InputComponents/SearchFilter';
 import ListItem from '../../components/UI/InputComponents/ListItem';
 import Icon from '../../components/UI/InputComponents/Icon';
 import Spinner from '../../components/UI/Loaders/Spinner';
@@ -28,7 +27,7 @@ class PhonebookAdmin extends PureComponent {
   searchClearHandler = () => {
     this.setState({ filterText: '' });
   };
-  searchChangedHandler = (newVal, name, index = null) => {
+  searchChangedHandler = (type, name, newVal) => {
     console.log('searchChangedHandler:', newVal);
     this.setState({ filterText: newVal });
   };
@@ -159,7 +158,13 @@ class PhonebookAdmin extends PureComponent {
                   changed: this.searchChangedHandler,
                   clear: this.searchClearHandler,
                 }}>
-                <SearchFilter value={filterText} />
+                <ComponentFactory
+                  data={{
+                    label: 'Search',
+                    component: 'inputsearch',
+                    value: this.state.filterText,
+                  }}
+                />
               </InputContext.Provider>
               <ComponentFactory
                 data={{

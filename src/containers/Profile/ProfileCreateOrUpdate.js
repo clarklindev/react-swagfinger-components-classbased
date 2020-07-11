@@ -342,45 +342,67 @@ class ProfileCreateOrUpdate extends Component {
   };
 
   // ------------------------------------
-  inputChangedHandler = (newval, key, index = null) => {
+  //@type single, array, object, arrayofobjects. (required)
+  //@newval the new value. (required)
+  //@key 'field' in firebase. (required)
+  inputChangedHandler = (type, key, newval, index = null, objectkey = null) => {
     console.log('inputChangedHandler key: ', key, '|', newval);
 
     const updatedForm = {
       ...this.state.localstateform,
     };
-
+    console.log('updatedForm: ', updatedForm);
+    //which prop of form in firebase
     const updatedFormElement = {
       ...updatedForm[key],
     };
 
-    //single profile
-    //single prop of form
-    let validation = validationCheck(
-      newval,
-      updatedFormElement.componentconfig.metadata[0].componentconfig.validation
-    );
+    //each stored item gets assigned this obj
+    let validation;
+    let obj = {
+      data: undefined,
+      touched: false,
+      pristine: true,
+      valid: undefined,
+      errors: undefined,
+    };
+    switch (type) {
+      case 'single':
+        //single prop of form
+        validation = validationCheck(
+          newval,
+          updatedFormElement.componentconfig.validation
+        );
+        obj = {
+          data: newval,
+          touched: true,
+          pristine: false,
+          valid: validation.isValid,
+          errors: validation.errors,
+        };
+        updatedFormElement.value = obj;
+        break;
+      case 'object':
+        break;
+      case 'array':
+        break;
+      case 'arrayofobjects':
+        break;
+    }
+
     //console.log('key: ', key);
     //console.log('validation: ', validation);
 
-    //each stored item gets assigned this obj
-    let obj = {
-      data: newval,
-      touched: true,
-      pristine: false,
-      valid: validation.isValid,
-      errors: validation.errors,
-    };
-
     //if array
-    if (index !== null) {
-      if (!updatedFormElement.value) {
-        updatedFormElement.value = [];
-      }
-      updatedFormElement.value[index] = obj;
-    } else {
-      //if single value
-      updatedFormElement.value = obj;
-    }
+    // if (index !== null) {
+    //   if (!updatedFormElement.value) {
+    //     updatedFormElement.value = [];
+    //   }
+    //   updatedFormElement.value[index] = obj;
+    // } else {
+    //   //if single value
+    //   updatedFormElement.value = obj;
+    // }
     // console.log(
     //   '\n\n\n====================\nUPDATED FORM ELEMENT: \n',
     //   updatedFormElement,

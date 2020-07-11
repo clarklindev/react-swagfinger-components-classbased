@@ -7,6 +7,7 @@ const initialState = {
   error: null,
   loading: false,
   authRedirectPath: '/',
+  loginSchema: null,
 };
 const authStart = (state, action) => {
   return updateObject(state, { error: null, loading: true });
@@ -42,6 +43,26 @@ const setAuthRedirectPath = (state, action) => {
   });
 };
 
+const fetchLoginSchemaStart = (state, action) => {
+  return updateObject(state, {
+    loading: true,
+  });
+};
+
+const fetchLoginSchemaSuccess = (state, action) => {
+  return updateObject(state, {
+    loginSchema: action.response.data,
+    loading: false,
+  });
+};
+
+const fetchLoginSchemaFail = (state, action) => {
+  return updateObject(state, {
+    error: action.error,
+    loading: false,
+  });
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.AUTH_START:
@@ -54,6 +75,12 @@ const reducer = (state = initialState, action) => {
       return authLogout(state, action);
     case actionTypes.SET_AUTH_REDIRECT_PATH:
       return setAuthRedirectPath(state, action);
+    case actionTypes.AUTH_FETCH_LOGIN_SCHEMA_START:
+      return fetchLoginSchemaStart(state, action);
+    case actionTypes.AUTH_FETCH_LOGIN_SCHEMA_SUCCESS:
+      return fetchLoginSchemaSuccess(state, action);
+    case actionTypes.AUTH_FETCH_LOGIN_SCHEMA_FAIL:
+      return fetchLoginSchemaFail(state, action);
     default:
       return state;
   }

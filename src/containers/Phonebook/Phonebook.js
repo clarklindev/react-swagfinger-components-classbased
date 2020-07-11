@@ -4,7 +4,7 @@ import classes from './Phonebook.module.scss';
 import * as align from '../../shared/alignFlex.module.scss';
 import { connect } from 'react-redux';
 
-import SearchFilter from '../../components/UI/InputComponents/SearchFilter';
+import InputSearch from '../../components/UI/InputComponents/InputSearch';
 import PropTypes from 'prop-types';
 import InputContext from '../../context/InputContext';
 import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
@@ -128,7 +128,12 @@ class Phonebook extends Component {
                   changed: this.searchChangedHandler, //newval, name, index
                   clear: this.searchClearHandler,
                 }}>
-                <SearchFilter value={this.state.filterText} />
+                <ComponentFactory
+                  data={{
+                    component: 'inputsearch',
+                    value: this.state.filterText,
+                  }}
+                />
               </InputContext.Provider>
               <ComponentFactory
                 data={{

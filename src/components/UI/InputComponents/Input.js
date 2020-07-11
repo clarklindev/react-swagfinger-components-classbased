@@ -19,9 +19,15 @@ class Input extends PureComponent {
       props.className,
     ]);
   }
+  state = {
+    value: '',
+  };
 
   componentDidUpdate() {
     //console.log('updated...', this.props.value.data);
+    if (this.props.value !== this.state.value) {
+      this.setState({ value: this.props.value.data });
+    }
   }
 
   inputChangeHandler = (event) => {
@@ -29,8 +35,12 @@ class Input extends PureComponent {
       console.log('CALL PARENT ONCHANGE...');
       this.props.onChange(event);
     } else {
-      //console.log('props.name: ', this.props.name);
-      this.context.changed(event.target.value, this.props.field);
+      console.log('props.name: ', this.props.name);
+      this.context.changed(
+        this.props.type,
+        this.props.name,
+        event.target.value
+      );
     }
   };
   render() {
@@ -46,7 +56,7 @@ class Input extends PureComponent {
     } = this.props;
 
     if (
-      validation &&
+      componentconfig.validation.isRequired &&
       !value.valid &&
       (value.touched || (!value.touched && !value.pristine))
     ) {
@@ -62,10 +72,11 @@ class Input extends PureComponent {
         <div className={classes.FlexGroupColumn}>
           <input
             className={[this.className, tempClasses].join(' ')}
-            placeholder={placeholder} //needed for multiinput ...props spread
+            placeholder={this.props.componentconfig.placeholder} //needed for multiinput ...props
             readOnly={readOnly}
-            {...componentconfig}
-            value={value.data} //receives an object with {data: value} property
+            name={this.props.name}
+            type={this.props.componentconfig.type}
+            value={this.state.value} //receives an object with {data: value} property
             onChange={this.inputChangeHandler}
             title={value.data}
           />

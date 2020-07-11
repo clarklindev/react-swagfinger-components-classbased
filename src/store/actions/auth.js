@@ -1,23 +1,61 @@
 import * as actionTypes from './actionsTypes';
+import axiosInstance from '../../axios-profiles';
 import axios from 'axios';
+
+export const fetchLoginSchema = (axios) => {
+  console.log('processFetchProfileSchema');
+  return async (dispatch) => {
+    dispatch(fetchLoginSchemaStart());
+
+    let response = axiosInstance
+      .get(`/schemas/collection/login.json`)
+      .then((response) => {
+        console.log('gets here....');
+        dispatch(fetchLoginSchemaSuccess(response));
+      })
+      .catch((error) => {
+        console.log('error: ', error);
+        dispatch(fetchLoginSchemaFail(error));
+      });
+  };
+};
+
+export const fetchLoginSchemaStart = () => {
+  return {
+    type: actionTypes.AUTH_FETCH_LOGIN_SCHEMA_START,
+  };
+};
+export const fetchLoginSchemaSuccess = (response) => {
+  return {
+    type: actionTypes.AUTH_FETCH_LOGIN_SCHEMA_SUCCESS,
+    response: response,
+  };
+};
+
+export const fetchLoginSchemaFail = (error) => {
+  return {
+    type: actionTypes.AUTH_FETCH_LOGIN_SCHEMA_FAIL,
+    error: error,
+  };
+};
 
 export const authStart = () => {
   return {
-    type: actionTypes.AUTH_START
+    type: actionTypes.AUTH_START,
   };
 };
 export const authSuccess = (token, userId) => {
   return {
     type: actionTypes.AUTH_SUCCESS,
     idToken: token,
-    userId: userId
+    userId: userId,
   };
 };
 
 export const authFail = (error) => {
   return {
     type: actionTypes.AUTH_FAIL,
-    error: error
+    error: error,
   };
 };
 
@@ -28,7 +66,7 @@ export const auth = (email, password, isSignUp) => {
     const authData = {
       email: email,
       password: password,
-      returnSecureToken: true //boolean that is required - indicates if should return a token or not
+      returnSecureToken: true, //boolean that is required - indicates if should return a token or not
     };
 
     //default url
@@ -40,7 +78,7 @@ export const auth = (email, password, isSignUp) => {
         // note firebase v3 is diff from v1, v3: /identitytoolkit/v3/relyingparty/verifyPassword?key=[API_KEY]
         'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBcmwi6R0CaeY9l1jfEUo0u71MZsVxldKo';
     }
-    axios
+    axiosInstance
       .post(url, authData)
       .then((response) => {
         console.log('SUCCESS: ', response);
@@ -77,7 +115,7 @@ export const logout = () => {
   localStorage.removeItem('userid');
 
   return {
-    type: actionTypes.AUTH_LOGOUT
+    type: actionTypes.AUTH_LOGOUT,
   };
 };
 
@@ -121,6 +159,6 @@ export const authCheckState = () => {
 export const setAuthRedirectPath = (path) => {
   return {
     type: actionTypes.SET_AUTH_REDIRECT_PATH,
-    path: path
+    path: path,
   };
 };

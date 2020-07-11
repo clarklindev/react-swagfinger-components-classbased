@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import classes from './ProfileRead.module.scss';
 import * as align from '../../shared/alignFlex.module.scss';
 
-import Utils from '../../Utils';
 import * as actions from '../../store/actions/index';
 
 import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
@@ -52,12 +51,6 @@ class ProfileRead extends Component {
       console.log('\t%calready exists...', 'background:white; color:red');
     }
     this.uploadRef = React.createRef();
-
-    this.className = Utils.getClassNameString([
-      classes.ProfileRead,
-      'ProfileRead',
-      props.className,
-    ]);
   }
 
   state = {
@@ -402,7 +395,7 @@ class ProfileRead extends Component {
     }
 
     return (
-      <div className={this.className}>
+      <div className={classes.ProfileRead}>
         {this.props.isLoading && !this.props.activeProfile ? (
           <Spinner />
         ) : (

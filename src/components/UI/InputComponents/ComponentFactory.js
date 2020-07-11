@@ -21,6 +21,8 @@ import UploadDrop from '../Upload/UploadDrop';
 import Counter from './Counter';
 import RangeSlider from './RangeSlider';
 import MultiRangeSlider from './MultiRangeSlider';
+import InputSearch from './InputSearch';
+import InputPassword from './InputPassword';
 import InputWithIcon from './InputWithIcon';
 import List from './List';
 import InputWithInput from './InputWithInput';
@@ -44,6 +46,12 @@ class ComponentFactory extends Component {
     switch (this.props.data.component) {
       case 'input':
         this.inputElement = <Input {...this.props.data} />;
+        break;
+      case 'inputsearch':
+        this.inputElement = <InputSearch {...this.props.data} />;
+        break;
+      case 'inputpassword':
+        this.inputElement = <InputPassword {...this.props.data} />;
         break;
       case 'inputwithicon':
         this.inputElement = <InputWithIcon {...this.props.data} />;
