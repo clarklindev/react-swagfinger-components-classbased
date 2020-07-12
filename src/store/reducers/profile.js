@@ -11,6 +11,7 @@ const initialState = {
   activeProfile: null, //the actual object with all the props of the form
   formattedForm: null, //without data
   formattedFormWithData: null,
+  error: null,
 };
 
 const resetId = (state, action) => {
@@ -84,11 +85,14 @@ const fetchProfilesStart = (state, action) => {
 };
 
 const fetchProfilesFail = (state, action) => {
-  return updateObject(state, { loading: false });
+  return updateObject(state, { loading: false, error: action.error });
 };
 
 const fetchProfilesSuccess = (state, action) => {
-  return updateObject(state, { phoneBook: action.profiles, loading: false });
+  return updateObject(state, {
+    phoneBook: action.data.profiles,
+    loading: false,
+  });
 };
 
 const fetchProfilesCancel = (state, action) => {

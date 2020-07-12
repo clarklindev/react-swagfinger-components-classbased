@@ -9,16 +9,11 @@ export {
   processFetchProfileSchema,
   formatDataComplete,
   processResetId,
+  tryOfflineMode,
 } from './profile';
 
 //auth
-export {
-  auth,
-  logout,
-  setAuthRedirectPath,
-  authCheckState,
-  fetchLoginSchema,
-} from './auth';
+export { auth, logout, setAuthRedirectPath, authCheckState } from './auth';
 
 //ui
 export { hasToolbar } from './ui';

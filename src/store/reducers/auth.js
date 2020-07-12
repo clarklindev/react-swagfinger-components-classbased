@@ -8,6 +8,8 @@ const initialState = {
   loading: false,
   authRedirectPath: '/',
   loginSchema: null,
+
+  isOffline: false,
 };
 const authStart = (state, action) => {
   return updateObject(state, { error: null, loading: true });
@@ -60,7 +62,12 @@ const fetchLoginSchemaFail = (state, action) => {
   return updateObject(state, {
     error: action.error,
     loading: false,
+    isOffline: true,
   });
+};
+
+const isOffline = (state, action) => {
+  return updateObject(state, { isOffline: action.isOffline });
 };
 
 const reducer = (state = initialState, action) => {
@@ -81,6 +88,9 @@ const reducer = (state = initialState, action) => {
       return fetchLoginSchemaSuccess(state, action);
     case actionTypes.AUTH_FETCH_LOGIN_SCHEMA_FAIL:
       return fetchLoginSchemaFail(state, action);
+
+    case actionTypes.IS_OFFLINE:
+      return isOffline(state, action);
     default:
       return state;
   }

@@ -26,23 +26,51 @@ class Login extends Component {
     isSignUp: false,
     isPasswordVisible: false,
     form: null,
-    loginSchema: null,
+    schema: [
+      {
+        component: 'input',
+        componentconfig: {
+          placeholder: 'Login id',
+          type: 'text',
+          validation: {
+            isRequired: true,
+          },
+        },
+        label: 'Login',
+        name: 'login',
+        type: 'single',
+        value: {
+          data: '',
+          errors: [],
+          pristine: true,
+          touched: false,
+          valid: false,
+        },
+      },
+      {
+        component: 'inputpassword',
+        componentconfig: {
+          placeholder: 'Password',
+          type: 'password',
+        },
+        label: 'Password',
+        name: 'password',
+        type: 'single',
+        value: {
+          data: '',
+          errors: [],
+          pristine: true,
+          touched: false,
+          valid: false,
+        },
+      },
+    ],
   };
   //------------------------------------------------------
   //------------------------------------------------------
   componentDidMount() {
-    this.props.onFetchLoginSchema(); //load the login form schema
+    this.createForm(this.state.schema);
     window.addEventListener('keydown', this.keyListener);
-  }
-
-  componentDidUpdate() {
-    if (this.props.loginSchema !== this.state.loginSchema) {
-      console.log('props.loginSchema: ', this.props.loginSchema);
-      this.createForm(this.props.loginSchema);
-    }
-    if (this.props.error !== null) {
-      console.log('error: ', this.props.error);
-    }
   }
 
   createForm = (schema) => {
@@ -50,17 +78,10 @@ class Login extends Component {
 
     schema.forEach((item) => {
       obj[item.name] = item;
-      obj[item.name].value = {
-        data: '',
-        touched: false,
-        pristine: true,
-        valid: false,
-        errors: false,
-      };
     });
     console.log('form:', obj);
 
-    this.setState({ loginSchema: schema, form: obj });
+    this.setState({ form: obj });
   };
 
   componentWillUnmount() {
@@ -93,10 +114,6 @@ class Login extends Component {
   //------------------------------------------------------
   //------------------------------------------------------
   inputChangedHandler = (type, inputIdentifier, newval) => {
-    console.log('type: ', type);
-    console.log('inputIdentifier:', inputIdentifier);
-    console.log('newval: ', newval);
-
     let validation;
 
     if (
@@ -134,6 +151,8 @@ class Login extends Component {
 
   onSubmitHandler = (event) => {
     event.preventDefault(); //prevents reloading of page
+    console.log('login: ', this.state.form.login.value.data);
+    console.log('password: ', this.state.form.password.value.data);
     this.props.onAuth(
       this.state.form.login.value.data,
       this.state.form.password.value.data,
@@ -167,12 +186,13 @@ class Login extends Component {
     let inputs;
     if (this.state.form !== null) {
       inputs = Object.keys(this.state.form).map((key) => {
-        console.log('key:', key, ' data: ', this.state.form[key]);
         return <ComponentFactory key={key} data={this.state.form[key]} />;
       });
     }
 
-    let formAll = (
+    let formAll = this.props.loading ? (
+      <Spinner />
+    ) : (
       <DefaultPageLayout
         type='LayoutNarrow'
         label={
@@ -218,10 +238,6 @@ class Login extends Component {
       </DefaultPageLayout>
     );
 
-    if (this.props.loading) {
-      formAll = <Spinner />;
-    }
-
     let content = null;
     if (this.props.isAuthenticated) {
       content = <Redirect to={this.props.authRedirectPath} />;
@@ -235,8 +251,6 @@ class Login extends Component {
 const mapStateToProps = (state) => {
   return {
     loading: state.auth.loading,
-    error: state.auth.error,
-    loginSchema: state.auth.loginSchema,
     isAuthenticated: state.auth.token !== null,
     authRedirectPath: state.auth.authRedirectPath,
   };
@@ -244,14 +258,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onAuth: (email, password, isSignup) => {
-      return dispatch(actions.auth(email, password, isSignup));
+    onAuth: (login, password, isSignup) => {
+      return dispatch(actions.auth(login, password, isSignup));
     },
-
-    onFetchLoginSchema: () => {
-      return dispatch(actions.fetchLoginSchema());
-    },
-    // onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath('/')),
   };
 };
 export default connect(

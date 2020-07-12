@@ -1,0 +1,273 @@
+{
+  "data" : {
+    "faq" : [ {
+      "description" : "answer 1",
+      "title" : "question 1"
+    }, {
+      "description" : "answer 2",
+      "title" : "question 2"
+    }, {
+      "description" : "answer 3",
+      "title" : "question 3"
+    } ],
+    "profiles" : {
+      "-M04kd8a-Z18lYB_XfGo" : {
+        "contactnumbers" : [ "+27893300022", "00022323222" ],
+        "contactpreference" : "email",
+        "dateofbirth" : "1948-1-10",
+        "emails" : [ "adamapple@gmail.com" ],
+        "gallerymanager" : [ {
+          "description" : "this pic is about anc",
+          "title" : "anc",
+          "url" : "www.google.com/anc"
+        }, {
+          "description" : "this is a long december",
+          "title" : "dec",
+          "url" : "www.google.com/dec"
+        } ],
+        "gender" : "female",
+        "height" : "2.10",
+        "lastname" : "Apple",
+        "name" : "Adam",
+        "notes" : "poomoocc",
+        "privateprofile" : true,
+        "salary" : {
+          "max" : 10000,
+          "min" : 3000
+        },
+        "weight" : "30"
+      }
+    }
+  },
+  "schemas" : {
+    "collection" : {
+      "faq" : {
+        "component" : "accordion",
+        "componentconfig" : {
+          "metadata" : [ {
+            "component" : "input",
+            "componentconfig" : {
+              "placeholder" : "title",
+              "type" : "string",
+              "validation" : {
+                "isRequired" : true
+              }
+            },
+            "field" : "title",
+            "label" : "Title"
+          }, {
+            "component" : "textarea",
+            "componentconfig" : {
+              "placeholder" : "description",
+              "type" : "string",
+              "validation" : {
+                "isRequired" : true
+              }
+            },
+            "field" : "description",
+            "label" : "Description"
+          } ],
+          "startchildcount" : 1,
+          "type" : "array"
+        },
+        "field" : "faq",
+        "label" : "FAQ"
+      },
+      "login" : [ {
+        "component" : "input",
+        "componentconfig" : {
+          "placeholder" : "Login id",
+          "type" : "text",
+          "validation" : {
+            "isRequired" : true
+          }
+        },
+        "label" : "Login",
+        "name" : "login",
+        "type" : "single",
+        "value" : {
+          "data" : "",
+          "errors" : "",
+          "touched" : false,
+          "valid" : false
+        }
+      }, {
+        "component" : "inputpassword",
+        "componentconfig" : {
+          "placeholder" : "Password",
+          "type" : "password"
+        },
+        "label" : "Password",
+        "name" : "password",
+        "type" : "single",
+        "value" : {
+          "data" : "",
+          "errors" : "",
+          "touched" : false,
+          "valid" : false
+        }
+      } ],
+      "profiles" : [ {
+        "component" : "input",
+        "componentconfig" : {
+          "placeholder" : "your name",
+          "type" : "string",
+          "validation" : {
+            "isRequired" : true
+          }
+        },
+        "label" : "Name",
+        "name" : "name",
+        "type" : "single",
+        "value" : ""
+      }, {
+        "component" : "input",
+        "componentconfig" : {
+          "placeholder" : "your lastname",
+          "type" : "string",
+          "validation" : {
+            "isRequired" : true
+          }
+        },
+        "label" : "Last name",
+        "name" : "lastname",
+        "type" : "single",
+        "value" : ""
+      }, {
+        "component" : "multiinput",
+        "componentconfig" : {
+          "defaultinputs" : 2,
+          "metadata" : [ {
+            "component" : "input",
+            "placeholder" : "your email",
+            "type" : "string",
+            "validation" : {
+              "isEmail" : true,
+              "isRequired" : true
+            }
+          } ]
+        },
+        "label" : "Emails",
+        "name" : "emails",
+        "type" : "array",
+        "value" : ""
+      }, {
+        "component" : "multiinput",
+        "componentconfig" : {
+          "defaultinputs" : 1,
+          "metadata" : [ {
+            "component" : "input",
+            "placeholder" : "your number",
+            "type" : "string",
+            "validation" : {
+              "isPhoneNumber" : true,
+              "isRequired" : true
+            }
+          } ]
+        },
+        "label" : "Contact numbers",
+        "name" : "contactnumbers",
+        "type" : "array",
+        "value" : ""
+      }, {
+        "component" : "multiinputobjects",
+        "componentconfig" : {
+          "defaultinputs" : 3,
+          "metadata" : [ {
+            "component" : "input",
+            "field" : "url",
+            "label" : "Url",
+            "placeholder" : "url",
+            "type" : "string",
+            "validation" : {
+              "isRequired" : true
+            }
+          }, {
+            "component" : "input",
+            "field" : "title",
+            "label" : "Title",
+            "placeholder" : "title",
+            "type" : "string",
+            "validation" : {
+              "isRequired" : true
+            }
+          }, {
+            "component" : "textarea",
+            "field" : "description",
+            "label" : "description",
+            "placeholder" : "description",
+            "type" : "string",
+            "validation" : {
+              "isRequired" : true
+            }
+          } ],
+          "type" : "metadata"
+        },
+        "label" : "Gallery manager",
+        "name" : "gallerymanager",
+        "type" : "arrayofobjects",
+        "value" : ""
+      }, {
+        "component" : "gallerymanager",
+        "componentconfig" : {
+          "defaultinputs" : 3
+        },
+        "label" : "gallery",
+        "metadata" : [ {
+          "component" : "input",
+          "field" : "url",
+          "label" : "url",
+          "placeholder" : "url",
+          "type" : "string",
+          "validation" : {
+            "isRequired" : true
+          }
+        }, {
+          "component" : "textarea",
+          "field" : "description",
+          "label" : "description",
+          "placeholder" : "description",
+          "type" : "string",
+          "validation" : {
+            "isRequired" : true
+          }
+        }, {
+          "component" : "input",
+          "field" : "url",
+          "label" : "url",
+          "placeholder" : "url",
+          "type" : "string",
+          "validation" : {
+            "isRequired" : true
+          }
+        } ],
+        "name" : "gallery",
+        "type" : "array",
+        "value" : ""
+      } ]
+    },
+    "components" : {
+      "accordion" : "config",
+      "checkbox" : "config",
+      "counter" : "config",
+      "datepicker" : "config",
+      "gallerymanager" : "config",
+      "input" : "config",
+      "multiinput" : "config",
+      "multirangeslider" : "config",
+      "radio" : "config",
+      "rangeslider" : "config",
+      "select" : "config",
+      "selectwithinput" : "config",
+      "textarea" : "config",
+      "toggle" : "config",
+      "upload" : "config",
+      "uploaddrop" : "config"
+    },
+    "validation" : {
+      "isEmail" : false,
+      "isPhoneNumber" : false,
+      "isRequired" : false
+    }
+  }
+}

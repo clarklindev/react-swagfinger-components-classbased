@@ -578,30 +578,51 @@ class ProfileCreateOrUpdate extends Component {
     //make an object with 'data' is value associated with property
     //key is the prop name
     //use a data property because later we can spread the data object inside ComponentFactory
+    console.log('this.state.localstateform: ', this.state.localstateform);
 
-    let formElementsArray = [];
-    for (let key in this.state.localstateform) {
-      console.log('KEY: ', key);
-      console.log(
-        'this.props.localstateform[key]: ',
-        this.state.localstateform[key]
-      );
-      formElementsArray.push({
-        key: key,
-        data: this.state.localstateform[key], //refers to the value object associated with the profile property which is {key:{value}}
-      });
-    }
-
-    //inject object key+data into component factory
-    let formInputs = formElementsArray.map((each) => {
-      //key is unique because it uses the property 'field'
-      return <ComponentFactory key={each.key} data={each.data} />;
-    });
+    // let formElementsArray = [];
+    // for (let key in this.state.localstateform) {
+    //   console.log('KEY: ', key);
+    //   console.log(
+    //     'this.props.localstateform[key]: ',
+    //     this.state.localstateform[key]
+    //   );
+    //   formElementsArray.push({
+    //     key: key,
+    //     data: this.state.localstateform[key], //refers to the value object associated with the profile property which is {key:{value}}
+    //   });
+    // }
+    let formInputs = [];
+    // //inject object key+data into component factory
+    // let formInputs = formElementsArray.map((each) => {
+    //   //key is unique because it uses the property 'field'
+    //   return <ComponentFactory key={each.key} data={each.data} />;
+    // });
 
     const query = new URLSearchParams(this.props.location.search).get('id');
-    console.log('QUERY: ', query);
-    console.log('this.props.id: ', this.props.id);
-    console.log('this.props.isLoading: ', this.props.isLoading);
+    // console.log('QUERY: ', query);
+    // console.log('this.props.id: ', this.props.id);
+    // console.log('this.props.isLoading: ', this.props.isLoading);
+
+    const submitbutton = (
+      <Button
+        type='WithBorder'
+        onClick={(event) => {
+          console.log('Submit...');
+          event.preventDefault();
+          this.submitInputRef.current.click();
+        }}
+        onMouseOver={() => {
+          const event = new MouseEvent('mouseover', {
+            view: window,
+            bubbles: true,
+            cancelable: true,
+          });
+          //this.submitInputRef.current.dispatchEvent(event);
+        }}>
+        Submit
+      </Button>
+    );
 
     return (
       <React.Fragment>
@@ -636,23 +657,7 @@ class ProfileCreateOrUpdate extends Component {
                     onMouseOver={(event) => {} /*this.onSubmitTest(event)*/}
                     // disabled={!this.state.formIsValid} //dont disable just handle with validation
                   />
-                  <Button
-                    type='WithBorder'
-                    onClick={(event) => {
-                      console.log('Submit...');
-                      event.preventDefault();
-                      this.submitInputRef.current.click();
-                    }}
-                    onMouseOver={() => {
-                      const event = new MouseEvent('mouseover', {
-                        view: window,
-                        bubbles: true,
-                        cancelable: true,
-                      });
-                      //this.submitInputRef.current.dispatchEvent(event);
-                    }}>
-                    Submit
-                  </Button>
+                  {submitbutton}
                 </form>
               </Card>
             </DefaultPageLayout>

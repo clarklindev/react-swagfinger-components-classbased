@@ -33,15 +33,16 @@ class InputSearch extends Component {
       },
     };
 
-    const searchclose = (
-      <Button type='NoStyle' onClick={this.onClickHandler.bind(this)}>
-        <Icon
-          iconstyle='fas'
-          code='times'
-          size={searchConfig.componentconfig.iconsize}
-        />
-      </Button>
-    );
+    const searchclose =
+      this.props.value.length > 0 ? (
+        <Button type='NoStyle' onClick={this.onClickHandler.bind(this)}>
+          <Icon
+            iconstyle='fas'
+            code='times'
+            size={searchConfig.componentconfig.iconsize}
+          />
+        </Button>
+      ) : null;
 
     return (
       <React.Fragment>

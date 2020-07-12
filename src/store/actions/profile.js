@@ -15,8 +15,9 @@ export const processFetchProfiles = () => {
   // async constant
   return (dispatch) => {
     dispatch(fetchProfilesStart());
+
     axiosInstance
-      .get('/data/profiles.json', { cancelToken: source.token })
+      .get('/data/profiles.json')
       .then((response) => {
         console.log('RESPONSE', response);
 
@@ -29,18 +30,41 @@ export const processFetchProfiles = () => {
         dispatch(fetchProfilesSuccess(fetchedProfiles));
       })
       .catch((err) => {
-        if (axios.isCancel(err)) {
-          console.log('Request canceled ', err.message);
-        }
+        console.log('ERROR: ', err);
+        console.log('ERROR MESSAGE: ', err.message);
         dispatch(fetchProfilesFail(err));
       });
   };
 };
+
 export const processFetchProfilesCancel = () => {
   source.cancel('Operation cancelled by the user.');
   console.log('REQUEST CANCELLED!!!');
   return {
     type: actionTypes.FETCH_PROFILES_CANCEL,
+  };
+};
+
+export const tryOfflineMode = () => {
+  console.log('tryOfflineMode');
+  return (dispatch) => {
+    axios
+      .get('http://localhost:3000/data.json')
+      .then((response) => {
+        console.log('json: ', response.data);
+        console.log('here...');
+        let login = response.data.data.schemas.collection.login;
+        let offlineprofiles = response.data.data.profiles;
+
+        //this step is so we can add ID to the object
+        const fetchedProfiles = [];
+        for (let key in offlineprofiles) {
+          fetchedProfiles.push({ ...offlineprofiles[key], id: key });
+        }
+        console.log('offline fetched profiles: ', fetchedProfiles);
+        dispatch(fetchProfilesSuccess(fetchedProfiles, true));
+      })
+      .catch((err) => {});
   };
 };
 
@@ -62,6 +86,7 @@ export const processFetchProfile = (queryparam) => {
       });
   };
 };
+
 //async
 export const processProfileDelete = (token, id) => {
   return (dispatch) => {
@@ -215,14 +240,15 @@ export const fetchProfilesStart = () => {
   };
 };
 
-export const fetchProfilesSuccess = (profiles) => {
+export const fetchProfilesSuccess = (profiles, offlineMode = false) => {
   return {
     type: actionTypes.FETCH_PROFILES_SUCCESS,
-    profiles: profiles,
+    data: { profiles: profiles, offlineMode: offlineMode },
   };
 };
 
 export const fetchProfilesFail = (error) => {
+  console.log('fetchProfilesFail');
   return {
     type: actionTypes.FETCH_PROFILES_FAIL,
     error: error,

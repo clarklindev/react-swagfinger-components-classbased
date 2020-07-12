@@ -91,6 +91,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onTryAutoSignin: () => dispatch(actions.authCheckState()),
+
     fetchProfilesHandler: () => {
       dispatch(actions.processFetchProfiles()); //redux => props.phoneBook
     },

@@ -2,43 +2,6 @@ import * as actionTypes from './actionsTypes';
 import axiosInstance from '../../axios-profiles';
 import axios from 'axios';
 
-export const fetchLoginSchema = (axios) => {
-  console.log('processFetchProfileSchema');
-  return async (dispatch) => {
-    dispatch(fetchLoginSchemaStart());
-
-    let response = axiosInstance
-      .get(`/schemas/collection/login.json`)
-      .then((response) => {
-        console.log('gets here....');
-        dispatch(fetchLoginSchemaSuccess(response));
-      })
-      .catch((error) => {
-        console.log('error: ', error);
-        dispatch(fetchLoginSchemaFail(error));
-      });
-  };
-};
-
-export const fetchLoginSchemaStart = () => {
-  return {
-    type: actionTypes.AUTH_FETCH_LOGIN_SCHEMA_START,
-  };
-};
-export const fetchLoginSchemaSuccess = (response) => {
-  return {
-    type: actionTypes.AUTH_FETCH_LOGIN_SCHEMA_SUCCESS,
-    response: response,
-  };
-};
-
-export const fetchLoginSchemaFail = (error) => {
-  return {
-    type: actionTypes.AUTH_FETCH_LOGIN_SCHEMA_FAIL,
-    error: error,
-  };
-};
-
 export const authStart = () => {
   return {
     type: actionTypes.AUTH_START,
@@ -60,11 +23,11 @@ export const authFail = (error) => {
 };
 
 //async
-export const auth = (email, password, isSignUp) => {
+export const auth = (login, password, isSignUp) => {
   return (dispatch) => {
     dispatch(authStart());
     const authData = {
-      email: email,
+      email: login,
       password: password,
       returnSecureToken: true, //boolean that is required - indicates if should return a token or not
     };
@@ -102,7 +65,7 @@ export const auth = (email, password, isSignUp) => {
       })
       .catch((err) => {
         console.log('ERROR: ', err);
-        dispatch(authFail(err));
+        //dispatch(authFail(err));
         //error codes
         //https://firebase.google.com/docs/reference/rest/auth#section-sign-in-email-password
       });
