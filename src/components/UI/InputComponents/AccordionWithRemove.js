@@ -81,7 +81,7 @@ class AccordionWithRemove extends PureComponent {
             styleClasses = [classes.AccordionItemHover];
           }
           return (
-            <FlexRow key={this.props.field + index}>
+            <FlexRow key={this.props.name + index}>
               <div
                 className={[classes.AccordionItem, ...styleClasses].join(' ')}>
                 <DraggableItem

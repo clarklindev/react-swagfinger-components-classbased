@@ -23,9 +23,18 @@ class Input extends PureComponent {
     value: '',
   };
 
+  componentDidMount() {
+    //console.log('updated...', this.props.value.data);
+    if (this.props.value !== this.state.value) {
+      console.log('value not same: ', this.props.value);
+      this.setState({ value: this.props.value.data });
+    }
+  }
+
   componentDidUpdate() {
     //console.log('updated...', this.props.value.data);
     if (this.props.value !== this.state.value) {
+      console.log('value not same: ', this.props.value);
       this.setState({ value: this.props.value.data });
     }
   }
@@ -46,24 +55,18 @@ class Input extends PureComponent {
     let tempClasses = [];
     let error = null;
     //props
-    const {
-      validation,
-      value,
-      readOnly,
-      placeholder,
-      componentconfig,
-    } = this.props;
 
     if (
-      validation &&
-      !value.valid &&
-      (value.touched || (!value.touched && !value.pristine))
+      this.props.componentconfig.validation &&
+      !this.props.value.valid &&
+      (this.props.value.touched ||
+        (!this.props.value.touched && !this.props.value.pristine))
     ) {
       // console.log('pushing invalid: ');
       tempClasses.push(classes.Invalid);
-      error = <ErrorList value={{ data: value.errors }} />;
+      error = <ErrorList value={{ data: this.props.value.errors }} />;
     }
-    if (readOnly) {
+    if (this.props.readOnly) {
       tempClasses.push(classes.ReadOnly);
     }
     return (
@@ -72,12 +75,12 @@ class Input extends PureComponent {
           <input
             className={[this.className, tempClasses].join(' ')}
             placeholder={this.props.componentconfig.placeholder} //needed for multiinput ...props
-            readOnly={readOnly}
+            readOnly={this.props.readOnly}
             name={this.props.name}
             type={this.props.componentconfig.type}
             value={this.state.value} //receives an object with {data: value} property
             onChange={this.inputChangeHandler}
-            title={value.data}
+            title={this.props.value.data}
           />
           {error}
         </div>

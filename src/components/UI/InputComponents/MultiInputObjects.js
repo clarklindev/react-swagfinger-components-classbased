@@ -19,7 +19,6 @@ class MultiInputObjects extends Component {
   }
   render() {
     const { addinput, removeinput, changed } = this.context;
-    const { value, componentconfig, field, validation } = this.props;
     const deleteButton = (
       <Button
         title='Delete'
@@ -27,13 +26,13 @@ class MultiInputObjects extends Component {
         className={classes.RemoveButton}
         onClick={(event) => {
           event.preventDefault();
-          removeinput(field);
+          removeinput(this.props.name);
         }}>
         <Icon iconstyle='far' code='trash-alt' size='sm' />
       </Button>
     );
 
-    const row = value.map((val, index) => {
+    const row = this.props.value.map((val, index) => {
       let tempClasses = [...this.inputClasses];
       console.log('is Obj:', val);
       // if (
@@ -43,24 +42,26 @@ class MultiInputObjects extends Component {
       // ) {
       //   tempClasses.push(classes.Invalid);
       // }
-
-      return Object.keys(val.data).map((each, i) => {
-        console.log('val.data[each]: ', val.data[each]);
+      return Object.keys(val).map((each, i) => {
+        console.log('item[each]: ', val[each]);
+        console.log('this.props.name: ', this.props.name);
+        console.log('index: ', index);
+        console.log('i: ', i);
         return (
           <FlexRow
             flexGrow
             spacing='bottom-notlast'
-            key={field + index + '_' + i}>
+            key={this.props.name + index + '_' + i}>
             <FlexColumn flexGrow spacing='bottom'>
               <label className={classes.Label}>{each}</label>
               <Input
                 className={classes.tempClasses}
-                {...componentconfig}
-                // validation={validation}
-                value={{ data: val.data[each] }}
+                componentconfig={this.props.componentconfig}
+                validation={this.props.validation}
+                value={{ data: val[each].data }}
                 onChange={(event) =>
                   //pass in the name of the prop, and the index (if array item)
-                  changed(event.target.value, field, index)
+                  changed(event.target.value, this.props.name, index)
                 }
               />
             </FlexColumn>
@@ -78,7 +79,7 @@ class MultiInputObjects extends Component {
             {...{
               allowMultiOpen: false,
               openOnStartIndex: -1, //zero-index, negative value or invalid index to not open on start,
-              field,
+              name: this.props.name,
               onClick: () => {},
             }}
             removeButton={deleteButton}>
@@ -89,7 +90,7 @@ class MultiInputObjects extends Component {
         <Button
           title='Add'
           type='WithBorder'
-          onClick={(event) => addinput(event, field)}>
+          onClick={(event) => addinput(event, this.props.name)}>
           <Icon iconstyle='fas' code='plus' size='sm' />
           <p>Add</p>
         </Button>
@@ -104,7 +105,7 @@ MultiInputObjects.propTypes = {
   validation: PropTypes.object,
   placeholder: PropTypes.string,
   componentconfig: PropTypes.object,
-  field: PropTypes.string,
+  name: PropTypes.string,
   changed: PropTypes.func,
 };
 
