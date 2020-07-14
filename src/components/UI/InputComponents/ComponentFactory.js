@@ -90,6 +90,7 @@ class ComponentFactory extends Component {
         this.inputElement = <RangeSlider {...this.props.data} />;
         break;
       case 'multirangeslider':
+        console.log('WOOF: ', { ...this.props.data });
         this.inputElement = <MultiRangeSlider {...this.props.data} />;
         break;
       case 'toggle':

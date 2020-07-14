@@ -117,8 +117,14 @@ class ProfileCreateOrUpdate extends Component {
       console.log('tempObj: ', tempObj);
       switch (tempObj.type) {
         case 'single':
-        case 'object':
           tempObj.value = dataObject;
+          break;
+        case 'object':
+          let obj = {};
+          tempObj.componentconfig.metadata.forEach((item) => {
+            obj[item.label] = dataObject;
+          });
+          tempObj.value = obj;
           break;
         case 'array':
           let arrayValues = [];
@@ -143,21 +149,6 @@ class ProfileCreateOrUpdate extends Component {
           tempObj.value = arrayofobjectsValues;
           break;
 
-        // value = this.props.activeProfile[formattribute].map((each) => {
-        //   //each value is an object... validate each attribute
-        //   let obj = {};
-        //   //go through each attribute of the value
-        //   Object.keys(each).forEach((attr) => {
-        //     obj[attr] = {
-        //       data: each[attr], //value at the key
-        //       valid: validated.isValid,
-        //       errors: validated.errors, //array of errors
-        //       touched: false,
-        //       pristine: true,
-        //     };
-        //   });
-        //   return obj;
-        // });
         default:
       }
       formatted[tempObj.name] = tempObj;
@@ -214,6 +205,27 @@ class ProfileCreateOrUpdate extends Component {
               };
               break;
             case 'object':
+              let keys = Object.keys(this.props.activeProfile[formattribute]);
+              let obj = {};
+              keys.forEach((attr) => {
+                // let metadata = this.props.formattedForm[
+                //   formattribute
+                // ].componentconfig.metadata.find((meta) => {
+                //   return meta.name === attr;
+                // });
+                // const validated = validationCheck(
+                //   each[attr],
+                //   metadata.validation
+                // );
+                obj[attr] = {
+                  data: this.props.activeProfile[formattribute][attr], //value at the key
+                  valid: false, //validated.isValid,
+                  errors: false, //validated.errors, //array of errors
+                  touched: false,
+                  pristine: true,
+                };
+              });
+              value = obj;
               break;
             case 'array':
               value = this.props.activeProfile[formattribute].map((each) => {

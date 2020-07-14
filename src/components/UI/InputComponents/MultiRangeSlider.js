@@ -72,13 +72,13 @@ class MultiRangeSlider extends Component {
       //we want to still store the actual values in the database, the display values should be converted from the actual values
       //update positions on screen
       //MIN
-      let findMin = min.data === null ? min : this.props.value[0].data;
+      let findMin = min.data === null ? min : this.props.value['min'].data;
       let tempLabelMin = this.restrictActualBoundaries(findMin, 0);
       let convertedMin = this.convertToDisplayValue(tempLabelMin, 0);
       this.populateSlider(convertedMin, 0);
       this.stateDisplayValuesHandler(convertedMin, 0); //set state
       //MAX
-      let findMax = max.data === null ? max : this.props.value[1].data;
+      let findMax = max.data === null ? max : this.props.value['max'].data;
       let tempLabelMax = this.restrictActualBoundaries(findMax, 1);
       let convertedMax = this.convertToDisplayValue(tempLabelMax, 1);
       this.populateSlider(convertedMax, 1);
@@ -105,7 +105,10 @@ class MultiRangeSlider extends Component {
       if (value < min) {
         value = min;
       }
-      max = this.props.value[1].data === '' ? max : this.props.value[1].data;
+      max =
+        this.props.value['max'].data === ''
+          ? max
+          : this.props.value['max'].data;
 
       //console.log('SETTING MAX...', max);
     }
@@ -118,7 +121,10 @@ class MultiRangeSlider extends Component {
       if (value > max) {
         value = max;
       }
-      min = this.props.value[0].data === '' ? min : this.props.value[0].data;
+      min =
+        this.props.value['min'].data === ''
+          ? min
+          : this.props.value['min'].data;
 
       //console.log('SETTING MIN...', min);
     }
@@ -346,35 +352,35 @@ class MultiRangeSlider extends Component {
     let errorMin = null;
     let errorMax = null;
     if (
-      (this.props.validation.required &&
-        !this.props.value[0].valid &&
+      (this.props.componentconfig.validation.isRequired &&
+        !this.props.value['min'].valid &&
         //min
-        this.props.value[0].touched) ||
-      (!this.props.value[0].touched && !this.props.value[0].pristine)
+        this.props.value['min'].touched) ||
+      (!this.props.value['min'].touched && !this.props.value['min'].pristine)
     ) {
       // console.log('pushing invalid: ');
       tempClassesMin.push(classes.Invalid);
       errorMin = (
         <ErrorList
           value={{
-            data: this.props.value[0].errors,
+            data: this.props.value['min'].errors,
           }}
         />
       );
     }
     if (
-      (this.props.validation.required &&
-        !this.props.value[1].valid &&
+      (this.props.componentconfig.validation.isRequired &&
+        !this.props.value['max'].valid &&
         //max
-        this.props.value[1].touched) ||
-      (!this.props.value[1].touched && !this.props.value[1].pristine)
+        this.props.value['max'].touched) ||
+      (!this.props.value['max'].touched && !this.props.value['max'].pristine)
     ) {
       // console.log('pushing invalid: ');
       tempClassesMax.push(classes.Invalid);
       errorMax = (
         <ErrorList
           value={{
-            data: this.props.value[1].errors,
+            data: this.props.value['max'].errors,
           }}
         />
       );
@@ -408,14 +414,12 @@ class MultiRangeSlider extends Component {
                   ...tempClassesMin,
                   ...tempClassesMax,
                 ]),
-              ].join(' ')}
-            >
+              ].join(' ')}>
               {/* rail - item of which calculations are based on*/}
               <div
                 ref={this.railRef}
                 className={classes.Rail}
-                onClick={(event) => this.scrollClickHandler(event)}
-              >
+                onClick={(event) => this.scrollClickHandler(event)}>
                 {/* Sliders */}
                 {(this.props.componentconfig.options || []).map(
                   (each, index) => {
@@ -430,8 +434,7 @@ class MultiRangeSlider extends Component {
                         }}
                         onMouseDown={(event) => {
                           this.onMouseDownHandler(index, event);
-                        }}
-                      ></div>
+                        }}></div>
                     );
                   }
                 )}
