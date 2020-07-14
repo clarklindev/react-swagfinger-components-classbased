@@ -62,10 +62,10 @@ class ProfileCreateOrUpdate extends Component {
       //sets up props.id accessed via redux state state.profile.urlQuerystringId
       //sets up props.activeProfile accessed via redux state state.profile.activeProfile
       console.log('this.props.formattedForm:', this.props.formattedForm);
-      this.getDataProfileByIdHandler();
       this.setState({
         localstateform: this.props.formattedForm,
       });
+      this.getDataProfileByIdHandler();
     }
 
     // //this step deals with metadata if there are multiple entry fields (object) under each value from firebase
@@ -131,15 +131,33 @@ class ProfileCreateOrUpdate extends Component {
 
         case 'arrayofobjects':
           let arrayofobjectsValues = [];
-          let complexObject = tempObj.componentconfig.metadata.map((item) => {
-            return { key: item.label, value: dataObject };
-          });
           for (let j = 0; j < tempObj.componentconfig.defaultinputs; j++) {
-            arrayofobjectsValues.push(complexObject);
+            let obj = {};
+            tempObj.componentconfig.metadata.forEach((item) => {
+              obj[item.label] = dataObject;
+            });
+            arrayofobjectsValues.push(obj);
           }
+
           console.log('arrayofobjectsValues: ', arrayofobjectsValues);
           tempObj.value = arrayofobjectsValues;
           break;
+
+        // value = this.props.activeProfile[formattribute].map((each) => {
+        //   //each value is an object... validate each attribute
+        //   let obj = {};
+        //   //go through each attribute of the value
+        //   Object.keys(each).forEach((attr) => {
+        //     obj[attr] = {
+        //       data: each[attr], //value at the key
+        //       valid: validated.isValid,
+        //       errors: validated.errors, //array of errors
+        //       touched: false,
+        //       pristine: true,
+        //     };
+        //   });
+        //   return obj;
+        // });
         default:
       }
       formatted[tempObj.name] = tempObj;

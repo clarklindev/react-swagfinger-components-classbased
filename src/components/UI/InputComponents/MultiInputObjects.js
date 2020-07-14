@@ -53,6 +53,7 @@ class MultiInputObjects extends Component {
             spacing='bottom-notlast'
             key={this.props.name + index + '_' + i}>
             <FlexColumn flexGrow spacing='bottom'>
+              {/* val[each].key vs */}
               <label className={classes.Label}>{each}</label>
               <Input
                 className={classes.tempClasses}
