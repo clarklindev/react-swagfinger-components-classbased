@@ -19,7 +19,7 @@ class Textarea extends Component {
     let error = null;
     let tempClasses = [];
     if (
-      this.props.validation.required &&
+      this.props.componentconfig.validation.isRequired &&
       !this.props.value.valid &&
       (this.props.value.touched ||
         (!this.props.value.touched && !this.props.value.pristine))
