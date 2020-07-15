@@ -45,14 +45,15 @@ class Datepicker extends Component {
 
   state = {
     startOfWeek: 'sun', //'mon' | 'sun'
-    showCalendar: false,
+    showCalendar: this.props.componentconfig.showcalendar,
     isInteracting: false,
     currentdate: new Date(),
     pickeddate: null,
+    isCollapsible: this.props.componentconfig.iscollapsible,
 
     viewstate: 'daypicker',
     format: 'full', //'iso' (default) eg. '2000-10-13' || 'full' eg. 'Thursday, 12 December 2019'
-    position: 'absolute', //'absolute' | 'relative'
+    position: this.props.componentconfig.position, //'absolute' | 'relative'
     daypicker: { arrows: true, month: true, year: true },
     monthpicker: { arrows: false, month: true, year: false },
     yearpicker: { arrows: true, month: false, year: true },
@@ -167,8 +168,7 @@ class Datepicker extends Component {
                         }}
                         onBlur={(event) => {
                           this.onBlurHandler(event);
-                        }}
-                      >
+                        }}>
                         {this.state.currentdate.getFullYear() + counter}
                       </div>
                     </td>
@@ -219,8 +219,7 @@ class Datepicker extends Component {
                         }}
                         onBlur={(event) => {
                           this.onBlurHandler(event);
-                        }}
-                      >
+                        }}>
                         {monthStringFormatted}
                       </div>
                     </td>
@@ -329,8 +328,7 @@ class Datepicker extends Component {
                     }}
                     onBlur={(event) => {
                       this.onBlurHandler(event);
-                    }}
-                  >
+                    }}>
                     {dayCount}
                   </div>
                 );
@@ -341,8 +339,7 @@ class Datepicker extends Component {
                 <td
                   key={
                     'day' + j + k * Object.keys(this.daysOfWeekLabels).length
-                  }
-                >
+                  }>
                   {day}
                 </td>
               );
@@ -365,7 +362,7 @@ class Datepicker extends Component {
     console.log('viewstate: ', newviewstate);
     if (this.state.viewstate !== newviewstate) {
       this.setState((prevState) => {
-        this.inputRef.current.focus();
+        //this.inputRef.current.focus();
         return {
           viewstate: newviewstate,
           isInteracting: false,
@@ -380,7 +377,7 @@ class Datepicker extends Component {
     event.preventDefault();
     // console.log('onShowCalendar');
     // console.log('this.state: ', this.state);
-    this.inputRef.current.focus();
+    //this.inputRef.current.focus();
     this.setState((prevState) => {
       return {
         showCalendar: true,
@@ -413,11 +410,14 @@ class Datepicker extends Component {
     event.stopPropagation();
     // console.log('BLUR!!');
     // console.log('event: ', event);
-    if (this.state.isInteracting === false) {
+    if (
+      this.state.isInteracting === false &&
+      this.state.isCollapsible === true
+    ) {
       this.setState({ showCalendar: false });
     } else {
       //set focus on input
-      this.inputRef.current.focus();
+      //this.inputRef.current.focus();
     }
   };
 
@@ -534,7 +534,7 @@ class Datepicker extends Component {
 
     //if month/year set state isInteracting to false so misclick can close window
     this.setState({ isInteracting: false });
-    this.inputRef.current.focus();
+    //this.inputRef.current.focus();
 
     let target = event.target;
 
@@ -578,7 +578,7 @@ class Datepicker extends Component {
 
     //set isInteracting to false to window can close on misclick
     this.setState({ isInteracting: false });
-    this.inputRef.current.focus();
+    //this.inputRef.current.focus();
     let target = event.target;
 
     Array.from(
@@ -632,8 +632,7 @@ class Datepicker extends Component {
         onClick={(event) => this.onToggleCalendar(event)}
         onBlur={(event) => {
           this.onBlurHandler(event);
-        }}
-      >
+        }}>
         <input
           {...this.props}
           placeholder={this.props.placeholder}
@@ -658,23 +657,27 @@ class Datepicker extends Component {
             this.onShowCalendar(event);
           }}
         />
-
-        <Button
-          onMouseOver={(event) => {
-            this.onMouseOver(event);
-          }}
-          onMouseOut={(event) => {
-            this.onMouseOut(event);
-          }}
-        >
-          {/* <CalendarIcon /> */}
-          <Icon iconstyle='far' code='calendar-alt' size='sm' />
-        </Button>
+        {this.state.isCollapsible ? (
+          <Button
+            onMouseOver={(event) => {
+              this.onMouseOver(event);
+            }}
+            onMouseOut={(event) => {
+              this.onMouseOut(event);
+            }}>
+            {/* <CalendarIcon /> */}
+            <Icon iconstyle='far' code='calendar-alt' size='sm' />
+          </Button>
+        ) : null}
       </div>
     );
     //-----------------------------------------------------------
     //-----------------------------------------------------------
-    let viewPosition = this.state.position === 'relative' ? 'relative' : null;
+    //note: with date calendar, if the iscollapsible property is 'false', position should be forced as to not be able to be set at absolute
+    let viewPosition =
+      this.state.position === 'relative' || this.state.isCollapsible === false
+        ? 'relative'
+        : null;
 
     let calendar = this.state.showCalendar ? (
       <div
@@ -684,8 +687,7 @@ class Datepicker extends Component {
         }}
         onMouseOut={(event) => {
           this.onMouseOut(event);
-        }}
-      >
+        }}>
         <div className={[classes.CalendarContent, viewPosition].join(' ')}>
           <div className={classes.CalendarHeader}>
             {this.state[this.state.viewstate].arrows ? (
@@ -703,8 +705,7 @@ class Datepicker extends Component {
                 }}
                 onBlur={(event) => {
                   this.onBlurHandler(event);
-                }}
-              >
+                }}>
                 <Icon iconstyle='fas' code='chevron-left' size='sm' />
               </Button>
             ) : null}
@@ -723,8 +724,7 @@ class Datepicker extends Component {
                     }}
                     onMouseOut={(event) => {
                       this.onMouseOut(event);
-                    }}
-                  >
+                    }}>
                     {this.printYear(this.state.currentdate.getFullYear())}
                   </Button>
                 )
@@ -744,8 +744,7 @@ class Datepicker extends Component {
                     }}
                     onMouseOut={(event) => {
                       this.onMouseOut(event);
-                    }}
-                  >
+                    }}>
                     {this.state.viewstate === 'monthpicker'
                       ? 'Month'
                       : this.printMonth(this.state.currentdate.getMonth())}
@@ -768,8 +767,7 @@ class Datepicker extends Component {
                 }}
                 onBlur={(event) => {
                   this.onBlurHandler(event);
-                }}
-              >
+                }}>
                 <Icon iconstyle='fas' code='chevron-right' size='sm' />
               </Button>
             ) : null}
