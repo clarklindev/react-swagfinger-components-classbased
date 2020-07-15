@@ -76,8 +76,7 @@ class Select extends Component {
             this.props.onChange ? this.props.onChange : this.onChangeHandler
           }
           onClick={this.onClickHandler}
-          onBlur={this.onBlurHandler}
-        >
+          onBlur={this.onBlurHandler}>
           {/* the placeholder will never be present on an update if this is a required input */}
           <option key='placeholder' value='' disabled>
             {this.props.componentconfig.placeholder}

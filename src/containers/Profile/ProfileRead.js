@@ -12,7 +12,7 @@ import Tabs from '../../components/UI/Tabs/Tabs';
 import * as Clipboard from '../../shared/clipboard';
 
 //tabs
-import ProfileReadDocuments from './ProfileReadDocuments';
+import ProfileReadTimeline from './ProfileReadTimeline';
 import ProfileReadAppointments from './ProfileReadAppointments';
 import ProfileReadProfile from './ProfileReadProfile';
 
@@ -59,11 +59,8 @@ class ProfileRead extends Component {
         case 'profile':
           data = <ProfileReadProfile onClick={this.copyToClipboard} />;
           break;
-        case 'documents':
-          data = <ProfileReadDocuments />;
-          break;
-        case 'appointments':
-          data = <ProfileReadAppointments />;
+        case 'timeline':
+          data = <ProfileReadTimeline />;
           break;
         default:
           data = undefined;
@@ -85,7 +82,7 @@ class ProfileRead extends Component {
               <DefaultPageLayout
                 label={`${this.props.activeProfile['name']} ${this.props.activeProfile['lastname']}`}>
                 <Tabs
-                  tabheaders={['profile', 'documents', 'appointments']}
+                  tabheaders={['profile', 'timeline']}
                   onClick={this.tabClickHandler}
                 />
                 <Card>{data}</Card>

@@ -417,11 +417,11 @@ class ProfileCreateOrUpdate extends Component {
           updatedFormElement.componentconfig.validation
         );
         obj = {
-          data: newval,
-          touched: true,
-          pristine: false,
-          valid: validation.isValid,
-          errors: validation.errors,
+          data: newval, //new value,
+          touched: true, //touched?
+          pristine: false, //pristine?
+          valid: validation.isValid, //validation
+          errors: validation.errors, //validation errors
         };
         updatedFormElement.value = obj;
         break;
@@ -544,26 +544,32 @@ class ProfileCreateOrUpdate extends Component {
 
   //checks the .valid property of each input in array or individual input
   //returns true/false if form object is valid/invalid
-  // checkInputValidProperty = (form) => {
-  //   // console.log('IS FORM VALID CHECK');
-  //   let formIsValid = true;
+  checkInputValidProperty = (form) => {
+    // console.log('IS FORM VALID CHECK');
+    let formIsValid = true;
 
-  //   //each prop in profile
-  //   for (let key in form) {
-  //     //if the prop of profile has an element type of...
-  //     if (form[key].validation) {
-  //       if (form[key].componentconfig.valuetype === 'array') {
-  //         for (let each of form[key].value) {
-  //           formIsValid = each.valid && formIsValid;
-  //         }
-  //       } else {
-  //         formIsValid = form[key].value.valid && formIsValid;
-  //       }
-  //     }
-  //   }
+    //each prop in profile
+    for (let key in form) {
+      //if the prop of profile has an element type of...
+      if (
+        form[key].type !== 'none' &&
+        form[key].componentconfig.validation.isRequired
+      ) {
+        switch (form[key].type) {
+          case 'single':
+            formIsValid = form[key].value.valid && formIsValid;
+            break;
+          case 'array':
+            for (let each of form[key].value) {
+              formIsValid = each.valid && formIsValid;
+            }
+            break;
+        }
+      }
+    }
 
-  //   return formIsValid;
-  // };
+    return formIsValid;
+  };
 
   //function gets called when submit button is clicked
   // onSubmitHandler = (event) => {
