@@ -16,38 +16,38 @@ class MultiInput extends Component {
   }
   render() {
     const { addinput, removeinput, changed } = this.context;
-    const { value, componentconfig, name, validation } = this.props;
+
     return (
       <div className={classes.MultiInput}>
-        {value.map((val, index) => {
+        {this.props.value.map((val, index) => {
           let tempClasses = [...this.inputClasses];
           if (
-            componentconfig.validation.isRequired &&
+            this.props.componentconfig.validation.isRequired &&
             !val.valid &&
             (val.touched || (!val.touched && !val.pristine))
           ) {
             tempClasses.push(classes.Invalid);
           }
           return (
-            <div className={classes.FlexGroupRow} key={name + index}>
+            <div className={classes.FlexGroupRow} key={this.props.name + index}>
               <Input
                 className={classes.tempClasses}
-                componentconfig={componentconfig}
-                validation={validation}
+                componentconfig={this.props.componentconfig}
+                validation={this.props.validation}
                 value={val}
                 onChange={(event) =>
                   //pass in the name of the prop, and the index (if array item)
-                  changed(event.target.value, name, index)
+                  changed('array', this.props.name, event.target.value, index)
                 }
               />
-              {value.length > 1 ? (
+              {this.props.value.length > 1 ? (
                 <Button
                   title='Delete'
                   type='WithBorder'
                   className={classes.RemoveButton}
                   onClick={(event) => {
                     event.preventDefault();
-                    removeinput(name, index);
+                    removeinput(this.props.name, index);
                   }}>
                   <Icon iconstyle='far' code='trash-alt' size='sm' />
                 </Button>
@@ -58,7 +58,7 @@ class MultiInput extends Component {
         <Button
           title='Add'
           type='WithBorder'
-          onClick={(event) => addinput(event, name)}>
+          onClick={(event) => addinput(event, this.props.name)}>
           <Icon iconstyle='fas' code='plus' size='sm' />
           <p>Add</p>
         </Button>

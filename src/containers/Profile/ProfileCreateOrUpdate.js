@@ -425,10 +425,26 @@ class ProfileCreateOrUpdate extends Component {
         };
         updatedFormElement.value = obj;
         break;
+      case 'array':
+        console.log('array: ', type, key, newval, index);
+        //single prop of form
+        validation = validationCheck(
+          newval,
+          updatedFormElement.componentconfig.validation
+        );
+        obj = {
+          data: newval, //new value,
+          touched: true, //touched?
+          pristine: false, //pristine?
+          valid: validation.isValid, //validation
+          errors: validation.errors, //validation errors
+        };
+        updatedFormElement.value[index] = obj;
+        break;
+
       case 'object':
         break;
-      case 'array':
-        break;
+
       case 'arrayofobjects':
         break;
     }
