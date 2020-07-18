@@ -13,18 +13,16 @@
   }
 
   &.Embedded {
-    border: 0;
-    border-bottom: 1px solid var(--colorborder);
-  }
-
-  &.Active {
-    padding: var(--defaultpadding);
-    border: 0;
-    border-radius: 0;
-    border-bottom: 1px solid var(--colorborder);
-
-    .Icon {
-      border-bottom-left-radius: 0;
+    border: 0px;
+    &.Active {
+      padding: var(--defaultpadding);
+      border-radius: 0;
+      border-top-left-radius: var(--borderradius);
+      border-top-right-radius: var(--borderradius);
+      border-bottom: 1px solid var(--colorborder);
+      .Icon {
+        border-bottom-left-radius: 0;
+      }
     }
   }
 

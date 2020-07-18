@@ -42,7 +42,7 @@ class Utils {
     console.log('closestElement: ', closestElement);
     return {
       value: closestElement,
-      index: closestIndex
+      index: closestIndex,
     };
   };
 }

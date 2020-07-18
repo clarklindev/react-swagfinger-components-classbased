@@ -7,7 +7,8 @@
 
   .AccordionItem {
     border: 1px solid var(--colorborder);
-    border-bottom: 0px;
+    border-bottom: 1px solid var(--colorborder);
+
     border-radius: var(--borderradius);
     margin-bottom: calc(var(--margindefault) * 0.5);
     background-color: white;
@@ -18,6 +19,13 @@
     &.AccordionItemHover:hover {
       border-color: var(--colorborderhover);
       cursor: pointer;
+    }
+
+    &.Invalid {
+      border: 1px solid var(--colorerror);
+    }
+    &.Active {
+      border-bottom: 0px;
     }
   }
 
@@ -46,9 +54,11 @@
     opacity: 0;
     visibility: hidden;
     max-height: 0px;
-    transition: all 0.5s, opacity 0.5s;
+    transition: padding 0.5s, visibility 0.5s, max-height 0.3s, opacity 0.5s;
     font: inherit;
     font-size: var(--fontsizedefault);
+    border-bottom: 0px;
+
     &.Active {
       padding: var(--paddingdefault);
       visibility: visible;
@@ -56,6 +66,9 @@
       border-bottom: 1px solid var(--colorborder);
       border-bottom-left-radius: var(--borderradius);
       border-bottom-right-radius: var(--borderradius);
+      &.Invalid {
+        border-bottom: 1px solid var(--colorerror);
+      }
     }
   }
 }

@@ -68,26 +68,43 @@ class AccordionWithRemove extends PureComponent {
   };
 
   render() {
+    console.log('this.props.isValid: ', this.props.isValid);
     return (
       <div className={classes.AccordionWithRemove} ref={this.accordionRef}>
         {this.props.children.map((item, index) => {
           console.log('prop: ', item);
+
           let additionalClasses = [];
+          let validationClasses = [];
           if (this.state.isActive[index] === true) {
             additionalClasses.push(classes.Active);
           }
+
+          console.log('this.props.isValid[0]: ', this.props.isValid[0]);
+          console.log('this.props.isValid[1]: ', this.props.isValid[1]);
+          console.log('this.props.isValid[2]: ', this.props.isValid[2]);
+          if (this.props.isValid[index] === false) {
+            console.log('valid? ', this.props.isValid[index]);
+            validationClasses.push(classes.Invalid);
+          }
           let styleClasses = [];
           if (this.props.hovereffect === true) {
-            styleClasses = [classes.AccordionItemHover];
+            styleClasses.push(classes.AccordionItemHover);
           }
+
           return (
             <FlexRow key={this.props.name + index}>
               <div
-                className={[classes.AccordionItem, ...styleClasses].join(' ')}>
+                className={[
+                  classes.AccordionItem,
+                  ...styleClasses,
+                  ...additionalClasses,
+                  ...validationClasses,
+                ].join(' ')}>
                 <DraggableItem
                   style={[
                     'Embedded',
-                    this.state.isActive[index] ? ['Active'] : null,
+                    this.state.isActive[index] ? 'Active' : null,
                   ]}>
                   <div
                     className={classes.AccordionTitle}
@@ -110,6 +127,7 @@ class AccordionWithRemove extends PureComponent {
                   className={[
                     classes.AccordionContent,
                     ...additionalClasses,
+                    ...validationClasses,
                   ].join(' ')}>
                   {item}
                 </div>

@@ -17,6 +17,7 @@ class Input extends PureComponent {
       classes[props.type],
       'Input',
       props.className,
+      props.classlist,
     ]);
   }
   state = {
@@ -55,14 +56,21 @@ class Input extends PureComponent {
     let tempClasses = [];
     let error = null;
     //props
-
+    console.log('bingo\n');
+    console.log(
+      'this.props.componentconfig.validation: ',
+      this.props.componentconfig.validation
+    );
+    console.log('!this.props.value.valid:', !this.props.value.valid);
+    console.log('this.props.value.touched: ', this.props.value.touched);
+    console.log('!this.props.value.pristine:', !this.props.value.pristine);
     if (
-      this.props.componentconfig.validation &&
+      this.props.componentconfig.validation.hasOwnProperty('isRequired') &&
       !this.props.value.valid &&
       (this.props.value.touched ||
         (!this.props.value.touched && !this.props.value.pristine))
     ) {
-      // console.log('pushing invalid: ');
+      console.log('pushing invalid: ');
       tempClasses.push(classes.Invalid);
       error = <ErrorList value={{ data: this.props.value.errors }} />;
     }

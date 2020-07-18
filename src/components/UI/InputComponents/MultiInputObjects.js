@@ -14,9 +14,37 @@ class MultiInputObjects extends Component {
 
   constructor(props) {
     super(props);
-
-    this.inputClasses = [classes.InputElement];
   }
+
+  state = {
+    rowValidity: {}, //all rows
+  };
+
+  checkValidity = (value, index) => {
+    //all props in object true check...
+    let allIsValid = Object.keys(value)
+      .map((item) => {
+        return value[item].valid;
+      })
+      .every((item) => {
+        return item === true;
+      });
+
+    this.setState(
+      (prevState) => {
+        let updated = { ...prevState.rowValidity };
+        updated[index] = allIsValid;
+
+        return {
+          rowValidity: updated,
+        };
+      }
+      // () => {
+      //   console.log('rowIsValid: ', this.state.rowIsValid);
+      // }
+    );
+  };
+
   render() {
     const { addinput, removeinput, changed } = this.context;
     const deleteButton = (
@@ -33,37 +61,43 @@ class MultiInputObjects extends Component {
     );
 
     const row = this.props.value.map((val, index) => {
-      let tempClasses = [...this.inputClasses];
-      console.log('is Obj:', val);
-      // if (
-      //   componentconfig.metadata[i].validation.isRequired &&
-      //   !value.valid &&
-      //   (value.touched || (!value.touched && !value.pristine))
-      // ) {
-      //   tempClasses.push(classes.Invalid);
-      // }
-      return Object.keys(val).map((each, i) => {
-        console.log('item[each]: ', val[each]);
-        console.log('this.props.name: ', this.props.name);
-        console.log('index: ', index);
-        console.log('i: ', i);
+      //ordered...by metadata array
+
+      return this.props.componentconfig.metadata.map((each, i) => {
         return (
           <FlexRow
             flexGrow
             spacing='bottom-notlast'
             key={this.props.name + index + '_' + i}>
             <FlexColumn flexGrow spacing='bottom'>
-              {/* val[each].key vs */}
-              <label className={classes.Label}>{each}</label>
+              <label className={classes.Label}>{each.label}</label>
               <Input
-                className={classes.tempClasses}
-                componentconfig={this.props.componentconfig}
-                validation={this.props.validation}
-                value={{ data: val[each].data }}
-                onChange={(event) =>
-                  //pass in the name of the prop, and the index (if array item)
-                  changed(event.target.value, this.props.name, index)
-                }
+                label={each.label}
+                name={each.name}
+                componentconfig={{
+                  type: each.type,
+                  validation: each.validation,
+                  placeholder: each.placeholder,
+                }}
+                value={{
+                  data: val[each.name].data,
+                  valid: val[each.name].valid,
+                  touched: val[each.name].touched,
+                  pristine: val[each.name].pristine,
+                  errors: val[each.name].errors,
+                }}
+                onChange={(event) => {
+                  changed(
+                    'arrayofobjects',
+                    this.props.name,
+                    event.target.value,
+                    index,
+                    each.name //prop name in object
+                  );
+
+                  //order sensitive
+                  this.checkValidity(val, index);
+                }}
               />
             </FlexColumn>
           </FlexRow>
@@ -78,6 +112,7 @@ class MultiInputObjects extends Component {
         <React.Fragment>
           <AccordionWithRemove
             {...{
+              isValid: this.state.rowValidity,
               allowMultiOpen: false,
               openOnStartIndex: -1, //zero-index, negative value or invalid index to not open on start,
               name: this.props.name,

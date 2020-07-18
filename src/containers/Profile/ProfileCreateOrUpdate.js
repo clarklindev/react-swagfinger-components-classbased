@@ -122,7 +122,7 @@ class ProfileCreateOrUpdate extends Component {
         case 'object':
           let obj = {};
           tempObj.componentconfig.metadata.forEach((item) => {
-            obj[item.label] = dataObject;
+            obj[item.name] = dataObject;
           });
           tempObj.value = obj;
           break;
@@ -140,7 +140,7 @@ class ProfileCreateOrUpdate extends Component {
           for (let j = 0; j < tempObj.componentconfig.defaultinputs; j++) {
             let obj = {};
             tempObj.componentconfig.metadata.forEach((item) => {
-              obj[item.label] = dataObject;
+              obj[item.name] = dataObject;
             });
             arrayofobjectsValues.push(obj);
           }
@@ -446,6 +446,23 @@ class ProfileCreateOrUpdate extends Component {
         break;
 
       case 'arrayofobjects':
+        const metadata = updatedFormElement.componentconfig.metadata.find(
+          (item) => {
+            return item.name === objectkey;
+          }
+        );
+        console.log('meta:', metadata);
+        validation = validationCheck(newval, metadata.validation);
+        console.log('why: ', validation);
+        obj = {
+          data: newval, //new value,
+          touched: true, //touched?
+          pristine: false, //pristine?
+          valid: validation.isValid, //validation
+          errors: validation.errors, //validation errors
+        };
+        console.log('here..: ', obj);
+        updatedFormElement.value[index][objectkey] = obj;
         break;
     }
 
@@ -569,17 +586,20 @@ class ProfileCreateOrUpdate extends Component {
       //if the prop of profile has an element type of...
       if (
         form[key].type !== 'none' &&
-        form[key].componentconfig.validation.isRequired
+        form[key].componentconfig.hasOwnProperty('validation')
       ) {
-        switch (form[key].type) {
-          case 'single':
-            formIsValid = form[key].value.valid && formIsValid;
-            break;
-          case 'array':
-            for (let each of form[key].value) {
-              formIsValid = each.valid && formIsValid;
-            }
-            break;
+        if (form[key].componentconfig.validation.hasOwnProperty('isRequired')) {
+          switch (form[key].type) {
+            case 'single':
+              formIsValid = form[key].value.valid && formIsValid;
+
+              break;
+            case 'array':
+              for (let each of form[key].value) {
+                formIsValid = each.valid && formIsValid;
+              }
+              break;
+          }
         }
       }
     }

@@ -155,8 +155,8 @@ class GalleryManager extends PureComponent {
                 index
               )
             }
-            title={val.data.value}
-            value={val.data.value}
+            title={val}
+            value={val}
             field={this.props.field}
           />
         </GalleryItem>

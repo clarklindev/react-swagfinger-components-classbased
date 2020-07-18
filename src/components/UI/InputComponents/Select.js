@@ -41,7 +41,7 @@ class Select extends Component {
   onChangeHandler = (event) => {
     console.log('SELECT onChangeHandler...');
     // The selected option element
-    this.context.changed(event.target.value, this.props.name);
+    this.context.changed('single', this.props.name, event.target.value);
   };
 
   //the 'value' prop on <select> element instead of 'selected' on <option>
@@ -53,7 +53,7 @@ class Select extends Component {
 
     let error = null;
     if (
-      this.props.validation &&
+      this.props.componentconfig.validation &&
       !this.props.value.valid &&
       (this.props.value.touched ||
         (!this.props.value.touched && !this.props.value.pristine))
