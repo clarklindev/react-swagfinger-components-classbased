@@ -25,7 +25,7 @@ class Counter extends PureComponent {
     if (tempVal < this.props.componentconfig.min) {
       tempVal = this.props.componentconfig.min;
     }
-    this.context.changed(tempVal.toFixed(2), this.props.name);
+    this.context.changed('single', this.props.name, tempVal.toFixed(2));
   };
 
   increment = (event) => {
@@ -39,24 +39,32 @@ class Counter extends PureComponent {
     if (tempVal > this.props.componentconfig.max) {
       tempVal = this.props.componentconfig.max;
     }
-    this.context.changed(tempVal.toFixed(2), this.props.name);
+    this.context.changed('single', this.props.name, tempVal.toFixed(2));
   };
 
   onBlur = (event) => {
     if (event.target.value <= this.props.componentconfig.min) {
-      this.context.changed(this.props.componentconfig.min, this.props.name);
+      this.context.changed(
+        'single',
+        this.props.name,
+        this.props.componentconfig.min
+      );
     }
     if (event.target.value >= this.props.componentconfig.max) {
-      this.context.changed(this.props.componentconfig.max, this.props.name);
+      this.context.changed(
+        'single',
+        this.props.name,
+        this.props.componentconfig.max
+      );
     }
     if (event.target.value === '') {
-      this.context.changed('', this.props.name);
+      this.context.changed('single', this.props.name, '');
     }
   };
 
   onChangeHandler = (event) => {
     console.log('CHANGED: ', event.target.value);
-    this.context.changed(event.target.value, this.props.name);
+    this.context.changed('single', this.props.name, event.target.value);
   };
 
   render() {
@@ -89,8 +97,7 @@ class Counter extends PureComponent {
             classes.FlexGroupRow,
             classes.Wrapper,
             ...tempClasses,
-          ].join(' ')}
-        >
+          ].join(' ')}>
           <Button onClick={this.decrement} disabled={isMinBound}>
             <Icon iconstyle='fas' code='minus' size='sm' />
           </Button>

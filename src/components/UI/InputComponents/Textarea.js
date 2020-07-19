@@ -40,7 +40,7 @@ class Textarea extends Component {
           {...this.props.componentconfig}
           value={this.props.value.data}
           onChange={(event) =>
-            this.context.changed(event.target.value, this.props.name)
+            this.context.changed('single', this.props.name, event.target.value)
           }
         />
         {error}

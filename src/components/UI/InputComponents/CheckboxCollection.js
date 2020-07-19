@@ -16,7 +16,7 @@ class CheckboxCollection extends PureComponent {
     // );
     let status = [];
     if (this.props.value) {
-      status = this.props.componentconfig.options.map((each) => {
+      status = this.props.componentconfig.metadata.map((each) => {
         return false;
       });
       //console.log('STATUS:', status);
@@ -33,7 +33,7 @@ class CheckboxCollection extends PureComponent {
     //console.log('\n==================================\n COMPONENTDIDUPDATE');
     if (this.props.value) {
       let status = [];
-      status = this.props.componentconfig.options.map((each) => {
+      status = this.props.componentconfig.metadata.map((each) => {
         return false;
       });
       //console.log('STATUS:', status);
@@ -43,7 +43,7 @@ class CheckboxCollection extends PureComponent {
         //console.log(`item.data (${index}):`, bool);
         if (this.state.checked[index] !== item.data) {
           //console.log('updating database: ', bool);
-          this.context.changed(bool, this.props.name, index);
+          this.context.changed('array', this.props.name, bool, index);
         }
         return bool;
       });
@@ -57,7 +57,9 @@ class CheckboxCollection extends PureComponent {
 
   onChangeHandler = (index, isChecked, event) => {
     console.log('onChangeHandler CLICKED: ', index, isChecked);
-    this.context.changed(isChecked, this.props.name, index);
+    console.log('isChecked: ', isChecked);
+    console.log('index: ', index);
+    this.context.changed('array', this.props.name, isChecked, index);
   };
 
   render() {
@@ -65,7 +67,7 @@ class CheckboxCollection extends PureComponent {
 
     return (
       <div className={classes.CheckboxCollection}>
-        {this.props.componentconfig.options.map((each, index) => {
+        {this.props.componentconfig.metadata.map((each, index) => {
           //console.log(
           //`this.state.checked[${index}]: `,
           //this.state.checked[index]
@@ -76,7 +78,7 @@ class CheckboxCollection extends PureComponent {
               key={this.props.name + index}
               label={each.displaytext}
               name={this.props.name}
-              value={this.props.componentconfig.options[index].value}
+              value={this.props.componentconfig.metadata[index].value}
               checked={this.state.checked[index] === false ? false : true}
               index={index}
               usecontext={true}

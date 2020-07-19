@@ -66,6 +66,7 @@ class MultiSelectWithInput extends PureComponent {
     let val = event.target.value;
 
     this.context.changed(
+      'array',
       {
         key: val,
         value: '',
@@ -126,8 +127,7 @@ class MultiSelectWithInput extends PureComponent {
                     className={[
                       classes.SelectAndInputWrapper,
                       ...errorClasses,
-                    ].join(' ')}
-                  >
+                    ].join(' ')}>
                     <select
                       name={this.props.name + index}
                       value={tempKey}
@@ -136,8 +136,7 @@ class MultiSelectWithInput extends PureComponent {
                       onBlur={(event) => {
                         this.onBlurHandler(index, event);
                       }}
-                      onChange={(event) => this.onChangeHandler(index, event)}
-                    >
+                      onChange={(event) => this.onChangeHandler(index, event)}>
                       {this.props.componentconfig.options.map(
                         (option, index) => (
                           <option key={option.value} value={option.value}>
@@ -191,8 +190,7 @@ class MultiSelectWithInput extends PureComponent {
                         isOpenList: open,
                       };
                     });
-                  }}
-                >
+                  }}>
                   <Icon iconstyle='far' code='trash-alt' size='sm' />
                 </Button>
               </div>
@@ -209,8 +207,7 @@ class MultiSelectWithInput extends PureComponent {
               key: '',
               value: '',
             });
-          }}
-        >
+          }}>
           <Icon iconstyle='fas' code='plus' size='sm' />
           <p>Add</p>
         </Button>

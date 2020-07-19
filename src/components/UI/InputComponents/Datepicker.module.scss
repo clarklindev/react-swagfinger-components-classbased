@@ -31,10 +31,13 @@
       flex-grow: 1;
       flex-basis: 1;
       flex-shrink: 1;
-      cursor: pointer;
+
       &:focus {
         border: none;
         outline: none;
+      }
+      &.Collapsible {
+        cursor: pointer;
       }
     }
     &.Invalid {

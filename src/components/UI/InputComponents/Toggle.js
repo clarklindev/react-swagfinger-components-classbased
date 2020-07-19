@@ -14,7 +14,11 @@ class Toggle extends Component {
             type='checkbox'
             defaultChecked={this.props.value.data}
             onChange={(event) => {
-              this.context.changed(event.target.checked, this.props.name);
+              this.context.changed(
+                'single',
+                this.props.name,
+                event.target.checked
+              );
             }}
           />
           <span className={[classes.Slider, classes.Round].join(' ')}></span>

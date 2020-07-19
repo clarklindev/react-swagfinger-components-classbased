@@ -128,7 +128,17 @@ class ProfileCreateOrUpdate extends Component {
           break;
         case 'array':
           let arrayValues = [];
-          for (let j = 0; j < tempObj.componentconfig.defaultinputs; j++) {
+          let count;
+          if (tempObj.componentconfig.hasOwnProperty('defaultinputs')) {
+            if (isNaN(tempObj.componentconfig.defaultinputs)) {
+              throw new Error('needs to be a number');
+            }
+            count = tempObj.componentconfig.defaultinputs;
+          } else {
+            //implicit
+            count = tempObj.componentconfig.options.length;
+          }
+          for (let j = 0; j < count; j++) {
             arrayValues.push(dataObject);
           }
           console.log('arrayValues: ', arrayValues);
@@ -439,6 +449,9 @@ class ProfileCreateOrUpdate extends Component {
           valid: validation.isValid, //validation
           errors: validation.errors, //validation errors
         };
+        if (updatedFormElement.value === undefined) {
+          updatedFormElement.value = [];
+        }
         updatedFormElement.value[index] = obj;
         break;
 

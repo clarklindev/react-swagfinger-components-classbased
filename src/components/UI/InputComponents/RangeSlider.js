@@ -12,7 +12,7 @@ class RangeSlider extends Component {
       testValue = '';
     }
     console.log('onChange testValue: ', testValue);
-    this.context.changed(testValue, this.props.name);
+    this.context.changed('single', this.props.name, testValue);
   };
   onBlur = (event) => {
     let tempValue = event.target.value;
@@ -30,7 +30,7 @@ class RangeSlider extends Component {
       tempValue = '';
     }
     console.log('tempValue: ', tempValue);
-    this.context.changed(tempValue, this.props.name);
+    this.context.changed('single', this.props.name, tempValue);
   };
 
   render() {

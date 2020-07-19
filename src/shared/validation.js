@@ -17,7 +17,7 @@ export const CheckValidity = (value, rules) => {
         return (
           value[item] === null ||
           value[item] === undefined ||
-          value[item] === ''
+          value[item].trim() === ''
         );
       });
       if (testEmptyValues === true) {
@@ -27,6 +27,15 @@ export const CheckValidity = (value, rules) => {
     }
     if (isValid === false) {
       errors.push('Input is required');
+    }
+  }
+
+  if (rules.isDate) {
+    let date = new Date(value);
+    isValid = date !== 'Invalid Date' && !isNaN(date) && value !== null;
+    console.log('Date is valid: ', isValid);
+    if (isValid === false) {
+      errors.push('Date is not valid');
     }
   }
 

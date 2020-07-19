@@ -7,14 +7,14 @@ class RadioCollection extends Component {
   static contextType = InputContext;
 
   onChangeHandler = (value) => {
-    this.context.changed(value, this.props.name);
+    this.context.changed('single', this.props.name, value);
   };
 
   render() {
     let tempClasses = [];
     let error = null;
     if (
-      this.props.validation &&
+      this.props.componentconfig.hasOwnProperty('validation') &&
       !this.props.value.valid &&
       (this.props.value.touched ||
         (!this.props.value.touched && !this.props.value.pristine))

@@ -27,7 +27,7 @@ class Input extends PureComponent {
   componentDidMount() {
     //console.log('updated...', this.props.value.data);
     if (this.props.value !== this.state.value) {
-      console.log('value not same: ', this.props.value);
+      //console.log('value not same: ', this.props.value);
       this.setState({ value: this.props.value.data });
     }
   }
@@ -35,7 +35,7 @@ class Input extends PureComponent {
   componentDidUpdate() {
     //console.log('updated...', this.props.value.data);
     if (this.props.value !== this.state.value) {
-      console.log('value not same: ', this.props.value);
+      //console.log('value not same: ', this.props.value);
       this.setState({ value: this.props.value.data });
     }
   }
@@ -56,23 +56,19 @@ class Input extends PureComponent {
     let tempClasses = [];
     let error = null;
     //props
-    console.log('bingo\n');
-    console.log(
-      'this.props.componentconfig.validation: ',
-      this.props.componentconfig.validation
-    );
-    console.log('!this.props.value.valid:', !this.props.value.valid);
-    console.log('this.props.value.touched: ', this.props.value.touched);
-    console.log('!this.props.value.pristine:', !this.props.value.pristine);
+
     if (
       this.props.componentconfig.validation.hasOwnProperty('isRequired') &&
-      !this.props.value.valid &&
-      (this.props.value.touched ||
-        (!this.props.value.touched && !this.props.value.pristine))
+      this.props.value.valid === false &&
+      (this.props.value.touched === true ||
+        (this.props.value.touched === false &&
+          this.props.value.pristine === false))
     ) {
       console.log('pushing invalid: ');
       tempClasses.push(classes.Invalid);
-      error = <ErrorList value={{ data: this.props.value.errors }} />;
+      error = this.props.value.errors.length ? (
+        <ErrorList value={{ data: this.props.value.errors }} />
+      ) : null;
     }
     if (this.props.readOnly) {
       tempClasses.push(classes.ReadOnly);
