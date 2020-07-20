@@ -58,8 +58,8 @@ class MultiRangeSlider extends Component {
   //props or state updates...
   componentDidUpdate() {
     //console.log('MULTIRANGESLIDER: COMPONENT DID UPDATE');
-    let min = this.props.value[0];
-    let max = this.props.value[1];
+    let min = this.props.value['min'];
+    let max = this.props.value['max'];
     if (
       min !== undefined &&
       min.data &&
@@ -195,7 +195,13 @@ class MultiRangeSlider extends Component {
     // console.log('SETLABELMIN...');
     this.setState({ labelmin: value });
     //update database
-    this.context.changed(value, this.props.name, 0);
+    this.context.changed(
+      'object',
+      this.props.name,
+      value,
+      null,
+      this.props.componentconfig.options[0].displaytext
+    );
   };
 
   //update label via value
@@ -203,7 +209,13 @@ class MultiRangeSlider extends Component {
     // console.log('SETLABELMAX...');
     this.setState({ labelmax: value });
     //update database
-    this.context.changed(value, this.props.name, 1);
+    this.context.changed(
+      'object',
+      this.props.name,
+      value,
+      null,
+      this.props.componentconfig.options[1].displaytext
+    );
   };
 
   //updates label via event
