@@ -111,7 +111,7 @@ class MultiSelectWithInput extends PureComponent {
           let error = null;
           let errorClasses = [];
           if (
-            this.props.validation &&
+            this.props.componentconfig.validation.isRequired &&
             !val.valid &&
             (val.touched || (!val.touched && !val.pristine))
           ) {
