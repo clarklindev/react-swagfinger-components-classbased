@@ -126,7 +126,11 @@ class MultiInputObjects extends Component {
         <Button
           title='Add'
           type='WithBorder'
-          onClick={(event) => addinput(event, this.props.name)}>
+          onClick={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            addinput('arrayofobjects', this.props.name);
+          }}>
           <Icon iconstyle='fas' code='plus' size='sm' />
           <p>Add</p>
         </Button>

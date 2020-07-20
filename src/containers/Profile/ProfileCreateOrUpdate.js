@@ -322,33 +322,60 @@ class ProfileCreateOrUpdate extends Component {
 
   //addInputHandler is only called on a multiinput type...
   //assumption is working with array hence .concat({})
-  addInputHandler = (event, key, data = '') => {
+  addInputHandler = (type, key, data = '') => {
     console.log('ADDINPUTHANDLER\n\n\n');
-    event.preventDefault();
     console.log('KEY:', key);
 
-    this.setState((prevState) => {
-      const updated = {
-        localstateform: {
-          ...prevState.localstateform,
-          [key]: {
-            ...prevState.localstateform[key],
-            value: prevState.localstateform[key].value.concat({
-              data: data,
-              valid: false,
-              touched: false,
-              pristine: true,
-              errors: null,
-            }),
-          },
-        },
-      };
-      console.log('updated: ', updated);
+    const dataObj = {
+      data: data,
+      valid: false,
+      touched: false,
+      pristine: true,
+      errors: [],
+    };
 
-      return {
-        localstateform: updated,
-      };
-    });
+    switch (type) {
+      case 'array':
+        this.setState(
+          (prevState) => {
+            return {
+              localstateform: {
+                ...this.state.localstateform,
+                [key]: {
+                  ...prevState.localstateform[key],
+                  value: prevState.localstateform[key].value.concat(dataObj),
+                },
+              },
+            };
+          },
+          () => {
+            console.log('After: ', this.state.localstateform);
+          }
+        );
+        break;
+      case 'arrayofobjects':
+        this.setState((prevState) => {
+          //CREATE THE EMPTY OBJECT TO ADD... WE GET THIS FROM THE FIREBASE METADATA
+          let obj = {};
+          prevState.localstateform[key].componentconfig.metadata.forEach(
+            (item) => {
+              obj[item.name] = dataObj;
+            }
+          );
+
+          return {
+            localstateform: {
+              ...this.state.localstateform,
+              [key]: {
+                ...prevState.localstateform[key],
+                value: prevState.localstateform[key].value.concat(obj),
+              },
+            },
+          };
+        });
+
+        break;
+    }
 
     this.setState((prevState) => {
       let isValid = this.checkInputValidProperty(prevState.form);
@@ -695,6 +722,8 @@ class ProfileCreateOrUpdate extends Component {
     if (this.state.localstateform) {
       console.log('this.state.localstateform: ', this.state.localstateform);
       for (let key in this.state.localstateform) {
+        console.log('key:', key);
+        console.log('data: ', this.state.localstateform[key]);
         formInputs.push(
           <ComponentFactory key={key} data={this.state.localstateform[key]} />
         );
