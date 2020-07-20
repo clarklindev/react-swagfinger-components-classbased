@@ -67,11 +67,11 @@ class MultiSelectWithInput extends PureComponent {
 
     this.context.changed(
       'array',
+      this.props.name,
       {
         key: val,
         value: '',
       },
-      this.props.name,
       index
     );
     //console.log('--------------------------------state: ', this.state);
@@ -159,8 +159,9 @@ class MultiSelectWithInput extends PureComponent {
                           onChange={(event) => {
                             //pass in the name of the prop, and the index (if array item)
                             this.context.changed(
-                              { key: tempKey, value: event.target.value },
+                              'array',
                               this.props.name,
+                              { key: tempKey, value: event.target.value },
                               index
                             );
                           }}

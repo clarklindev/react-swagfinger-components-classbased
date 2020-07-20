@@ -68,7 +68,7 @@ class ComponentFactory extends Component {
       case 'select':
         this.inputElement = <Select {...this.props.data} />;
         break;
-      case 'selectwithinput':
+      case 'multiselectwithinput':
         this.inputElement = <MultiSelectWithInput {...this.props.data} />;
         break;
       case 'inputwithinput':
