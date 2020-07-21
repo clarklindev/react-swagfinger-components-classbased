@@ -47,18 +47,6 @@ class MultiInputObjects extends Component {
 
   render() {
     const { addinput, removeinput, changed } = this.context;
-    const deleteButton = (
-      <Button
-        title='Delete'
-        type='WithBorder'
-        className={classes.RemoveButton}
-        onClick={(event) => {
-          event.preventDefault();
-          removeinput(this.props.name);
-        }}>
-        <Icon iconstyle='far' code='trash-alt' size='sm' />
-      </Button>
-    );
 
     const row = this.props.value.map((val, index) => {
       //ordered...by metadata array
@@ -116,9 +104,13 @@ class MultiInputObjects extends Component {
               allowMultiOpen: false,
               openOnStartIndex: -1, //zero-index, negative value or invalid index to not open on start,
               name: this.props.name,
-              onClick: () => {},
-            }}
-            removeButton={deleteButton}>
+              onRemove: (name, index) => {
+                console.log('MultiInputObjects accordion....');
+                console.log('name: ', name);
+                console.log('index: ', index);
+                removeinput(this.props.name, index);
+              },
+            }}>
             {row}
           </AccordionWithRemove>
         </React.Fragment>

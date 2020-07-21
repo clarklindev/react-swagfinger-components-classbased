@@ -3,6 +3,8 @@ import classes from './AccordionWithRemove.module.scss';
 import Icon from './Icon';
 import FlexRow from '../../../hoc/Layout/FlexRow';
 import DraggableItem from './DraggableItem';
+import Button from '../../UI/Button/Button';
+
 class AccordionWithRemove extends PureComponent {
   state = {
     isActive: [],
@@ -93,47 +95,61 @@ class AccordionWithRemove extends PureComponent {
           }
 
           return (
-            <FlexRow key={this.props.name + index}>
-              <div
-                className={[
-                  classes.AccordionItem,
-                  ...styleClasses,
-                  ...additionalClasses,
-                  ...validationClasses,
-                ].join(' ')}>
-                <DraggableItem
-                  style={[
-                    'Embedded',
-                    this.state.isActive[index] ? 'Active' : null,
-                  ]}>
-                  <div
-                    className={classes.AccordionTitle}
-                    onClick={(event) => {
-                      this.onClickHandler(index, event);
-                    }}>
-                    <div className={classes.AccordionLabel}></div>
-                    <Icon
-                      iconstyle='fas'
-                      code={
-                        this.state.isActive[index] === true
-                          ? 'chevron-up'
-                          : 'chevron-down'
-                      }
-                      size='sm'
-                    />
-                  </div>
-                </DraggableItem>
+            <div
+              className={classes.AccordionWithRemove}
+              key={this.props.name + index}>
+              <FlexRow>
                 <div
                   className={[
-                    classes.AccordionContent,
+                    classes.AccordionItem,
+                    ...styleClasses,
                     ...additionalClasses,
                     ...validationClasses,
                   ].join(' ')}>
-                  {item}
+                  <DraggableItem
+                    style={[
+                      'Embedded',
+                      this.state.isActive[index] ? 'Active' : null,
+                    ]}>
+                    <div
+                      className={classes.AccordionTitle}
+                      onClick={(event) => {
+                        this.onClickHandler(index, event);
+                      }}>
+                      <div className={classes.AccordionLabel}></div>
+                      <Icon
+                        iconstyle='fas'
+                        code={
+                          this.state.isActive[index] === true
+                            ? 'chevron-up'
+                            : 'chevron-down'
+                        }
+                        size='sm'
+                      />
+                    </div>
+                  </DraggableItem>
+                  <div
+                    className={[
+                      classes.AccordionContent,
+                      ...additionalClasses,
+                      ...validationClasses,
+                    ].join(' ')}>
+                    {item}
+                  </div>
                 </div>
-              </div>
-              {this.props.removeButton ? this.props.removeButton : null}
-            </FlexRow>
+                <Button
+                  onClick={(event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    this.props.onRemove(this.props.name, index);
+                  }}
+                  title='Delete'
+                  type='WithBorder'
+                  className={classes.RemoveButton}>
+                  <Icon iconstyle='far' code='trash-alt' size='sm' />
+                </Button>
+              </FlexRow>
+            </div>
           );
         })}
       </div>

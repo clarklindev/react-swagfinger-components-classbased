@@ -388,24 +388,29 @@ class ProfileCreateOrUpdate extends Component {
 
   //remove checks the index of the input and removes it from the inputs array by index
   removeInputHandler = (key, index) => {
-    let updatedInputs = this.state.form[key].value.filter((item, i) => {
-      if (index === i) {
-        console.log('WHAT TO REMOVE:', item);
-        item.key = '';
-        item.value = '';
+    let updatedInputs = this.state.localstateform[key].value.filter(
+      (item, i) => {
+        if (index === i) {
+          console.log('WHAT TO REMOVE:', item);
+          item.key = '';
+          item.value = '';
+          item = null;
+        }
+        return index !== i;
       }
-      return index !== i;
-    });
+    );
     console.log('updatedInputs: ', updatedInputs);
 
     this.setState((prevState) => {
-      console.log('...prevState.form[key]: ', { ...prevState.form[key] });
+      console.log('...prevState.form[key]: ', {
+        ...prevState.localstateform[key],
+      });
       console.log('...updatedInputs', [...updatedInputs]);
       return {
-        form: {
-          ...prevState.form,
+        localstateform: {
+          ...prevState.localstateform,
           [key]: {
-            ...prevState.form[key],
+            ...prevState.localstateform[key],
             value: [...updatedInputs],
           },
         },
@@ -413,7 +418,7 @@ class ProfileCreateOrUpdate extends Component {
     });
 
     this.setState((prevState) => {
-      let isValid = this.checkInputValidProperty(prevState.form);
+      let isValid = this.checkInputValidProperty(prevState.localstateform);
 
       return {
         formIsValid: isValid,

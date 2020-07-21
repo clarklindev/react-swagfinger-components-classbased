@@ -6,8 +6,6 @@ import ErrorList from './ErrorList';
 import InputContext from '../../../context/InputContext';
 import Input from './Input';
 import { CheckValidity as validationCheck } from '../../../shared/validation';
-import { faGrinTongueSquint } from '@fortawesome/free-solid-svg-icons';
-// import { ReactComponent as CalendarIcon } from '../Icons/CalendarIcon.svg';
 
 class Datepicker extends Component {
   static contextType = InputContext;
@@ -45,6 +43,9 @@ class Datepicker extends Component {
       'november',
       'december',
     ],
+    daypicker: { arrows: true, month: true, year: true },
+    monthpicker: { arrows: false, month: true, year: false },
+    yearpicker: { arrows: true, month: false, year: true },
     startOfWeek: 'sun', //'mon' | 'sun'
     viewstate: 'daypicker',
     format: 'full', //'iso' (default) eg. '2000-10-13' || 'full' eg. 'Thursday, 12 December 2019'
@@ -52,27 +53,37 @@ class Datepicker extends Component {
     isInteracting: this.props.componentconfig.iscollapsible ? false : true,
     isCollapsible: this.props.componentconfig.iscollapsible,
     position: this.props.componentconfig.position, //'absolute' | 'relative'
-    daypicker: { arrows: true, month: true, year: true },
-    monthpicker: { arrows: false, month: true, year: false },
-    yearpicker: { arrows: true, month: false, year: true },
-    currentdatestring: null,
     pickeddatestring: null,
-    currentdate: null,
-    pickeddate: null,
+    pickeddate: null, //the selected
+
+    currentYear: null, //using individual numbers to keep track
+    currentMonth: null, //using individual numbers to keep track
+    currentDay: null, //using individual numbers to keep track
   };
+
+  componentDidMount() {
+    const currentDate = new Date();
+    this.setState({
+      currentYear: currentDate.getFullYear(),
+      currentMonth: currentDate.getMonth(),
+      currentDay: currentDate.getDay(),
+    });
+  }
 
   componentDidUpdate() {
     //string comparisons
-    if (this.props.value.data !== this.state.pickeddatestring) {
-      console.log('this.props.value.data: ', this.props.value.data); //string
-      console.log('this.state.pickeddatestring: ', this.state.pickeddatestring); //string
-      this.setState({
-        pickeddatestring: this.props.value.data,
-        currentdatestring: this.props.value.data,
-        currentdate: new Date(this.props.value.data),
-        pickeddate: new Date(this.props.value.data),
-      }); //sets to string format: 1948-1-12
-    }
+    // if (this.props.value.data !== this.state.pickeddatestring) {
+    //   console.log('this.props.value.data: ', this.props.value.data); //string
+    //   console.log('this.state.pickeddatestring: ', this.state.pickeddatestring); //string
+    //   const updatedDate = new Date(this.props.value.data);
+    //   this.setState({
+    //     pickeddatestring: this.props.value.data,
+    //     pickeddate: updatedDate,
+    //     currentYear: updatedDate.getFullYear(),
+    //     currentMonth: updatedDate.getMonth(),
+    //     currentDay: updatedDate.getDay(),
+    //   }); //sets to string format: 1948-1-12
+    // }
   }
 
   // helper functions
@@ -135,10 +146,11 @@ class Datepicker extends Component {
 
   //print month string 'eg. January'
   printMonth = (monthIndex = new Date().getMonth()) => {
-    // console.log('PRINTMONTH: ', monthIndex);
-    let monthString = this.state.monthsOfYear[monthIndex];
-    //Capitalize first letter
-    return monthString.charAt(0).toUpperCase() + monthString.slice(1);
+    if (monthIndex !== null) {
+      console.log('PRINTMONTH: ', monthIndex);
+      let monthString = this.state.monthsOfYear[monthIndex];
+      return monthString.substring(0, 1).toUpperCase() + monthString.slice(1);
+    }
   };
 
   //print decade format 'eg. yyyy-yyyy'
@@ -152,7 +164,7 @@ class Datepicker extends Component {
   //-----------------------------------------------------------
 
   //returns table rows with years.
-  yearpicker = (year = this.state.currentdate.getFullYear()) => {
+  yearpicker = () => {
     let counter = -6; //adjust offset
     let rows = 4;
     let cols = 3;
@@ -242,21 +254,7 @@ class Datepicker extends Component {
   };
   //-----------------------------------------------------------
   //-----------------------------------------------------------
-  daypicker = (
-    monthIndex = this.state.currentdate.getMonth(), //zero-indexed
-    year = this.state.currentdate.getFullYear()
-  ) => {
-    console.log('DAYPICKER: ', monthIndex, year);
-    console.log('this.state.pickeddate: ', this.state.pickeddate);
-    console.log(
-      'this.state.pickeddate.getMonth()',
-      this.state.pickeddate.getMonth()
-    );
-    console.log(
-      'this.state.pickeddate.getFullYear()',
-      this.state.pickeddate.getFullYear()
-    );
-
+  daypicker = () => {
     let tableHead = (
       <tr>
         {Object.keys(this.state.daysOfWeekLabels).map((each, i) => {
@@ -281,7 +279,22 @@ class Datepicker extends Component {
     );
 
     //table body
-    // console.log('monthIndex: ', monthIndex);
+    const datenow = new Date();
+
+    let monthIndex;
+    if (this.state.currentMonth !== null) {
+      monthIndex = this.state.currentMonth;
+    } else {
+      monthIndex = datenow.getMonth(); //zero-indexed
+    }
+
+    let year;
+    if (this.state.currentYear !== null) {
+      year = this.state.currentYear;
+    } else {
+      year = datenow.getFullYear();
+    }
+
     let firstDay = this.firstDayInMonthIndex(monthIndex, year); //zero indexed day of week
     let daysInMonthCount = this.daysInMonth(monthIndex, year);
     let startCounting = false;
@@ -475,20 +488,19 @@ class Datepicker extends Component {
       case 'daypicker':
         this.setState((prevState) => {
           //when current month gets to 0, make it 11
-          if (prevState.currentdate.getMonth() - 1 < 0) {
+          if (prevState.currentMonth - 1 < 0) {
             return {
-              currentdate: new Date(
-                prevState.currentdate.getFullYear() - 1,
-                this.state.monthsOfYear.length - 1
-              ),
+              currentYear: prevState.currentYear - 1,
+              currentMonth: this.state.monthsOfYear.length - 1,
             };
           }
-          console.log('current month: ', prevState.currentdate.getMonth());
+          console.log('current month: ', prevState.currentMonth);
 
-          let updatedYear = prevState.currentdate.getFullYear();
-          let updatedMonth = prevState.currentdate.getMonth() - 1;
+          let updatedYear = prevState.currentYear;
+          let updatedMonth = prevState.currentMonth - 1;
           return {
-            currentdate: new Date(updatedYear, updatedMonth),
+            currentYear: updatedYear,
+            currentMonth: updatedMonth,
           };
         });
         break;
@@ -496,9 +508,9 @@ class Datepicker extends Component {
         this.setState((prevState) => {
           return {
             currentdate: new Date(
-              prevState.currentdate.getFullYear() - 12,
-              prevState.currentdate.getMonth(),
-              prevState.currentdate.getDate()
+              prevState.currentYear - 12,
+              prevState.currentMonth,
+              prevState.currentDay
             ),
           };
         });
@@ -521,31 +533,25 @@ class Datepicker extends Component {
       case 'daypicker':
         this.setState((prevState) => {
           //when current month gets to 11, make it 0
-          if (
-            prevState.currentdate.getMonth() + 1 >
-            this.state.monthsOfYear.length - 1
-          ) {
+          if (prevState.currentMonth + 1 > this.state.monthsOfYear.length - 1) {
             return {
-              currentdate: new Date(prevState.currentdate.getFullYear() + 1, 0),
+              currentYear: prevState.currentYear + 1,
+              currentMonth: 0,
             };
           }
 
           return {
-            currentdate: new Date(
-              prevState.currentdate.getFullYear(),
-              prevState.currentdate.getMonth() + 1
-            ),
+            currentYear: prevState.currentYear,
+            currentMonth: prevState.currentMonth + 1,
           };
         });
         break;
       case 'yearpicker':
         this.setState((prevState) => {
           return {
-            currentdate: new Date(
-              prevState.currentdate.getFullYear() + 12,
-              prevState.currentdate.getMonth(),
-              prevState.currentdate.getDate()
-            ),
+            currentYear: prevState.currentYear + 12,
+            currentMonth: prevState.currentMonth,
+            currentDay: prevState.currentDay,
           };
         });
         break;
@@ -662,107 +668,108 @@ class Datepicker extends Component {
         <ErrorList value={{ data: this.props.value.errors }} />
       ) : null;
     }
-    //-----------------------------------------------------------
-    //-----------------------------------------------------------
-    let dateinput = (
-      <div
-        className={[classes.Dateinput, ...tempClasses].join(' ')}
-        onClick={(event) => this.onToggleCalendar(event)}
-        onBlur={(event) => {
-          this.onBlurHandler(event);
-        }}>
-        <Input
-          componentconfig={{
-            placeholder: this.props.componentconfig.placeholder,
-            type: this.props.componentconfig.type,
-            validation: this.props.componentconfig.validation,
-          }}
-          label={this.props.label}
-          name={this.props.name}
-          type={this.props.type}
-          readOnly
-          ref={this.inputRef}
-          classlist={this.state.isCollapsible ? classes.Collapsible : null}
-          value={{
-            data: this.state.pickeddate
-              ? this.state.format === 'full'
-                ? // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString
-                  this.state.pickeddate.toLocaleDateString('en-GB', {
-                    // weekday: 'long',
-                    year: 'numeric',
-                    month: 'long', //long | 2-digit
-                    day: 'numeric', //'2-digit'
-                  })
-                : this.state.pickeddate.toISOString().substr(0, 10)
-              : '',
-            valid: this.props.value.valid,
-            errors: this.props.value.errors,
-          }}
-          onChange={(event) => {
-            console.log('something changed');
-          }}
-          onClick={(event) =>
-            // console.log('SHOW CALENDAR!!');
-            this.onShowCalendar(event)
-          }
-        />
-        {this.state.isCollapsible ? (
-          <Button
-            onMouseOver={(event) => {
-              this.onMouseOver(event);
-            }}
-            onMouseOut={(event) => {
-              this.onMouseOut(event);
-            }}>
-            {/* <CalendarIcon /> */}
-            <Icon iconstyle='far' code='calendar-alt' size='sm' />
-          </Button>
-        ) : null}
-      </div>
-    );
-    //-----------------------------------------------------------
-    //-----------------------------------------------------------
+
     //note: with date calendar, if the iscollapsible property is 'false', position should be forced as to not be able to be set at absolute
     let viewPosition =
       this.state.position === 'relative' || this.state.isCollapsible === false
         ? 'relative'
         : null;
 
-    let calendar = this.state.showCalendar ? (
-      <div
-        className={[classes.Calendar].join(' ')}
-        onMouseOver={(event) => {
-          this.onMouseOver(event);
-        }}
-        onMouseOut={(event) => {
-          this.onMouseOut(event);
-        }}>
-        <div className={[classes.CalendarContent, viewPosition].join(' ')}>
-          <div className={classes.CalendarHeader}>
-            {/* Calendar Header - left arrow */}
-            {this.state[this.state.viewstate].arrows ? (
-              <Button
-                onClick={(event) => {
-                  event.preventDefault();
-                  event.stopPropagation();
-                  this.decrease(event);
-                }}
-                onMouseOver={(event) => {
-                  this.onMouseOver(event);
-                }}
-                onMouseOut={(event) => {
-                  this.onMouseOut(event);
-                }}
-                onBlur={(event) => {
-                  this.onBlurHandler(event);
-                }}>
-                <Icon iconstyle='fas' code='chevron-left' size='sm' />
-              </Button>
-            ) : null}
-            {this.state.pickeddate ? (
-              <div className={classes.StateButtons}>
-                {this.state[this.state.viewstate].year ? (
-                  this.state.viewstate === 'yearpicker' ? (
+    //-----------------------------------------------------------
+    //-----------------------------------------------------------
+
+    return this.state.currentYear !== null &&
+      this.state.currentMonth !== null &&
+      this.state.currentDay !== null ? (
+      <div className={classes.Datepicker} ref={this.datepickerRef}>
+        <div
+          className={[classes.Dateinput, ...tempClasses].join(' ')}
+          onClick={(event) => this.onToggleCalendar(event)}
+          onBlur={(event) => {
+            this.onBlurHandler(event);
+          }}>
+          <Input
+            componentconfig={{
+              placeholder: this.props.componentconfig.placeholder,
+              type: this.props.componentconfig.type,
+              validation: this.props.componentconfig.validation,
+            }}
+            label={this.props.label}
+            name={this.props.name}
+            type={this.props.type}
+            readOnly
+            ref={this.inputRef}
+            classlist={this.state.isCollapsible ? classes.Collapsible : null}
+            value={{
+              data: this.state.pickeddate
+                ? this.state.format === 'full'
+                  ? // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString
+                    this.state.pickeddate.toLocaleDateString('en-GB', {
+                      // weekday: 'long',
+                      year: 'numeric',
+                      month: 'long', //long | 2-digit
+                      day: 'numeric', //'2-digit'
+                    })
+                  : this.state.pickeddate.toISOString().substr(0, 10)
+                : '',
+              valid: this.props.value.valid,
+              errors: this.props.value.errors,
+            }}
+            onChange={(event) => {
+              console.log('something changed');
+            }}
+            onClick={(event) =>
+              // console.log('SHOW CALENDAR!!');
+              this.onShowCalendar(event)
+            }
+          />
+          {this.state.isCollapsible ? (
+            <Button
+              onMouseOver={(event) => {
+                this.onMouseOver(event);
+              }}
+              onMouseOut={(event) => {
+                this.onMouseOut(event);
+              }}>
+              <Icon iconstyle='far' code='calendar-alt' size='sm' />
+            </Button>
+          ) : null}
+        </div>
+
+        {this.state.showCalendar ? (
+          <div
+            className={[classes.Calendar].join(' ')}
+            onMouseOver={(event) => {
+              this.onMouseOver(event);
+            }}
+            onMouseOut={(event) => {
+              this.onMouseOut(event);
+            }}>
+            <div className={[classes.CalendarContent, viewPosition].join(' ')}>
+              <div className={classes.CalendarHeader}>
+                {/* Calendar Header - left arrow */}
+                {this.state[this.state.viewstate].arrows ? (
+                  <Button
+                    onClick={(event) => {
+                      event.preventDefault();
+                      event.stopPropagation();
+                      this.decrease(event);
+                    }}
+                    onMouseOver={(event) => {
+                      this.onMouseOver(event);
+                    }}
+                    onMouseOut={(event) => {
+                      this.onMouseOut(event);
+                    }}
+                    onBlur={(event) => {
+                      this.onBlurHandler(event);
+                    }}>
+                    <Icon iconstyle='fas' code='chevron-left' size='sm' />
+                  </Button>
+                ) : null}
+
+                <div className={classes.StateButtons}>
+                  {this.state.viewstate === 'yearpicker' ? (
                     <div className={[classes.Label, classes.Year].join(' ')}>
                       Year
                     </div>
@@ -776,13 +783,11 @@ class Datepicker extends Component {
                       onMouseOut={(event) => {
                         this.onMouseOut(event);
                       }}>
-                      {this.printYear(this.state.currentdate.getFullYear())}
+                      {this.printYear(this.state.currentYear)}
                     </Button>
-                  )
-                ) : null}
+                  )}
 
-                {this.state[this.state.viewstate].month ? (
-                  this.state.viewstate === 'monthpicker' ? (
+                  {this.state.viewstate === 'monthpicker' ? (
                     <div className={[classes.Label, classes.Month].join(' ')}>
                       Month
                     </div>
@@ -796,55 +801,40 @@ class Datepicker extends Component {
                       onMouseOut={(event) => {
                         this.onMouseOut(event);
                       }}>
-                      {this.state.viewstate === 'monthpicker'
-                        ? 'Month'
-                        : this.printMonth(this.state.currentdate.getMonth())}
+                      {this.printMonth(this.state.currentMonth)}
                     </Button>
-                  )
+                  )}
+                </div>
+                {/* Calendar Header - right arrow */}
+                {this.state[this.state.viewstate].arrows ? (
+                  <Button
+                    onClick={(event) => {
+                      this.increase(event);
+                      event.preventDefault();
+                      event.stopPropagation();
+                    }}
+                    onMouseOver={(event) => {
+                      this.onMouseOver(event);
+                    }}
+                    onMouseOut={(event) => {
+                      this.onMouseOut(event);
+                    }}
+                    onBlur={(event) => {
+                      this.onBlurHandler(event);
+                    }}>
+                    <Icon iconstyle='fas' code='chevron-right' size='sm' />
+                  </Button>
                 ) : null}
               </div>
-            ) : null}
-
-            {/* Calendar Header - right arrow */}
-            {this.state[this.state.viewstate].arrows ? (
-              <Button
-                onClick={(event) => {
-                  this.increase(event);
-                  event.preventDefault();
-                  event.stopPropagation();
-                }}
-                onMouseOver={(event) => {
-                  this.onMouseOver(event);
-                }}
-                onMouseOut={(event) => {
-                  this.onMouseOut(event);
-                }}
-                onBlur={(event) => {
-                  this.onBlurHandler(event);
-                }}>
-                <Icon iconstyle='fas' code='chevron-right' size='sm' />
-              </Button>
-            ) : null}
+              <div className={classes.CalendarBody} ref={this.calendarBodyRef}>
+                {this[this.state.viewstate]()}
+              </div>
+            </div>
           </div>
-          <div className={classes.CalendarBody} ref={this.calendarBodyRef}>
-            {this.state.pickeddate ? this[this.state.viewstate]() : null}
-          </div>
-        </div>
+        ) : null}
+        {/*{error} */}
       </div>
     ) : null;
-    //-----------------------------------------------------------
-    //-----------------------------------------------------------
-
-    return (
-      <div className={classes.Datepicker} ref={this.datepickerRef}>
-        {dateinput}
-
-        {calendar}
-        {/*   
-
-        {error} */}
-      </div>
-    );
   }
 }
 

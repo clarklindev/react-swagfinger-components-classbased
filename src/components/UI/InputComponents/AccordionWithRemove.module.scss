@@ -5,12 +5,18 @@
   flex-grow: 1;
   color: var(--colordefault);
 
+  button[attribute*='RemoveButton'] {
+    margin-left: calc(var(--margindefault) * 0.5);
+  }
+
   .AccordionItem {
     border: 1px solid var(--colorborder);
     border-bottom: 1px solid var(--colorborder);
 
     border-radius: var(--borderradius);
     margin-bottom: calc(var(--margindefault) * 0.5);
+    margin-right: calc(var(--margindefault) * 0.5);
+
     background-color: white;
     display: flex;
     flex-direction: column;
