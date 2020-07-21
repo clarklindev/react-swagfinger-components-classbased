@@ -762,41 +762,45 @@ class Datepicker extends Component {
                 ) : null}
 
                 <div className={classes.StateButtons}>
-                  {this.state.viewstate === 'yearpicker' ? (
-                    <div className={[classes.Label, classes.Year].join(' ')}>
-                      Year
-                    </div>
-                  ) : (
-                    <Button
-                      className={classes.Year}
-                      onClick={() => this.switchState('yearpicker')}
-                      onMouseOver={(event) => {
-                        this.onMouseOver(event);
-                      }}
-                      onMouseOut={(event) => {
-                        this.onMouseOut(event);
-                      }}>
-                      {this.printYear(this.state.currentYear)}
-                    </Button>
-                  )}
+                  {this.state[this.state.viewstate].year ? (
+                    this.state.viewstate === 'yearpicker' ? (
+                      <div className={[classes.Label, classes.Year].join(' ')}>
+                        Year
+                      </div>
+                    ) : (
+                      <Button
+                        className={classes.Year}
+                        onClick={() => this.switchState('yearpicker')}
+                        onMouseOver={(event) => {
+                          this.onMouseOver(event);
+                        }}
+                        onMouseOut={(event) => {
+                          this.onMouseOut(event);
+                        }}>
+                        {this.printYear(this.state.currentYear)}
+                      </Button>
+                    )
+                  ) : null}
 
-                  {this.state.viewstate === 'monthpicker' ? (
-                    <div className={[classes.Label, classes.Month].join(' ')}>
-                      Month
-                    </div>
-                  ) : (
-                    <Button
-                      className={classes.Month}
-                      onClick={() => this.switchState('monthpicker')}
-                      onMouseOver={(event) => {
-                        this.onMouseOver(event);
-                      }}
-                      onMouseOut={(event) => {
-                        this.onMouseOut(event);
-                      }}>
-                      {this.printMonth(this.state.currentMonth)}
-                    </Button>
-                  )}
+                  {this.state[this.state.viewstate].month ? (
+                    this.state.viewstate === 'monthpicker' ? (
+                      <div className={[classes.Label, classes.Month].join(' ')}>
+                        Month
+                      </div>
+                    ) : (
+                      <Button
+                        className={classes.Month}
+                        onClick={() => this.switchState('monthpicker')}
+                        onMouseOver={(event) => {
+                          this.onMouseOver(event);
+                        }}
+                        onMouseOut={(event) => {
+                          this.onMouseOut(event);
+                        }}>
+                        {this.printMonth(this.state.currentMonth)}
+                      </Button>
+                    )
+                  ) : null}
                 </div>
                 {/* Calendar Header - right arrow */}
                 {this.state[this.state.viewstate].arrows ? (
