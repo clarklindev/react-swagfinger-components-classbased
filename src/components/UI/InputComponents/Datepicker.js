@@ -577,7 +577,7 @@ class Datepicker extends Component {
       case classes.Year:
         this.setState((prevState) => {
           return {
-            currentYear: target.innerHTML,
+            currentYear: parseInt(target.innerHTML),
             currentMonth: prevState.currentMonth,
             viewstate: 'daypicker', //go to daypicker
           };
