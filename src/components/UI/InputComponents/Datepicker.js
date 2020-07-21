@@ -189,7 +189,7 @@ class Datepicker extends Component {
                         onBlur={(event) => {
                           this.onBlurHandler(event);
                         }}>
-                        {this.state.currentdate.getFullYear() + counter}
+                        {this.state.currentYear + counter}
                       </div>
                     </td>
                   );
@@ -335,10 +335,9 @@ class Datepicker extends Component {
                 //add active state
                 if (
                   this.state.pickeddate &&
-                  this.state.currentdate.getFullYear() ===
+                  this.state.currentYear ===
                     this.state.pickeddate.getFullYear() &&
-                  this.state.currentdate.getMonth() ===
-                    this.state.pickeddate.getMonth()
+                  this.state.currentMonth === this.state.pickeddate.getMonth()
                 ) {
                   if (
                     parseInt(dayCount) ===
@@ -507,11 +506,9 @@ class Datepicker extends Component {
       case 'yearpicker':
         this.setState((prevState) => {
           return {
-            currentdate: new Date(
-              prevState.currentYear - 12,
-              prevState.currentMonth,
-              prevState.currentDay
-            ),
+            currentYear: parseInt(prevState.currentYear - 12),
+            currentMonth: prevState.currentMonth,
+            currentDay: prevState.currentDay,
           };
         });
 
@@ -580,11 +577,8 @@ class Datepicker extends Component {
       case classes.Year:
         this.setState((prevState) => {
           return {
-            currentdate: new Date(
-              target.innerHTML,
-              prevState.currentdate.getMonth(),
-              prevState.currentdate.getDate()
-            ),
+            currentYear: target.innerHTML,
+            currentMonth: prevState.currentMonth,
             viewstate: 'daypicker', //go to daypicker
           };
         });
@@ -592,13 +586,10 @@ class Datepicker extends Component {
 
       case classes.Month:
         this.setState((prevState) => {
-          let newdate = new Date(
-            prevState.currentdate.getFullYear(),
-            this.getMonthIndexFromString(target.innerHTML),
-            prevState.currentdate.getDate()
-          );
           return {
-            currentdate: newdate,
+            currentYear: prevState.currentYear,
+            currentMonth: this.getMonthIndexFromString(target.innerHTML),
+            currentDay: prevState.currentDay,
             viewstate: 'daypicker', //go to daypicker
           };
         });
@@ -632,8 +623,8 @@ class Datepicker extends Component {
 
     console.log('CHANGED: ', this.inputRef.current.value);
 
-    const pickeddatestring = `${this.state.currentdate.getFullYear()}-${
-      this.state.currentdate.getMonth() + 1
+    const pickeddatestring = `${this.state.currentYear}-${
+      this.state.currentMonth + 1
     }-${Math.abs(target.innerHTML)}`;
     const pickeddate = new Date(pickeddatestring);
 
@@ -645,7 +636,9 @@ class Datepicker extends Component {
     this.setState((prevState) => {
       return {
         pickeddate: pickeddate,
-        currentdate: pickeddate,
+        currentYear: this.state.currentYear,
+        currentMonth: this.state.currentMonth,
+        currentDay: Math.abs(target.innerHTML),
       };
     });
   };
@@ -809,9 +802,9 @@ class Datepicker extends Component {
                 {this.state[this.state.viewstate].arrows ? (
                   <Button
                     onClick={(event) => {
-                      this.increase(event);
                       event.preventDefault();
                       event.stopPropagation();
+                      this.increase(event);
                     }}
                     onMouseOver={(event) => {
                       this.onMouseOver(event);
