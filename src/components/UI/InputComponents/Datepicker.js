@@ -72,18 +72,27 @@ class Datepicker extends Component {
 
   componentDidUpdate() {
     //string comparisons
-    // if (this.props.value.data !== this.state.pickeddatestring) {
-    //   console.log('this.props.value.data: ', this.props.value.data); //string
-    //   console.log('this.state.pickeddatestring: ', this.state.pickeddatestring); //string
-    //   const updatedDate = new Date(this.props.value.data);
-    //   this.setState({
-    //     pickeddatestring: this.props.value.data,
-    //     pickeddate: updatedDate,
-    //     currentYear: updatedDate.getFullYear(),
-    //     currentMonth: updatedDate.getMonth(),
-    //     currentDay: updatedDate.getDay(),
-    //   }); //sets to string format: 1948-1-12
-    // }
+    if (
+      this.props.value.data !== '' &&
+      this.props.value.data !== this.state.pickeddatestring
+    ) {
+      console.log('this.props.value: ', this.props.value); //string
+      console.log('this.props.value.data: ', this.props.value.data); //string
+      console.log('this.state.pickeddatestring: ', this.state.pickeddatestring); //string
+      const updatedDate = new Date(this.props.value.data);
+      console.log('updatedDate:', updatedDate);
+      console.log('currentYear: ', updatedDate.getFullYear());
+      console.log('currentMonth: ', updatedDate.getMonth());
+      console.log('currentDay: ', updatedDate.getDay());
+
+      this.setState({
+        pickeddatestring: this.props.value.data,
+        pickeddate: updatedDate,
+        currentYear: updatedDate.getFullYear(),
+        currentMonth: updatedDate.getMonth(),
+        currentDay: updatedDate.getDay(),
+      }); //sets to string format: 1948-1-12
+    }
   }
 
   // helper functions
