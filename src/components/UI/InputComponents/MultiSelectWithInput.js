@@ -204,7 +204,9 @@ class MultiSelectWithInput extends PureComponent {
           type='WithBorder'
           className={classes.AddButton}
           onClick={(event) => {
-            this.context.addinput(event, this.props.name, {
+            event.preventDefault();
+            event.stopPropagation();
+            this.context.addinput('array', this.props.name, {
               key: '',
               value: '',
             });
