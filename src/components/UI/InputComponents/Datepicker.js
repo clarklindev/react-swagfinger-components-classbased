@@ -46,9 +46,9 @@ class Datepicker extends Component {
     daypicker: { arrows: true, month: true, year: true },
     monthpicker: { arrows: false, month: true, year: false },
     yearpicker: { arrows: true, month: false, year: true },
-    startOfWeek: 'sun', //'mon' | 'sun'
+    startOfWeek: this.props.componentconfig.startofweek, //'mon' | 'sun'
     viewstate: 'daypicker',
-    format: 'full', //'iso' (default) eg. '2000-10-13' || 'full' eg. 'Thursday, 12 December 2019'
+    format: this.props.componentconfig.format, //'iso' (default) eg. '2000-10-13' || 'full' eg. 'Thursday, 12 December 2019'
     showCalendar: this.props.componentconfig.showcalendar,
     isInteracting: this.props.componentconfig.iscollapsible ? false : true,
     isCollapsible: this.props.componentconfig.iscollapsible,
@@ -58,7 +58,7 @@ class Datepicker extends Component {
 
     currentYear: null, //using individual numbers to keep track
     currentMonth: null, //using individual numbers to keep track
-    currentDay: null, //using individual numbers to keep track
+    currentDate: null, //using individual numbers to keep track
   };
 
   componentDidMount() {
@@ -66,7 +66,7 @@ class Datepicker extends Component {
     this.setState({
       currentYear: currentDate.getFullYear(),
       currentMonth: currentDate.getMonth(),
-      currentDay: currentDate.getDay(),
+      currentDate: currentDate.getDate(),
     });
   }
 
@@ -78,19 +78,22 @@ class Datepicker extends Component {
     ) {
       console.log('this.props.value: ', this.props.value); //string
       console.log('this.props.value.data: ', this.props.value.data); //string
-      console.log('this.state.pickeddatestring: ', this.state.pickeddatestring); //string
+      console.log(
+        'old this.state.pickeddatestring: ',
+        this.state.pickeddatestring
+      ); //string
       const updatedDate = new Date(this.props.value.data);
       console.log('updatedDate:', updatedDate);
       console.log('currentYear: ', updatedDate.getFullYear());
-      console.log('currentMonth: ', updatedDate.getMonth());
-      console.log('currentDay: ', updatedDate.getDay());
+      console.log('currentMonth: ', updatedDate.getMonth()); //0 indexed 0-11
+      console.log('currentDate: ', updatedDate.getDate()); //1-6,0 representing mon-sunday
 
       this.setState({
         pickeddatestring: this.props.value.data,
         pickeddate: updatedDate,
         currentYear: updatedDate.getFullYear(),
         currentMonth: updatedDate.getMonth(),
-        currentDay: updatedDate.getDay(),
+        currentDate: updatedDate.getDate(),
       }); //sets to string format: 1948-1-12
     }
   }
@@ -517,7 +520,7 @@ class Datepicker extends Component {
           return {
             currentYear: parseInt(prevState.currentYear - 12),
             currentMonth: prevState.currentMonth,
-            currentDay: prevState.currentDay,
+            currentDate: prevState.currentDate,
           };
         });
 
@@ -557,7 +560,7 @@ class Datepicker extends Component {
           return {
             currentYear: prevState.currentYear + 12,
             currentMonth: prevState.currentMonth,
-            currentDay: prevState.currentDay,
+            currentDate: prevState.currentDate,
           };
         });
         break;
@@ -598,7 +601,7 @@ class Datepicker extends Component {
           return {
             currentYear: prevState.currentYear,
             currentMonth: this.getMonthIndexFromString(target.innerHTML),
-            currentDay: prevState.currentDay,
+            currentDate: prevState.currentDate,
             viewstate: 'daypicker', //go to daypicker
           };
         });
@@ -638,16 +641,19 @@ class Datepicker extends Component {
     const pickeddate = new Date(pickeddatestring);
 
     console.log('pickeddate: ', pickeddate);
-
+    console.log('pickeddatestring:', pickeddatestring);
+    console.log('which date:', Math.abs(target.innerHTML));
+    console.log('Math.abs(target.innerHTML): ', Math.abs(target.innerHTML));
     this.context.changed('single', this.props.name, pickeddatestring);
     //save the DOM we clicked on in state as 'pickeddate'
     //and save the pickeddate as a Date() object
+
     this.setState((prevState) => {
       return {
         pickeddate: pickeddate,
         currentYear: this.state.currentYear,
         currentMonth: this.state.currentMonth,
-        currentDay: Math.abs(target.innerHTML),
+        currentDate: Math.abs(target.innerHTML),
       };
     });
   };
@@ -677,12 +683,46 @@ class Datepicker extends Component {
         ? 'relative'
         : null;
 
+    let a = this.state.pickeddate
+      ? this.state.pickeddate.toLocaleDateString('en-GB', {
+          // weekday: 'long',
+          year: 'numeric',
+          month: 'long', //long | 2-digit
+          day: 'numeric', //'2-digit'
+        })
+      : null;
+    let b = this.state.pickeddate
+      ? new Date(
+          this.state.pickeddate.getFullYear(),
+          this.state.pickeddate.getMonth(),
+          this.state.pickeddate.getDate(),
+          2,
+          0,
+          0,
+          0
+        )
+          .toISOString()
+          .substr(0, 10) //gets format YYYY-MM-DD
+      : null;
+
+    let inputData = this.state.pickeddate
+      ? this.state.format === 'full'
+        ? // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString
+          a
+        : b
+      : '';
+
+    console.log('a: ', a);
+    console.log('b: ', b);
+    console.log('this.state.pickeddate: ', this.state.pickeddate);
+    console.log('inputData: ', inputData);
+
     //-----------------------------------------------------------
     //-----------------------------------------------------------
 
     return this.state.currentYear !== null &&
       this.state.currentMonth !== null &&
-      this.state.currentDay !== null ? (
+      this.state.currentDate !== null ? (
       <div className={classes.Datepicker} ref={this.datepickerRef}>
         <div
           className={[classes.Dateinput, ...tempClasses].join(' ')}
@@ -703,17 +743,7 @@ class Datepicker extends Component {
             ref={this.inputRef}
             classlist={this.state.isCollapsible ? classes.Collapsible : null}
             value={{
-              data: this.state.pickeddate
-                ? this.state.format === 'full'
-                  ? // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString
-                    this.state.pickeddate.toLocaleDateString('en-GB', {
-                      // weekday: 'long',
-                      year: 'numeric',
-                      month: 'long', //long | 2-digit
-                      day: 'numeric', //'2-digit'
-                    })
-                  : this.state.pickeddate.toISOString().substr(0, 10)
-                : '',
+              data: inputData,
               valid: this.props.value.valid,
               errors: this.props.value.errors,
             }}
