@@ -61,7 +61,7 @@ class MultiInput extends Component {
           onClick={(event) => {
             event.preventDefault();
             event.stopPropagation();
-            addinput('array', this.props.name);
+            addinput(this.props.type, this.props.name);
           }}>
           <Icon iconstyle='fas' code='plus' size='sm' />
           <p>Add</p>

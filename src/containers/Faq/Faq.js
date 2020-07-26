@@ -13,6 +13,7 @@ class Faq extends Component {
       onClick: () => {
         console.log('ouside onclick');
       },
+      style: { borderTopLeftRadius: '0px' },
     };
   }
   render() {

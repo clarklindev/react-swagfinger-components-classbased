@@ -1,0 +1,172 @@
+class MultiInputObjects extends PureComponent {
+  static contextType = InputContext;
+
+  constructor(props) {
+    super(props);
+    this.accordionRef = React.createRef();
+  }
+
+  state = {
+    rowValidity: {}, //all rows
+    isActive: {}, //is row active
+    removeIndex: null,
+  };
+
+  componentDidMount() {
+    this.setupHeights();
+  }
+
+  componentDidUpdate() {
+    this.setupHeights();
+  }
+
+  checkValidity = (value, index) => {
+    //all props in object true check...
+    let allIsValid = Object.keys(value)
+      .map((item) => {
+        return value[item].valid;
+      })
+      .every((item) => {
+        return item === true;
+      });
+
+    this.setState((prevState) => {
+      let updated = { ...prevState.rowValidity };
+      updated[index] = allIsValid;
+
+      return {
+        rowValidity: updated,
+      };
+    });
+  };
+
+  setupHeights = () => {
+    let accordion = this.accordionRef.current;
+
+    // Array.from(
+    //   accordion.querySelectorAll("[class*='AccordionContent']")
+    // ).forEach((item, index) => {
+    //   if (this.state.isActive[index]) {
+    //     item.style.maxHeight = item.scrollHeight + 'px';
+    //   } else {
+    //     item.style.maxHeight = 0;
+    //   }
+
+    //   //this is required to prevent infinite loop as we are calling setstate in componentdidupdate
+    //   if (this.state.isActive[index] === undefined) {
+    //     this.setState((prevState) => {
+    //       let oldState = prevState.isActive;
+    //       let copiedState = { ...oldState };
+    //       copiedState[index] =
+    //         this.props.openOnStartIndex >= 0 &&
+    //         this.props.openOnStartIndex === index
+    //           ? true
+    //           : false;
+    //       return { isActive: copiedState };
+    //     });
+    //   }
+    // });
+  };
+
+  
+
+  render() {
+    const { addinput, removeinput, changed } = this.context;
+
+    
+    // const accordion = (
+    //   <div className={classes.AccordionWithRemove} ref={this.accordionRef}>
+    //     {this.props.children.map((item, index) => {
+    //       console.log('prop: ', item);
+
+    //       let additionalClasses = [];
+    //       let validationClasses = [];
+    //       if (this.state.isActive[index] === true) {
+    //         additionalClasses.push(classes.Active);
+    //       }
+
+    //       console.log('this.props.isValid[0]: ', this.props.isValid[0]);
+    //       console.log('this.props.isValid[1]: ', this.props.isValid[1]);
+    //       console.log('this.props.isValid[2]: ', this.props.isValid[2]);
+    //       if (this.props.isValid[index] === false) {
+    //         console.log('valid? ', this.props.isValid[index]);
+    //         validationClasses.push(classes.Invalid);
+    //       }
+    //       let styleClasses = [];
+    //       if (this.props.hovereffect === true) {
+    //         styleClasses.push(classes.AccordionItemHover);
+    //       }
+
+    //       return (
+    //         <div
+    //           className={classes.AccordionWithRemove}
+    //           key={this.props.name + index}>
+    //           <FlexRow>
+    //             <div
+    //               className={[
+    //                 classes.AccordionItem,
+    //                 ...styleClasses,
+    //                 ...additionalClasses,
+    //                 ...validationClasses,
+    //               ].join(' ')}>
+    //               {/* accordion content */}
+    //               <div
+    //                 className={[
+    //                   classes.AccordionContent,
+    //                   ...additionalClasses,
+    //                   ...validationClasses,
+    //                 ].join(' ')}>
+    //                 {item}
+    //               </div>
+    //             </div>
+    //
+    //           </FlexRow>
+    //         </div>
+    //       );
+    //     })}
+    //   </div>
+    // );
+
+    const row = this.props.value.map((val, index) => {
+      //ordered...by metadata array
+
+      return this.props.componentconfig.metadata.map((each, i) => {
+        return (
+          <DraggableItem
+          // style={['Embedded', this.state.isActive[index] ? 'Active' : null]}
+          >
+            
+          </DraggableItem>
+        );
+      });
+    });
+
+    return (
+      <div className={classes.MultiInputObjects}>
+        <div className={classes.RowWrapper}>
+          <DraggableItem onClick={this.handleDrag} style={['Wrapper']} />
+          <Accordion
+            label='clark'
+            {...{
+              isValid: this.state.rowValidity,
+              allowMultiOpen: false,
+              openOnStartIndex: -1, //zero-index, negative value or invalid index to not open on start,
+              name: this.props.name,
+              label: 'clark',
+              onRemove: (name, index) => {
+                console.log('MultiInputObjects accordion....');
+                console.log('name: ', name);
+                console.log('index: ', index);
+                removeinput(this.props.name, index);
+              },
+            }}>
+            {row}
+          </Accordion>
+          {removeButton}
+        </div>
+
+        {addButton}
+      </div>
+    );
+  }
+}

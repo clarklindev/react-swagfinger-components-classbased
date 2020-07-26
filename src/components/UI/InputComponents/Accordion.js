@@ -12,31 +12,14 @@ class Accordion extends PureComponent {
   }
 
   componentDidMount() {
-    let accordion = this.accordionRef.current;
-
-    Array.from(
-      accordion.querySelectorAll("[class*='AccordionContent']")
-    ).forEach((item, index) => {
-      if (this.state.isActive[index]) {
-        item.style.maxHeight = item.scrollHeight + 'px';
-      } else {
-        item.style.maxHeight = 0;
-      }
-
-      this.setState((prevState) => {
-        let oldState = prevState.isActive;
-        let copiedState = [...oldState];
-        copiedState[index] =
-          this.props.openOnStartIndex >= 0 &&
-          this.props.openOnStartIndex === index
-            ? true
-            : false;
-        return { isActive: copiedState };
-      });
-    });
+    this.setMaxHeights();
   }
 
   componentDidUpdate() {
+    this.setMaxHeights();
+  }
+
+  setMaxHeights = () => {
     let accordion = this.accordionRef.current;
 
     Array.from(
@@ -61,7 +44,7 @@ class Accordion extends PureComponent {
         });
       }
     });
-  }
+  };
 
   onClickHandler = (index, event) => {
     console.log(index);
@@ -85,31 +68,34 @@ class Accordion extends PureComponent {
     return (
       <div className={classes.Accordion} ref={this.accordionRef}>
         {this.props.children.map((item, index) => {
-          console.log('prop: ', item);
+          //is Active?
           let additionalClasses = [];
           if (this.state.isActive[index] === true) {
             additionalClasses.push(classes.Active);
           }
+          //has hover?
           let styleClasses = [];
           if (this.props.hovereffect === true) {
             styleClasses = [classes.AccordionItemHover];
           }
+
           return (
             <div
               className={[classes.AccordionItem, ...styleClasses].join(' ')}
+              style={{ ...this.props.style }}
               key={'accordionitem' + index}>
               <div
                 className={classes.AccordionTitle}
                 onClick={(event) => {
                   this.onClickHandler(index, event);
                   if (item.props.onClick) {
-                    item.props.onClick();
+                    item.props.onClick(); //onClick on the item...
                   }
                   if (this.props.onClick) {
-                    this.props.onClick();
+                    this.props.onClick(); //onClick on the prop...
                   }
                 }}>
-                {item.props.label}
+                {item.props.label ? item.props.label : null}
                 <Icon
                   iconstyle='fas'
                   code={
@@ -125,7 +111,7 @@ class Accordion extends PureComponent {
                   classes.AccordionContent,
                   ...additionalClasses,
                 ].join(' ')}>
-                {item.props.children}
+                {item.props.children ? item.props.children : null}
               </div>
             </div>
           );

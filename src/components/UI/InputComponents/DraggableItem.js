@@ -11,11 +11,12 @@ class DraggableItem extends Component {
       });
     }
     return (
-      <div className={[classes.DraggableItem, ...extraClasses].join(' ')}>
+      <div
+        className={[classes.DraggableItem, ...extraClasses].join(' ')}
+        onClick={this.props.onClick}>
         <div className={classes.Icon}>
           <Icon iconstyle='fas' code='grip-vertical' size='sm' />
         </div>
-        {this.props.children}
       </div>
     );
   }

@@ -206,7 +206,7 @@ class MultiSelectWithInput extends PureComponent {
           onClick={(event) => {
             event.preventDefault();
             event.stopPropagation();
-            this.context.addinput('array', this.props.name, {
+            this.context.addinput(this.props.type, this.props.name, {
               key: '',
               value: '',
             });

@@ -34,19 +34,19 @@
 
   //self
   &.SpacingLeft {
-    padding-left: var(--paddingdefault);
+    padding-left: calc(var(--paddingdefault) * 0.5);
   }
   &.SpacingRight {
-    padding-right: var(--paddingdefault);
+    padding-right: calc(var(--paddingdefault) * 0.5);
   }
   &.SpacingTop {
-    padding-top: var(--paddingdefault);
+    padding-top: calc(var(--paddingdefault) * 0.5);
   }
   &.SpacingBottom {
-    padding-bottom: var(--paddingdefault);
+    padding-bottom: calc(var(--paddingdefault) * 0.5);
   }
 
   &.SpacingBottomNotLast {
-    padding-bottom: var(--paddingdefault);
+    padding-bottom: calc(var(--paddingdefault) * 0.5);
   }
 }

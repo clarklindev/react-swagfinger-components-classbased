@@ -1,5 +1,4 @@
 .MultiInputObjects {
-  width: 100%;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -7,29 +6,7 @@
   .RemoveButton {
     margin-left: calc(var(--margindefault) * 0.5);
   }
-  .Label {
-    color: var(--colorheader);
-    font-weight: 600;
-    font-size: 0.7em;
-    text-transform: uppercase;
-    display: block;
-    margin-bottom: 10px;
-    text-align: left;
-  }
-  .InputElement {
-    line-height: var(--inputheight); //50px - (6px x2)
-    outline: none;
-    border: 1px solid var(--colorborder);
-    background-color: white;
-    border-radius: var(--borderradius);
-    font: inherit;
-    font-size: var(--fontsizedefault);
-    padding: var(--paddinginput);
-    box-sizing: border-box;
-    color: var(--colordefault);
-    flex-basis: 1;
-    flex-grow: 1;
-  }
+
   &.Invalid {
     border: 1px solid red;
     background-color: white;
@@ -47,5 +24,127 @@
     border: 1px solid red;
     height: 1px;
     width: 100%;
+  }
+
+  .RowWrapper {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: calc(var(--margindefault) * 0.5);
+  }
+
+  .Accordion {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    flex-basis: 1;
+  }
+
+  .DisplayTitle {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    flex-basis: 1;
+    align-self: stretch;
+    font-size: var(--fontsizedefault);
+    height: var(--inputheight); //50px - (6px x2)
+    line-height: var(--inputheight);
+    outline: none;
+    padding: 0 var(--paddinginput);
+    box-sizing: border-box;
+    color: var(--colordefault);
+    border-top-right-radius: var(--borderradius);
+    border-bottom-right-radius: var(--borderradius);
+    border: 1px solid var(--colorborder);
+    cursor: default;
+  }
+
+  .DisplayBody {
+    align-self: stretch;
+    flex-basis: 1;
+    background-color: pink;
+    border: 1px solid var(--colorborder);
+    padding: var(--paddingdefault);
+  }
+}
+
+.AccordionWithRemove {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 1;
+  flex-grow: 1;
+  color: var(--colordefault);
+
+  button[attribute*='RemoveButton'] {
+    margin-left: calc(var(--margindefault) * 0.5);
+  }
+
+  .AccordionItem {
+    border: 1px solid var(--colorborder);
+    border-bottom: 1px solid var(--colorborder);
+
+    border-radius: var(--borderradius);
+    margin-bottom: calc(var(--margindefault) * 0.5);
+    margin-right: calc(var(--margindefault) * 0.5);
+
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    box-sizing: border-box;
+    &.AccordionItemHover:hover {
+      border-color: var(--colorborderhover);
+      cursor: pointer;
+    }
+
+    &.Invalid {
+      border: 1px solid var(--colorerror);
+    }
+    &.Active {
+      border-bottom: 0px;
+    }
+  }
+
+  .AccordionTitle {
+    padding: var(--paddingdefault);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-basis: 1;
+    flex-grow: 1;
+    cursor: pointer;
+    font: inherit;
+    font-size: var(--fontsizedefault);
+    height: var(--inputheightwithoutborders);
+    box-sizing: border-box;
+  }
+  .AccordionLabel {
+    flex-grow: 1;
+    flex-basis: 1;
+    display: flex;
+    align-self: center;
+  }
+
+  .AccordionContent {
+    padding: 0 var(--paddingdefault);
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    max-height: 0px;
+    transition: padding 0.5s, visibility 0.5s, max-height 0.3s, opacity 0.5s;
+    font: inherit;
+    font-size: var(--fontsizedefault);
+    border-bottom: 0px;
+
+    &.Active {
+      padding: var(--paddingdefault);
+      visibility: visible;
+      opacity: 1;
+      border-bottom: 1px solid var(--colorborder);
+      border-bottom-left-radius: var(--borderradius);
+      border-bottom-right-radius: var(--borderradius);
+      &.Invalid {
+        border-bottom: 1px solid var(--colorerror);
+      }
+    }
   }
 }
