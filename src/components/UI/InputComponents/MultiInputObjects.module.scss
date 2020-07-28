@@ -31,40 +31,6 @@
     flex-direction: column;
     margin-bottom: calc(var(--margindefault) * 0.5);
   }
-
-  .Accordion {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    flex-basis: 1;
-  }
-
-  .DisplayTitle {
-    display: flex;
-    flex-direction: row;
-    flex-grow: 1;
-    flex-basis: 1;
-    align-self: stretch;
-    font-size: var(--fontsizedefault);
-    height: var(--inputheight); //50px - (6px x2)
-    line-height: var(--inputheight);
-    outline: none;
-    padding: 0 var(--paddinginput);
-    box-sizing: border-box;
-    color: var(--colordefault);
-    border-top-right-radius: var(--borderradius);
-    border-bottom-right-radius: var(--borderradius);
-    border: 1px solid var(--colorborder);
-    cursor: default;
-  }
-
-  .DisplayBody {
-    align-self: stretch;
-    flex-basis: 1;
-    background-color: pink;
-    border: 1px solid var(--colorborder);
-    padding: var(--paddingdefault);
-  }
 }
 
 .AccordionWithRemove {

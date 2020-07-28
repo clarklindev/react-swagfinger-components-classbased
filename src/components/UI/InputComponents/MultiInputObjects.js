@@ -9,6 +9,7 @@ import DraggableItem from './DraggableItem';
 import FlexRow from '../../../hoc/Layout/FlexRow';
 import FlexColumn from '../../../hoc/Layout/FlexColumn';
 import Input from './Input';
+import Expandable from './Expandable';
 
 class MultiInputObjects extends PureComponent {
   static contextType = InputContext;
@@ -72,65 +73,62 @@ class MultiInputObjects extends PureComponent {
       </Button>
     );
 
+    const expandableContent = (val, index) => {
+      return this.props.componentconfig.metadata.map((each, i) => {
+        return (
+          <FlexRow
+            flexGrow
+            spacing='bottom-notlast'
+            key={this.props.name + index + '_' + i}>
+            <FlexColumn flexGrow spacing='bottom'>
+              <label className={classes.Label}>{each.label}</label>
+              <Input
+                label={each.label}
+                name={each.name}
+                componentconfig={{
+                  type: each.type,
+                  validation: each.validation,
+                  placeholder: each.placeholder,
+                }}
+                value={{
+                  data: val[each.name].data,
+                  valid: val[each.name].valid,
+                  touched: val[each.name].touched,
+                  pristine: val[each.name].pristine,
+                  errors: val[each.name].errors,
+                }}
+                onChange={(event) => {
+                  changed(
+                    'arrayofobjects',
+                    this.props.name,
+                    event.target.value,
+                    index,
+                    each.name //prop name in object
+                  );
+
+                  //order sensitive
+                  this.checkValidity(val, index);
+                }}
+              />
+            </FlexColumn>
+          </FlexRow>
+        );
+      });
+    };
+
     return (
       <div className={classes.MultiInputObjects}>
         {this.props.value.map((val, index) => {
           console.log('val: ', val);
           return (
-            <div className={classes.RowWrapper}>
+            <div key={index} className={classes.RowWrapper}>
               <FlexRow>
                 <DraggableItem
                   onClick={this.handleDrag}
                   style={['Wrapper']}></DraggableItem>
-                <div className={classes.Accordion}>
-                  <div className={classes.DisplayTitle}>{val.url.data}</div>
-                  <div
-                    className={classes.DisplayBody}
-                    style={{ backgroundColor: 'red' }}>
-                    {this.props.componentconfig.metadata.map((each, i) => {
-                      return (
-                        <FlexRow
-                          flexGrow
-                          spacing='bottom-notlast'
-                          key={this.props.name + index + '_' + i}>
-                          <FlexColumn flexGrow spacing='bottom'>
-                            <label className={classes.Label}>
-                              {each.label}
-                            </label>
-                            <Input
-                              label={each.label}
-                              name={each.name}
-                              componentconfig={{
-                                type: each.type,
-                                validation: each.validation,
-                                placeholder: each.placeholder,
-                              }}
-                              value={{
-                                data: val[each.name].data,
-                                valid: val[each.name].valid,
-                                touched: val[each.name].touched,
-                                pristine: val[each.name].pristine,
-                                errors: val[each.name].errors,
-                              }}
-                              onChange={(event) => {
-                                changed(
-                                  'arrayofobjects',
-                                  this.props.name,
-                                  event.target.value,
-                                  index,
-                                  each.name //prop name in object
-                                );
-
-                                //order sensitive
-                                this.checkValidity(val, index);
-                              }}
-                            />
-                          </FlexColumn>
-                        </FlexRow>
-                      );
-                    })}
-                  </div>
-                </div>
+                <Expandable title={val.url.data}>
+                  {expandableContent(val, index)}
+                </Expandable>
                 {removeButton(1)}
               </FlexRow>
             </div>

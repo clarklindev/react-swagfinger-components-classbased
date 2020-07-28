@@ -1,0 +1,58 @@
+.Expandable {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-basis: 1;
+  overflow: hidden;
+  box-sizing: border-box;
+  transition: all 0.3s ease-out, opacity 0.3s;
+
+  .Header {
+    display: flex;
+    flex-direction: row;
+    align-self: stretch;
+    height: var(--inputheight); //50px - (6px x2)
+    line-height: var(--inputheight);
+    outline: none;
+    padding: 0 var(--paddinginput);
+    box-sizing: border-box;
+
+    border-top-right-radius: var(--borderradius);
+    border-bottom-right-radius: var(--borderradius);
+    border: 1px solid var(--colorborder);
+    cursor: pointer;
+    &.Active {
+      border-bottom-right-radius: 0;
+    }
+  }
+
+  .Title {
+    display: flex;
+    flex-grow: 1;
+    flex-basis: 1;
+    font: inherit;
+    font-size: var(--fontsizedefault);
+    color: var(--colordefault);
+  }
+
+  .Body {
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.3s ease-out, opacity 0.3s;
+
+    font: inherit;
+    font-size: var(--fontsizedefault);
+    align-self: stretch;
+    flex-basis: 1;
+    box-sizing: border-box;
+    border: 1px solid var(--colorborder);
+    padding: var(--paddingdefault);
+    border-top: 0px;
+    border-bottom-left-radius: var(--borderradius);
+    border-bottom-right-radius: var(--borderradius);
+    &.Active {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+}
