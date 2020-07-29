@@ -1,0 +1,9 @@
+.Label {
+  color: var(--colorheader);
+  font-weight: 600;
+  font-size: 0.7em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: calc(var(--margindefault) * 0.5);
+  text-align: left;
+}

@@ -14,15 +14,17 @@
     height: var(--inputheight); //50px - (6px x2)
     line-height: var(--inputheight);
     outline: none;
-    padding: 0 var(--paddinginput);
+    padding-right: var(--paddingdefault);
     box-sizing: border-box;
-
-    border-top-right-radius: var(--borderradius);
-    border-bottom-right-radius: var(--borderradius);
+    border-radius: var(--borderradius);
     border: 1px solid var(--colorborder);
     cursor: pointer;
     &.Active {
+      border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
+    }
+    &.Invalid {
+      border: 1px solid var(--colorerror);
     }
   }
 
@@ -53,6 +55,10 @@
     &.Active {
       visibility: visible;
       opacity: 1;
+    }
+    &.Invalid {
+      border: 1px solid var(--colorerror);
+      border-top: 0px;
     }
   }
 }

@@ -8,15 +8,7 @@
   //   //drop shadow css filter should be applied at each components level
   //   // filter: var(--dropshadowdefault);
   // }
-  .Label {
-    color: var(--colorheader);
-    font-weight: 600;
-    font-size: 0.7em;
-    text-transform: uppercase;
-    display: block;
-    margin-bottom: 10px;
-    text-align: left;
-  }
+
   .GroupRow {
     display: flex;
     flex-direction: row;

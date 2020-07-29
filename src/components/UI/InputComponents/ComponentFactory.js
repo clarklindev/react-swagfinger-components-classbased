@@ -25,6 +25,7 @@ import InputSearch from './InputSearch';
 import InputPassword from './InputPassword';
 import InputWithIcon from './InputWithIcon';
 import List from './List';
+import Label from '../Headers/Label';
 import InputWithInput from './InputWithInput';
 import ErrorList from './ErrorList';
 class ComponentFactory extends Component {
@@ -119,7 +120,7 @@ class ComponentFactory extends Component {
     }
 
     this.label = this.props.data ? (
-      <label className={classes.Label}>{this.props.data.label}</label>
+      <Label>{this.props.data.label}</Label>
     ) : null;
 
     return (

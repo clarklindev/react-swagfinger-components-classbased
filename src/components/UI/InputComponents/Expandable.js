@@ -41,6 +41,10 @@ class Expandable extends Component {
     this.setState((prevState) => {
       return { isOpen: !prevState.isOpen };
     });
+
+    if (this.props.onClick) {
+      this.props.onClick(event);
+    }
   };
 
   render() {
@@ -49,16 +53,22 @@ class Expandable extends Component {
     if (this.state.isOpen === true) {
       additionalClasses.push(classes.Active);
     }
+    let validationClasses = [];
+    if (this.props.isValid === false) {
+      validationClasses.push(classes.Invalid);
+    }
 
     return (
       <div className={classes.Expandable} ref={this.expandableRef}>
         <div
-          className={[classes.Header, ...additionalClasses].join(' ')}
+          className={[
+            classes.Header,
+            ...additionalClasses,
+            ...validationClasses,
+          ].join(' ')}
           ref={this.headerRef}
           onClick={(event) => this.onClickHandler(event)}>
-          <div className={classes.Title}>
-            {this.props.title ? this.props.title : null}
-          </div>
+          {this.props.title ? this.props.title : null}
           <Button type='NoStyle' className={classes.ExpandButton}>
             <Icon
               iconstyle='fas'
@@ -67,7 +77,12 @@ class Expandable extends Component {
             />
           </Button>
         </div>
-        <div className={[classes.Body, ...additionalClasses].join(' ')}>
+        <div
+          className={[
+            classes.Body,
+            ...additionalClasses,
+            ...validationClasses,
+          ].join(' ')}>
           {this.props.children ? this.props.children : null}
         </div>
       </div>

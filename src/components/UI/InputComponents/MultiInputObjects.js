@@ -10,6 +10,7 @@ import FlexRow from '../../../hoc/Layout/FlexRow';
 import FlexColumn from '../../../hoc/Layout/FlexColumn';
 import Input from './Input';
 import Expandable from './Expandable';
+import Label from '../Headers/Label';
 
 class MultiInputObjects extends PureComponent {
   static contextType = InputContext;
@@ -20,25 +21,74 @@ class MultiInputObjects extends PureComponent {
   }
 
   state = {
-    isActive: null,
+    isActive: {},
+    rowValidity: {}, //all rows
+  };
+
+  checkValidity = (value, index) => {
+    //all props in object true check...
+    let allIsValid = Object.keys(value)
+      .map((item) => {
+        return value[item].valid;
+      })
+      .every((item) => {
+        return item === true;
+      });
+
+    this.setState((prevState) => {
+      let updated = { ...prevState.rowValidity };
+      updated[index] = allIsValid;
+
+      return {
+        rowValidity: updated,
+      };
+    });
+  };
+
+  //@param index - the index of item we clicked on
+  manageAccordion = (index) => {
+    let obj = { ...this.state.isActive };
+
+    let keys = Object.keys(this.state.isActive);
+
+    //check every key
+    keys.forEach((key, i) => {
+      //only check everything else we didnt click on
+      if (i !== index) {
+        //if allowMultiOpen, then leave open, else close
+        obj[key] =
+          this.props.componentconfig.allowMultiOpen === true
+            ? this.state.isActive[key]
+            : false;
+      }
+    });
+
+    this.setState({ isActive: obj });
   };
 
   onClickHandler = (index, event) => {
-    this.setState((prevState) => {
-      let dataClone = [...prevState.isActive];
-      let updatedClone = dataClone.map((value, i) => {
-        if (i === index) {
-          return !value;
-        } else {
-          return this.props.allowMultiOpen === true ? value : false;
-        }
-      });
+    console.log('gets here...');
 
-      return {
-        isActive: updatedClone,
-        removeIndex: null,
-      };
-    });
+    this.setState(
+      (prevState) => {
+        let isActiveClone = { ...prevState.isActive };
+        if (
+          isActiveClone[index] === undefined ||
+          isActiveClone[index] === null
+        ) {
+          isActiveClone[index] = true;
+        }
+        //something there...toggle
+        else {
+          isActiveClone[index] = !prevState.isActive[index];
+        }
+        return {
+          isActive: isActiveClone,
+        };
+      },
+
+      this.manageAccordion.bind(this, index)
+    );
   };
 
   render() {
@@ -64,7 +114,7 @@ class MultiInputObjects extends PureComponent {
           event.preventDefault();
           event.stopPropagation();
           console.log('index:', index);
-          //this.props.onRemove(this.props.name, index);
+          removeinput(this.props.name, index);
         }}
         title='Delete'
         type='WithBorder'
@@ -72,6 +122,22 @@ class MultiInputObjects extends PureComponent {
         <Icon iconstyle='far' code='trash-alt' size='sm' />
       </Button>
     );
+
+    const rowTitle = (title, index) => {
+      let classList = [
+        'Embedded',
+        this.state.isActive[index] === true ? 'Active' : null,
+      ];
+      console.log('classList: ', classList);
+      return (
+        <React.Fragment>
+          <DraggableItem
+            onClick={this.handleDrag}
+            style={classList}></DraggableItem>
+          <div className={classes.Title}>{title ? title : null}</div>
+        </React.Fragment>
+      );
+    };
 
     const expandableContent = (val, index) => {
       return this.props.componentconfig.metadata.map((each, i) => {
@@ -81,7 +147,7 @@ class MultiInputObjects extends PureComponent {
             spacing='bottom-notlast'
             key={this.props.name + index + '_' + i}>
             <FlexColumn flexGrow spacing='bottom'>
-              <label className={classes.Label}>{each.label}</label>
+              <Label>{each.label}</Label>
               <Input
                 label={each.label}
                 name={each.name}
@@ -120,13 +186,18 @@ class MultiInputObjects extends PureComponent {
       <div className={classes.MultiInputObjects}>
         {this.props.value.map((val, index) => {
           console.log('val: ', val);
+          console.log('rowValidity:', this.state.rowValidity);
           return (
             <div key={index} className={classes.RowWrapper}>
               <FlexRow>
-                <DraggableItem
-                  onClick={this.handleDrag}
-                  style={['Wrapper']}></DraggableItem>
-                <Expandable title={val.url.data}>
+                <Expandable
+                  title={rowTitle(val.url.data, index)}
+                  isActive={this.state.isActive[index]}
+                  isValid={this.state.rowValidity[index]}
+                  onClick={(event) => {
+                    console.log('clicked...', index);
+                    this.onClickHandler(index, event);
+                  }}>
                   {expandableContent(val, index)}
                 </Expandable>
                 {removeButton(1)}

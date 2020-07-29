@@ -10,9 +10,19 @@ class DraggableItem extends Component {
         return classes[each];
       });
     }
+
+    let validationClasses = [];
+    if (this.props.isValid === false) {
+      validationClasses.push(classes.Invalid);
+    }
+
     return (
       <div
-        className={[classes.DraggableItem, ...extraClasses].join(' ')}
+        className={[
+          classes.DraggableItem,
+          ...extraClasses,
+          ...validationClasses,
+        ].join(' ')}
         onClick={this.props.onClick}>
         <div className={classes.Icon}>
           <Icon iconstyle='fas' code='grip-vertical' size='sm' />

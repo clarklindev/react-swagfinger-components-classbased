@@ -1,14 +1,15 @@
 .DraggableItem {
+  overflow: hidden;
   display: flex;
   flex-grow: 0;
   flex-shrink: 0;
   flex-basis: 1;
   background-color: var(--colorbackground);
-  border-left: 1px solid var(--colorborder);
-  border-top: 1px solid var(--colorborder);
-  border-bottom: 1px solid var(--colorborder);
+
+  border: 1px solid var(--colorborder);
+
   border-top-left-radius: var(--borderradius);
-  border-bottom-left-radius: var(--borderradius);
+  // border-bottom-left-radius: var(--borderradius);
 
   //border-radius: var(--borderradius);
   //flex-direction: row;
@@ -19,21 +20,18 @@
 
   &.Invalid {
     border: 1px solid red;
+    border-right: 0px;
     background-color: white;
   }
 
   &.Embedded {
     border: 0px;
-    &.Active {
-      padding: var(--defaultpadding);
-      border-radius: 0;
-      border-top-left-radius: var(--borderradius);
-      border-top-right-radius: var(--borderradius);
-      border-bottom: 1px solid var(--colorborder);
-      .Icon {
-        border-bottom-left-radius: 0;
-      }
-    }
+    border-bottom-left-radius: var(--borderradius);
+    border-right: 1px solid var(--colorborder);
+    height: var(--inputheightwithoutborders);
+  }
+  &.Active {
+    border-bottom-left-radius: 0;
   }
 
   & .Icon {
@@ -42,6 +40,6 @@
     color: var(--colordefault);
     box-sizing: border-box;
     cursor: s-resize;
-    height: var(--inputheight);
+    height: var(--inputheightwithoutborders);
   }
 }
