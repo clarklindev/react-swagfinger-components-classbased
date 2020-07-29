@@ -29,9 +29,10 @@
     border-bottom-left-radius: var(--borderradius);
     border-right: 1px solid var(--colorborder);
     height: var(--inputheightwithoutborders);
-  }
-  &.Active {
-    border-bottom-left-radius: 0;
+
+    &.Active {
+      border-bottom-left-radius: 0;
+    }
   }
 
   & .Icon {
