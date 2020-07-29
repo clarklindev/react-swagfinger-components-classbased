@@ -23,6 +23,8 @@ class MultiInputObjects extends PureComponent {
   state = {
     isActive: {},
     rowValidity: {}, //all rows
+    clickIndex: null,
+    toIndex: null,
   };
 
   checkValidity = (value, index) => {
@@ -91,6 +93,60 @@ class MultiInputObjects extends PureComponent {
       },
 
       this.manageAccordion.bind(this, index)
+    );
+  };
+
+  dragStartHandler = function (e, index) {
+    console.log('FUNCTION dragStartHandler');
+    e.target.style.opacity = 0.3;
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/html', e.currentTarget);
+    this.setState({ clickIndex: index });
+  };
+
+  dragEnterHandler = function (e, index) {
+    console.log('FUNCTION dragEnterHandler');
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+
+    //set index if not same as current state
+    if (this.state.toIndex !== index) {
+      console.log('set index:', index);
+      this.setState((prevState) => {
+        return { toIndex: index };
+      });
+    }
+  };
+  dragOverhandler = function (e, index) {
+    e.preventDefault();
+    //console.log('FUNCTION dragOverhandler');
+  };
+  dragLeaveHandler = function (e, index) {
+    console.log('FUNCTION dragLeaveHandler');
+  };
+
+  dragEndHandler = function (e) {
+    console.log('FUNCTION dragEndHandler');
+    e.target.style.opacity = '';
+  };
+
+  //this requires dragOverhandler() to have e.preventDefault() for it to work
+  dropHandler = function (e) {
+    e.preventDefault();
+
+    //console.log('dropHandler: ', e.currentTarget);
+    // let updateArray = ArrayHelper.moveItemInArray(
+    //   this.state.list,
+    //   this.state.clickIndex,
+    //   this.state.toIndex
+    // );
+    // console.log('updated array:', updateArray);
+    //this.setState({ list: updateArray });
+
+    this.context.moveiteminarray(
+      this.props.name,
+      this.state.clickIndex,
+      this.state.toIndex
     );
   };
 
@@ -191,7 +247,18 @@ class MultiInputObjects extends PureComponent {
           console.log('val: ', val);
           console.log('rowValidity:', this.state.rowValidity);
           return (
-            <div key={index} className={classes.RowWrapper}>
+            <div
+              key={index}
+              className={classes.RowWrapper}
+              draggable
+              onDragStart={(event) => this.dragStartHandler(event, index)}
+              onDragEnter={(event) => this.dragEnterHandler(event, index)} //event triggers once
+              onDragOver={(event) => this.dragOverhandler(event, index)} //event triggers all the time
+              onDragLeave={(event) => this.dragLeaveHandler(event, index)}
+              onDrop={(event) => {
+                this.dropHandler(event);
+              }}
+              onDragEnd={(event) => this.dragEndHandler(event, index)}>
               <FlexRow>
                 <Expandable
                   title={rowTitle(val.url.data, index)}

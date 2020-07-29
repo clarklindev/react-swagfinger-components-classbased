@@ -553,25 +553,27 @@ class ProfileCreateOrUpdate extends Component {
   };
 
   //only called by arrays
-  // moveItemHandler = (key, fromIndex, toIndex) => {
-  //   const updatedForm = {
-  //     ...this.state.form,
-  //   };
+  moveItemHandler = (key, fromIndex, toIndex) => {
+    const updatedForm = {
+      ...this.state.localstateform,
+    };
 
-  //   const updatedFormElement = {
-  //     ...updatedForm[key],
-  //   };
+    const updatedFormElement = {
+      ...updatedForm[key],
+    };
 
-  //   //updatedFormElement.value stores an array
-  //   console.log('UpdateFormElement: ', updatedFormElement);
-  //   let arr = updatedFormElement.value;
-  //   let updatedArray = arrayHelper.moveItemInArray(arr, fromIndex, toIndex);
-  //   console.log('updated array: ', updatedArray);
+    //updatedFormElement.value stores an array
+    console.log('updatedForm: ', updatedForm);
+    console.log('UpdateFormElement: ', updatedFormElement);
+    let arr = updatedFormElement.value;
+    console.log('arr:', arr, fromIndex, toIndex);
+    let updatedArray = arrayHelper.moveItemInArray(arr, fromIndex, toIndex);
+    console.log('updated array: ', updatedArray);
 
-  //   updatedFormElement.value = updatedArray;
-  //   updatedForm[key] = updatedFormElement;
-  //   this.setState({ form: updatedForm });
-  // };
+    updatedFormElement.value = updatedArray;
+    updatedForm[key] = updatedFormElement;
+    this.setState({ localstateform: updatedForm });
+  };
 
   //mutate .pristine prop of inputs to false
   //used to test inputs validity when mouse is over submit button

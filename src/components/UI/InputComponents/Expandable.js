@@ -95,12 +95,3 @@ class Expandable extends Component {
 }
 
 export default Expandable;
-
-{
-  /* <div className={classes.Accordion}>
-  <div className={classes.DisplayTitle}>{val.url.data}</div>
-  <div className={classes.DisplayBody} style={{ backgroundColor: 'orange' }}>
-    
-  </div>
-</div>; */
-}
