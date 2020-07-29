@@ -200,7 +200,7 @@ class MultiInputObjects extends PureComponent {
                   }}>
                   {expandableContent(val, index)}
                 </Expandable>
-                {removeButton(1)}
+                {removeButton(index)}
               </FlexRow>
             </div>
           );
