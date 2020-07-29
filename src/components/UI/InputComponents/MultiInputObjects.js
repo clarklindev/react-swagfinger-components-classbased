@@ -56,12 +56,15 @@ class MultiInputObjects extends PureComponent {
       //only check everything else we didnt click on
       if (i !== index) {
         //if allowMultiOpen, then leave open, else close
+
         obj[key] =
-          this.props.componentconfig.allowMultiOpen === true
+          this.props.componentconfig.allowmultiopen === true
             ? this.state.isActive[key]
             : false;
       }
     });
+
+    console.log('obj: ', obj);
 
     this.setState({ isActive: obj });
   };

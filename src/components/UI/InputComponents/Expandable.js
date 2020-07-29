@@ -12,7 +12,7 @@ class Expandable extends Component {
   }
 
   state = {
-    isOpen: this.props.isActive ? true : false,
+    isOpen: this.props.isActive,
   };
 
   componentDidMount() {
@@ -20,6 +20,10 @@ class Expandable extends Component {
   }
 
   componentDidUpdate() {
+    console.log('expandable componentDidUpdate');
+    if (this.props.isActive !== this.state.isOpen) {
+      this.setState({ isOpen: this.props.isActive });
+    }
     this.setMaxHeight();
   }
 
@@ -28,7 +32,7 @@ class Expandable extends Component {
     const header = this.headerRef.current;
 
     console.log('container: ', container);
-    if (this.state.isOpen) {
+    if (this.props.isActive === true) {
       container.style.maxHeight = container.scrollHeight + 'px';
     } else {
       container.style.maxHeight = header.offsetHeight + 'px';
