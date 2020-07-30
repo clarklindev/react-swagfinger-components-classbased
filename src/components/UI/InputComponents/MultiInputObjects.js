@@ -27,6 +27,10 @@ class MultiInputObjects extends PureComponent {
     toIndex: null,
   };
 
+  componentDidMount() {}
+  componentDidUpdate() {}
+
+  //checks if row is valid
   checkValidity = (value, index) => {
     //all props in object true check...
     let allIsValid = Object.keys(value)
@@ -134,15 +138,6 @@ class MultiInputObjects extends PureComponent {
   dropHandler = function (e) {
     e.preventDefault();
 
-    //console.log('dropHandler: ', e.currentTarget);
-    // let updateArray = ArrayHelper.moveItemInArray(
-    //   this.state.list,
-    //   this.state.clickIndex,
-    //   this.state.toIndex
-    // );
-    // console.log('updated array:', updateArray);
-    //this.setState({ list: updateArray });
-
     this.context.moveiteminarray(
       this.props.name,
       this.state.clickIndex,
@@ -232,7 +227,7 @@ class MultiInputObjects extends PureComponent {
                   );
 
                   //order sensitive
-                  this.checkValidity(val, index);
+                  //this.checkValidity(val, index);
                 }}
               />
             </FlexColumn>

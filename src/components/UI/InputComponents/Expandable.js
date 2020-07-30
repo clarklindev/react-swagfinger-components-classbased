@@ -38,6 +38,7 @@ class Expandable extends Component {
       container.style.maxHeight = header.offsetHeight + 'px';
     }
   };
+
   onClickHandler = (event) => {
     event.preventDefault();
     event.stopPropagation();
