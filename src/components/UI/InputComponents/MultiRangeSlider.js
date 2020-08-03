@@ -91,8 +91,8 @@ class MultiRangeSlider extends Component {
   }
 
   restrictActualBoundaries = (value, index = this.state.currentindex) => {
-    let min = this.props.componentconfig.options[0].value;
-    let max = this.props.componentconfig.options[1].value;
+    let min = this.props.componentconfig.metadata[0].value;
+    let max = this.props.componentconfig.metadata[1].value;
 
     //has a next node...set max to next nodes' slider value
     if (index === 0) {
@@ -143,8 +143,8 @@ class MultiRangeSlider extends Component {
 
   // converts ACTUAL value to DISPLAY value
   convertToDisplayValue = (value, index = this.state.currentindex) => {
-    let min = this.props.componentconfig.options[0].value;
-    let max = this.props.componentconfig.options[1].value;
+    let min = this.props.componentconfig.metadata[0].value;
+    let max = this.props.componentconfig.metadata[1].value;
     if (value === '') {
       if (index === 0) {
         value = min;
@@ -161,8 +161,8 @@ class MultiRangeSlider extends Component {
 
   //converts DISPLAY value to ACTUAL value
   convertToActualValue = (value, index = this.state.currentindex) => {
-    let min = this.props.componentconfig.options[0].value;
-    let max = this.props.componentconfig.options[1].value;
+    let min = this.props.componentconfig.metadata[0].value;
+    let max = this.props.componentconfig.metadata[1].value;
     if (value === '') {
       if (index === 0) {
         value = min;
@@ -200,7 +200,7 @@ class MultiRangeSlider extends Component {
       this.props.name,
       value,
       null,
-      this.props.componentconfig.options[0].displaytext
+      this.props.componentconfig.metadata[0].label
     );
   };
 
@@ -214,7 +214,7 @@ class MultiRangeSlider extends Component {
       this.props.name,
       value,
       null,
-      this.props.componentconfig.options[1].displaytext
+      this.props.componentconfig.metadata[1].label
     );
   };
 
@@ -363,12 +363,31 @@ class MultiRangeSlider extends Component {
     let tempClassesMax = [];
     let errorMin = null;
     let errorMax = null;
+    console.log(
+      'this.props.componentconfig.validation.isRequired:',
+      this.props.componentconfig.validation.isRequired
+    );
+
+    console.log('this.props.value[min].data:', this.props.value['min'].data);
+
+    console.log('this.props.value[min].valid:', this.props.value['min'].valid);
+
+    console.log(
+      'this.props.value[min].touched:',
+      this.props.value['min'].touched
+    );
+    console.log(
+      'this.props.value[min].pristine:',
+      this.props.value['min'].pristine
+    );
+
     if (
-      (this.props.componentconfig.validation.isRequired &&
-        !this.props.value['min'].valid &&
+      (this.props.componentconfig.validation.isRequired === true &&
+        this.props.value['min'].valid === false &&
         //min
-        this.props.value['min'].touched) ||
-      (!this.props.value['min'].touched && !this.props.value['min'].pristine)
+        this.props.value['min'].touched === true) ||
+      (this.props.value['min'].touched === false &&
+        this.props.value['min'].pristine === false)
     ) {
       // console.log('pushing invalid: ');
       tempClassesMin.push(classes.Invalid);
@@ -382,10 +401,11 @@ class MultiRangeSlider extends Component {
     }
     if (
       (this.props.componentconfig.validation.isRequired &&
-        !this.props.value['max'].valid &&
+        this.props.value['max'].valid === false &&
         //max
-        this.props.value['max'].touched) ||
-      (!this.props.value['max'].touched && !this.props.value['max'].pristine)
+        this.props.value['max'].touched === true) ||
+      (this.props.value['max'].touched === false &&
+        this.props.value['max'].pristine === false)
     ) {
       // console.log('pushing invalid: ');
       tempClassesMax.push(classes.Invalid);
@@ -402,6 +422,10 @@ class MultiRangeSlider extends Component {
       tempClassesMin.push(classes.ReadOnly);
       tempClassesMax.push(classes.ReadOnly);
     }
+
+    console.log('tempClassesMin:', tempClassesMin);
+    console.log('tempClassesMax:', tempClassesMax);
+
     return (
       <div className={classes.MultiRangeSlider}>
         <div className={classes.FlexGroupColumn}>
@@ -433,7 +457,7 @@ class MultiRangeSlider extends Component {
                 className={classes.Rail}
                 onClick={(event) => this.scrollClickHandler(event)}>
                 {/* Sliders */}
-                {(this.props.componentconfig.options || []).map(
+                {(this.props.componentconfig.metadata || []).map(
                   (each, index) => {
                     return (
                       <div

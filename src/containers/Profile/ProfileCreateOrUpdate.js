@@ -119,13 +119,7 @@ class ProfileCreateOrUpdate extends Component {
         case 'single':
           tempObj.value = dataObject;
           break;
-        case 'object':
-          let obj = {};
-          tempObj.componentconfig.metadata.forEach((item) => {
-            obj[item.name] = dataObject;
-          });
-          tempObj.value = obj;
-          break;
+
         case 'array':
           let arrayValues = [];
           let count;
@@ -137,12 +131,25 @@ class ProfileCreateOrUpdate extends Component {
           } else {
             //implicit
             count = tempObj.componentconfig.options.length;
+            console.log('count: ', count);
           }
           for (let j = 0; j < count; j++) {
             arrayValues.push(dataObject);
           }
           console.log('arrayValues: ', arrayValues);
           tempObj.value = arrayValues;
+          break;
+
+        case 'object':
+          let obj = {};
+          tempObj.componentconfig.metadata.forEach((item) => {
+            obj[item.name] = { ...dataObject };
+            if (item.value) {
+              obj[item.name].data = item.value;
+            }
+          });
+
+          tempObj.value = obj;
           break;
 
         case 'arrayofobjects':
@@ -214,29 +221,7 @@ class ProfileCreateOrUpdate extends Component {
                 pristine: true,
               };
               break;
-            case 'object':
-              let keys = Object.keys(this.props.activeProfile[formattribute]);
-              let obj = {};
-              keys.forEach((attr) => {
-                // let metadata = this.props.formattedForm[
-                //   formattribute
-                // ].componentconfig.metadata.find((meta) => {
-                //   return meta.name === attr;
-                // });
-                // const validated = validationCheck(
-                //   each[attr],
-                //   metadata.validation
-                // );
-                obj[attr] = {
-                  data: this.props.activeProfile[formattribute][attr], //value at the key
-                  valid: false, //validated.isValid,
-                  errors: false, //validated.errors, //array of errors
-                  touched: false,
-                  pristine: true,
-                };
-              });
-              value = obj;
-              break;
+
             case 'array':
               value = this.props.activeProfile[formattribute].map((each) => {
                 const validated = validationCheck(
@@ -252,6 +237,35 @@ class ProfileCreateOrUpdate extends Component {
                   pristine: true,
                 };
               });
+              break;
+            case 'object':
+              let keys = Object.keys(this.props.activeProfile[formattribute]);
+              let obj = {};
+              keys.forEach((attr) => {
+                let metadata = this.props.formattedForm[
+                  formattribute
+                ].componentconfig.metadata.find((meta) => {
+                  return meta.name === attr;
+                });
+
+                let valueInFirebase = this.props.formattedForm[formattribute]
+                  .value[attr].data;
+                console.log('valueInFirebase: ', valueInFirebase);
+                const validated = validationCheck(
+                  this.props.formattedForm[formattribute].value[attr].data,
+                  metadata.validation
+                );
+                console.log('validated: ', validated);
+                obj[attr] = {
+                  data: this.props.formattedForm[formattribute].value[attr]
+                    .data, //value at the key
+                  valid: validated.isValid,
+                  errors: validated.errors, //array of errors
+                  touched: false,
+                  pristine: true,
+                };
+              });
+              value = obj;
               break;
             case 'arrayofobjects':
               value = this.props.activeProfile[formattribute].map((each) => {
@@ -526,25 +540,6 @@ class ProfileCreateOrUpdate extends Component {
         break;
     }
 
-    //console.log('key: ', key);
-    //console.log('validation: ', validation);
-
-    //if array
-    // if (index !== null) {
-    //   if (!updatedFormElement.value) {
-    //     updatedFormElement.value = [];
-    //   }
-    //   updatedFormElement.value[index] = obj;
-    // } else {
-    //   //if single value
-    //   updatedFormElement.value = obj;
-    // }
-    // console.log(
-    //   '\n\n\n====================\nUPDATED FORM ELEMENT: \n',
-    //   updatedFormElement,
-    //   '-----------------------------\n'
-    // );
-
     updatedForm[key] = updatedFormElement; //update form's input element state as that or 'updatedFormElement'
 
     const formValidCheck = this.checkInputValidProperty(updatedForm);
@@ -575,67 +570,132 @@ class ProfileCreateOrUpdate extends Component {
     this.setState({ localstateform: updatedForm });
   };
 
-  //mutate .pristine prop of inputs to false
+  //update .pristine prop of inputs to false
   //used to test inputs validity when mouse is over submit button
-  // onSubmitTest = (event) => {
-  //   console.log('onSubmitTest');
-  //   //make all inputs pristine:false
-  //   //each prop in profile
-  //   for (let key in this.props.formattedForm) {
-  //     let obj;
+  onSubmitTest = (event) => {
+    console.log('onSubmitTest');
+    //make all inputs pristine:false
+    //each prop in profile
+    console.log('this.props.formattedForm: ', this.props.formattedForm);
+    console.log('this.props.activeProfile: ', this.props.activeProfile);
+    console.log('this.state.localstateform: ', this.state.localstateform);
 
-  //     switch (this.props.formattedForm[key].componentconfig.type) {
-  //       case 'array':
-  //         obj = this.props.form[key].value.map((each) => {
-  //           let validation = validationCheck(
-  //             each.data,
-  //             this.props.form[key].validation
-  //           );
-  //           //console.log('EACH: ', each);
-  //           let val = { ...each };
-  //           val.touched = true;
-  //           val.pristine = false;
-  //           val.errors = validation.errors;
-  //           val.valid = validation.isValid;
-  //           return val;
-  //         });
-  //         break;
+    let newValues = Object.keys(this.state.localstateform).map(
+      (formattribute) => {
+        let obj = {};
+        switch (this.state.localstateform[formattribute].type) {
+          case 'single':
+            console.log('single: ', formattribute);
+            const validated = validationCheck(
+              this.state.localstateform[formattribute].value.data,
+              this.state.localstateform[formattribute].componentconfig
+                .validation
+            );
+            obj = {
+              data: this.state.localstateform[formattribute].value.data, //value at the key
+              valid: validated.isValid,
+              errors: validated.errors, //array of errors
+              touched: true,
+              pristine: false,
+            };
 
-  //       case 'string':
-  //       case 'number':
-  //       case 'bool':
-  //         let validation = validationCheck(
-  //           this.props.form[key].value.data,
-  //           this.props.form[key].validation
-  //         );
-  //         obj = { ...this.props.form[key].value };
-  //         obj.touched = true;
-  //         obj.pristine = false;
-  //         obj.errors = validation.errors;
-  //         obj.valid = validation.isValid;
-  //         break;
+            break;
+          case 'array':
+            console.log('array:', formattribute);
+            obj = this.state.localstateform[formattribute].value.map((each) => {
+              let validation = validationCheck(
+                each.data,
+                this.state.localstateform[formattribute].componentconfig
+                  .validation
+              );
+              //console.log('EACH: ', each);
+              let val = { ...each };
+              val.touched = true;
+              val.pristine = false;
+              val.errors = validation.errors;
+              val.valid = validation.isValid;
+              return val;
+            });
+            break;
+          case 'object':
+            console.log('object:', formattribute);
+            Object.keys(this.state.localstateform[formattribute].value).forEach(
+              (attr) => {
+                let metadata = this.state.localstateform[
+                  formattribute
+                ].componentconfig.metadata.find((meta) => {
+                  return meta.name === attr;
+                });
+                const validated = validationCheck(
+                  this.state.localstateform[formattribute].value[attr].data,
+                  metadata.validation
+                );
+                obj[attr] = {
+                  data: this.state.localstateform[formattribute].value[attr]
+                    .data, //value at the key
+                  valid: validated.isValid,
+                  errors: validated.errors, //array of errors
+                  touched: true,
+                  pristine: false,
+                };
+                console.log('submit test: ');
+                console.log('validated:', validated);
+                console.log('obj[attr]:', obj[attr]);
+              }
+            );
 
-  //       default:
-  //         console.log(this.props.form[key], ': not validating');
-  //         break;
-  //     }
+            break;
 
-  //     this.setState((prevState) => ({
-  //       form: {
-  //         ...prevState.form,
-  //         [key]: {
-  //           ...prevState.form[key],
-  //           value: obj,
-  //         },
-  //       },
-  //     }));
-  //   }
-  //   console.log(
-  //     '\n\nON SUBMIT FORM STATE:\n====================================',
-  //     this.state.form,
-  //     '\n\n====================================='
-  //   );
-  // };
+          case 'arrayofobjects':
+            console.log('arrayofobjects:', formattribute);
+            obj = this.state.localstateform[formattribute].value.map((each) => {
+              //each value is an object... validate each attribute
+              console.log('arrayofobjects each: ', each);
+              let val = {};
+              // //go through each attribute of the value
+              Object.keys(each).forEach((attr) => {
+                //   console.log('attr: ', attr);
+                val[attr] = '';
+                let metadata = this.state.localstateform[
+                  formattribute
+                ].componentconfig.metadata.find((meta) => {
+                  return meta.name === attr;
+                });
+                const validated = validationCheck(
+                  each[attr].data,
+                  metadata.validation
+                );
+                val[attr] = {
+                  data: each[attr].data, //value at the key
+                  valid: validated.isValid,
+                  errors: validated.errors, //array of errors
+                  touched: false,
+                  pristine: true,
+                };
+              });
+              return val;
+            });
+            break;
+          default:
+            console.log('nothing');
+        }
+        console.log('obj:', obj);
+
+        this.setState((prevState) => ({
+          localstateform: {
+            ...prevState.localstateform,
+            [formattribute]: {
+              ...prevState.localstateform[formattribute],
+              value: obj,
+            },
+          },
+        }));
+
+        console.log('=============');
+        return obj;
+      }
+    );
+  };
 
   //checks the .valid property of each input in array or individual input
   //returns true/false if form object is valid/invalid
@@ -660,6 +720,10 @@ class ProfileCreateOrUpdate extends Component {
               for (let each of form[key].value) {
                 formIsValid = each.valid && formIsValid;
               }
+              break;
+            case 'object':
+              break;
+            case 'arrayofobjects':
               break;
           }
         }
@@ -756,7 +820,9 @@ class ProfileCreateOrUpdate extends Component {
             bubbles: true,
             cancelable: true,
           });
-          //this.submitInputRef.current.dispatchEvent(event);
+
+          //get the reference to the actual submit input and mimic a mouseover
+          this.submitInputRef.current.dispatchEvent(event);
         }}>
         Submit
       </Button>
@@ -792,7 +858,10 @@ class ProfileCreateOrUpdate extends Component {
                     ref={this.submitInputRef}
                     type='submit'
                     value='Submit'
-                    onMouseOver={(event) => {} /*this.onSubmitTest(event)*/}
+                    onMouseOver={(event) => {
+                      console.log('mouseover');
+                      this.onSubmitTest(event);
+                    }}
                     // disabled={!this.state.formIsValid} //dont disable just handle with validation
                   />
                   {submitbutton}
@@ -846,21 +915,6 @@ const mapDispatchToProps = (dispatch) => {
     },
     onProfileChanged: (token, form, id, callback) => {
       dispatch(actions.processProfileUpdate(token, form, id, callback));
-
-      // let updateitemIndex = state.phoneBook.findIndex(
-      //   (profile) => profile.id === action.profileData.id
-      // );
-      // let updateitem = { ...state.phoneBook[updateitemIndex] };
-
-      // updateitem.name = action.profileData.name;
-      // updateitem.lastname = action.profileData.lastname;
-      // updateitem.profilenumbers = action.profileData.profilenumbers;
-      // updateitem.emails = action.profileData.emails;
-
-      // let profiles = [...state.phoneBook];
-      // profiles[updateitemIndex] = updateitem;
-      // console.log('profiles: ', profiles);
-      // console.log('state before update: ', state);
     },
   };
 };

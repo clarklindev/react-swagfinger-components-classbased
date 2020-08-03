@@ -10,30 +10,12 @@ class CheckboxCollection extends PureComponent {
     checked: [],
   };
 
-  componentDidMount() {
-    // console.log(
-    //   '\n==============================================\n COMPONENTDIDMOUNT'
-    // );
-    let status = [];
-    if (this.props.value) {
-      status = this.props.componentconfig.metadata.map((each) => {
-        return false;
-      });
-      //console.log('STATUS:', status);
-
-      status = (this.props.value || []).map((item) => {
-        return item.data === '' || item.data === undefined ? false : item.data;
-      });
-      //console.log('STATUS:', status);
-    }
-    this.setState({ checked: status });
-  }
-
   componentDidUpdate() {
     //console.log('\n==================================\n COMPONENTDIDUPDATE');
     if (this.props.value) {
+      console.log('CheckboxCollection: ', this.props.value);
       let status = [];
-      status = this.props.componentconfig.metadata.map((each) => {
+      status = this.props.componentconfig.options.map((each) => {
         return false;
       });
       //console.log('STATUS:', status);
@@ -64,10 +46,9 @@ class CheckboxCollection extends PureComponent {
 
   render() {
     //console.log('state.checked: ', this.state.checked);
-
-    return (
+    return this.state.checked.length ? (
       <div className={classes.CheckboxCollection}>
-        {this.props.componentconfig.metadata.map((each, index) => {
+        {this.props.componentconfig.options.map((each, index) => {
           //console.log(
           //`this.state.checked[${index}]: `,
           //this.state.checked[index]
@@ -78,7 +59,7 @@ class CheckboxCollection extends PureComponent {
               key={this.props.name + index}
               label={each.displaytext}
               name={this.props.name}
-              value={this.props.componentconfig.metadata[index].value}
+              value={this.props.componentconfig.options[index].value}
               checked={this.state.checked[index] === false ? false : true}
               index={index}
               usecontext={true}
@@ -87,7 +68,7 @@ class CheckboxCollection extends PureComponent {
           );
         })}
       </div>
-    );
+    ) : null;
   }
 }
 

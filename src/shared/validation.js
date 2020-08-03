@@ -17,7 +17,8 @@ export const CheckValidity = (value, rules) => {
         return (
           value[item] === null ||
           value[item] === undefined ||
-          value[item].trim() === ''
+          value[item] === '' ||
+          (value[item] !== null && value[item].trim() === '')
         );
       });
       if (testEmptyValues === true) {
@@ -61,7 +62,7 @@ export const CheckValidity = (value, rules) => {
     }
   }
 
-  if (rules.isNumeric) {
+  if (rules.isNumber) {
     const pattern = /^\d+$/;
     isValid = pattern.test(value) && isValid;
     if (isValid === false) {
