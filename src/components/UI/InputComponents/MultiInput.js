@@ -5,6 +5,7 @@ import Icon from '../InputComponents/Icon';
 import PropTypes from 'prop-types';
 import Button from '../../UI/Button/Button';
 import Input from '../../UI/InputComponents/Input';
+import DraggableItem from './DraggableItem';
 
 class MultiInput extends Component {
   static contextType = InputContext;
@@ -14,9 +15,58 @@ class MultiInput extends Component {
 
     this.inputClasses = [classes.InputElement];
   }
+
+  dragStartHandler = function (e, index) {
+    console.log('FUNCTION dragStartHandler');
+    console.log('e.currentTarget: ', e.currentTarget);
+    console.log('e.target:', e.target);
+    e.target.style.opacity = 0.3;
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/html', e.currentTarget);
+    this.setState({ clickIndex: index });
+  };
+
+  dragEnterHandler = function (e, index) {
+    console.log('FUNCTION dragEnterHandler');
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    console.log('dragenter:', e.currentTarget);
+
+    //set index if not same as current state
+    if (this.state.toIndex !== index) {
+      console.log('set index:', index);
+      this.setState((prevState) => {
+        return { toIndex: index };
+      });
+    }
+  };
+  dragOverhandler = function (e, index) {
+    e.preventDefault();
+    //console.log('FUNCTION dragOverhandler');
+  };
+  dragLeaveHandler = function (e, index) {
+    console.log('FUNCTION dragLeaveHandler');
+  };
+
+  dragEndHandler = function (e) {
+    console.log('FUNCTION dragEndHandler');
+    e.target.style.opacity = '';
+  };
+
+  //this requires dragOverhandler() to have e.preventDefault() for it to work
+  dropHandler = function (e) {
+    e.preventDefault();
+
+    this.context.moveiteminarray(
+      this.props.name,
+      this.state.clickIndex,
+      this.state.toIndex
+    );
+  };
+
   render() {
     const { addinput, removeinput, changed } = this.context;
-
+    console.log('MultiInput: ', this.props.value);
     return (
       <div className={classes.MultiInput}>
         {this.props.value.map((val, index) => {
@@ -29,8 +79,39 @@ class MultiInput extends Component {
             tempClasses.push(classes.Invalid);
           }
           return (
-            <div className={classes.FlexGroupRow} key={this.props.name + index}>
+            <div
+              className={classes.FlexGroupRow}
+              key={this.props.name + index}
+              draggable
+              onDragStart={(event) => {
+                this.dragStartHandler(event, index);
+              }}
+              onDragEnter={(event) => {
+                this.dragEnterHandler(event, index);
+              }} //event triggers once
+              onDragOver={(event) => {
+                this.dragOverhandler(event, index);
+              }} //event triggers all the time
+              onDragLeave={(event) => {
+                this.dragLeaveHandler(event, index);
+              }}
+              onDrop={(event) => {
+                this.dropHandler(event);
+              }}
+              onDragEnd={(event) => {
+                this.dragEndHandler(event, index);
+              }}>
+              {this.props.componentconfig.draggable &&
+              this.props.value.length > 1 ? (
+                <DraggableItem></DraggableItem>
+              ) : null}
               <Input
+                style={
+                  this.props.componentconfig.draggable &&
+                  this.props.value.length > 1
+                    ? ['Draggable']
+                    : null
+                }
                 className={classes.tempClasses}
                 componentconfig={this.props.componentconfig}
                 validation={this.props.validation}

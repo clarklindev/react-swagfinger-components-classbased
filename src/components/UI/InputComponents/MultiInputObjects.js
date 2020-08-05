@@ -17,7 +17,7 @@ class MultiInputObjects extends PureComponent {
 
   constructor(props) {
     super(props);
-    this.accordionRef = React.createRef();
+    this.draggableRef = React.createRef();
   }
 
   state = {
@@ -102,6 +102,8 @@ class MultiInputObjects extends PureComponent {
 
   dragStartHandler = function (e, index) {
     console.log('FUNCTION dragStartHandler');
+    console.log('e.currentTarget: ', e.currentTarget);
+    console.log('e.target:', e.target);
     e.target.style.opacity = 0.3;
     e.dataTransfer.effectAllowed = 'move';
     e.dataTransfer.setData('text/html', e.currentTarget);
@@ -185,9 +187,9 @@ class MultiInputObjects extends PureComponent {
       console.log('classList: ', classList);
       return (
         <React.Fragment>
-          <DraggableItem
-            onClick={this.handleDrag}
-            style={classList}></DraggableItem>
+          {this.props.value.length > 1 ? (
+            <DraggableItem style={classList} ref={this.draggableRef} />
+          ) : null}
           <div className={classes.Title}>{title ? title : null}</div>
         </React.Fragment>
       );

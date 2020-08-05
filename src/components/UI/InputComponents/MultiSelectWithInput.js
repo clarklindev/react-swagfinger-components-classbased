@@ -6,6 +6,7 @@ import InputContext from '../../../context/InputContext';
 import Button from '../../UI/Button/Button';
 import Icon from './Icon';
 import ErrorList from './ErrorList';
+import DraggableItem from './DraggableItem';
 
 class MultiSelectWithInput extends PureComponent {
   static contextType = InputContext;
@@ -77,6 +78,53 @@ class MultiSelectWithInput extends PureComponent {
     //console.log('--------------------------------state: ', this.state);
   };
 
+  dragStartHandler = function (e, index) {
+    console.log('FUNCTION dragStartHandler');
+    console.log('e.currentTarget: ', e.currentTarget);
+    console.log('e.target:', e.target);
+    e.target.style.opacity = 0.3;
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/html', e.currentTarget);
+    this.setState({ clickIndex: index });
+  };
+
+  dragEnterHandler = function (e, index) {
+    console.log('FUNCTION dragEnterHandler');
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    console.log('dragenter:', e.currentTarget);
+    //set index if not same as current state
+    if (this.state.toIndex !== index) {
+      console.log('set index:', index);
+      this.setState((prevState) => {
+        return { toIndex: index };
+      });
+    }
+  };
+  dragOverhandler = function (e, index) {
+    e.preventDefault();
+    //console.log('FUNCTION dragOverhandler');
+  };
+  dragLeaveHandler = function (e, index) {
+    console.log('FUNCTION dragLeaveHandler');
+  };
+
+  dragEndHandler = function (e) {
+    console.log('FUNCTION dragEndHandler');
+    e.target.style.opacity = '';
+  };
+
+  //this requires dragOverhandler() to have e.preventDefault() for it to work
+  dropHandler = function (e) {
+    e.preventDefault();
+
+    this.context.moveiteminarray(
+      this.props.name,
+      this.state.clickIndex,
+      this.state.toIndex
+    );
+  };
+
   render() {
     //console.log('-------------------------------');
     //console.log('RENDER CYCLE>>>>>');
@@ -120,82 +168,95 @@ class MultiSelectWithInput extends PureComponent {
           }
 
           return (
-            <React.Fragment key={this.props.name + index}>
-              <div className={classes.FlexGroupRow}>
-                <div className={classes.FlexGroupColumn}>
-                  <div
-                    className={[
-                      classes.SelectAndInputWrapper,
-                      ...errorClasses,
-                    ].join(' ')}>
-                    <select
-                      name={this.props.name + index}
-                      value={tempKey}
-                      className={[...tempClasses].join(' ')}
-                      onClick={(event) => this.onClickHandler(index, event)}
-                      onBlur={(event) => {
-                        this.onBlurHandler(index, event);
-                      }}
-                      onChange={(event) => this.onChangeHandler(index, event)}>
-                      {this.props.componentconfig.options.map(
-                        (option, index) => (
-                          <option key={option.value} value={option.value}>
-                            {option.displaytext}
-                          </option>
-                        )
-                      )}
-                    </select>
-                    {val.data === null ||
-                    tempKey === undefined ||
-                    val.data.key === '' ? null : (
-                      <React.Fragment>
-                        <div className={classes.Divider} />
-                        <input
-                          className={classes.InputElement}
-                          placeholder={this.props.placeholder}
-                          value={tempVal}
-                          name={this.props.name}
-                          // disabled={tempKey === (undefined || null)}
-                          onChange={(event) => {
-                            //pass in the name of the prop, and the index (if array item)
-                            this.context.changed(
-                              'array',
-                              this.props.name,
-                              { key: tempKey, value: event.target.value },
-                              index
-                            );
-                          }}
-                        />
-                      </React.Fragment>
-                    )}
-                  </div>
-
-                  {error}
+            <div
+              key={this.props.name + index}
+              className={classes.FlexGroupRow}
+              draggable
+              onDragStart={(event) => this.dragStartHandler(event, index)}
+              onDragEnter={(event) => this.dragEnterHandler(event, index)} //event triggers once
+              onDragOver={(event) => this.dragOverhandler(event, index)} //event triggers all the time
+              onDragLeave={(event) => this.dragLeaveHandler(event, index)}
+              onDrop={(event) => {
+                this.dropHandler(event);
+              }}
+              onDragEnd={(event) => this.dragEndHandler(event, index)}>
+              <div className={classes.FlexGroupColumn}>
+                <div
+                  className={[
+                    classes.SelectAndInputWrapper,
+                    ...errorClasses,
+                  ].join(' ')}>
+                  {this.props.componentconfig.draggable &&
+                  this.props.value.length > 1 ? (
+                    <DraggableItem
+                      onClick={this.handleDrag}
+                      style={['Embedded']}></DraggableItem>
+                  ) : null}
+                  <select
+                    name={this.props.name + index}
+                    value={tempKey}
+                    className={[...tempClasses].join(' ')}
+                    onClick={(event) => this.onClickHandler(index, event)}
+                    onBlur={(event) => {
+                      this.onBlurHandler(index, event);
+                    }}
+                    onChange={(event) => this.onChangeHandler(index, event)}>
+                    {this.props.componentconfig.options.map((option, index) => (
+                      <option key={option.value} value={option.value}>
+                        {option.displaytext}
+                      </option>
+                    ))}
+                  </select>
+                  {val.data === null ||
+                  tempKey === undefined ||
+                  val.data.key === '' ? null : (
+                    <React.Fragment>
+                      <div className={classes.Divider} />
+                      <input
+                        className={classes.InputElement}
+                        placeholder={this.props.placeholder}
+                        value={tempVal}
+                        name={this.props.name}
+                        // disabled={tempKey === (undefined || null)}
+                        onChange={(event) => {
+                          //pass in the name of the prop, and the index (if array item)
+                          this.context.changed(
+                            'array',
+                            this.props.name,
+                            { key: tempKey, value: event.target.value },
+                            index
+                          );
+                        }}
+                      />
+                    </React.Fragment>
+                  )}
                 </div>
-                <Button
-                  title='Delete'
-                  type='WithBorder'
-                  className={classes.RemoveButton}
-                  onClick={(event) => {
-                    event.preventDefault();
-                    this.context.removeinput(this.props.name, index);
 
-                    this.setState((prevState) => {
-                      let open = Object.keys(prevState.isOpenList).filter(
-                        (item, j) => {
-                          return index !== j;
-                        }
-                      );
-
-                      return {
-                        isOpenList: open,
-                      };
-                    });
-                  }}>
-                  <Icon iconstyle='far' code='trash-alt' size='sm' />
-                </Button>
+                {error}
               </div>
-            </React.Fragment>
+              <Button
+                title='Delete'
+                type='WithBorder'
+                className={classes.RemoveButton}
+                onClick={(event) => {
+                  event.preventDefault();
+                  this.context.removeinput(this.props.name, index);
+
+                  this.setState((prevState) => {
+                    let open = Object.keys(prevState.isOpenList).filter(
+                      (item, j) => {
+                        return index !== j;
+                      }
+                    );
+
+                    return {
+                      isOpenList: open,
+                    };
+                  });
+                }}>
+                <Icon iconstyle='far' code='trash-alt' size='sm' />
+              </Button>
+            </div>
           ); //return
         })}
 

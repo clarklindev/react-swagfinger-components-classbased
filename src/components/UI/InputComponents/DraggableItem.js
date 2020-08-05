@@ -17,17 +17,20 @@ class DraggableItem extends Component {
     }
 
     return (
-      <div
-        className={[
-          classes.DraggableItem,
-          ...extraClasses,
-          ...validationClasses,
-        ].join(' ')}
-        onClick={this.props.onClick}>
-        <div className={classes.Icon}>
-          <Icon iconstyle='fas' code='grip-vertical' size='sm' />
+      <React.Fragment>
+        <div
+          className={[
+            classes.DraggableItem,
+            ...extraClasses,
+            ...validationClasses,
+          ].join(' ')}
+          onClick={this.props.onClick}>
+          <div className={classes.Icon}>
+            <Icon iconstyle='fas' code='grip-vertical' size='sm' />
+          </div>
         </div>
-      </div>
+        {this.props.children}
+      </React.Fragment>
     );
   }
 }

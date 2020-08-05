@@ -36,6 +36,7 @@ class ProfileCreateOrUpdate extends Component {
     saving: false,
     formIsValid: null, //for form validation,
     localstateform: null, //for a single profile
+    isFormValid: null,
   };
   //------------------------------------------------------
   //------------------------------------------------------
@@ -579,7 +580,7 @@ class ProfileCreateOrUpdate extends Component {
     console.log('this.props.formattedForm: ', this.props.formattedForm);
     console.log('this.props.activeProfile: ', this.props.activeProfile);
     console.log('this.state.localstateform: ', this.state.localstateform);
-
+    let isFormValid = true;
     let newValues = Object.keys(this.state.localstateform).map(
       (formattribute) => {
         let obj = {};
@@ -598,24 +599,30 @@ class ProfileCreateOrUpdate extends Component {
               touched: true,
               pristine: false,
             };
-
+            if (validated.isValid === false) {
+              isFormValid = false;
+            }
             break;
           case 'array':
             console.log('array:', formattribute);
             obj = this.state.localstateform[formattribute].value.map((each) => {
-              let validation = validationCheck(
+              let validated = validationCheck(
                 each.data,
                 this.state.localstateform[formattribute].componentconfig
                   .validation
               );
+              if (validated.isValid === false) {
+                isFormValid = false;
+              }
               //console.log('EACH: ', each);
               let val = { ...each };
               val.touched = true;
               val.pristine = false;
-              val.errors = validation.errors;
-              val.valid = validation.isValid;
+              val.errors = validated.errors;
+              val.valid = validated.isValid;
               return val;
             });
+
             break;
           case 'object':
             console.log('object:', formattribute);
@@ -630,6 +637,9 @@ class ProfileCreateOrUpdate extends Component {
                   this.state.localstateform[formattribute].value[attr].data,
                   metadata.validation
                 );
+                if (validated.isValid === false) {
+                  isFormValid = false;
+                }
                 obj[attr] = {
                   data: this.state.localstateform[formattribute].value[attr]
                     .data, //value at the key
@@ -665,6 +675,9 @@ class ProfileCreateOrUpdate extends Component {
                   each[attr].data,
                   metadata.validation
                 );
+                if (validated.isValid === false) {
+                  isFormValid = false;
+                }
                 val[attr] = {
                   data: each[attr].data, //value at the key
                   valid: validated.isValid,
@@ -689,6 +702,8 @@ class ProfileCreateOrUpdate extends Component {
               value: obj,
             },
           },
+
+          isFormValid: isFormValid,
         }));
 
         console.log('=============');
@@ -734,9 +749,10 @@ class ProfileCreateOrUpdate extends Component {
   };
 
   //function gets called when submit button is clicked
-  // onSubmitHandler = (event) => {
-  //   console.log('onSubmitHandler..');
-  //   event.preventDefault();
+  onSubmitHandler = (event) => {
+    console.log('onSubmitHandler..');
+    event.preventDefault();
+  };
 
   //   //checks valid property of each input of form, if returns true, it means it is a valid form
   //   if (this.checkInputValidProperty(this.state.form)) {

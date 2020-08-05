@@ -53,7 +53,15 @@ class Input extends PureComponent {
     }
   };
   render() {
+    let extraClasses = [];
+    if (this.props.style) {
+      extraClasses = this.props.style.map((each) => {
+        return classes[each];
+      });
+    }
+
     let tempClasses = [];
+
     let error = null;
     //props
 
@@ -77,7 +85,9 @@ class Input extends PureComponent {
       <React.Fragment>
         <div className={classes.FlexGroupColumn}>
           <input
-            className={[this.className, tempClasses].join(' ')}
+            className={[this.className, ...tempClasses, ...extraClasses].join(
+              ' '
+            )}
             placeholder={this.props.componentconfig.placeholder} //needed for multiinput ...props
             readOnly={this.props.readOnly}
             name={this.props.name}
