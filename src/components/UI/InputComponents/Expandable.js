@@ -71,10 +71,12 @@ class Expandable extends Component {
             ...additionalClasses,
             ...validationClasses,
           ].join(' ')}
-          ref={this.headerRef}
-          onClick={(event) => this.onClickHandler(event)}>
+          ref={this.headerRef}>
           {this.props.title ? this.props.title : null}
-          <Button type='NoStyle' className={classes.ExpandButton}>
+          <Button
+            type='NoStyle'
+            className={classes.ExpandButton}
+            onClick={(event) => this.onClickHandler(event)}>
             <Icon
               iconstyle='fas'
               code={this.state.isOpen ? 'chevron-up' : 'chevron-down'}

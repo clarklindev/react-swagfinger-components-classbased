@@ -17,7 +17,6 @@ class MultiInputObjects extends PureComponent {
 
   constructor(props) {
     super(props);
-    this.draggableRef = React.createRef();
   }
 
   state = {
@@ -179,22 +178,6 @@ class MultiInputObjects extends PureComponent {
       </Button>
     );
 
-    const rowTitle = (title, index) => {
-      let classList = [
-        'Embedded',
-        this.state.isActive[index] === true ? 'Active' : null,
-      ];
-      console.log('classList: ', classList);
-      return (
-        <React.Fragment>
-          {this.props.value.length > 1 ? (
-            <DraggableItem style={classList} ref={this.draggableRef} />
-          ) : null}
-          <div className={classes.Title}>{title ? title : null}</div>
-        </React.Fragment>
-      );
-    };
-
     const expandableContent = (val, index) => {
       return this.props.componentconfig.metadata.map((each, i) => {
         return (
@@ -247,7 +230,6 @@ class MultiInputObjects extends PureComponent {
             <div
               key={index}
               className={classes.RowWrapper}
-              draggable
               onDragStart={(event) => this.dragStartHandler(event, index)}
               onDragEnter={(event) => this.dragEnterHandler(event, index)} //event triggers once
               onDragOver={(event) => this.dragOverhandler(event, index)} //event triggers all the time
@@ -255,10 +237,46 @@ class MultiInputObjects extends PureComponent {
               onDrop={(event) => {
                 this.dropHandler(event);
               }}
-              onDragEnd={(event) => this.dragEndHandler(event, index)}>
+              onDragEnd={(event) => {
+                event.currentTarget.setAttribute('draggable', false);
+                this.dragEndHandler(event, index);
+              }}
+              onMouseDown={(event) => {
+                console.log('mousedown');
+                console.log('event.target: ', event.target);
+                if (event.target.className.includes('DraggableItem')) {
+                  console.log('event.target:', event.target);
+                  console.log('event.currentTarget:', event.currentTarget);
+                  event.currentTarget.setAttribute('draggable', 'true');
+                }
+              }}
+              onMouseUp={(event) => {
+                console.log('event.currentTarget: ', event.currentTarget);
+                event.currentTarget.setAttribute('draggable', 'false');
+              }}>
               <FlexRow>
                 <Expandable
-                  title={rowTitle(val.url.data, index)}
+                  title={
+                    <React.Fragment>
+                      {this.props.value.length > 1 ? (
+                        <DraggableItem
+                          style={[
+                            'Embedded',
+                            this.state.isActive[index] === true
+                              ? 'Active'
+                              : null,
+                          ]}
+                        />
+                      ) : null}
+                      <div
+                        className={classes.Title}
+                        onClick={(event) => {
+                          this.onClickHandler(index, event);
+                        }}>
+                        {val.url.data ? val.url.data : null}
+                      </div>
+                    </React.Fragment>
+                  }
                   isActive={this.state.isActive[index]}
                   isValid={this.state.rowValidity[index]}
                   onClick={(event) => {
@@ -267,6 +285,7 @@ class MultiInputObjects extends PureComponent {
                   }}>
                   {expandableContent(val, index)}
                 </Expandable>
+
                 {removeButton(index)}
               </FlexRow>
             </div>
