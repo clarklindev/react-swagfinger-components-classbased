@@ -66,7 +66,6 @@ class MultiInput extends Component {
   //this requires dragOverhandler() to have e.preventDefault() for it to work
   dropHandler = function (e) {
     e.preventDefault();
-
     this.context.moveiteminarray(
       this.props.name,
       this.state.clickIndex,
@@ -93,6 +92,7 @@ class MultiInput extends Component {
               className={classes.FlexGroupRow}
               key={this.props.name + index}
               onDragStart={(event) => {
+                console.log('target:', event.currentTarget);
                 this.dragStartHandler(event, index);
               }}
               onDragEnter={(event) => {
@@ -105,7 +105,11 @@ class MultiInput extends Component {
                 this.dragLeaveHandler(event, index);
               }}
               onDrop={(event) => {
-                this.dropHandler(event);
+                console.log('event.target: ', event.target);
+                //prevents allowing selecting text and drag-and-drop
+                if (event.target.className.includes('DraggableItem')) {
+                  this.dropHandler(event);
+                }
               }}
               onDragEnd={(event) => {
                 console.log('event.currentTarget:', event.currentTarget);

@@ -235,7 +235,10 @@ class MultiInputObjects extends PureComponent {
               onDragOver={(event) => this.dragOverhandler(event, index)} //event triggers all the time
               onDragLeave={(event) => this.dragLeaveHandler(event, index)}
               onDrop={(event) => {
-                this.dropHandler(event);
+                console.log('event.target: ', event.target);
+                if (event.target.className.includes('DraggableItem')) {
+                  this.dropHandler(event);
+                }
               }}
               onDragEnd={(event) => {
                 event.currentTarget.setAttribute('draggable', false);
