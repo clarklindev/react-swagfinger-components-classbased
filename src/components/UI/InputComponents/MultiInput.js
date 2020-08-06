@@ -16,8 +16,17 @@ class MultiInput extends Component {
     this.inputClasses = [classes.InputElement];
   }
 
+  state = {
+    draggedElement: null,
+  };
+
+  componentDidMount() {}
+
+  componentDidUpdate() {}
+
   dragStartHandler = function (e, index) {
     console.log('FUNCTION dragStartHandler');
+    console.log('e: ', e);
     console.log('e.currentTarget: ', e.currentTarget);
     console.log('e.target:', e.target);
     e.target.style.opacity = 0.3;
@@ -51,6 +60,7 @@ class MultiInput extends Component {
   dragEndHandler = function (e) {
     console.log('FUNCTION dragEndHandler');
     e.target.style.opacity = '';
+    e.target.setAttribute('draggable', 'false');
   };
 
   //this requires dragOverhandler() to have e.preventDefault() for it to work
@@ -82,7 +92,6 @@ class MultiInput extends Component {
             <div
               className={classes.FlexGroupRow}
               key={this.props.name + index}
-              draggable
               onDragStart={(event) => {
                 this.dragStartHandler(event, index);
               }}
@@ -99,7 +108,21 @@ class MultiInput extends Component {
                 this.dropHandler(event);
               }}
               onDragEnd={(event) => {
+                console.log('event.currentTarget:', event.currentTarget);
+                event.currentTarget.setAttribute('draggable', false);
                 this.dragEndHandler(event, index);
+              }}
+              onMouseDown={(event) => {
+                console.log('mousedown');
+                if (event.target.className.includes('DraggableItem')) {
+                  console.log('event.target:', event.target);
+                  console.log('event.currentTarget:', event.currentTarget);
+                  event.currentTarget.setAttribute('draggable', 'true');
+                }
+              }}
+              onMouseUp={(event) => {
+                console.log('event.currentTarget: ', event.currentTarget);
+                event.currentTarget.setAttribute('draggable', 'false');
               }}>
               {this.props.componentconfig.draggable &&
               this.props.value.length > 1 ? (

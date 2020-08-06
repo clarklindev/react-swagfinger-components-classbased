@@ -24,7 +24,8 @@ class DraggableItem extends Component {
             ...extraClasses,
             ...validationClasses,
           ].join(' ')}
-          onClick={this.props.onClick}>
+          onMouseDown={this.props.onMouseDown}
+          onMouseUp={this.props.onMouseUp}>
           <div className={classes.Icon}>
             <Icon iconstyle='fas' code='grip-vertical' size='sm' />
           </div>
