@@ -43,7 +43,7 @@ class MultiInputObjects extends PureComponent {
     this.setState((prevState) => {
       let updated = { ...prevState.rowValidity };
       updated[index] = allIsValid;
-
+      console.log('allIsValid: ', allIsValid);
       return {
         rowValidity: updated,
       };
@@ -182,10 +182,10 @@ class MultiInputObjects extends PureComponent {
       return this.props.componentconfig.metadata.map((each, i) => {
         return (
           <FlexRow
-            flexGrow
+            flexgrow
             spacing='bottom-notlast'
             key={this.props.name + index + '_' + i}>
-            <FlexColumn flexGrow spacing='bottom'>
+            <FlexColumn flexgrow spacing='bottom'>
               <Label>{each.label}</Label>
               <Input
                 label={each.label}
@@ -212,7 +212,7 @@ class MultiInputObjects extends PureComponent {
                   );
 
                   //order sensitive
-                  //this.checkValidity(val, index);
+                  this.checkValidity(val, index);
                 }}
               />
             </FlexColumn>
@@ -227,9 +227,9 @@ class MultiInputObjects extends PureComponent {
           console.log('val: ', val);
           console.log('rowValidity:', this.state.rowValidity);
           return (
-            <div
+            <FlexColumn
+              spacing='bottom'
               key={index}
-              className={classes.RowWrapper}
               onDragStart={(event) => this.dragStartHandler(event, index)}
               onDragEnter={(event) => this.dragEnterHandler(event, index)} //event triggers once
               onDragOver={(event) => this.dragOverhandler(event, index)} //event triggers all the time
@@ -291,7 +291,7 @@ class MultiInputObjects extends PureComponent {
 
                 {removeButton(index)}
               </FlexRow>
-            </div>
+            </FlexColumn>
           );
         })}
         {addButton}

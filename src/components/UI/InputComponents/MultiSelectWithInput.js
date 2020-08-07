@@ -171,7 +171,6 @@ class MultiSelectWithInput extends PureComponent {
             <div
               key={this.props.name + index}
               className={classes.FlexGroupRow}
-              draggable
               onDragStart={(event) => this.dragStartHandler(event, index)}
               onDragEnter={(event) => this.dragEnterHandler(event, index)} //event triggers once
               onDragOver={(event) => this.dragOverhandler(event, index)} //event triggers all the time

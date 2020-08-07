@@ -53,6 +53,7 @@ class Expandable extends Component {
   };
 
   render() {
+    console.log('this.props.isValid: ', this.props.isValid);
     //is Active?
     let additionalClasses = [];
     if (this.state.isOpen === true) {

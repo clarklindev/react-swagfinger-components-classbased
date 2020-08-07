@@ -100,7 +100,7 @@ class ProfileCreateOrUpdate extends Component {
     // //form value is a dataObject, and we save the values we want in dataObjects' .data property
     const dataObject = {
       data: '',
-      valid: false,
+      valid: undefined,
       errors: [],
       touched: false,
       pristine: true,
@@ -343,7 +343,7 @@ class ProfileCreateOrUpdate extends Component {
 
     const dataObj = {
       data: data,
-      valid: false,
+      valid: undefined,
       touched: false,
       pristine: true,
       errors: [],

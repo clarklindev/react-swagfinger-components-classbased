@@ -7,12 +7,19 @@
   .RemoveButton {
     margin-left: calc(var(--margindefault) * 0.5);
   }
+  .RowWrapper {
+    display: flex;
+    flex-direction: row;
+    flex-basis: 1;
+  }
 
   .InputElement {
+    height: var(--inputheight);
     line-height: var(--inputheight); //50px - (6px x2)
     outline: none;
     border: 1px solid var(--colorborder);
     background-color: white;
+
     border-radius: var(--borderradius);
     font: inherit;
     font-size: var(--fontsizedefault);
@@ -21,7 +28,13 @@
     color: var(--colordefault);
     flex-basis: 1;
     flex-grow: 1;
+    &.Draggable {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      border-left: 1px solid var(--colorborder);
+    }
   }
+
   &.Invalid {
     border: 1px solid red;
     background-color: white;

@@ -88,17 +88,15 @@ class MultiInput extends Component {
     const { addinput, removeinput, changed } = this.context;
     console.log('MultiInput: ', this.props.value);
 
-    let styleClasses = [];
-    if (this.props.style) {
-      styleClasses =
-        this.props.componentconfig.draggable && this.props.value.length > 1
-          ? ['Draggable']
-          : null;
-    }
+    let styleClasses =
+      this.props.componentconfig.draggable && this.props.value.length > 1
+        ? ['Draggable']
+        : null;
 
     return (
       <div className={classes.MultiInput}>
         {this.props.value.map((val, index) => {
+          console.log('MultiInput: ', val);
           let tempClasses = [...this.inputClasses];
           if (
             this.props.componentconfig.validation.isRequired &&
@@ -108,9 +106,9 @@ class MultiInput extends Component {
             tempClasses.push(classes.Invalid);
           }
           return (
-            <React.Fragment>
+            <React.Fragment key={this.props.name + index}>
               <FlexRow
-                key={this.props.name + index}
+                spacing={val.errors.length > 0 ? undefined : 'bottom'}
                 onDragStart={(event) => {
                   console.log('target:', event.currentTarget);
                   this.dragStartHandler(event, index);
@@ -156,7 +154,9 @@ class MultiInput extends Component {
                   placeholder={this.props.componentconfig.placeholder}
                   className={[
                     this.className,
-                    ...styleClasses,
+                    (styleClasses || []).map((each) => {
+                      return classes[each];
+                    }),
                     ...tempClasses,
                   ].join(' ')}
                   type={this.props.componentconfig.type}
@@ -180,9 +180,9 @@ class MultiInput extends Component {
                 ) : null}
               </FlexRow>
               {val.errors.length ? (
-                <div className={classes.FlexGroupRow}>
+                <FlexRow spacing='bottom'>
                   <ErrorList value={{ data: val.errors }} />
-                </div>
+                </FlexRow>
               ) : null}
             </React.Fragment>
           );

@@ -71,8 +71,7 @@ class GalleryItem extends Component {
         title='Delete'
         type='WithBorder'
         className={classes.RemoveButton}
-        onClick={(event) => this.props.onRemove(event)}
-      >
+        onClick={(event) => this.props.onRemove(event)}>
         <Icon iconstyle='far' code='trash-alt' size='sm' />
       </Button>
     );
@@ -80,7 +79,7 @@ class GalleryItem extends Component {
       <React.Fragment>
         <div className={classes.GalleryItem}>
           <DraggableItem>
-            <FlexRow justifyContent='space-between' flexGrow>
+            <FlexRow justifyContent='space-between' flexgrow>
               <div className={classes.DragContent}>{this.props.children}</div>
             </FlexRow>
           </DraggableItem>

@@ -13,6 +13,7 @@ class DraggableItem extends Component {
 
     let validationClasses = [];
     if (this.props.isValid === false) {
+      console.log('isValid===false');
       validationClasses.push(classes.Invalid);
     }
 
