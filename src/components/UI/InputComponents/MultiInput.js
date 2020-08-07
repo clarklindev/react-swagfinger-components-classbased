@@ -6,6 +6,9 @@ import PropTypes from 'prop-types';
 import Button from '../../UI/Button/Button';
 import Input from '../../UI/InputComponents/Input';
 import DraggableItem from './DraggableItem';
+import ErrorList from './ErrorList';
+import FlexRow from '../../../hoc/Layout/FlexRow';
+import Utils from '../../../Utils';
 
 class MultiInput extends Component {
   static contextType = InputContext;
@@ -14,6 +17,14 @@ class MultiInput extends Component {
     super(props);
 
     this.inputClasses = [classes.InputElement];
+    this.className = Utils.getClassNameString([
+      classes.MultiInput,
+      MultiInput.name,
+      classes[props.type],
+      'MultiInput',
+      props.className,
+      props.classlist,
+    ]);
   }
 
   state = {
@@ -76,6 +87,15 @@ class MultiInput extends Component {
   render() {
     const { addinput, removeinput, changed } = this.context;
     console.log('MultiInput: ', this.props.value);
+
+    let styleClasses = [];
+    if (this.props.style) {
+      styleClasses =
+        this.props.componentconfig.draggable && this.props.value.length > 1
+          ? ['Draggable']
+          : null;
+    }
+
     return (
       <div className={classes.MultiInput}>
         {this.props.value.map((val, index) => {
@@ -88,79 +108,83 @@ class MultiInput extends Component {
             tempClasses.push(classes.Invalid);
           }
           return (
-            <div
-              className={classes.FlexGroupRow}
-              key={this.props.name + index}
-              onDragStart={(event) => {
-                console.log('target:', event.currentTarget);
-                this.dragStartHandler(event, index);
-              }}
-              onDragEnter={(event) => {
-                this.dragEnterHandler(event, index);
-              }} //event triggers once
-              onDragOver={(event) => {
-                this.dragOverhandler(event, index);
-              }} //event triggers all the time
-              onDragLeave={(event) => {
-                this.dragLeaveHandler(event, index);
-              }}
-              onDrop={(event) => {
-                console.log('event.target: ', event.target);
-                //prevents allowing selecting text and drag-and-drop
-                if (event.target.className.includes('DraggableItem')) {
-                  this.dropHandler(event);
-                }
-              }}
-              onDragEnd={(event) => {
-                console.log('event.currentTarget:', event.currentTarget);
-                event.currentTarget.setAttribute('draggable', false);
-                this.dragEndHandler(event, index);
-              }}
-              onMouseDown={(event) => {
-                console.log('mousedown');
-                if (event.target.className.includes('DraggableItem')) {
-                  console.log('event.target:', event.target);
+            <React.Fragment>
+              <FlexRow
+                key={this.props.name + index}
+                onDragStart={(event) => {
+                  console.log('target:', event.currentTarget);
+                  this.dragStartHandler(event, index);
+                }}
+                onDragEnter={(event) => {
+                  this.dragEnterHandler(event, index);
+                }} //event triggers once
+                onDragOver={(event) => {
+                  this.dragOverhandler(event, index);
+                }} //event triggers all the time
+                onDragLeave={(event) => {
+                  this.dragLeaveHandler(event, index);
+                }}
+                onDrop={(event) => {
+                  console.log('event.target: ', event.target);
+                  //prevents allowing selecting text and drag-and-drop
+                  if (event.target.className.includes('DraggableItem')) {
+                    this.dropHandler(event);
+                  }
+                }}
+                onDragEnd={(event) => {
                   console.log('event.currentTarget:', event.currentTarget);
-                  event.currentTarget.setAttribute('draggable', 'true');
-                }
-              }}
-              onMouseUp={(event) => {
-                console.log('event.currentTarget: ', event.currentTarget);
-                event.currentTarget.setAttribute('draggable', 'false');
-              }}>
-              {this.props.componentconfig.draggable &&
-              this.props.value.length > 1 ? (
-                <DraggableItem></DraggableItem>
+                  event.currentTarget.setAttribute('draggable', false);
+                  this.dragEndHandler(event, index);
+                }}
+                onMouseDown={(event) => {
+                  console.log('mousedown');
+                  if (event.target.className.includes('DraggableItem')) {
+                    console.log('event.target:', event.target);
+                    console.log('event.currentTarget:', event.currentTarget);
+                    event.currentTarget.setAttribute('draggable', 'true');
+                  }
+                }}
+                onMouseUp={(event) => {
+                  console.log('event.currentTarget: ', event.currentTarget);
+                  event.currentTarget.setAttribute('draggable', 'false');
+                }}>
+                {this.props.componentconfig.draggable &&
+                this.props.value.length > 1 ? (
+                  <DraggableItem isValid={val.valid}></DraggableItem>
+                ) : null}
+                <input
+                  placeholder={this.props.componentconfig.placeholder}
+                  className={[
+                    this.className,
+                    ...styleClasses,
+                    ...tempClasses,
+                  ].join(' ')}
+                  type={this.props.componentconfig.type}
+                  value={val.data}
+                  onChange={(event) =>
+                    //pass in the name of the prop, and the index (if array item)
+                    changed('array', this.props.name, event.target.value, index)
+                  }
+                />
+                {this.props.value.length > 1 ? (
+                  <Button
+                    title='Delete'
+                    type='WithBorder'
+                    className={classes.RemoveButton}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      removeinput(this.props.name, index);
+                    }}>
+                    <Icon iconstyle='far' code='trash-alt' size='sm' />
+                  </Button>
+                ) : null}
+              </FlexRow>
+              {val.errors.length ? (
+                <div className={classes.FlexGroupRow}>
+                  <ErrorList value={{ data: val.errors }} />
+                </div>
               ) : null}
-              <Input
-                style={
-                  this.props.componentconfig.draggable &&
-                  this.props.value.length > 1
-                    ? ['Draggable']
-                    : null
-                }
-                className={classes.tempClasses}
-                componentconfig={this.props.componentconfig}
-                validation={this.props.validation}
-                value={val}
-                onChange={(event) =>
-                  //pass in the name of the prop, and the index (if array item)
-                  changed('array', this.props.name, event.target.value, index)
-                }
-              />
-              {this.props.value.length > 1 ? (
-                <Button
-                  title='Delete'
-                  type='WithBorder'
-                  className={classes.RemoveButton}
-                  onClick={(event) => {
-                    event.preventDefault();
-                    removeinput(this.props.name, index);
-                  }}>
-                  <Icon iconstyle='far' code='trash-alt' size='sm' />
-                </Button>
-              ) : null}
-            </div>
+            </React.Fragment>
           );
         })}
         <Button

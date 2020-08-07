@@ -41,7 +41,7 @@
     padding-top: var(--paddingdefault);
   }
   &.SpacingBottom {
-    padding-bottom: var(--paddingdefault);
+    padding-bottom: calc(var(--paddingdefault) * 0.5);
   }
   &.SpacingBottomNotLast {
     padding-bottom: var(--paddingdefault);

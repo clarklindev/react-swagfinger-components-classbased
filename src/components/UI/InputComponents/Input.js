@@ -4,6 +4,8 @@ import classes from './Input.module.scss';
 import Utils from '../../../Utils';
 import InputContext from '../../../context/InputContext';
 import ErrorList from './ErrorList';
+import FlexColumn from '../../../hoc/Layout/FlexColumn';
+import FlexRow from '../../../hoc/Layout/FlexRow';
 
 class Input extends PureComponent {
   static contextType = InputContext;
@@ -53,9 +55,9 @@ class Input extends PureComponent {
     }
   };
   render() {
-    let extraClasses = [];
+    let styleClasses = [];
     if (this.props.style) {
-      extraClasses = this.props.style.map((each) => {
+      styleClasses = this.props.style.map((each) => {
         return classes[each];
       });
     }
@@ -65,27 +67,30 @@ class Input extends PureComponent {
     let error = null;
     //props
 
-    if (
-      this.props.componentconfig.validation.hasOwnProperty('isRequired') &&
-      this.props.value.valid === false &&
-      (this.props.value.touched === true ||
-        (this.props.value.touched === false &&
-          this.props.value.pristine === false))
-    ) {
-      console.log('pushing invalid: ');
-      tempClasses.push(classes.Invalid);
-      error = this.props.value.errors.length ? (
-        <ErrorList value={{ data: this.props.value.errors }} />
-      ) : null;
+    if (this.props.componentconfig.validation !== undefined) {
+      if (
+        this.props.componentconfig.validation.hasOwnProperty('isRequired') &&
+        this.props.value.valid === false &&
+        (this.props.value.touched === true ||
+          (this.props.value.touched === false &&
+            this.props.value.pristine === false))
+      ) {
+        console.log('pushing invalid: ');
+        tempClasses.push(classes.Invalid);
+        error = this.props.value.errors.length ? (
+          <ErrorList value={{ data: this.props.value.errors }} />
+        ) : null;
+      }
     }
+
     if (this.props.readOnly) {
       tempClasses.push(classes.ReadOnly);
     }
     return (
-      <React.Fragment>
-        <div className={classes.FlexGroupColumn}>
+      <FlexColumn>
+        <FlexRow>
           <input
-            className={[this.className, ...tempClasses, ...extraClasses].join(
+            className={[this.className, ...tempClasses, ...styleClasses].join(
               ' '
             )}
             placeholder={this.props.componentconfig.placeholder} //needed for multiinput ...props
@@ -96,9 +101,9 @@ class Input extends PureComponent {
             onChange={this.inputChangeHandler}
             title={this.props.value.data}
           />
-          {error}
-        </div>
-      </React.Fragment>
+        </FlexRow>
+        {error}
+      </FlexColumn>
     );
   }
 }
