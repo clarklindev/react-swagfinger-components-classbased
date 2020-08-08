@@ -79,7 +79,7 @@ class GalleryItem extends Component {
       <React.Fragment>
         <div className={classes.GalleryItem}>
           <DraggableItem>
-            <FlexRow justifyContent='space-between' flexgrow>
+            <FlexRow justifyContent='space-between' flexgrow={true}>
               <div className={classes.DragContent}>{this.props.children}</div>
             </FlexRow>
           </DraggableItem>

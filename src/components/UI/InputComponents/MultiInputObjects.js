@@ -29,17 +29,29 @@ class MultiInputObjects extends PureComponent {
   componentDidUpdate() {}
 
   //checks if row is valid
-  checkValidity = (value, index) => {
+  checkAllValidity = (value, index) => {
     //all props in object true check...
     let allIsValid = Object.keys(value)
       .map((item) => {
-        return value[item].valid;
+        return value[item].valid
       })
       .every((item) => {
         return item === true;
       });
+    console.log('allIsValid: ', allIsValid);
     return allIsValid;
   };
+
+  checkAllPristine = (value, index)=>{
+    let allIsPristine = Object.keys(value)
+      .map((item) => {
+        return value[item].pristine;
+      })
+      .every((item) => {
+        return item === true;
+      });
+    return allIsPristine;
+  }
 
   //@param index - the index of item we clicked on
   manageAccordion = (index) => {
@@ -146,10 +158,16 @@ class MultiInputObjects extends PureComponent {
     })
     console.log('isClickedActive: ', isClickedActive);
     console.log('isToActive: ', isToActive);
-
-    
-
   };
+
+  resetIsActiveAtIndex = (index)=>{
+
+    this.setState(prevState=>{
+      return { isActive:{...prevState.isActive, [index]:undefined}}
+    }, ()=>{
+      console.log('isActive: ', this.state.isActive);
+    });
+  }
 
   render() {
     const { addinput, removeinput, changed } = this.context;
@@ -161,6 +179,7 @@ class MultiInputObjects extends PureComponent {
           event.preventDefault();
           event.stopPropagation();
           addinput(this.props.type, this.props.name);
+          console.log('this.state.isActive: ', this.state.isActive);
         }}>
         <Icon iconstyle='fas' code='plus' size='sm' />
         <p>Add</p>
@@ -174,6 +193,7 @@ class MultiInputObjects extends PureComponent {
           event.preventDefault();
           event.stopPropagation();
           console.log('index:', index);
+          this.resetIsActiveAtIndex(index);
           removeinput(this.props.name, index);
         }}
         title='Delete'
@@ -187,10 +207,10 @@ class MultiInputObjects extends PureComponent {
       return this.props.componentconfig.metadata.map((each, i) => {
         return (
           <FlexRow
-            flexgrow
+            flexgrow={true}
             spacing='bottom-notlast'
             key={this.props.name + index + '_' + i}>
-            <FlexColumn flexgrow spacing='bottom'>
+            <FlexColumn flexgrow={true} spacing='bottom'>
               <Label>{each.label}</Label>
               <Input
                 label={each.label}
@@ -283,7 +303,7 @@ class MultiInputObjects extends PureComponent {
                     </React.Fragment>
                   }
                   isActive={this.state.isActive[index]}
-                  isValid={this.checkValidity(val, index)}
+                  isValid={this.checkAllValidity(val, index) || this.checkAllPristine(val, index)}
                   onClick={(event) => {
                     console.log('clicked...', index);
                     this.onClickHandler(index, event);

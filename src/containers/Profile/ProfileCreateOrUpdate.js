@@ -682,8 +682,8 @@ class ProfileCreateOrUpdate extends Component {
                   data: each[attr].data, //value at the key
                   valid: validated.isValid,
                   errors: validated.errors, //array of errors
-                  touched: false,
-                  pristine: true,
+                  touched: true,
+                  pristine: false,
                 };
               });
               return val;
