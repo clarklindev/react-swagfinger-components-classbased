@@ -21,7 +21,6 @@ class MultiInputObjects extends PureComponent {
 
   state = {
     isActive: {},
-    rowValidity: {}, //all rows
     clickIndex: null,
     toIndex: null,
   };
@@ -39,15 +38,7 @@ class MultiInputObjects extends PureComponent {
       .every((item) => {
         return item === true;
       });
-
-    this.setState((prevState) => {
-      let updated = { ...prevState.rowValidity };
-      updated[index] = allIsValid;
-      console.log('allIsValid: ', allIsValid);
-      return {
-        rowValidity: updated,
-      };
-    });
+    return allIsValid;
   };
 
   //@param index - the index of item we clicked on
@@ -60,8 +51,8 @@ class MultiInputObjects extends PureComponent {
     keys.forEach((key, i) => {
       //only check everything else we didnt click on
       if (i !== index) {
+        //what to do with the others when item at index is clicked
         //if allowMultiOpen, then leave open, else close
-
         obj[key] =
           this.props.componentconfig.allowmultiopen === true
             ? this.state.isActive[key]
@@ -139,11 +130,25 @@ class MultiInputObjects extends PureComponent {
   dropHandler = function (e) {
     e.preventDefault();
 
+    //save is the click index open
+    const isClickedActive = this.state.isActive[this.state.clickIndex];
+    //save is the toIndex open
+    const isToActive = this.state.isActive[this.state.toIndex];
     this.context.moveiteminarray(
       this.props.name,
       this.state.clickIndex,
       this.state.toIndex
     );
+
+    //if clicked was active, keep it active
+    this.setState(prevState=>{
+      return {isActive:{...prevState.isActive, [prevState.toIndex]: isClickedActive, [prevState.toIndex+1]:isToActive}}
+    })
+    console.log('isClickedActive: ', isClickedActive);
+    console.log('isToActive: ', isToActive);
+
+    
+
   };
 
   render() {
@@ -210,9 +215,6 @@ class MultiInputObjects extends PureComponent {
                     index,
                     each.name //prop name in object
                   );
-
-                  //order sensitive
-                  this.checkValidity(val, index);
                 }}
               />
             </FlexColumn>
@@ -281,7 +283,7 @@ class MultiInputObjects extends PureComponent {
                     </React.Fragment>
                   }
                   isActive={this.state.isActive[index]}
-                  isValid={this.state.rowValidity[index]}
+                  isValid={this.checkValidity(val, index)}
                   onClick={(event) => {
                     console.log('clicked...', index);
                     this.onClickHandler(index, event);
