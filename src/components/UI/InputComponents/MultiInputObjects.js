@@ -11,6 +11,7 @@ import FlexColumn from '../../../hoc/Layout/FlexColumn';
 import Input from './Input';
 import Expandable from './Expandable';
 import Label from '../Headers/Label';
+import * as ArrayHelper from '../../../shared/arrayHelper';
 
 class MultiInputObjects extends PureComponent {
   static contextType = InputContext;
@@ -20,20 +21,32 @@ class MultiInputObjects extends PureComponent {
   }
 
   state = {
-    isActive: {},
+    isActive: [],
     clickIndex: null,
     toIndex: null,
   };
 
-  componentDidMount() {}
-  componentDidUpdate() {}
+  componentDidMount() {
+    console.log('mount: this.props.value: ', this.props.value);
+  }
+  componentDidUpdate() {
+    console.log('update: this.props.value: ', this.props.value);
+    let isActive = this.props.value.map((val, index) => {
+      return false;
+    });
+    if (!ArrayHelper.isEqual(isActive, this.state.isActive)) {
+      this.setState({ isActive: isActive }, () => {
+        console.log('component did mount isActive: ', this.state.isActive);
+      });
+    }
+  }
 
   //checks if row is valid
   checkAllValidity = (value, index) => {
     //all props in object true check...
     let allIsValid = Object.keys(value)
       .map((item) => {
-        return value[item].valid
+        return value[item].valid;
       })
       .every((item) => {
         return item === true;
@@ -42,7 +55,7 @@ class MultiInputObjects extends PureComponent {
     return allIsValid;
   };
 
-  checkAllPristine = (value, index)=>{
+  checkAllPristine = (value, index) => {
     let allIsPristine = Object.keys(value)
       .map((item) => {
         return value[item].pristine;
@@ -51,30 +64,28 @@ class MultiInputObjects extends PureComponent {
         return item === true;
       });
     return allIsPristine;
-  }
+  };
 
   //@param index - the index of item we clicked on
   manageAccordion = (index) => {
-    let obj = { ...this.state.isActive };
-
-    let keys = Object.keys(this.state.isActive);
+    let arr = [...this.state.isActive];
 
     //check every key
-    keys.forEach((key, i) => {
+    arr.forEach((item, i) => {
       //only check everything else we didnt click on
       if (i !== index) {
         //what to do with the others when item at index is clicked
         //if allowMultiOpen, then leave open, else close
-        obj[key] =
+        arr[i] =
           this.props.componentconfig.allowmultiopen === true
-            ? this.state.isActive[key]
+            ? this.state.isActive[i]
             : false;
       }
     });
 
-    console.log('obj: ', obj);
+    console.log('arr: ', arr);
 
-    this.setState({ isActive: obj });
+    this.setState({ isActive: arr });
   };
 
   onClickHandler = (index, event) => {
@@ -82,7 +93,7 @@ class MultiInputObjects extends PureComponent {
 
     this.setState(
       (prevState) => {
-        let isActiveClone = { ...prevState.isActive };
+        let isActiveClone = [...prevState.isActive];
         if (
           isActiveClone[index] === undefined ||
           isActiveClone[index] === null
@@ -142,34 +153,46 @@ class MultiInputObjects extends PureComponent {
   dropHandler = function (e) {
     e.preventDefault();
 
-    //save is the click index open
-    const isClickedActive = this.state.isActive[this.state.clickIndex];
-    //save is the toIndex open
-    const isToActive = this.state.isActive[this.state.toIndex];
+    const clickIndex = this.state.clickIndex;
+    const toIndex = this.state.toIndex;
+
     this.context.moveiteminarray(
       this.props.name,
       this.state.clickIndex,
       this.state.toIndex
     );
 
+    const updatedArr = ArrayHelper.moveItemInArray(
+      this.state.isActive,
+      clickIndex,
+      toIndex
+    );
+
     //if clicked was active, keep it active
-    this.setState(prevState=>{
-      return {isActive:{...prevState.isActive, [prevState.toIndex]: isClickedActive, [prevState.toIndex+1]:isToActive}}
-    })
-    console.log('isClickedActive: ', isClickedActive);
-    console.log('isToActive: ', isToActive);
+    this.setState((prevState) => {
+      return {
+        isActive: updatedArr,
+      };
+    });
   };
 
-  resetIsActiveAtIndex = (index)=>{
-
-    this.setState(prevState=>{
-      return { isActive:{...prevState.isActive, [index]:undefined}}
-    }, ()=>{
-      console.log('isActive: ', this.state.isActive);
-    });
-  }
+  resetIsActiveAtIndex = (index) => {
+    this.setState(
+      (prevState) => {
+        return {
+          isActive: [...prevState.isActive],
+          [index]: undefined,
+        };
+      },
+      () => {
+        console.log('isActive: ', this.state.isActive);
+      }
+    );
+  };
 
   render() {
+    console.log('isActive: ', this.state.isActive);
+
     const { addinput, removeinput, changed } = this.context;
     const addButton = (
       <Button
@@ -207,10 +230,10 @@ class MultiInputObjects extends PureComponent {
       return this.props.componentconfig.metadata.map((each, i) => {
         return (
           <FlexRow
-            flexgrow={true}
+            flexgrow='true'
             spacing='bottom-notlast'
             key={this.props.name + index + '_' + i}>
-            <FlexColumn flexgrow={true} spacing='bottom'>
+            <FlexColumn flexgrow='true' spacing='bottom'>
               <Label>{each.label}</Label>
               <Input
                 label={each.label}
@@ -303,7 +326,10 @@ class MultiInputObjects extends PureComponent {
                     </React.Fragment>
                   }
                   isActive={this.state.isActive[index]}
-                  isValid={this.checkAllValidity(val, index) || this.checkAllPristine(val, index)}
+                  isValid={
+                    this.checkAllValidity(val, index) ||
+                    this.checkAllPristine(val, index)
+                  }
                   onClick={(event) => {
                     console.log('clicked...', index);
                     this.onClickHandler(index, event);

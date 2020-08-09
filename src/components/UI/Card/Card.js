@@ -4,14 +4,22 @@ import Divider from './Divider';
 
 class Card extends Component {
   render() {
+    let styleClasses = [];
+    if (this.props.style) {
+      styleClasses = this.props.style.map((each) => {
+        return classes[each];
+      });
+      console.log('Card style classes:', styleClasses);
+    }
+
     return this.props.hide ? null : (
       <div
         className={[
           classes.Card,
           this.props.className,
-          classes[this.props.type]
-        ].join(' ')}
-      >
+          ...styleClasses,
+          classes[this.props.type],
+        ].join(' ')}>
         {this.props.header ? (
           <React.Fragment>
             <div className={classes.CardHeader}>{this.props.header}</div>

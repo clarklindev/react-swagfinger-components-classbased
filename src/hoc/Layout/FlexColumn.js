@@ -38,8 +38,9 @@ class FlexColumn extends Component {
     const alignItems = alignClasses.alignItems(this.props.alignItems);
     const alignContent = alignClasses.alignContent(this.props.alignContent);
     const alignSelf = alignClasses.alignSelf(this.props.alignSelf);
-    const flexShrink = this.props.flexshrink ===true ? classes.Flexshrink : null;
-    const flexGrow = this.props.flexgrow === true ? classes.Flexgrow : null;
+    const flexShrink =
+      this.props.flexshrink === 'true' ? classes.Flexshrink : null;
+    const flexGrow = this.props.flexgrow === 'true' ? classes.Flexgrow : null;
 
     return (
       <div

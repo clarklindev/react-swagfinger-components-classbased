@@ -36,7 +36,7 @@ class ProfileCreateOrUpdate extends Component {
     saving: false,
     formIsValid: null, //for form validation,
     localstateform: null, //for a single profile
-    isFormValid: null,
+    isFormValid: true,
   };
   //------------------------------------------------------
   //------------------------------------------------------
@@ -391,14 +391,6 @@ class ProfileCreateOrUpdate extends Component {
 
         break;
     }
-
-    this.setState((prevState) => {
-      let isValid = this.checkInputValidProperty(prevState.form);
-
-      return {
-        formIsValid: isValid,
-      };
-    });
   };
 
   //remove checks the index of the input and removes it from the inputs array by index
@@ -429,14 +421,6 @@ class ProfileCreateOrUpdate extends Component {
             value: [...updatedInputs],
           },
         },
-      };
-    });
-
-    this.setState((prevState) => {
-      let isValid = this.checkInputValidProperty(prevState.localstateform);
-
-      return {
-        formIsValid: isValid,
       };
     });
   };
@@ -543,7 +527,7 @@ class ProfileCreateOrUpdate extends Component {
 
     updatedForm[key] = updatedFormElement; //update form's input element state as that or 'updatedFormElement'
 
-    const formValidCheck = this.checkInputValidProperty(updatedForm);
+    const formValidCheck = this.onSubmitTest();
     // console.log('FORM VALIDITY: ', formValidCheck);
     this.setState({ localstateform: updatedForm, formIsValid: formValidCheck });
   };
@@ -710,42 +694,6 @@ class ProfileCreateOrUpdate extends Component {
         return obj;
       }
     );
-  };
-
-  //checks the .valid property of each input in array or individual input
-  //returns true/false if form object is valid/invalid
-  checkInputValidProperty = (form) => {
-    // console.log('IS FORM VALID CHECK');
-    let formIsValid = true;
-
-    //each prop in profile
-    for (let key in form) {
-      //if the prop of profile has an element type of...
-      if (
-        form[key].type !== 'none' &&
-        form[key].componentconfig.hasOwnProperty('validation')
-      ) {
-        if (form[key].componentconfig.validation.hasOwnProperty('isRequired')) {
-          switch (form[key].type) {
-            case 'single':
-              formIsValid = form[key].value.valid && formIsValid;
-
-              break;
-            case 'array':
-              for (let each of form[key].value) {
-                formIsValid = each.valid && formIsValid;
-              }
-              break;
-            case 'object':
-              break;
-            case 'arrayofobjects':
-              break;
-          }
-        }
-      }
-    }
-
-    return formIsValid;
   };
 
   //function gets called when submit button is clicked
