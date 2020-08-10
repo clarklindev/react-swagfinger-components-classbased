@@ -30,14 +30,11 @@ class MultiInputObjects extends PureComponent {
     console.log('mount: this.props.value: ', this.props.value);
   }
   componentDidUpdate() {
-    console.log('update: this.props.value: ', this.props.value);
-    let isActive = this.props.value.map((val, index) => {
-      return false;
-    });
-    if (!ArrayHelper.isEqual(isActive, this.state.isActive)) {
-      this.setState({ isActive: isActive }, () => {
-        console.log('component did mount isActive: ', this.state.isActive);
+    if (this.state.isActive === []) {
+      const updatedIsActive = this.props.value.map((item) => {
+        return false;
       });
+      this.setState({ isActive: updatedIsActive });
     }
   }
 
@@ -179,9 +176,10 @@ class MultiInputObjects extends PureComponent {
   resetIsActiveAtIndex = (index) => {
     this.setState(
       (prevState) => {
+        let updatedIsActive = [...prevState.isActive];
+        updatedIsActive[index] = undefined;
         return {
-          isActive: [...prevState.isActive],
-          [index]: undefined,
+          isActive: updatedIsActive,
         };
       },
       () => {
@@ -212,11 +210,11 @@ class MultiInputObjects extends PureComponent {
     // @props index item in array to remove
     const removeButton = (index) => (
       <Button
-        onClick={(event) => {
+        onClick={async (event) => {
           event.preventDefault();
           event.stopPropagation();
           console.log('index:', index);
-          this.resetIsActiveAtIndex(index);
+          await this.resetIsActiveAtIndex(index);
           removeinput(this.props.name, index);
         }}
         title='Delete'
