@@ -31,7 +31,9 @@ class DraggableItem extends Component {
             <Icon iconstyle='fas' code='grip-vertical' size='sm' />
           </div>
         </div>
-        {this.props.children}
+        {this.props.children ? (
+          <div className={classes.DraggableItemBody}>{this.props.children}</div>
+        ) : null}
       </React.Fragment>
     );
   }

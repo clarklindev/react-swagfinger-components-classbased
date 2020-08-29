@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import classes from './Login.module.scss';
-import axiosInstance from '../../axios-profiles';
+import axiosInstance from '../../axios-firebase';
 
 import * as actions from '../../store/actions/index';
 import Button from '../../components/UI/Button/Button';

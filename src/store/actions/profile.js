@@ -1,7 +1,7 @@
 // actions
 import * as actionTypes from './actionsTypes';
 import axios from 'axios';
-import axiosInstance from '../../axios-profiles';
+import axiosInstance from '../../axios-firebase';
 const source = axios.CancelToken.source();
 
 //=======================================================

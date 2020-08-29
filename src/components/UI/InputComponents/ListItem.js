@@ -49,6 +49,7 @@ class ListItem extends Component {
     return (
       <div
         className={[this.className, ...styleClasses].join(' ')}
+        style={this.props.style}
         onClick={this.props.onClick}
         title={this.props.title}>
         <div className={[classes.ListItemWrapper, this.props.align].join(' ')}>

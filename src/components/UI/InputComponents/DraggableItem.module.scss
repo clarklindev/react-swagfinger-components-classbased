@@ -41,3 +41,17 @@
     height: var(--inputheightwithoutborders);
   }
 }
+
+.DraggableItemBody {
+  background-color: white;
+  min-height: var(--inputheight);
+  box-sizing: border-box;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  padding: var(--paddingdefault);
+  border-top-right-radius: var(--borderradius);
+  border-bottom-right-radius: var(--borderradius);
+  border: 1px solid var(--colorborder);
+  border-left: 0;
+}

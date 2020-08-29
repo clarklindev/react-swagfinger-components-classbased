@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import classes from './ProfileCreateOrUpdate.module.scss';
 
 //Helper classes
-import axios from '../../axios-profiles';
+import axios from '../../axios-firebase';
 import * as arrayHelper from '../../shared/arrayHelper';
 import { CheckValidity as validationCheck } from '../../shared/validation';
 

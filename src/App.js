@@ -9,6 +9,8 @@ import Home from './containers/Home/Home';
 import Login from './containers/Auth/Login';
 import Logout from './containers/Auth/Logout';
 
+import Formbuilder from './containers/Formbuilder/Formbuilder';
+
 import Phonebook from './containers/Phonebook/Phonebook';
 import PhonebookAdmin from './containers/Phonebook/PhonebookAdmin';
 
@@ -44,6 +46,7 @@ class App extends Component {
   render() {
     const unauthenticatedRoutes = (
       <Switch>
+        <Route path='/formbuilder' component={Formbuilder} />
         <Route path='/login' component={Login} />
         <Route path='/profileread' component={ProfileRead} />
         <Route path='/faq' component={Faq} />
@@ -54,6 +57,7 @@ class App extends Component {
 
     const authenticatedRoutes = (
       <Switch>
+        <Route path='/formbuilder' component={Formbuilder} />
         <Route path='/logout' component={Logout} />
         <Route path='/faq' component={Faq} />
         <Route path='/appointment' component={Appointment} />

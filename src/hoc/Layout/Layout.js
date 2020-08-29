@@ -17,7 +17,7 @@ class Layout extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <div className={classes.Layout}>
         {this.props.hideToolbar ? null : (
           <React.Fragment>
             <Toolbar
@@ -31,8 +31,8 @@ class Layout extends Component {
             />
           </React.Fragment>
         )}
-        <main className={classes.Layout}>{this.props.children}</main>
-      </React.Fragment>
+        <main>{this.props.children}</main>
+      </div>
     );
   }
 }
