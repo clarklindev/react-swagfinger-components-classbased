@@ -13,22 +13,30 @@
   //children spacing
   &.SpacingChildrenLeft {
     > * {
-      padding-left: var(--paddingdefault);
+      margin-left: calc(var(--margindefault) * 0.5);
     }
   }
   &.SpacingChildrenRight {
     > * {
-      padding-right: var(--paddingdefault);
+      margin-right: calc(var(--margindefault) * 0.5);
     }
   }
   &.SpacingChildrenTop {
     > * {
-      padding-top: var(--paddingdefault);
+      margin-top: calc(var(--margindefault) * 0.5);
     }
   }
   &.SpacingChildrenBottom {
     > * {
-      padding-bottom: var(--paddingdefault);
+      margin-bottom: calc(var(--margindefault) * 0.5);
+    }
+  }
+  &.SpacingChildrenBottomNotLast {
+    > * {
+      margin-bottom: calc(var(--margindefault) * 0.5);
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
   }
 
@@ -48,5 +56,9 @@
 
   &.SpacingBottomNotLast {
     padding-bottom: calc(var(--paddingdefault) * 0.5);
+  }
+
+  &.Padding {
+    padding: var(--paddingdefault);
   }
 }

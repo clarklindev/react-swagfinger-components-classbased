@@ -1,0 +1,27 @@
+.Separator {
+  &.Solid {
+    border-style: solid;
+  }
+  &.Dotted {
+    border-style: dotted;
+  }
+  &.Dashed {
+    border-style: dashed;
+  }
+
+  &.VerticalSeparator {
+    border-width: 0 1px 0 0;
+    height: inherit;
+    width: 1px;
+    border-color: var(--colorborder);
+  }
+  &.HorizontalSeparator {
+    border-width: 1px 0 0 0;
+    width: inherit;
+    height: 1px;
+    border-color: var(--colorborder);
+    &.Padding {
+      margin: calc(var(--margindefault) * 0.5) 0;
+    }
+  }
+}

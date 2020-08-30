@@ -3,6 +3,7 @@
   border-radius: var(--borderradius);
   background-color: white;
   margin-bottom: var(--margindefault);
+  padding: var(--paddingdefault);
 
   &.Invalid {
     border: 1px solid var(--colorerror);

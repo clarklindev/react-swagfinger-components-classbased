@@ -14,6 +14,7 @@ import ListItem from '../../components/UI/InputComponents/ListItem';
 import Icon from '../../components/UI/InputComponents/Icon';
 import Spinner from '../../components/UI/Loaders/Spinner';
 import Button from '../../components/UI/Button/Button';
+import FlexRow from '../../hoc/Layout/FlexRow';
 
 class PhonebookAdmin extends PureComponent {
   state = {
@@ -174,13 +175,16 @@ class PhonebookAdmin extends PureComponent {
                   value: { data: filtered },
                 }}
               />
-              <Button
-                type='WithBorder'
-                title='Add'
-                onClick={this.addProfileHandler}>
-                <Icon iconstyle='fas' code='plus' size='sm' />
-                <p>Add Profile</p>
-              </Button>
+              <FlexRow>
+                <Button
+                  type='WithBorder'
+                  className='FlexGrow'
+                  title='Add'
+                  onClick={this.addProfileHandler}>
+                  <Icon iconstyle='fas' code='plus' size='sm' />
+                  <p>Add Profile</p>
+                </Button>
+              </FlexRow>
             </Card>
           </DefaultPageLayout>
         )}

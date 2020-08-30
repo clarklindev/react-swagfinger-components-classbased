@@ -29,6 +29,9 @@ class FlexRow extends Component {
     if (this.props.spacingchildren === 'right') {
       spacingClasses.push(classes.SpacingChildrenRight);
     }
+    if (this.props.spacingchildren === 'right-notlast') {
+      spacingClasses.push(classes.SpacingChildrenRightNotLast);
+    }
     if (this.props.spacingchildren === 'top') {
       spacingClasses.push(classes.SpacingChildrenTop);
     }

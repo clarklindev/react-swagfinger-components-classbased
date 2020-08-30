@@ -9,6 +9,7 @@ import DraggableItem from './DraggableItem';
 import ErrorList from './ErrorList';
 import FlexRow from '../../../hoc/Layout/FlexRow';
 import Utils from '../../../Utils';
+import Separator from '../Separator/Separator';
 
 class MultiInput extends Component {
   static contextType = InputContext;

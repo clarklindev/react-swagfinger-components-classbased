@@ -7,31 +7,26 @@ class DefaultPageLayout extends Component {
   render() {
     return (
       <div className={classes.DefaultPageLayout}>
-        {this.props.label.trim().length > 0 ? (
-          <div
-            className={[
-              classes.Wrapper,
-              'container',
-              classes[this.props.type]
-            ].join(' ')}
-          >
-            <SectionHeader>{this.props.label}</SectionHeader>
+        <div
+          className={[
+            classes.Wrapper,
+            'container',
+            classes[this.props.type],
+          ].join(' ')}>
+          <SectionHeader>{this.props.label}</SectionHeader>
 
-            {this.props.children}
-          </div>
-        ) : (
-          this.props.children
-        )}
+          {this.props.children}
+        </div>
       </div>
     );
   }
 }
 
 DefaultPageLayout.propTypes = {
-  label: PropTypes.string.isRequired,
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
-  ]).isRequired
+    PropTypes.node,
+  ]).isRequired,
 };
 export default DefaultPageLayout;
