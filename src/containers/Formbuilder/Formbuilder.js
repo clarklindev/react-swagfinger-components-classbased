@@ -9,6 +9,8 @@ import Label from '../../components/UI/Headers/Label';
 import List from '../../components/UI/InputComponents/List';
 import ListItem from '../../components/UI/InputComponents/ListItem';
 import DraggableItem from '../../components/UI/InputComponents/DraggableItem';
+import Button from '../../components/UI/Button/Button';
+import Icon from '../../components/UI/InputComponents/Icon';
 
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
@@ -47,18 +49,36 @@ class Formbuilder extends Component {
                 <p>Copied to clipboard</p>
               </FlexRow>
             </Modal>
-            {listofcomponents !== null ? (
-              <div className={classes.ComponentList}>
-                <div className={classes.ComponentListHeading}>
-                  <Label style={{ color: 'grey' }}>Components</Label>
+
+            {/* {listofcomponents !== null ? (
+                <div className={classes.ComponentList}>
+                  <div className={classes.ComponentListHeading}>
+                    <Label style={{ color: 'grey' }}>Components</Label>
+                  </div>
+                  <div className={classes.ComponentListBody}>
+                    <List value={{ data: listofcomponents }} />
+                  </div>
                 </div>
-                <div className={classes.ComponentListBody}>
-                  <List value={{ data: listofcomponents }} />
-                </div>
-              </div>
-            ) : null}
+              ) : null} */}
+
             <DefaultPageLayout label={`Formbuilder`}>
-              <Card></Card>
+              <Card>
+                <Button
+                  title='Add'
+                  type='WithBorder'
+                  className={classes.AddButton}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    this.context.addinput(this.props.type, this.props.name, {
+                      key: '',
+                      value: '',
+                    });
+                  }}>
+                  <Icon iconstyle='fas' code='plus' size='sm' />
+                  <p>Add</p>
+                </Button>
+              </Card>
             </DefaultPageLayout>
           </React.Fragment>
         )}

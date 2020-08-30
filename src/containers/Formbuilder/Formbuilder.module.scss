@@ -1,4 +1,6 @@
 .Formbuilder {
-  display: flex;
-  flex-direction: row;
+  .ComponentList {
+    height: 100%;
+    background-color: red;
+  }
 }

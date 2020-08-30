@@ -24,6 +24,11 @@ body::-webkit-scrollbar {
 html,
 body {
   box-sizing: border-box;
+  height: 100%;
+}
+
+#root {
+  height: 100%;
 }
 
 code {
