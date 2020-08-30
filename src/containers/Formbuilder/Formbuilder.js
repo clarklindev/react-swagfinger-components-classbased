@@ -83,7 +83,7 @@ class Formbuilder extends Component {
                       // });
                     }}>
                     <Icon iconstyle='fas' code='plus' size='sm' />
-                    <p>Add</p>
+                    <p>Add form element</p>
                   </Button>
                 </FlexColumn>
                 <Separator
