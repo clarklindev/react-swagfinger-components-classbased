@@ -40,7 +40,7 @@ class FlexRow extends Component {
     }
 
     const justifyContent = alignClasses.justifyContent(
-      this.props.justifyContent
+      this.props.justifycontent
     );
     const alignItems = alignClasses.alignItems(this.props.alignItems);
     const alignContent = alignClasses.alignContent(this.props.alignContent);
@@ -58,7 +58,7 @@ class FlexRow extends Component {
           alignSelf,
           flexGrow,
           flexShrink,
-          [...spacingClasses],
+          ...spacingClasses,
         ].join(' ')}
         {...this.props}>
         {this.props.children}

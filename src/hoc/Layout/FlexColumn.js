@@ -36,7 +36,7 @@ class FlexColumn extends Component {
     }
 
     const justifyContent = alignClasses.justifyContent(
-      this.props.justifyContent
+      this.props.justifycontent
     );
     const alignItems = alignClasses.alignItems(this.props.alignItems);
     const alignContent = alignClasses.alignContent(this.props.alignContent);
@@ -55,7 +55,7 @@ class FlexColumn extends Component {
           alignSelf,
           flexGrow,
           flexShrink,
-          [...spacingClasses],
+          ...spacingClasses,
           padding,
         ].join(' ')}
         {...this.props}>

@@ -109,7 +109,6 @@ Select.propTypes = {
   componentconfig: PropTypes.shape({
     options: PropTypes.array,
     placeholder: PropTypes.string,
-    valuetype: PropTypes.oneOf(['singlevalue', 'array']),
   }),
 };
 

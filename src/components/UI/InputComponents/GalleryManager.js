@@ -4,11 +4,8 @@ import classes from './GalleryManager.module.scss';
 import InputContext from '../../../context/InputContext';
 import GalleryItem from './GalleryItem';
 
-import Input from './Input';
 import Button from '../Button/Button';
 import Icon from './Icon';
-import { ReactSortable } from 'react-sortablejs';
-import * as ArrayHelper from '../../../shared/arrayHelper';
 
 // Class allows us to move items of the gallery
 // Add and Remove items from gallery

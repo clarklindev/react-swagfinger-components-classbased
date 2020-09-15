@@ -13,7 +13,6 @@ import * as Clipboard from '../../shared/clipboard';
 
 //tabs
 import ProfileReadTimeline from './ProfileReadTimeline';
-import ProfileReadAppointments from './ProfileReadAppointments';
 import ProfileReadProfile from './ProfileReadProfile';
 
 class ProfileRead extends Component {
@@ -74,7 +73,7 @@ class ProfileRead extends Component {
         ) : (
           <React.Fragment>
             <Modal show={this.state.showClipboardModal}>
-              <FlexRow justifyContent='center'>
+              <FlexRow justifycontent='center'>
                 <p>Copied to clipboard</p>
               </FlexRow>
             </Modal>

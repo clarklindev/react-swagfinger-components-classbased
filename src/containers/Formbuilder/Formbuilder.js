@@ -7,13 +7,6 @@ import FlexRow from '../../hoc/Layout/FlexRow';
 import FlexColumn from '../../hoc/Layout/FlexColumn';
 
 import Card from '../../components/UI/Card/Card';
-import Label from '../../components/UI/Headers/Label';
-import List from '../../components/UI/InputComponents/List';
-import ListItem from '../../components/UI/InputComponents/ListItem';
-import DraggableItem from '../../components/UI/InputComponents/DraggableItem';
-import Button from '../../components/UI/Button/Button';
-import Icon from '../../components/UI/InputComponents/Icon';
-import Separator from '../../components/UI/Separator/Separator';
 
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
@@ -21,6 +14,7 @@ import * as actions from '../../store/actions/index';
 class Formbuilder extends Component {
   state = {
     showClipboardModal: false,
+    form: [],
   };
 
   componentDidMount() {
@@ -37,10 +31,12 @@ class Formbuilder extends Component {
 
     if (this.props.components !== null) {
       listofcomponents = Object.keys(this.props.components).map((each) => {
-        return <DraggableItem style={['Embedded']}>{each}</DraggableItem>;
+        return each;
+        // return <DraggableItem style={['Embedded']}>{each}</DraggableItem>;
       });
       console.log('listofcomponents: ', listofcomponents);
     }
+
     return (
       <div className={classes.Formbuilder}>
         {this.props.isLoading && !this.props.activeProfile ? (
@@ -48,7 +44,7 @@ class Formbuilder extends Component {
         ) : (
           <React.Fragment>
             <Modal show={this.state.showClipboardModal}>
-              <FlexRow justifyContent='center'>
+              <FlexRow justifycontent='center'>
                 <p>Copied to clipboard</p>
               </FlexRow>
             </Modal>
@@ -66,31 +62,77 @@ class Formbuilder extends Component {
 
             <DefaultPageLayout
               label={
-                <FlexRow justifyContent='space-between'>Formbuilder</FlexRow>
+                <FlexRow justifycontent='space-between'>Formbuilder</FlexRow>
               }>
               <Card style={['NoPadding']}>
-                <FlexColumn spacingchildren='bottom-notlast' padding='true'>
-                  <Button
-                    title='Add'
-                    type='WithBorder'
-                    className='FlexGrow'
-                    onClick={(event) => {
-                      event.preventDefault();
-                      event.stopPropagation();
-                      // this.context.addinput(this.props.type, this.props.name, {
-                      //   key: '',
-                      //   value: '',
-                      // });
-                    }}>
-                    <Icon iconstyle='fas' code='plus' size='sm' />
-                    <p>Add form element</p>
-                  </Button>
-                </FlexColumn>
-                <Separator
-                  direction='horizontal'
-                  style={['Dotted', 'Padding']}
-                />
-                <FlexColumn spacingchildren='bottom-notlast' padding='true'>
+                <React.Fragment>
+                  <FlexColumn padding='true' spacingchildren='bottom-notlast'>
+                    {/* <MultiSelect
+                      name='formbuilder'
+                      type='array'
+                      componentconfig={{
+                        defaultinputs: 0,
+                        draggable: true,
+                        options: [{ displaytext: '', value: '' }],
+                        validation: { isRequired: true },
+                      }}
+                      value={[
+                        {
+                          data: { url: '', title: '', description: '' },
+                          valid: true,
+                          touched: true,
+                          pristine: true,
+                        },
+                      ]}
+                    /> */}
+                    {/* <MultiInputObjects
+                      name='formbuilder'
+                      componentconfig={{
+                        allowmultiopen: true,
+
+                        validation: { isRequired: true },
+                        defaultinputs: 0,
+                        metadata: [
+                          {
+                            component: 'input',
+                            label: 'url',
+                            name: 'url',
+                            placeholder: 'url',
+                            type: 'string',
+                            validation: { isRequired: true },
+                          },
+                          {
+                            component: 'input',
+                            label: 'title',
+                            name: 'title',
+                            placeholder: 'title',
+                            type: 'string',
+                            validation: { isRequired: true },
+                          },
+                          {
+                            component: 'input',
+                            label: 'description',
+                            name: 'description',
+                            placeholder: 'description',
+                            type: 'string',
+                            validation: { isRequired: true },
+                          },
+                        ],
+                      }}
+                      value={[
+                        {
+                          data: { url: '', title: '', description: '' },
+                          valid: true,
+                          touched: true,
+                          pristine: true,
+                        },
+                      ]}
+                    /> */}
+                  </FlexColumn>
+                </React.Fragment>
+              </Card>
+              {/* <Card style={['NoPadding']}>
+                <FlexColumn padding='true' spacingchildren='bottom-notlast'>
                   <Button
                     type='WithBorder'
                     title='submit'
@@ -98,7 +140,7 @@ class Formbuilder extends Component {
                     Submit
                   </Button>
                 </FlexColumn>
-              </Card>
+              </Card> */}
             </DefaultPageLayout>
           </React.Fragment>
         )}

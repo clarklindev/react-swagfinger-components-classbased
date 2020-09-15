@@ -4,12 +4,10 @@ import InputContext from '../../../context/InputContext';
 import Icon from '../InputComponents/Icon';
 import PropTypes from 'prop-types';
 import Button from '../../UI/Button/Button';
-import Input from '../../UI/InputComponents/Input';
 import DraggableItem from './DraggableItem';
 import ErrorList from './ErrorList';
 import FlexRow from '../../../hoc/Layout/FlexRow';
 import Utils from '../../../Utils';
-import Separator from '../Separator/Separator';
 
 class MultiInput extends Component {
   static contextType = InputContext;

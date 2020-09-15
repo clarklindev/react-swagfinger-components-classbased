@@ -1,6 +1,5 @@
 import * as actionTypes from './actionsTypes';
 import axiosInstance from '../../axios-firebase';
-import axios from 'axios';
 
 export const authStart = () => {
   return {

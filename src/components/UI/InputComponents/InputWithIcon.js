@@ -7,10 +7,6 @@ import Button from '../Button/Button';
 class InputWithIcon extends Component {
   static contextType = InputContext;
 
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     window.addEventListener('keydown', this.keyListener);
   }

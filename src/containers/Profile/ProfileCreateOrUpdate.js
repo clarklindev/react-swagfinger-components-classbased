@@ -1,4 +1,4 @@
-import React, { Component, version } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import classes from './ProfileCreateOrUpdate.module.scss';
@@ -23,6 +23,8 @@ import Modal from '../../components/UI/Modal/Modal';
 import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
 import Spinner from '../../components/UI/Loaders/Spinner';
 import Button from '../../components/UI/Button/Button';
+import Separator from '../../components/UI/Separator/Separator';
+import FlexColumn from '../../hoc/Layout/FlexColumn';
 
 class ProfileCreateOrUpdate extends Component {
   constructor(props) {
@@ -299,7 +301,7 @@ class ProfileCreateOrUpdate extends Component {
               });
               break;
             default:
-              new Error(
+              return new Error(
                 'type needed in firebase... (single,object,array,arrayofobjects'
               );
           }
@@ -390,6 +392,9 @@ class ProfileCreateOrUpdate extends Component {
         });
 
         break;
+
+      default:
+        new Error('NO Type');
     }
   };
 
@@ -523,6 +528,8 @@ class ProfileCreateOrUpdate extends Component {
         console.log('here..: ', obj);
         updatedFormElement.value[index][objectkey] = obj;
         break;
+      default:
+        throw new Error('No Type');
     }
 
     updatedForm[key] = updatedFormElement; //update form's input element state as that or 'updatedFormElement'
@@ -565,135 +572,131 @@ class ProfileCreateOrUpdate extends Component {
     console.log('this.props.activeProfile: ', this.props.activeProfile);
     console.log('this.state.localstateform: ', this.state.localstateform);
     let isFormValid = true;
-    let newValues = Object.keys(this.state.localstateform).map(
-      (formattribute) => {
-        let obj = {};
-        switch (this.state.localstateform[formattribute].type) {
-          case 'single':
-            console.log('single: ', formattribute);
-            const validated = validationCheck(
-              this.state.localstateform[formattribute].value.data,
+    Object.keys(this.state.localstateform).map((formattribute) => {
+      let obj = {};
+      switch (this.state.localstateform[formattribute].type) {
+        case 'single':
+          console.log('single: ', formattribute);
+          const validated = validationCheck(
+            this.state.localstateform[formattribute].value.data,
+            this.state.localstateform[formattribute].componentconfig.validation
+          );
+          obj = {
+            data: this.state.localstateform[formattribute].value.data, //value at the key
+            valid: validated.isValid,
+            errors: validated.errors, //array of errors
+            touched: true,
+            pristine: false,
+          };
+          if (validated.isValid === false) {
+            isFormValid = false;
+          }
+          break;
+        case 'array':
+          console.log('array:', formattribute);
+          obj = this.state.localstateform[formattribute].value.map((each) => {
+            let validated = validationCheck(
+              each.data,
               this.state.localstateform[formattribute].componentconfig
                 .validation
             );
-            obj = {
-              data: this.state.localstateform[formattribute].value.data, //value at the key
-              valid: validated.isValid,
-              errors: validated.errors, //array of errors
-              touched: true,
-              pristine: false,
-            };
             if (validated.isValid === false) {
               isFormValid = false;
             }
-            break;
-          case 'array':
-            console.log('array:', formattribute);
-            obj = this.state.localstateform[formattribute].value.map((each) => {
-              let validated = validationCheck(
-                each.data,
-                this.state.localstateform[formattribute].componentconfig
-                  .validation
+            //console.log('EACH: ', each);
+            let val = { ...each };
+            val.touched = true;
+            val.pristine = false;
+            val.errors = validated.errors;
+            val.valid = validated.isValid;
+            return val;
+          });
+
+          break;
+        case 'object':
+          console.log('object:', formattribute);
+          Object.keys(this.state.localstateform[formattribute].value).forEach(
+            (attr) => {
+              let metadata = this.state.localstateform[
+                formattribute
+              ].componentconfig.metadata.find((meta) => {
+                return meta.name === attr;
+              });
+              const validated = validationCheck(
+                this.state.localstateform[formattribute].value[attr].data,
+                metadata.validation
               );
               if (validated.isValid === false) {
                 isFormValid = false;
               }
-              //console.log('EACH: ', each);
-              let val = { ...each };
-              val.touched = true;
-              val.pristine = false;
-              val.errors = validated.errors;
-              val.valid = validated.isValid;
-              return val;
-            });
+              obj[attr] = {
+                data: this.state.localstateform[formattribute].value[attr].data, //value at the key
+                valid: validated.isValid,
+                errors: validated.errors, //array of errors
+                touched: true,
+                pristine: false,
+              };
+              console.log('submit test: ');
+              console.log('validated:', validated);
+              console.log('obj[attr]:', obj[attr]);
+            }
+          );
 
-            break;
-          case 'object':
-            console.log('object:', formattribute);
-            Object.keys(this.state.localstateform[formattribute].value).forEach(
-              (attr) => {
-                let metadata = this.state.localstateform[
-                  formattribute
-                ].componentconfig.metadata.find((meta) => {
-                  return meta.name === attr;
-                });
-                const validated = validationCheck(
-                  this.state.localstateform[formattribute].value[attr].data,
-                  metadata.validation
-                );
-                if (validated.isValid === false) {
-                  isFormValid = false;
-                }
-                obj[attr] = {
-                  data: this.state.localstateform[formattribute].value[attr]
-                    .data, //value at the key
-                  valid: validated.isValid,
-                  errors: validated.errors, //array of errors
-                  touched: true,
-                  pristine: false,
-                };
-                console.log('submit test: ');
-                console.log('validated:', validated);
-                console.log('obj[attr]:', obj[attr]);
-              }
-            );
+          break;
 
-            break;
-
-          case 'arrayofobjects':
-            console.log('arrayofobjects:', formattribute);
-            obj = this.state.localstateform[formattribute].value.map((each) => {
-              //each value is an object... validate each attribute
-              console.log('arrayofobjects each: ', each);
-              let val = {};
-              // //go through each attribute of the value
-              Object.keys(each).forEach((attr) => {
-                //   console.log('attr: ', attr);
-                val[attr] = '';
-                let metadata = this.state.localstateform[
-                  formattribute
-                ].componentconfig.metadata.find((meta) => {
-                  return meta.name === attr;
-                });
-                const validated = validationCheck(
-                  each[attr].data,
-                  metadata.validation
-                );
-                if (validated.isValid === false) {
-                  isFormValid = false;
-                }
-                val[attr] = {
-                  data: each[attr].data, //value at the key
-                  valid: validated.isValid,
-                  errors: validated.errors, //array of errors
-                  touched: true,
-                  pristine: false,
-                };
+        case 'arrayofobjects':
+          console.log('arrayofobjects:', formattribute);
+          obj = this.state.localstateform[formattribute].value.map((each) => {
+            //each value is an object... validate each attribute
+            console.log('arrayofobjects each: ', each);
+            let val = {};
+            // //go through each attribute of the value
+            Object.keys(each).forEach((attr) => {
+              //   console.log('attr: ', attr);
+              val[attr] = '';
+              let metadata = this.state.localstateform[
+                formattribute
+              ].componentconfig.metadata.find((meta) => {
+                return meta.name === attr;
               });
-              return val;
+              const validated = validationCheck(
+                each[attr].data,
+                metadata.validation
+              );
+              if (validated.isValid === false) {
+                isFormValid = false;
+              }
+              val[attr] = {
+                data: each[attr].data, //value at the key
+                valid: validated.isValid,
+                errors: validated.errors, //array of errors
+                touched: true,
+                pristine: false,
+              };
             });
-            break;
-          default:
-            console.log('nothing');
-        }
-        console.log('obj:', obj);
-
-        this.setState((prevState) => ({
-          localstateform: {
-            ...prevState.localstateform,
-            [formattribute]: {
-              ...prevState.localstateform[formattribute],
-              value: obj,
-            },
-          },
-
-          isFormValid: isFormValid,
-        }));
-
-        console.log('=============');
-        return obj;
+            return val;
+          });
+          break;
+        default:
+          console.log('nothing');
       }
-    );
+      console.log('obj:', obj);
+
+      this.setState((prevState) => ({
+        localstateform: {
+          ...prevState.localstateform,
+          [formattribute]: {
+            ...prevState.localstateform[formattribute],
+            value: obj,
+          },
+        },
+
+        isFormValid: isFormValid,
+      }));
+
+      console.log('=============');
+      return obj;
+    });
   };
 
   //function gets called when submit button is clicked
@@ -806,29 +809,32 @@ class ProfileCreateOrUpdate extends Component {
           <div className={classes.ProfileCreateOrUpdate}>
             <DefaultPageLayout
               label={this.props.id ? 'Update Profile' : 'Create Profile'}>
-              <Card>
+              <Card style={['NoPadding']}>
                 <form onSubmit={this.onSubmitHandler} autoComplete='off'>
                   {/* input context provides context state/functions to formInputs */}
-                  <InputContext.Provider
-                    value={{
-                      addinput: this.addInputHandler,
-                      removeinput: this.removeInputHandler,
-                      changed: this.inputChangedHandler,
-                      moveiteminarray: this.moveItemHandler,
-                    }}>
-                    {formInputs}
-                  </InputContext.Provider>
-                  <input
-                    ref={this.submitInputRef}
-                    type='submit'
-                    value='Submit'
-                    onMouseOver={(event) => {
-                      console.log('mouseover');
-                      this.onSubmitTest(event);
-                    }}
-                    // disabled={!this.state.formIsValid} //dont disable just handle with validation
-                  />
-                  {submitbutton}
+                  <FlexColumn padding='true'>
+                    <InputContext.Provider
+                      value={{
+                        addinput: this.addInputHandler,
+                        removeinput: this.removeInputHandler,
+                        changed: this.inputChangedHandler,
+                        moveiteminarray: this.moveItemHandler,
+                      }}>
+                      {formInputs}
+                    </InputContext.Provider>
+                    <input
+                      ref={this.submitInputRef}
+                      type='submit'
+                      value='Submit'
+                      onMouseOver={(event) => {
+                        console.log('mouseover');
+                        this.onSubmitTest(event);
+                      }}
+                      // disabled={!this.state.formIsValid} //dont disable just handle with validation
+                    />
+                  </FlexColumn>
+                  <Separator direction='horizontal' style={['Solid']} />
+                  <FlexColumn padding='true'>{submitbutton}</FlexColumn>
                 </form>
               </Card>
             </DefaultPageLayout>

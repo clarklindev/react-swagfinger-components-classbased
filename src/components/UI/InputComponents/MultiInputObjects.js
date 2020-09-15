@@ -16,10 +16,6 @@ import * as ArrayHelper from '../../../shared/arrayHelper';
 class MultiInputObjects extends PureComponent {
   static contextType = InputContext;
 
-  constructor(props) {
-    super(props);
-  }
-
   state = {
     isActive: [],
     clickIndex: null,

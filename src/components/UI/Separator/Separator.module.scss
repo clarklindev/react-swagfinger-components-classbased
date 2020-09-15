@@ -14,6 +14,9 @@
     height: inherit;
     width: 1px;
     border-color: var(--colorborder);
+    &.Padding {
+      margin: 0 calc(var(--margindefault) * 0.5);
+    }
   }
   &.HorizontalSeparator {
     border-width: 1px 0 0 0;

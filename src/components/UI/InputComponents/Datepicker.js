@@ -5,7 +5,6 @@ import Button from '../Button/Button';
 import ErrorList from './ErrorList';
 import InputContext from '../../../context/InputContext';
 import Input from './Input';
-import { CheckValidity as validationCheck } from '../../../shared/validation';
 
 class Datepicker extends Component {
   static contextType = InputContext;
@@ -868,7 +867,7 @@ class Datepicker extends Component {
             </div>
           </div>
         ) : null}
-        {/*{error} */}
+        {error}
       </div>
     ) : null;
   }

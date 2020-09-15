@@ -48,23 +48,22 @@ export const processFetchProfilesCancel = () => {
 export const tryOfflineMode = () => {
   console.log('tryOfflineMode');
   return (dispatch) => {
-    axios
-      .get('http://localhost:3000/data.json')
-      .then((response) => {
-        console.log('json: ', response.data);
-        console.log('here...');
-        let login = response.data.data.schemas.collection.login;
-        let offlineprofiles = response.data.data.profiles;
-
-        //this step is so we can add ID to the object
-        const fetchedProfiles = [];
-        for (let key in offlineprofiles) {
-          fetchedProfiles.push({ ...offlineprofiles[key], id: key });
-        }
-        console.log('offline fetched profiles: ', fetchedProfiles);
-        dispatch(fetchProfilesSuccess(fetchedProfiles, true));
-      })
-      .catch((err) => {});
+    //   axios
+    //     .get('http://localhost:3000/data.json')
+    //     .then((response) => {
+    //       console.log('json: ', response.data);
+    //       console.log('here...');
+    //       let login = response.data.data.schemas.collection.login;
+    //       let offlineprofiles = response.data.data.profiles;
+    //       //this step is so we can add ID to the object
+    //       const fetchedProfiles = [];
+    //       for (let key in offlineprofiles) {
+    //         fetchedProfiles.push({ ...offlineprofiles[key], id: key });
+    //       }
+    //       console.log('offline fetched profiles: ', fetchedProfiles);
+    //       dispatch(fetchProfilesSuccess(fetchedProfiles, true));
+    //     })
+    //     .catch((err) => {});
   };
 };
 
@@ -146,7 +145,7 @@ export const processFetchProfileSchema = () => {
   return async (dispatch) => {
     dispatch(fetchProfileSchemaStart());
 
-    let response = axiosInstance
+    axiosInstance
       .get(`/schemas/collection/profiles.json`, {
         cancelToken: source.token,
       })

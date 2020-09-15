@@ -27,6 +27,8 @@ const Separator = (props) => {
         />
       );
       break;
+    default:
+      throw new Error('direction prop required');
   }
 
   return separator;

@@ -6,10 +6,6 @@ import DraggableItem from './DraggableItem';
 import FlexRow from '../../../hoc/Layout/FlexRow';
 
 class GalleryItem extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     // this.addEventListener('dragstart', this.dragStart, false);
     // this.addEventListener('dragenter', this.dragEnter, false);
@@ -79,7 +75,7 @@ class GalleryItem extends Component {
       <React.Fragment>
         <div className={classes.GalleryItem}>
           <DraggableItem>
-            <FlexRow justifyContent='space-between' flexgrow='true'>
+            <FlexRow justifycontent='space-between' flexgrow='true'>
               <div className={classes.DragContent}>{this.props.children}</div>
             </FlexRow>
           </DraggableItem>

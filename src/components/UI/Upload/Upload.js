@@ -2346,7 +2346,7 @@ class Upload extends PureComponent {
 
         {/* copied to clipboard modal */}
         <Modal show={this.state.showClipboardModal}>
-          <FlexRow justifyContent='center'>
+          <FlexRow justifycontent='center'>
             <p>Copied to clipboard</p>
           </FlexRow>
         </Modal>

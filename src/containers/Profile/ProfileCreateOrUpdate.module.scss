@@ -22,4 +22,8 @@
     display: flex;
     flex-direction: column;
   }
+
+  .ComponentFactory:last-child {
+    margin-bottom: 0;
+  }
 }
