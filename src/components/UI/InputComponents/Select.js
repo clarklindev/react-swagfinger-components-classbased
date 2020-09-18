@@ -112,4 +112,22 @@ Select.propTypes = {
   }),
 };
 
+Select.defaultProps = {
+  name: 'select',
+  label: 'Select',
+  validation: { isRequired: true },
+  value: {
+    valid: false,
+    touched: false,
+    pristine: true,
+    data: '',
+    errors: [],
+  },
+  readOnly: false,
+  componentconfig: {
+    options: ['1', '2', '3'],
+  },
+  placeholder: 'placeholder text',
+};
+
 export default Select;

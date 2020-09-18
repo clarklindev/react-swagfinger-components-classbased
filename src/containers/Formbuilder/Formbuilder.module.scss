@@ -1,6 +1,29 @@
 .Formbuilder {
-  .ComponentList {
-    height: 100%;
-    background-color: red;
+  .Wrapper {
+    box-sizing: border-box;
+    max-width: var(--maxwidth);
+    margin: 0 auto;
+  }
+
+  .Label {
+    color: var(--colorheader);
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+    text-align: left;
+  }
+
+  // submit input element
+  input[type='submit'] {
+    display: none;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ComponentFactory:last-child {
+    margin-bottom: 0;
   }
 }

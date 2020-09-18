@@ -352,4 +352,35 @@ MultiInputObjects.propTypes = {
   changed: PropTypes.func,
 };
 
+MultiInputObjects.defaultProps = {
+  name: 'multiinputobjects',
+  label: 'multi input objects',
+
+  value: [
+    {
+      url: {
+        valid: false,
+        touched: false,
+        pristine: true,
+        data: '',
+        errors: [],
+      },
+    },
+  ],
+  componentconfig: {
+    allowmultiopen: true,
+    defaultinputs: 3,
+    metadata: [
+      {
+        component: 'input',
+        label: 'url',
+        name: 'url',
+        placeholder: 'url',
+        type: 'string',
+        validation: { isRequired: true },
+      },
+    ],
+  },
+};
+
 export default MultiInputObjects;
