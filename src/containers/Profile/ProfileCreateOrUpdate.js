@@ -23,7 +23,7 @@ import Modal from '../../components/UI/Modal/Modal';
 import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
 import Spinner from '../../components/UI/Loaders/Spinner';
 import Button from '../../components/UI/Button/Button';
-import Separator from '../../components/UI/Separator/Separator';
+import HorizontalSeparator from '../../components/UI/Separator/HorizontalSeparator';
 import FlexColumn from '../../hoc/Layout/FlexColumn';
 
 class ProfileCreateOrUpdate extends Component {
@@ -833,7 +833,7 @@ class ProfileCreateOrUpdate extends Component {
                       // disabled={!this.state.formIsValid} //dont disable just handle with validation
                     />
                   </FlexColumn>
-                  <Separator direction='horizontal' style={['Solid']} />
+                  <HorizontalSeparator style='Solid' />
                   <FlexColumn padding='true'>{submitbutton}</FlexColumn>
                 </form>
               </Card>

@@ -9,7 +9,7 @@ import { BrowserRouter } from 'react-router-dom';
 import profileReducer from './store/reducers/profile';
 import authReducer from './store/reducers/auth';
 import uiReducer from './store/reducers/ui';
-import formbuilderReducer from './store/reducers/formbuilder';
+import formReducer from './store/reducers/forms';
 //app
 import App from './App';
 import './index.scss';
@@ -32,7 +32,7 @@ const rootReducer = combineReducers({
   profile: profileReducer,
   auth: authReducer,
   ui: uiReducer,
-  formbuilder: formbuilderReducer,
+  formbuilder: formReducer,
 });
 const composeEnhancers =
   process.env.NODE_ENV === 'development'

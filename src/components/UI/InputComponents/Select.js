@@ -125,7 +125,11 @@ Select.defaultProps = {
   },
   readOnly: false,
   componentconfig: {
-    options: ['1', '2', '3'],
+    options: [
+      { value: '1', displaytext: '1' },
+      { value: '2', displaytext: '2' },
+      { value: '3', displaytext: '3' },
+    ],
   },
   placeholder: 'placeholder text',
 };

@@ -195,7 +195,6 @@ class MultiInputObjects extends PureComponent {
         onClick={(event) => {
           event.preventDefault();
           event.stopPropagation();
-          addinput(this.props.type, this.props.name);
           console.log('this.state.isActive: ', this.state.isActive);
         }}>
         <Icon iconstyle='fas' code='plus' size='sm' />
@@ -262,80 +261,82 @@ class MultiInputObjects extends PureComponent {
 
     return (
       <div className={classes.MultiInputObjects}>
-        {this.props.value.map((val, index) => {
-          console.log('val: ', val);
-          console.log('rowValidity:', this.state.rowValidity);
-          return (
-            <FlexColumn
-              spacing='bottom'
-              key={index}
-              onDragStart={(event) => this.dragStartHandler(event, index)}
-              onDragEnter={(event) => this.dragEnterHandler(event, index)} //event triggers once
-              onDragOver={(event) => this.dragOverhandler(event, index)} //event triggers all the time
-              onDragLeave={(event) => this.dragLeaveHandler(event, index)}
-              onDrop={(event) => {
-                console.log('event.target: ', event.target);
-                if (event.target.className.includes('DraggableItem')) {
-                  this.dropHandler(event);
-                }
-              }}
-              onDragEnd={(event) => {
-                event.currentTarget.setAttribute('draggable', false);
-                this.dragEndHandler(event, index);
-              }}
-              onMouseDown={(event) => {
-                console.log('mousedown');
-                console.log('event.target: ', event.target);
-                if (event.target.className.includes('DraggableItem')) {
-                  console.log('event.target:', event.target);
-                  console.log('event.currentTarget:', event.currentTarget);
-                  event.currentTarget.setAttribute('draggable', 'true');
-                }
-              }}
-              onMouseUp={(event) => {
-                console.log('event.currentTarget: ', event.currentTarget);
-                event.currentTarget.setAttribute('draggable', 'false');
-              }}>
-              <FlexRow>
-                <Expandable
-                  title={
-                    <React.Fragment>
-                      {this.props.value.length > 1 ? (
-                        <DraggableItem
-                          style={[
-                            'Embedded',
-                            this.state.isActive[index] === true
-                              ? 'Active'
-                              : null,
-                          ]}
-                        />
-                      ) : null}
-                      <div
-                        className={classes.Title}
-                        onClick={(event) => {
-                          this.onClickHandler(index, event);
-                        }}>
-                        {val.url.data ? val.url.data : null}
-                      </div>
-                    </React.Fragment>
-                  }
-                  isActive={this.state.isActive[index]}
-                  isValid={
-                    this.checkAllValidity(val, index) ||
-                    this.checkAllPristine(val, index)
-                  }
-                  onClick={(event) => {
-                    console.log('clicked...', index);
-                    this.onClickHandler(index, event);
+        {this.props.value.length
+          ? this.props.value.map((val, index) => {
+              console.log('val: ', val);
+              console.log('rowValidity:', this.state.rowValidity);
+              return (
+                <FlexColumn
+                  spacing='bottom'
+                  key={index}
+                  onDragStart={(event) => this.dragStartHandler(event, index)}
+                  onDragEnter={(event) => this.dragEnterHandler(event, index)} //event triggers once
+                  onDragOver={(event) => this.dragOverhandler(event, index)} //event triggers all the time
+                  onDragLeave={(event) => this.dragLeaveHandler(event, index)}
+                  onDrop={(event) => {
+                    console.log('event.target: ', event.target);
+                    if (event.target.className.includes('DraggableItem')) {
+                      this.dropHandler(event);
+                    }
+                  }}
+                  onDragEnd={(event) => {
+                    event.currentTarget.setAttribute('draggable', false);
+                    this.dragEndHandler(event, index);
+                  }}
+                  onMouseDown={(event) => {
+                    console.log('mousedown');
+                    console.log('event.target: ', event.target);
+                    if (event.target.className.includes('DraggableItem')) {
+                      console.log('event.target:', event.target);
+                      console.log('event.currentTarget:', event.currentTarget);
+                      event.currentTarget.setAttribute('draggable', 'true');
+                    }
+                  }}
+                  onMouseUp={(event) => {
+                    console.log('event.currentTarget: ', event.currentTarget);
+                    event.currentTarget.setAttribute('draggable', 'false');
                   }}>
-                  {expandableContent(val, index)}
-                </Expandable>
+                  <FlexRow>
+                    <Expandable
+                      title={
+                        <React.Fragment>
+                          {this.props.value.length > 1 ? (
+                            <DraggableItem
+                              style={[
+                                'Embedded',
+                                this.state.isActive[index] === true
+                                  ? 'Active'
+                                  : null,
+                              ]}
+                            />
+                          ) : null}
+                          <div
+                            className={classes.Title}
+                            onClick={(event) => {
+                              this.onClickHandler(index, event);
+                            }}>
+                            {val.url.data ? val.url.data : null}
+                          </div>
+                        </React.Fragment>
+                      }
+                      isActive={this.state.isActive[index]}
+                      isValid={
+                        this.checkAllValidity(val, index) ||
+                        this.checkAllPristine(val, index)
+                      }
+                      onClick={(event) => {
+                        console.log('clicked...', index);
+                        this.onClickHandler(index, event);
+                      }}>
+                      {expandableContent(val, index)}
+                    </Expandable>
 
-                {removeButton(index)}
-              </FlexRow>
-            </FlexColumn>
-          );
-        })}
+                    {removeButton(index)}
+                  </FlexRow>
+                </FlexColumn>
+              );
+            })
+          : null}
         {addButton}
       </div>
     );
@@ -356,17 +357,7 @@ MultiInputObjects.defaultProps = {
   name: 'multiinputobjects',
   label: 'multi input objects',
 
-  value: [
-    {
-      url: {
-        valid: false,
-        touched: false,
-        pristine: true,
-        data: '',
-        errors: [],
-      },
-    },
-  ],
+  value: [],
   componentconfig: {
     allowmultiopen: true,
     defaultinputs: 3,
