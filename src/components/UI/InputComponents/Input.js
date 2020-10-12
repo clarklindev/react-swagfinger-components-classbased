@@ -6,6 +6,7 @@ import InputContext from '../../../context/InputContext';
 import ErrorList from './ErrorList';
 import FlexColumn from '../../../hoc/Layout/FlexColumn';
 import FlexRow from '../../../hoc/Layout/FlexRow';
+import PropTypes from 'prop-types';
 
 class Input extends PureComponent {
   static contextType = InputContext;
@@ -107,5 +108,24 @@ class Input extends PureComponent {
     );
   }
 }
+
+Input.defaultProps = {
+  name: 'input',
+  label: 'Input',
+  componentconfig: PropTypes.shape({
+    placeholder: '',
+    type: PropTypes.string,
+    validation: {
+      isRequired: false,
+    },
+  }),
+  value: {
+    valid: false,
+    touched: false,
+    pristine: true,
+    data: '',
+    errors: [],
+  },
+};
 
 export default Input;

@@ -27,8 +27,8 @@ class Card extends Component {
           </React.Fragment>
         ) : null}
 
-        {this.props.body ? (
-          <div className={classes.CardBody}>{this.props.body}</div>
+        {this.props.children ? (
+          <div className={classes.CardBody}>{this.props.children}</div>
         ) : null}
 
         {this.props.footer ? (
@@ -37,8 +37,6 @@ class Card extends Component {
             <div className={classes.CardFooter}>{this.props.footer}</div>
           </React.Fragment>
         ) : null}
-
-        {this.props.children}
       </div>
     );
   }

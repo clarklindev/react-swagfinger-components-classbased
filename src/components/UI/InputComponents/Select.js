@@ -115,7 +115,7 @@ Select.propTypes = {
 Select.defaultProps = {
   name: 'select',
   label: 'Select',
-  validation: { isRequired: true },
+  validation: { isRequired: false },
   value: {
     valid: false,
     touched: false,

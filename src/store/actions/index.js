@@ -20,4 +20,4 @@ export { auth, logout, setAuthRedirectPath, authCheckState } from './auth';
 export { hasToolbar } from './ui';
 
 //formbuilder
-// export { processFetchComponents } from './forms';
+export { processFetchForms } from './forms';

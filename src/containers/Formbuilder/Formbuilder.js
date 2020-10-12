@@ -9,7 +9,7 @@ import * as arrayHelper from '../../shared/arrayHelper';
 import { CheckValidity as validationCheck } from '../../shared/validation';
 
 //redux store
-import * as actions from '../../store/actions/profile';
+import * as actions from '../../store/actions/forms';
 //context
 import InputContext from '../../context/InputContext';
 
@@ -26,6 +26,7 @@ import MultiInputObjects from '../../components/UI/InputComponents/MultiInputObj
 import Label from '../../components/UI/Headers/Label';
 import Select from '../../components/UI/InputComponents/Select';
 import Spinner from '../../components/UI/Loaders/Spinner';
+import Input from '../../components/UI/InputComponents/Input';
 import Button from '../../components/UI/Button/Button';
 import VerticalSeparator from '../../components/UI/Separator/VerticalSeparator';
 import HorizontalSeparator from '../../components/UI/Separator/HorizontalSeparator';
@@ -47,6 +48,8 @@ class Formbuilder extends Component {
     // localstateform: null, //for a single profile
     // isFormValid: true,
     loadOrNewSelectionComplete: false,
+    creatingNewForm: false,
+    newFormName: '',
   };
   //------------------------------------------------------
   //------------------------------------------------------
@@ -54,13 +57,13 @@ class Formbuilder extends Component {
   //key in database needs to exist to be associated with state,
   componentDidMount() {
     console.log('COMPONENT DID MOUNT - Formbuilder');
-    //generate form from firebase 'form'
-    //schema is same for all instances
-    //sets up props.schema accessed via redux state state.profile.schema
-    //this.props.onFetchSchemaProfiles();
+    this.props.onFetchSchemas();
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.formlist !== this.props.formlist) {
+      console.log('formlist: ', this.props.formlist);
+    }
     //...schema updated from redux
     // if (prevProps.schema !== this.props.schema) {
     //   console.log('COMPONENTDIDUPDATE - props.schema ', this.props.schema);
@@ -755,6 +758,29 @@ class Formbuilder extends Component {
   //   }
   // };
 
+  showCreateModal = () => {
+    this.setState({ creatingNewForm: true });
+  };
+
+  checkAvailability = (event) => {
+    console.log('FUNCTION checkAvailability');
+    console.log('event.target.value: ', event.target.value);
+    //go through data source (this.props.formlist) and get check if it exists,
+    let isFound;
+    if(this.props.formlist !== null){
+      console.log("this.props.formlist: ", this.props.formlist);
+      isFound = Object.keys(this.props.formlist).find(item=>{
+        return item === event.target.value;
+      })
+      if(isFound){
+        console.log('ITEM ALREADY EXISTS');
+      }
+      else{
+        console.log('NEW ITEM NAME: ', event.target.value);
+      }
+      this.setState({ newFormName: event.target.value });
+    }
+  };
   render() {
     console.log('\n\n================================================\nRENDER');
 
@@ -778,11 +804,22 @@ class Formbuilder extends Component {
     // console.log('QUERY: ', query);
     // console.log('this.props.id: ', this.props.id);
     // console.log('this.props.isLoading: ', this.props.isLoading);
+    const selectOptions = this.props.formlist !== null ? Object.keys(this.props.formlist).map((item) => {
+      return {
+        value: item,
+        displaytext: item,
+      };
+    }):[];
+
     const selectLoadOrNew = (
       <FlexResponsive>
         <FlexColumn padding='true' flexgrow='true'>
           <Label>Load</Label>
-          <Select />
+            <Select
+              componentconfig={{
+                options: selectOptions
+              }}
+            />
         </FlexColumn>
         {/* <HorizontalSeparator style='Solid'>OR</HorizontalSeparator> */}
         <VerticalSeparator style='Solid'>OR</VerticalSeparator>
@@ -792,8 +829,7 @@ class Formbuilder extends Component {
             type='WithBorder'
             className='FlexGrow'
             title='Add'
-            // onClick={this.addProfileHandler}
-          >
+            onClick={this.showCreateModal}>
             <Icon iconstyle='fas' code='plus' size='sm' />
             <p>new form</p>
           </Button>
@@ -854,6 +890,30 @@ class Formbuilder extends Component {
         <Modal show={this.state.saving}>
           <p>Saving</p>
         </Modal>
+        <Modal
+          label='Create new form'
+          show={this.state.creatingNewForm}
+          isInteractive={true}
+          modalClosed={async () => {
+            await this.setState((prevState) => {
+              console.log(
+                `\t%cSETSTATE: createFolderModal: ${false}`,
+                'background:yellow; color:red'
+              );
+              return { creatingNewForm: false };
+            });
+          }}
+          continue={async () => {
+            console.clear();
+            console.log('\t%ccontinue', 'background:green;color:white');
+          }}>
+          <Label>Form Name</Label>
+          <Input
+            onChange={this.checkAvailability}
+            value={{ data: this.state.newFormName }}
+          />
+          <div className={classes.Errors}>{this.state.errorModalMessage}</div>
+        </Modal>
         {/* {(query !== null && this.props.id === null) || */}
         {/* this.props.isLoading === true ? (
         <Spinner />) : ( */}
@@ -874,6 +934,7 @@ class Formbuilder extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    formlist: state.formbuilder.formsList,
     // token: state.auth.token,
     // isLoading: state.profile.loading,
     // schema: state.profile.schema, //schema for each profile
@@ -886,10 +947,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    // onFetchSchemaProfiles: () => {
-    //   console.log('mapDispatchToProps: onFetchSchemaProfiles');
-    //   dispatch(actions.processFetchProfileSchema()); //gives access to props.schema
-    // },
+    onFetchSchemas: () => {
+      console.log('mapDispatchToProps: onFetchSchemaProfiles');
+      dispatch(actions.processFetchForms()); //gives access to props.schema
+    },
     // onFormattedFormCreated: (formatted) => {
     //   //at this stge we have props.id and activeProfile
     //   console.log('mapDispatchToProps: onFormattedFormCreated');
