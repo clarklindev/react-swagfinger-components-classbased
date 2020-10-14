@@ -53,7 +53,6 @@ class Modal extends PureComponent {
         <DefaultPageLayout type='LayoutNarrow' label=''>
           <div className={classes.Modal}>
             <Card
-              type='NoPadding'
               hide={!this.props.show}
               header={header}
               footer={footer}

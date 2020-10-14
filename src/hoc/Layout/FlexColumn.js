@@ -17,7 +17,7 @@ class FlexColumn extends Component {
     if (this.props.spacing === 'bottom') {
       spacingClasses.push(classes.SpacingBottom);
     }
-
+    
     //children spacing
     if (this.props.spacingchildren === 'left') {
       spacingClasses.push(classes.SpacingChildrenLeft);
@@ -44,7 +44,15 @@ class FlexColumn extends Component {
     const flexShrink =
       this.props.flexshrink === 'true' ? classes.Flexshrink : null;
     const flexGrow = this.props.flexgrow === 'true' ? classes.Flexgrow : null;
-    const padding = this.props.padding === 'true' ? classes.Padding : null;
+    let padding = null;
+    if(this.props.padding === 'true'){
+      padding = classes.Padding;
+    }
+    if(this.props.padding === 'not-bottom'){
+      padding = classes.PaddingNotBottom;
+    }
+
+
     return (
       <div
         className={[
@@ -55,8 +63,8 @@ class FlexColumn extends Component {
           alignSelf,
           flexGrow,
           flexShrink,
-          ...spacingClasses,
           padding,
+          ...spacingClasses,
         ].join(' ')}
         {...this.props}>
         {this.props.children}

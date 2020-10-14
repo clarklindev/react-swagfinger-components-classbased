@@ -198,7 +198,7 @@ class Login extends Component {
         label={
           this.props.loading ? '' : this.state.isSignUp ? 'Sign-up' : 'Login'
         }>
-        <Card className='Card'>
+        <Card style={['Padding']} className='Card'>
           <form onSubmit={this.onSubmitHandler} autoComplete='off'>
             <InputContext.Provider
               value={{

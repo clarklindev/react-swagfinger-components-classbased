@@ -130,7 +130,7 @@ class Phonebook extends Component {
           <Spinner />
         ) : (
           <DefaultPageLayout label='Phonebook'>
-            <Card>
+            <Card style={['Padding']}>
               <InputContext.Provider
                 value={{
                   changed: this.searchChangedHandler, //newval, name, index

@@ -7,6 +7,10 @@
 
 .HorizontalSeparator {
   color: var(--colorborder);
+  &.Padding {
+    margin: var(--margindefault) 0;
+  }
+
   &.WithChildren {
     &::before {
       margin-right: var(--margindefault);

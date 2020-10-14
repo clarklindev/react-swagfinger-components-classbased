@@ -3,7 +3,6 @@
   border-radius: var(--borderradius);
   background-color: white;
   margin-bottom: var(--margindefault);
-  padding: var(--paddingdefault);
 
   &.Invalid {
     border: 1px solid var(--colorerror);
@@ -19,7 +18,6 @@
     display: flex;
     flex-direction: column;
     // text-align: center;
-    padding: var(--paddingdefault);
     form {
       width: 100%;
     }
@@ -37,5 +35,8 @@
 
   &.NoPadding {
     padding: 0;
+  }
+  &.Padding {
+    padding: var(--paddingdefault);
   }
 }

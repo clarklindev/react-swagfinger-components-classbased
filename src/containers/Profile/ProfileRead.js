@@ -84,7 +84,7 @@ class ProfileRead extends Component {
                   tabheaders={['profile', 'timeline']}
                   onClick={this.tabClickHandler}
                 />
-                <Card>{data}</Card>
+                <Card style={['Padding']}>{data}</Card>
               </DefaultPageLayout>
             ) : null}
           </React.Fragment>

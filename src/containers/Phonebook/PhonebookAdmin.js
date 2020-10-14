@@ -154,7 +154,7 @@ class PhonebookAdmin extends PureComponent {
           <Spinner />
         ) : (
           <DefaultPageLayout label='Phonebook Admin'>
-            <Card>
+            <Card style={['Padding']}>
               <InputContext.Provider
                 value={{
                   changed: this.searchChangedHandler,

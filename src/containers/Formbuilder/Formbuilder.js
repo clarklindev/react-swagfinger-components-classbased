@@ -75,7 +75,7 @@ class Formbuilder extends Component {
     if(prevQuery !== query && query===""){
       this.setState({loadOrNewSelectionComplete:false})
     }
-    if(prevQuery !== query && query!==""){
+    if(query!=="" && this.state.loadOrNewSelectionComplete === false){
       this.setState({loadOrNewSelectionComplete:true})
     }
 
@@ -875,16 +875,16 @@ class Formbuilder extends Component {
     const formBuilding = (
       <form onSubmit={this.onSubmitHandler} autoComplete='off'>
         {/* input context provides context state/functions to formInputs */}
-        <FlexColumn padding='true'>
-          {/* <InputContext.Provider
+        <FlexColumn padding="true">
+          <InputContext.Provider
           value={{
             addinput: this.addInputHandler,
             removeinput: this.removeInputHandler,
             changed: this.inputChangedHandler,
             moveiteminarray: this.moveItemHandler,
-          }}> */}
+          }}>
           <MultiInputObjects name='formbuilder' />
-          {/* </InputContext.Provider> */}
+          </InputContext.Provider>
           {/* <input
           ref={this.submitInputRef}
           type='submit'
@@ -897,7 +897,7 @@ class Formbuilder extends Component {
         /> */}
         </FlexColumn>
         <HorizontalSeparator style='Solid' />
-        <FlexColumn padding='true'>
+        <FlexColumn padding="true">
           <Button
             type='WithBorder'
             onClick={(event) => {
@@ -1000,7 +1000,7 @@ class Formbuilder extends Component {
         <Spinner />) : ( */}
         <div className={classes.Formbuilder}>
           <DefaultPageLayout label='Form builder'>
-            <Card style={['NoPadding']}>
+            <Card>
               {this.state.loadOrNewSelectionComplete
                 ? formBuilding
                 : selectLoadOrNew}

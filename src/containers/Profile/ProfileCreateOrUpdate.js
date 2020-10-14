@@ -809,10 +809,10 @@ class ProfileCreateOrUpdate extends Component {
           <div className={classes.ProfileCreateOrUpdate}>
             <DefaultPageLayout
               label={this.props.id ? 'Update Profile' : 'Create Profile'}>
-              <Card style={['NoPadding']}>
+              <Card>
                 <form onSubmit={this.onSubmitHandler} autoComplete='off'>
                   {/* input context provides context state/functions to formInputs */}
-                  <FlexColumn padding='true'>
+                  <FlexColumn padding="not-bottom">
                     <InputContext.Provider
                       value={{
                         addinput: this.addInputHandler,
@@ -834,7 +834,7 @@ class ProfileCreateOrUpdate extends Component {
                     />
                   </FlexColumn>
                   <HorizontalSeparator style='Solid' />
-                  <FlexColumn padding='true'>{submitbutton}</FlexColumn>
+                  <FlexColumn padding="true">{submitbutton}</FlexColumn>
                 </form>
               </Card>
             </DefaultPageLayout>

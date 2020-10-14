@@ -9,4 +9,7 @@
   color: var(--colordefault);
   box-sizing: border-box;
   transition: all 0.3s ease-out;
+  .Message {
+    padding: var(--paddingdefault);
+  }
 }
