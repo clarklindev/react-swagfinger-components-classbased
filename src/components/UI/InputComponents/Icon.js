@@ -81,7 +81,6 @@ class Icon extends Component {
       classes.Icon,
       Icon.name,
       classes[this.props.type],
-      classes[this.props.px],
       this.props.className,
     ]);
 

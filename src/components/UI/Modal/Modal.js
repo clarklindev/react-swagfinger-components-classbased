@@ -24,7 +24,7 @@ class Modal extends PureComponent {
       </React.Fragment>
     ) : null;
 
-    const footer = this.props.isInteractive ? (
+    const footer = this.props.isInteractive ? this.props.footer ? this.props.footer : 
       <React.Fragment>
         <Button
           onClick={event => {
@@ -45,7 +45,7 @@ class Modal extends PureComponent {
           Continue
         </Button>
       </React.Fragment>
-    ) : null;
+    : null;
 
     return this.props.show ? (
       <React.Fragment>

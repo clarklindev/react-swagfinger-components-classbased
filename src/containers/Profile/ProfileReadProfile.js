@@ -16,7 +16,7 @@ class ProfileReadProfile extends Component {
         className={buttonStyle.NoStyle}
         title='copy to clipboard'
         onClick={(event) => this.props.onClick(event, whatToCopy)}>
-        <Icon iconstyle='far' code='clipboard' size='sm' />
+        <Icon iconstyle='far' code='copy' size='sm' />
       </Button>
     );
   };

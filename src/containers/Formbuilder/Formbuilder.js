@@ -50,6 +50,8 @@ class Formbuilder extends Component {
     loadOrNewSelectionComplete: false,
     creatingNewForm: false,
     newFormName: '',
+    nameValid: null,
+    errorModalMessage: null
   };
   //------------------------------------------------------
   //------------------------------------------------------
@@ -64,6 +66,20 @@ class Formbuilder extends Component {
     if (prevProps.formlist !== this.props.formlist) {
       console.log('formlist: ', this.props.formlist);
     }
+
+    const query = this.props.location.search;
+    const prevQuery = prevProps.location.search;
+    //const paramvalue = query.get('name'); //get from url query param 'id'
+    console.log('props.location: ', this.props.location);
+    
+    if(prevQuery !== query && query===""){
+      this.setState({loadOrNewSelectionComplete:false})
+    }
+    if(prevQuery !== query && query!==""){
+      this.setState({loadOrNewSelectionComplete:true})
+    }
+
+    
     //...schema updated from redux
     // if (prevProps.schema !== this.props.schema) {
     //   console.log('COMPONENTDIDUPDATE - props.schema ', this.props.schema);
@@ -759,7 +775,10 @@ class Formbuilder extends Component {
   // };
 
   showCreateModal = () => {
-    this.setState({ creatingNewForm: true });
+    this.setState({ creatingNewForm: true, newFormName:'' });
+    this.props.history.push({
+      pathname: `/formbuilder`
+    });
   };
 
   checkAvailability = (event) => {
@@ -774,13 +793,29 @@ class Formbuilder extends Component {
       })
       if(isFound){
         console.log('ITEM ALREADY EXISTS');
+        this.setState({nameValid: false, newFormName: event.target.value, errorModalMessage:['already exists']})
       }
       else{
         console.log('NEW ITEM NAME: ', event.target.value);
+        this.setState({nameValid: true,  newFormName: event.target.value, errorModalMessage:[]});
       }
-      this.setState({ newFormName: event.target.value });
     }
   };
+
+  loadSelected = (event) =>{
+    console.log('E.target.value:', event.target.value);
+    this.setState({newFormName: event.target.value});
+    this.redirecturl(event.target.value);
+  }
+
+  redirecturl = (value)=>{
+    this.setState({creatingNewForm: false, loadOrNewSelectionComplete:true})
+    this.props.history.push({
+      pathname: `/formbuilder`,
+      search: `?name=${value}`,
+    });
+  }
+
   render() {
     console.log('\n\n================================================\nRENDER');
 
@@ -819,6 +854,7 @@ class Formbuilder extends Component {
               componentconfig={{
                 options: selectOptions
               }}
+              onChange={this.loadSelected}
             />
         </FlexColumn>
         {/* <HorizontalSeparator style='Solid'>OR</HorizontalSeparator> */}
@@ -884,6 +920,8 @@ class Formbuilder extends Component {
         </FlexColumn>
       </form>
     );
+    console.log('this.state.errorModalMessage: ', this.state.errorModalMessage);
+      
     return (
       <React.Fragment>
         {/* add modal just in-case needed, show binds to state of true/false */}
@@ -894,13 +932,44 @@ class Formbuilder extends Component {
           label='Create new form'
           show={this.state.creatingNewForm}
           isInteractive={true}
+          footer={<React.Fragment>
+            <Button
+              onClick={event => {
+                this.setState({
+                  creatingNewForm: false, 
+                  newFormName: '',
+                  nameValid: null,
+                  errorModalMessage: null
+                });
+              }}
+              type='WithBorder'
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={event => {
+                event.preventDefault();
+                //reload page - push onto history stack
+                this.redirecturl(this.state.newFormName);
+
+              }}
+              type='WithBorder'
+              disabled={!this.state.nameValid}
+            >
+              Continue
+            </Button>
+          </React.Fragment>}
           modalClosed={async () => {
             await this.setState((prevState) => {
               console.log(
                 `\t%cSETSTATE: createFolderModal: ${false}`,
                 'background:yellow; color:red'
               );
-              return { creatingNewForm: false };
+              return { 
+                creatingNewForm: false,
+                newFormName: '',
+                nameValid: null,
+                errorModalMessage: null };
             });
           }}
           continue={async () => {
@@ -909,10 +978,22 @@ class Formbuilder extends Component {
           }}>
           <Label>Form Name</Label>
           <Input
+            componentconfig={
+            {
+              validation:{
+                isRequired:true, 
+              }
+            }}
             onChange={this.checkAvailability}
-            value={{ data: this.state.newFormName }}
+            value={{ 
+              data: this.state.newFormName, 
+              errors: this.state.errorModalMessage, 
+              touched: true, //touched?
+              pristine: false, //pristine?
+              valid: this.state.nameValid
+            }}
           />
-          <div className={classes.Errors}>{this.state.errorModalMessage}</div>
+          {/* <div className={classes.Errors}>{this.state.errorModalMessage}</div> */}
         </Modal>
         {/* {(query !== null && this.props.id === null) || */}
         {/* this.props.isLoading === true ? (

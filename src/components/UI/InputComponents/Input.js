@@ -36,9 +36,9 @@ class Input extends PureComponent {
   }
 
   componentDidUpdate() {
-    //console.log('updated...', this.props.value.data);
+    // console.log('updated...', this.props.value.data);
     if (this.props.value !== this.state.value) {
-      //console.log('value not same: ', this.props.value);
+      console.log('value not same: ', this.props.value);
       this.setState({ value: this.props.value.data });
     }
   }
@@ -88,10 +88,10 @@ class Input extends PureComponent {
       tempClasses.push(classes.ReadOnly);
     }
     return (
-      <FlexColumn>
+      <div className={classes.Input}>
         <FlexRow>
           <input
-            className={[this.className, ...tempClasses, ...styleClasses].join(
+            className={[...tempClasses, ...styleClasses].join(
               ' '
             )}
             placeholder={this.props.componentconfig.placeholder} //needed for multiinput ...props
@@ -104,7 +104,7 @@ class Input extends PureComponent {
           />
         </FlexRow>
         {error}
-      </FlexColumn>
+      </div>
     );
   }
 }

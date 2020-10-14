@@ -1,52 +1,57 @@
 .Input {
-  height: var(--inputheight);
-  line-height: var(--inputheight); //50px - (6px x2)
   display: flex;
-  border: 1px solid var(--colorborder);
-  border-radius: var(--borderradius);
-  border-top-left-radius: var(--borderradius);
-  border-bottom-left-radius: var(--borderradius);
-  font: inherit;
-  font-size: var(--fontsizedefault);
-  padding: var(--paddinginput);
-  box-sizing: border-box;
-  color: var(--colordefault);
-  flex-grow: 1;
-  flex-basis: 1;
-  cursor: default;
-  outline: none;
+  flex-direction: column;
+  align-items: stretch;
 
-  &.Invalid {
-    border: 1px solid red;
-    background-color: white;
-  }
-
-  &.ReadOnly {
+  input {
+    height: var(--inputheight);
+    line-height: var(--inputheight); //50px - (6px x2)
+    display: flex;
+    border: 1px solid var(--colorborder);
+    border-radius: var(--borderradius);
+    border-top-left-radius: var(--borderradius);
+    border-bottom-left-radius: var(--borderradius);
+    font: inherit;
+    font-size: var(--fontsizedefault);
+    padding: var(--paddinginput);
+    box-sizing: border-box;
+    color: var(--colordefault);
+    flex-grow: 1;
+    flex-basis: 1;
     cursor: default;
-  }
-
-  input:focus {
     outline: none;
-    // background-color: #e6e6e6;
-  }
-  :disabled {
-    color: #e6e6e6;
-    background-color: #858585;
-    cursor: not-allowed;
-  }
+    &.Invalid {
+      border: 1px solid red;
+      background-color: white;
+    }
 
-  .NoStyle {
-    border: none;
-    padding: 0;
-    margin: 0;
-  }
+    &.ReadOnly {
+      cursor: default;
+    }
 
-  .NoBorder {
-    border: none;
-  }
+    input:focus {
+      outline: none;
+      // background-color: #e6e6e6;
+    }
+    :disabled {
+      color: #e6e6e6;
+      background-color: #858585;
+      cursor: not-allowed;
+    }
 
-  &.Draggable {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
+    .NoStyle {
+      border: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .NoBorder {
+      border: none;
+    }
+
+    &.Draggable {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
   }
 }
