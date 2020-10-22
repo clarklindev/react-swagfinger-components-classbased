@@ -10,11 +10,11 @@ class DefaultPageLayout extends Component {
         <div
           className={[
             classes.Wrapper,
-            'container',
             classes[this.props.type],
           ].join(' ')}>
-          <SectionHeader>{this.props.label}</SectionHeader>
-
+          {this.props.label?
+          <SectionHeader>{this.props.label}</SectionHeader>:null
+          }
           {this.props.children}
         </div>
       </div>

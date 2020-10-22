@@ -8,7 +8,7 @@ import Icon from '../InputComponents/Icon';
 import ModalHeader from '../Headers/ModalHeader';
 class Modal extends PureComponent {
   render() {
-    const header = this.props.isInteractive ? (
+    const header = 
       <React.Fragment>
         <ModalHeader>{this.props.label}</ModalHeader>
 
@@ -21,8 +21,7 @@ class Modal extends PureComponent {
         >
           <Icon iconstyle='fas' code='times' size='sm'></Icon>
         </Button>
-      </React.Fragment>
-    ) : null;
+      </React.Fragment>;
 
     const footer = this.props.isInteractive ? this.props.footer ? this.props.footer : 
       <React.Fragment>
@@ -48,10 +47,10 @@ class Modal extends PureComponent {
     : null;
 
     return this.props.show ? (
-      <React.Fragment>
+      <div className={classes.Modal}>
         <Backdrop show={this.props.show} onClick={this.props.modalClosed} />
-        <DefaultPageLayout type='LayoutNarrow' label=''>
-          <div className={classes.Modal}>
+        <div className={classes.ModalContent}>
+          <DefaultPageLayout type={this.props.size ? this.props.size: 'LayoutNarrow'}>
             <Card
               hide={!this.props.show}
               header={header}
@@ -59,9 +58,10 @@ class Modal extends PureComponent {
             >
               <div className={classes.Message}>{this.props.children}</div>
             </Card>
-          </div>
-        </DefaultPageLayout>
-      </React.Fragment>
+          </DefaultPageLayout>
+        </div>
+      </div>
+        
     ) : null;
   }
 }

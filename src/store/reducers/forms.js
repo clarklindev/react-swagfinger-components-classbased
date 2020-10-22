@@ -3,21 +3,21 @@ import * as actionTypes from '../actions/actionsTypes';
 import { updateObject } from '../../shared/utility';
 
 const initialState = {
-  formsList: null,
+  formlist:{},
   loading: false,
   error: null,
 };
 
 //single contact
-const fetchFormsListStart = (state, action) => {
+const fetchStart = (state, action) => {
   return updateObject(state, { loading: true });
 };
 
-const fetchFormsListSuccess = (state, action) => {
-  return updateObject(state, { loading: false, formsList: action.data });
+const fetchSuccess = (state, action) => {
+  return updateObject(state, { loading: false, formList: {...state.formlist, [action.schemapath]:action.data }});
 };
 
-const fetchFormsListFail = (state, action) => {
+const fetchFail = (state, action) => {
   return updateObject(state, { loading: false, error: action.error });
 };
 
@@ -25,12 +25,12 @@ const fetchFormsListFail = (state, action) => {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     //add
-    case actionTypes.FETCH_FORMSLIST_START:
-      return fetchFormsListStart(state, action);
-    case actionTypes.FETCH_FORMSLIST_SUCCESS:
-      return fetchFormsListSuccess(state, action);
-    case actionTypes.FETCH_FORMSLIST_FAIL:
-      return fetchFormsListFail(state, action);
+    case actionTypes.FETCH_START:
+      return fetchStart(state, action);
+    case actionTypes.FETCH_SUCCESS:
+      return fetchSuccess(state, action);
+    case actionTypes.FETCH_FAIL:
+      return fetchFail(state, action);
     default:
       return state;
   }

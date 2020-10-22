@@ -37,13 +37,13 @@ export const processFetchProfiles = () => {
   };
 };
 
-export const processFetchProfilesCancel = () => {
-  source.cancel('Operation cancelled by the user.');
-  console.log('REQUEST CANCELLED!!!');
-  return {
-    type: actionTypes.FETCH_PROFILES_CANCEL,
-  };
-};
+// export const processFetchProfilesCancel = () => {
+//   source.cancel('Operation cancelled by the user.');
+//   console.log('REQUEST CANCELLED!!!');
+//   return {
+//     type: actionTypes.FETCH_PROFILES_CANCEL,
+//   };
+// };
 
 export const tryOfflineMode = () => {
   console.log('tryOfflineMode');

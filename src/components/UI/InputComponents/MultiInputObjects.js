@@ -196,6 +196,7 @@ class MultiInputObjects extends PureComponent {
           event.preventDefault();
           event.stopPropagation();
           console.log('this.state.isActive: ', this.state.isActive);
+          addinput(this.props.type, this.props.name);
         }}>
         <Icon iconstyle='fas' code='plus' size='sm' />
         <p>Add</p>

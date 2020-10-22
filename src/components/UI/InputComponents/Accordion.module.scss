@@ -15,6 +15,9 @@
       border-color: var(--colorborderhover);
       cursor: pointer;
     }
+    &:last-child {
+      margin-bottom: 0px;
+    }
   }
 
   .AccordionTitle {

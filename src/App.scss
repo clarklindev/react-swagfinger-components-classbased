@@ -1,6 +1,7 @@
 :root {
   --maxwidth: 500px;
-  --maxwidthsmall: 300px;
+  --maxwidthtiny: 150px;
+  --maxwidthnarrow: 300px;
   --maxwidthwide: 700px;
   --inputheight: 50px;
   --inputheightwithoutborders: 48px;
@@ -28,7 +29,8 @@
   --dropshadowdefault: drop-shadow(0 1px 1px #f3f3f3);
   --preloadersize: 25px;
   //z-index
-  --modalzindex: 500;
+  --zindexmodal: 500;
+  --zindexbackdrop: 100;
 }
 ::placeholder {
   color: var(--colorplaceholder);

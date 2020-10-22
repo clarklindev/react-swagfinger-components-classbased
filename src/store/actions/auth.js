@@ -64,7 +64,7 @@ export const auth = (login, password, isSignUp) => {
       })
       .catch((err) => {
         console.log('ERROR: ', err);
-        //dispatch(authFail(err));
+        dispatch(authFail(err));
         //error codes
         //https://firebase.google.com/docs/reference/rest/auth#section-sign-in-email-password
       });
@@ -120,7 +120,7 @@ export const authCheckState = () => {
 //called when we want to adjust a route path
 export const setAuthRedirectPath = (path) => {
   return {
-    type: actionTypes.SET_AUTH_REDIRECT_PATH,
+    type: actionTypes.AUTH_SET_REDIRECT_PATH,
     path: path,
   };
 };

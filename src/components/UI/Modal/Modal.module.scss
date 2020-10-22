@@ -1,14 +1,22 @@
 .Modal {
   position: absolute;
-  margin: 0 auto;
   left: 0;
   right: 0;
-  padding: var(--paddingdefault);
-  max-width: var(--maxwidth);
-  z-index: var(--modalzindex);
+  top: 0;
+  bottom: 0;
+  display: flex;
   color: var(--colordefault);
   box-sizing: border-box;
   transition: all 0.3s ease-out;
+  .ModalContent {
+    margin-top: 200px;
+    display: flex;
+    align-content: stretch;
+    justify-content: center;
+    flex-basis: 1;
+    flex-grow: 1;
+    z-index: var(--zindexmodal);
+  }
   .Message {
     padding: var(--paddingdefault);
   }

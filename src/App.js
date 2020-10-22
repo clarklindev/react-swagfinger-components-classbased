@@ -8,15 +8,11 @@ import Layout from './hoc/Layout/Layout';
 import Home from './containers/Home/Home';
 import Login from './containers/Auth/Login';
 import Logout from './containers/Auth/Logout';
-
 import Formbuilder from './containers/Formbuilder/Formbuilder';
-
-import Phonebook from './containers/Phonebook/Phonebook';
-import PhonebookAdmin from './containers/Phonebook/PhonebookAdmin';
-
-import ProfileRead from './containers/Profile/ProfileRead';
-import ProfileCreateOrUpdate from './containers/Profile/ProfileCreateOrUpdate';
-
+// import Phonebook from './containers/Phonebook/Phonebook';
+// import PhonebookAdmin from './containers/Phonebook/PhonebookAdmin';
+// import ProfileRead from './containers/Profile/ProfileRead';
+// import ProfileCreateOrUpdate from './containers/Profile/ProfileCreateOrUpdate';
 import Appointment from './containers/Appointment/Appointment.js';
 import Faq from './containers/Faq/Faq';
 
@@ -30,25 +26,13 @@ class App extends Component {
   componentDidMount() {
     this.props.onTryAutoSignin();
   }
-  componentDidUpdate(prevProps) {
-    if (
-      this.props.isAuthenticated &&
-      this.props.isAuthenticated !== prevProps.isAuthenticated //prevents multiple calls...
-    ) {
-      console.log('isAuthenticated');
-      this.props.fetchProfilesHandler();
-    }
-  }
-  componentWillUnmount() {
-    this.props.fetchProfilesCancelHandler();
-  }
 
   render() {
     const unauthenticatedRoutes = (
       <Switch>
         <Route path='/formbuilder' component={Formbuilder} />
         <Route path='/login' component={Login} />
-        <Route path='/profileread' component={ProfileRead} />
+        {/* <Route path='/profileread' component={ProfileRead} /> */}
         <Route path='/faq' component={Faq} />
         <Route path='/' exact component={Home} />
         <Redirect to='/' />
@@ -62,14 +46,14 @@ class App extends Component {
         <Route path='/faq' component={Faq} />
         <Route path='/appointment' component={Appointment} />
 
-        <Route path='/phonebook' component={Phonebook} />
-        <Route path='/phonebookadmin' component={PhonebookAdmin} />
+        {/* <Route path='/phonebook' component={Phonebook} /> */}
+        {/* <Route path='/phonebookadmin' component={PhonebookAdmin} /> */}
 
-        <Route path='/profileread' component={ProfileRead} />
-        <Route path='/profileupdate' component={ProfileCreateOrUpdate} />
-        <Route path='/profilecreate' component={ProfileCreateOrUpdate} />
+        {/* <Route path='/profileread' component={ProfileRead} /> */}
+        {/* <Route path='/profileupdate' component={ProfileCreateOrUpdate} /> */}
+        {/* <Route path='/profilecreate' component={ProfileCreateOrUpdate} /> */}
 
-        <Route path='/' exact component={PhonebookAdmin} />
+        {/* <Route path='/' exact component={PhonebookAdmin} /> */}
         <Redirect to='/' />
       </Switch>
     );
@@ -96,12 +80,12 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onTryAutoSignin: () => dispatch(actions.authCheckState()),
 
-    fetchProfilesHandler: () => {
-      dispatch(actions.processFetchProfiles()); //redux => props.phoneBook
-    },
-    fetchProfilesCancelHandler: () => {
-      dispatch(actions.processFetchProfilesCancel());
-    },
+    // loadDefaults: () => {
+    //   dispatch(actions.loadDefaults()); //redux => props.phoneBook
+    // },
+    // fetchProfilesCancelHandler: () => {
+    //   dispatch(actions.processFetchProfilesCancel());
+    // },
   };
 };
 

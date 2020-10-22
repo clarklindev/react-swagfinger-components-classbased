@@ -7,9 +7,7 @@ const initialState = {
   error: null,
   loading: false,
   authRedirectPath: '/',
-  loginSchema: null,
-
-  isOffline: false,
+  // isOffline: false,
 };
 const authStart = (state, action) => {
   return updateObject(state, { error: null, loading: true });
@@ -45,30 +43,9 @@ const setAuthRedirectPath = (state, action) => {
   });
 };
 
-const fetchLoginSchemaStart = (state, action) => {
-  return updateObject(state, {
-    loading: true,
-  });
-};
-
-const fetchLoginSchemaSuccess = (state, action) => {
-  return updateObject(state, {
-    loginSchema: action.response.data,
-    loading: false,
-  });
-};
-
-const fetchLoginSchemaFail = (state, action) => {
-  return updateObject(state, {
-    error: action.error,
-    loading: false,
-    isOffline: true,
-  });
-};
-
-const isOffline = (state, action) => {
-  return updateObject(state, { isOffline: action.isOffline });
-};
+// const isOffline = (state, action) => {
+//   return updateObject(state, { isOffline: action.isOffline });
+// };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -80,17 +57,10 @@ const reducer = (state = initialState, action) => {
       return authFail(state, action);
     case actionTypes.AUTH_LOGOUT:
       return authLogout(state, action);
-    case actionTypes.SET_AUTH_REDIRECT_PATH:
+    case actionTypes.AUTH_SET_REDIRECT_PATH:
       return setAuthRedirectPath(state, action);
-    case actionTypes.AUTH_FETCH_LOGIN_SCHEMA_START:
-      return fetchLoginSchemaStart(state, action);
-    case actionTypes.AUTH_FETCH_LOGIN_SCHEMA_SUCCESS:
-      return fetchLoginSchemaSuccess(state, action);
-    case actionTypes.AUTH_FETCH_LOGIN_SCHEMA_FAIL:
-      return fetchLoginSchemaFail(state, action);
-
-    case actionTypes.IS_OFFLINE:
-      return isOffline(state, action);
+    // case actionTypes.IS_OFFLINE:
+    //   return isOffline(state, action);
     default:
       return state;
   }

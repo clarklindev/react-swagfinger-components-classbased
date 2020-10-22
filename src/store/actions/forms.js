@@ -1,45 +1,26 @@
 // actions
 import * as actionTypes from './actionsTypes';
-import axios from 'axios';
 import axiosInstance from '../../axios-firebase';
-const source = axios.CancelToken.source();
 
 //=======================================================
 
-export const processFetchForms = () => {
-  console.log('processFetchForms');
-  // async constant
+export const getSchema = (schemapath) => {
   return (dispatch) => {
-    dispatch(fetchFormsStart);
+    dispatch(fetchStart);
     axiosInstance
-      .get('/schemas/collection.json')
+      .get(schemapath)
       .then((response) => {
         console.log('RESPONSE', response);
-
-        //this step is so we can add ID to the object
-        const list = {};
-        for (let key in response.data) {
-          list[key] = response.data[key];
-        }
-        dispatch(fetchFormsSuccess(list));
+        dispatch(fetchSuccess(response.data, schemapath));
       })
       .catch((err) => {
         console.log('ERROR: ', err);
         console.log('ERROR MESSAGE: ', err.message);
-        dispatch(fetchFormsFail(err));
+        dispatch(fetchFail(err));
       });
   };
 };
 
-export const fetchFormsStart = () => {
-  return { type: actionTypes.FETCH_FORMSLIST_START };
-};
-
-export const fetchFormsSuccess = (data) => {
-  console.log('FUNCTION fetchFormsSuccess');
-  return { type: actionTypes.FETCH_FORMSLIST_SUCCESS, data: data };
-};
-
-export const fetchFormsFail = (error) => {
-  return { type: actionTypes.FETCH_FORMSLIST_FAIL, error: error };
-};
+export const fetchStart = () => {return { type: actionTypes.FETCH_START };};
+export const fetchSuccess = (data, schemapath) => {return { type: actionTypes.FETCH_SUCCESS, data: data, schemapath };};
+export const fetchFail = (error) => {return { type: actionTypes.FETCH_FAIL, error: error };};

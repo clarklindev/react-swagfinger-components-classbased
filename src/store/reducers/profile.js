@@ -159,8 +159,8 @@ const reducer = (state = initialState, action) => {
     case actionTypes.FETCH_PROFILES_FAIL:
       return fetchProfilesFail(state, action);
 
-    case actionTypes.FETCH_PROFILES_CANCEL:
-      return fetchProfilesCancel(state, action);
+    // case actionTypes.FETCH_PROFILES_CANCEL:
+    //   return fetchProfilesCancel(state, action);
 
     //SINGLE CONTACT
     case actionTypes.FETCH_PROFILE_START:
@@ -169,8 +169,8 @@ const reducer = (state = initialState, action) => {
     case actionTypes.FETCH_PROFILE_SUCCESS:
       return fetchProfileSuccess(state, action);
 
-    case actionTypes.FETCH_PROFILE_FAIL:
-      return fetchProfileFail(state, action);
+    // case actionTypes.FETCH_PROFILE_FAIL:
+    //   return fetchProfileFail(state, action);
 
     default:
       return state;

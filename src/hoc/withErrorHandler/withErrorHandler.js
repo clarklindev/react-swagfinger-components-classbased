@@ -63,6 +63,7 @@ const withErrorHandler = (WrappedComponent, axios) => {
           <Modal
             label='Error'
             show={this.state.error}
+            size='LayoutNarrow'
             modalClosed={this.errorConfirmedHandler}>
             {this.state.error
               ? /* https://firebase.google.com/docs/reference/rest/auth#section-error-format */

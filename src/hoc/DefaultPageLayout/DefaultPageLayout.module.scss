@@ -1,10 +1,14 @@
 .DefaultPageLayout {
+  width: 100%;
   .Wrapper {
     box-sizing: border-box;
     max-width: var(--maxwidth);
     margin: 0 auto;
+    &.LayoutTiny {
+      max-width: var(--maxwidthtiny);
+    }
     &.LayoutNarrow {
-      max-width: var(--maxwidthsmall);
+      max-width: var(--maxwidthnarrow);
     }
     &.LayoutWide {
       max-width: var(--maxwidthwide);

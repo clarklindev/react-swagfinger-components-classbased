@@ -1015,7 +1015,7 @@ class Formbuilder extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    formlist: state.formbuilder.formsList,
+    formlist: state.formbuilder.formlist,
     // token: state.auth.token,
     // isLoading: state.profile.loading,
     // schema: state.profile.schema, //schema for each profile
@@ -1030,7 +1030,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onFetchSchemas: () => {
       console.log('mapDispatchToProps: onFetchSchemaProfiles');
-      dispatch(actions.processFetchForms()); //gives access to props.schema
+      dispatch(actions.getSchema('schemas/collection')); 
     },
     // onFormattedFormCreated: (formatted) => {
     //   //at this stge we have props.id and activeProfile
