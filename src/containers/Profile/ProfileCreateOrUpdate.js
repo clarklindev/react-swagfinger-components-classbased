@@ -629,7 +629,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getSchemaHandler: (schemapath) => {
       console.log('mapDispatchToProps: getSchemaHandler');
-      dispatch(actions.getFormSchema(schemapath)); //gives access to props.schema
+      dispatch(actions.getSchema(schemapath)); //gives access to props.schema
     },
 
     // onFormattedFormCreated: (formatted) => {
@@ -655,15 +655,6 @@ const mapDispatchToProps = (dispatch) => {
     //   dispatch(actions.processProfileUpdate(token, form, id, callback));
     // },
 
-
-
-
-
-
-
-
-
-    
 
     addInputHandler:()=>{
       dispatch(actions.addInputHandler());

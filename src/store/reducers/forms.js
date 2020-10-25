@@ -14,12 +14,16 @@ const fetchStart = (state, action) => {
 };
 
 const fetchSuccess = (state, action) => {
-  return updateObject(state, { loading: false, formList: {...state.formlist, [action.schemapath]:action.data }});
+  return updateObject(state, { loading: false, formlist: {...state.formlist, [action.schemapath]:action.data }});
 };
 
 const fetchFail = (state, action) => {
   return updateObject(state, { loading: false, error: action.error });
 };
+
+const addSchema = (state, action)=>{
+  return updateObject(state, {formlist:{...state.formlist, [action.schemapath]:{...state.formlist[action.schemapath], [action.data]:[]} }})
+}
 
 //reducer
 const reducer = (state = initialState, action) => {
@@ -31,6 +35,8 @@ const reducer = (state = initialState, action) => {
       return fetchSuccess(state, action);
     case actionTypes.FETCH_FAIL:
       return fetchFail(state, action);
+    case actionTypes.ADD_SCHEMA:
+      return addSchema(state, action);
     default:
       return state;
   }

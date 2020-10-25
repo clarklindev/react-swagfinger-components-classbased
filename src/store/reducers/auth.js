@@ -7,7 +7,6 @@ const initialState = {
   error: null,
   loading: false,
   authRedirectPath: '/',
-  // isOffline: false,
 };
 const authStart = (state, action) => {
   return updateObject(state, { error: null, loading: true });
@@ -43,10 +42,6 @@ const setAuthRedirectPath = (state, action) => {
   });
 };
 
-// const isOffline = (state, action) => {
-//   return updateObject(state, { isOffline: action.isOffline });
-// };
-
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.AUTH_START:
@@ -59,8 +54,6 @@ const reducer = (state = initialState, action) => {
       return authLogout(state, action);
     case actionTypes.AUTH_SET_REDIRECT_PATH:
       return setAuthRedirectPath(state, action);
-    // case actionTypes.IS_OFFLINE:
-    //   return isOffline(state, action);
     default:
       return state;
   }

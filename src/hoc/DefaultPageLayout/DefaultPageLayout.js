@@ -23,7 +23,7 @@ class DefaultPageLayout extends Component {
 }
 
 DefaultPageLayout.propTypes = {
-  label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
