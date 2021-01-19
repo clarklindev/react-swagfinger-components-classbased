@@ -2,15 +2,18 @@ import React, { Component } from 'react';
 import classes from './VerticalSeparator.module.scss';
 
 class VerticalSeparator extends Component {
-  constructor(props) {
-    super(props);
-  }
+
   render() {
+    let padding = null;
+    if(this.props.padding ==='true'){
+      padding = classes.Padding;
+    }
     return (
       <div
         className={[
           classes.VerticalSeparator,
           classes[this.props.style],
+          padding,
           this.props.children ? classes.WithChildren : null,
         ].join(' ')}>
         {this.props.children ? (

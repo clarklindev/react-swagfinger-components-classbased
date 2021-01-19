@@ -4,7 +4,7 @@ import classes from './Input.module.scss';
 import Utils from '../../../Utils';
 import InputContext from '../../../context/InputContext';
 import ErrorList from './ErrorList';
-import FlexColumn from '../../../hoc/Layout/FlexColumn';
+// import FlexColumn from '../../../hoc/Layout/FlexColumn';
 import FlexRow from '../../../hoc/Layout/FlexRow';
 import PropTypes from 'prop-types';
 

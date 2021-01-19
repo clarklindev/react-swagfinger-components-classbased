@@ -1,12 +1,12 @@
-import React, { Component, PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
 import classes from './Formbuilder.module.scss';
 
 //Helper classes
 import axios from '../../axios-firebase';
-import * as arrayHelper from '../../shared/arrayHelper';
-import { CheckValidity as validationCheck } from '../../shared/validation';
+// import * as arrayHelper from '../../shared/arrayHelper';
+// import { CheckValidity as validationCheck } from '../../shared/validation';
 
 //redux store
 import * as actions from '../../store/actions/forms';
@@ -21,18 +21,18 @@ import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
 import Card from '../../components/UI/Card/Card';
 import Modal from '../../components/UI/Modal/Modal';
 import Icon from '../../components/UI/InputComponents/Icon';
-import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
+// import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
 import MultiInputObjects from '../../components/UI/InputComponents/MultiInputObjects';
 import Label from '../../components/UI/Headers/Label';
 import Select from '../../components/UI/InputComponents/Select';
-import Spinner from '../../components/UI/Loaders/Spinner';
+// import Spinner from '../../components/UI/Loaders/Spinner';
 import Input from '../../components/UI/InputComponents/Input';
 import Button from '../../components/UI/Button/Button';
 import VerticalSeparator from '../../components/UI/Separator/VerticalSeparator';
-import HorizontalSeparator from '../../components/UI/Separator/HorizontalSeparator';
+// import HorizontalSeparator from '../../components/UI/Separator/HorizontalSeparator';
 import FlexResponsive from '../../hoc/Layout/FlexResponsive';
 import FlexColumn from '../../hoc/Layout/FlexColumn';
-import FlexRow from '../../hoc/Layout/FlexRow';
+// import FlexRow from '../../hoc/Layout/FlexRow';
 
 class Formbuilder extends PureComponent {
   constructor(props) {
@@ -62,7 +62,7 @@ class Formbuilder extends PureComponent {
   //pull data from firebase, generated form is dependant on whats inside the database in firebase
   //key in database needs to exist to be associated with state,
   componentDidMount() {
-    console.log('Function componentDidMount - Formbuilder');
+    //console.log('Function componentDidMount - Formbuilder');
     this.props.onFetchSchemasList(this.state.schemaListPath);
   }
 
@@ -71,14 +71,16 @@ class Formbuilder extends PureComponent {
     const query = this.props.location.search;
     const prevQuery = prevProps.location.search;
     //const paramvalue = query.get('name'); //get from url query param 'id'
-    console.log('props.location: ', this.props.location);
-    
+    console.log('query: ', query);
+    console.log('prevQuery: ', prevQuery);
+
     if(prevQuery !== query && query===""){
       this.setState({loadOrCreateSelected:false});
     }
     if(query!=="" && this.state.loadOrCreateSelected === false){
       this.setState({loadOrCreateSelected:true});
-
+      //get new schema from url querystring
+        
     }
 
     
@@ -594,7 +596,7 @@ class Formbuilder extends PureComponent {
   }
 
   render() {
-    console.log('\n\n================================================\nRENDER');
+    // console.log('\n\n================================================\nRENDER');
 
     //make an object with 'data' is value associated with property
     //key is the prop name
@@ -647,8 +649,8 @@ class Formbuilder extends PureComponent {
               onChange={this.loadSelected}
             />
         </FlexColumn>
-        {/* <HorizontalSeparator style='Solid'>OR</HorizontalSeparator> */}
-        <VerticalSeparator style='Solid'>OR</VerticalSeparator>
+          {/* <HorizontalSeparator style='Solid'>OR</HorizontalSeparator> */}
+        <VerticalSeparator style='Solid' padding='true'>OR</VerticalSeparator>
         <FlexColumn padding='true'>
           <Label>Create</Label>
           <Button
@@ -716,7 +718,7 @@ class Formbuilder extends PureComponent {
         </Card>
       </form>
     );
-    console.log('this.state.errorModalMessage: ', this.state.errorModalMessage);
+    //console.log('this.state.errorModalMessage: ', this.state.errorModalMessage);
       
     return (
       <React.Fragment>

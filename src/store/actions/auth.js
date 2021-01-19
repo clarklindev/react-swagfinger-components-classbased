@@ -47,9 +47,13 @@ export const auth = (login, password, isSignUp) => {
 
         //localstorage
         //expiration date = new Date(new Date().getTime() + expiration time * 1000)
-        const expirationDate = new Date(
-          new Date().getTime() + response.data.expiresIn * 1000
-        );
+        const tempTime = new Date().getTime();
+        const expiryTime = tempTime + response.data.expiresIn * 1000;
+        console.log('expiryTime: ', expiryTime);
+
+        const currentDate = new Date();
+        const expirationDate = new Date(expiryTime);
+        console.log('CURRENT DATE: ', currentDate);
         console.log('SAVING EXPIRATION DATE: ', expirationDate);
         //store in local storage
         localStorage.setItem('token', response.data.idToken);

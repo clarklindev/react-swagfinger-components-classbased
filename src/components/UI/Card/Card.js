@@ -9,7 +9,7 @@ class Card extends Component {
       styleClasses = this.props.style.map((each) => {
         return classes[each];
       });
-      console.log('Card style classes:', styleClasses);
+      // console.log('Card style classes:', styleClasses);
     }
 
     return this.props.hide ? null : (
