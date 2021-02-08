@@ -29,7 +29,7 @@ import Select from '../../components/UI/InputComponents/Select';
 import Input from '../../components/UI/InputComponents/Input';
 import Button from '../../components/UI/Button/Button';
 import VerticalSeparator from '../../components/UI/Separator/VerticalSeparator';
-// import HorizontalSeparator from '../../components/UI/Separator/HorizontalSeparator';
+import HorizontalSeparator from '../../components/UI/Separator/HorizontalSeparator';
 import FlexResponsive from '../../hoc/Layout/FlexResponsive';
 import FlexColumn from '../../hoc/Layout/FlexColumn';
 // import FlexRow from '../../hoc/Layout/FlexRow';
@@ -47,7 +47,7 @@ class Formbuilder extends PureComponent {
     schemaPath: '',
     // saving: false,
     formIsValid: null, //for form validation,
-    // localstateform: null, //for a single profile
+    // localstateform: null, //for a single form instance
     // isFormValid: true,
     loadOrCreateSelected: false,
     
@@ -63,7 +63,7 @@ class Formbuilder extends PureComponent {
   //key in database needs to exist to be associated with state,
   componentDidMount() {
     //console.log('Function componentDidMount - Formbuilder');
-    this.props.onFetchSchemasList(this.state.schemaListPath);
+    this.props.onFetchSchema(this.state.schemaListPath);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -74,15 +74,16 @@ class Formbuilder extends PureComponent {
     console.log('query: ', query);
     console.log('prevQuery: ', prevQuery);
 
-    if(prevQuery !== query && query===""){
-      this.setState({loadOrCreateSelected:false});
-    }
-    if(query!=="" && this.state.loadOrCreateSelected === false){
-      this.setState({loadOrCreateSelected:true});
+    // if(prevQuery !== query && query===""){
+    //   console.log('prev query !== query and query === ""');
+    //   this.setState({loadOrCreateSelected:false});
+    // }
+    if(query!=="" && this.state.loadOrCreateSelected === false){ //state has already set 'newFormName' when selection made
+      this.setState({loadOrCreateSelected:true}); 
       //get new schema from url querystring
-        
+      
     }
-
+       
     
     //...schema updated from redux
     // if (prevProps.schema !== this.props.schema) {
@@ -356,9 +357,9 @@ class Formbuilder extends PureComponent {
   //------------------------------------------------------
   //------------------------------------------------------
 
-  // redirect = () => {
-  //   this.props.history.push('/phonebookadmin');
-  // };
+  redirect = () => {
+    this.props.history.push('/phonebookadmin');
+  };
 
   //------------------------------------------------------
   //------------------------------------------------------
@@ -581,8 +582,9 @@ class Formbuilder extends PureComponent {
     }
   };
 
+  //function gets called when selection changes
   loadSelected = (event) =>{
-    console.log('E.target.value:', event.target.value);
+    console.log('e.target.value:', event.target.value);
     this.setState({newFormName: event.target.value});
     this.addNameQueryParamToUrl(event.target.value);
   }
@@ -650,7 +652,7 @@ class Formbuilder extends PureComponent {
             />
         </FlexColumn>
           {/* <HorizontalSeparator style='Solid'>OR</HorizontalSeparator> */}
-        <VerticalSeparator style='Solid' padding='true'>OR</VerticalSeparator>
+        <VerticalSeparator class='Solid' padding='true'>OR</VerticalSeparator>
         <FlexColumn padding='true'>
           <Label>Create</Label>
           <Button
@@ -677,25 +679,11 @@ class Formbuilder extends PureComponent {
             changed: this.inputChangedHandler,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
             moveiteminarray: this.moveItemHandler,
           }}>
-          <MultiInputObjects name='formbuilder' />
-          </InputContext.Provider>
-          {/* <input
-          ref={this.submitInputRef}
-          type='submit'
-          value='Submit'
-          onMouseOver={(event) => {
-            console.log('mouseover');
-            this.onSubmitTest(event);
-          }}
-          // disabled={!this.state.formIsValid} //dont disable just handle with validation
-        /> */}
-        </FlexColumn>
-        </Card>
+            <MultiInputObjects name='formbuilder' />
 
-        {/* <HorizontalSeparator style='Solid' /> */}
-        <Card>
-        <FlexColumn padding="true">
-          <Button
+            <HorizontalSeparator class='Dashed' padding='true'></HorizontalSeparator>
+
+            <Button
             type='WithBorder'
             onClick={(event) => {
               console.log('Submit...');
@@ -714,7 +702,19 @@ class Formbuilder extends PureComponent {
             }}>
             Submit
           </Button>
+          </InputContext.Provider>
+          {/* <input
+          ref={this.submitInputRef}
+          type='submit'
+          value='Submit'
+          onMouseOver={(event) => {
+            console.log('mouseover');
+            this.onSubmitTest(event);
+          }}
+          // disabled={!this.state.formIsValid} //dont disable just handle with validation
+        /> */}
         </FlexColumn>
+        
         </Card>
       </form>
     );
@@ -823,8 +823,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onFetchSchemasList: (schemaListPath) => {
-      dispatch(actions.getSchema(schemaListPath)); 
+    //can be list of schemas or schema
+    onFetchSchema: (schemaPath) => {
+      dispatch(actions.getSchema(schemaPath)); 
     },
 
     onAddNewForm: (schemaListPath, newFormName)=>{
@@ -832,11 +833,15 @@ const mapDispatchToProps = (dispatch) => {
       console.log('newFormName: ', newFormName);
       dispatch(actions.addSchema(schemaListPath, newFormName));
     }
+    
+    
     // onFormattedFormCreated: (formatted) => {
     //   //at this stge we have props.id and activeProfile
     //   console.log('mapDispatchToProps: onFormattedFormCreated');
     //   dispatch(actions.processFormatedFormCreated(formatted)); //give access to props.formattedForm
     // },
+
+
     // onFetchDataProfile: (paramvalue) => {
     //   console.log('FUNCTION onFetchProfile');
     //   //paramvalue is the query string prop's value (id)

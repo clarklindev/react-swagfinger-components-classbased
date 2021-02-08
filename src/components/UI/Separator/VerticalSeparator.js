@@ -12,9 +12,8 @@ class VerticalSeparator extends Component {
       <div
         className={[
           classes.VerticalSeparator,
-          classes[this.props.style],
-          padding,
-          this.props.children ? classes.WithChildren : null,
+          classes[this.props.class],
+          padding
         ].join(' ')}>
         {this.props.children ? (
           <React.Fragment>
@@ -22,7 +21,7 @@ class VerticalSeparator extends Component {
             <div className={classes.CenterElement}>{this.props.children}</div>
             <div className={classes.DividerLine}></div>
           </React.Fragment>
-        ) : null}
+        ) : <div className={classes.DividerLine}></div>}
       </div>
     );
   }

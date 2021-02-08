@@ -1,61 +1,36 @@
-%beforeafter {
-  flex-grow: 1;
-  content: '';
-  border-top-width: 1px;
-  border-color: var(--colorborder);
-}
-
 .HorizontalSeparator {
   color: var(--colorborder);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
   &.Padding {
-    margin: var(--margindefault) 0;
+    padding-top: var(--paddingdefault);
+    padding-bottom: var(--paddingdefault);
   }
 
-  &.WithChildren {
-    &::before {
-      margin-right: var(--margindefault);
-    }
-    &::after {
-      margin-left: var(--margindefault);
-    }
+  .CenterElement {
+    display: flex;
   }
-
+  .DividerLine {
+    border-style: solid;
+    flex: 1;
+    border-color: var(--colorborder);
+    border-width: 1px 0 0 0;
+  }
   &.Solid {
-    display: flex;
-    align-items: center;
-    &::before {
-      @extend %beforeafter;
-      border-top-style: solid;
-    }
-    &::after {
-      @extend %beforeafter;
-      border-top-style: solid;
+    .DividerLine {
+      border-style: solid;
     }
   }
-
   &.Dotted {
-    display: flex;
-    align-items: center;
-    &::before {
-      @extend %beforeafter;
-      border-top-style: dotted;
-    }
-    &::after {
-      @extend %beforeafter;
-      border-top-style: dotted;
+    .DividerLine {
+      border-style: dotted;
     }
   }
-
   &.Dashed {
-    display: flex;
-    align-items: center;
-    &::before {
-      @extend %beforeafter;
-      border-top-style: dashed;
-    }
-    &::after {
-      @extend %beforeafter;
-      border-top-style: dashed;
+    .DividerLine {
+      border-style: dashed;
     }
   }
 }

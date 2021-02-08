@@ -38,14 +38,14 @@ class Input extends PureComponent {
   componentDidUpdate() {
     // console.log('updated...', this.props.value.data);
     if (this.props.value !== this.state.value) {
-      console.log('value not same: ', this.props.value);
+      //console.log('value not same: ', this.props.value);
       this.setState({ value: this.props.value.data });
     }
   }
 
   inputChangeHandler = (event) => {
     if (this.props.onChange) {
-      console.log('CALL PARENT ONCHANGE...');
+      //console.log('CALL PARENT ONCHANGE...');
       this.props.onChange(event);
     } else {
       this.context.changed(

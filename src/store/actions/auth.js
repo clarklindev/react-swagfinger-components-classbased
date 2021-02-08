@@ -43,18 +43,18 @@ export const auth = (login, password, isSignUp) => {
     axiosInstance
       .post(url, authData)
       .then((response) => {
-        console.log('SUCCESS: ', response);
+        //console.log('SUCCESS: ', response);
 
         //localstorage
         //expiration date = new Date(new Date().getTime() + expiration time * 1000)
         const tempTime = new Date().getTime();
         const expiryTime = tempTime + response.data.expiresIn * 1000;
-        console.log('expiryTime: ', expiryTime);
+        //console.log('expiryTime: ', expiryTime);
 
         const currentDate = new Date();
         const expirationDate = new Date(expiryTime);
-        console.log('CURRENT DATE: ', currentDate);
-        console.log('SAVING EXPIRATION DATE: ', expirationDate);
+        //console.log('CURRENT DATE: ', currentDate);
+        //console.log('SAVING EXPIRATION DATE: ', expirationDate);
         //store in local storage
         localStorage.setItem('token', response.data.idToken);
         localStorage.setItem('expirationdate', expirationDate);

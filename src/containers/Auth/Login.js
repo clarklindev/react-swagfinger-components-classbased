@@ -90,7 +90,7 @@ class Login extends Component {
 
   keyListener = (event) => {
     if (event.key === 'Enter' || event.keyCode === 13 || event.which === 13) {
-      console.log('key: ', event.key);
+      //console.log('key: ', event.key);
       this.onSubmitHandler(event);
     }
   };
@@ -151,8 +151,8 @@ class Login extends Component {
 
   onSubmitHandler = (event) => {
     event.preventDefault(); //prevents reloading of page
-    console.log('login: ', this.state.form.login.value.data);
-    console.log('password: ', this.state.form.password.value.data);
+    //console.log('login: ', this.state.form.login.value.data);
+    //console.log('password: ', this.state.form.password.value.data);
     this.props.onAuth(
       this.state.form.login.value.data,
       this.state.form.password.value.data,
