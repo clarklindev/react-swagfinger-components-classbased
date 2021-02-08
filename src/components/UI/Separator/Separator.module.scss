@@ -1,0 +1,64 @@
+.Separator {
+  color: var(--colorborder);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  &.Horizontal {
+    &.Padding {
+      padding-top: var(--paddingdefault);
+      padding-bottom: var(--paddingdefault);
+    }
+  }
+
+  &.Vertical {
+    &.Padding {
+      padding-left: var(--paddingdefault);
+      padding-right: var(--paddingdefault);
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    @media screen and (min-width: 320px) {
+      flex-direction: column;
+      align-items: center;
+      &.Padding {
+        padding-top: var(--paddingdefault);
+        padding-bottom: var(--paddingdefault);
+        padding-left: 0;
+        padding-right: 0;
+      }
+    }
+
+    .DividerLine {
+      @media screen and (min-width: 320px) {
+        border-width: 0 1px 0 0;
+      }
+    }
+  }
+
+  .CenterElement {
+    display: flex;
+  }
+  .DividerLine {
+    border-style: solid;
+    flex: 1;
+    border-color: var(--colorborder);
+    border-width: 1px 0 0 0;
+  }
+  &.Solid {
+    .DividerLine {
+      border-style: solid;
+    }
+  }
+  &.Dotted {
+    .DividerLine {
+      border-style: dotted;
+    }
+  }
+  &.Dashed {
+    .DividerLine {
+      border-style: dashed;
+    }
+  }
+}

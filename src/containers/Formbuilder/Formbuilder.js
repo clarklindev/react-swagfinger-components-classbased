@@ -28,8 +28,7 @@ import Select from '../../components/UI/InputComponents/Select';
 // import Spinner from '../../components/UI/Loaders/Spinner';
 import Input from '../../components/UI/InputComponents/Input';
 import Button from '../../components/UI/Button/Button';
-import VerticalSeparator from '../../components/UI/Separator/VerticalSeparator';
-import HorizontalSeparator from '../../components/UI/Separator/HorizontalSeparator';
+import Separator from '../../components/UI/Separator/Separator';
 import FlexResponsive from '../../hoc/Layout/FlexResponsive';
 import FlexColumn from '../../hoc/Layout/FlexColumn';
 // import FlexRow from '../../hoc/Layout/FlexRow';
@@ -651,8 +650,7 @@ class Formbuilder extends PureComponent {
               onChange={this.loadSelected}
             />
         </FlexColumn>
-          {/* <HorizontalSeparator style='Solid'>OR</HorizontalSeparator> */}
-        <VerticalSeparator class='Solid' padding='true'>OR</VerticalSeparator>
+        <Separator class='Solid' padding='true' direction="Vertical">OR</Separator>
         <FlexColumn padding='true'>
           <Label>Create</Label>
           <Button
@@ -681,7 +679,7 @@ class Formbuilder extends PureComponent {
           }}>
             <MultiInputObjects name='formbuilder' />
 
-            <HorizontalSeparator class='Dashed' padding='true'></HorizontalSeparator>
+            <Separator class='Dashed' padding='true' direction="Horizontal"></Separator>
 
             <Button
             type='WithBorder'

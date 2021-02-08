@@ -17,7 +17,7 @@ import Modal from '../../components/UI/Modal/Modal';
 import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
 import Spinner from '../../components/UI/Loaders/Spinner';
 import Button from '../../components/UI/Button/Button';
-import HorizontalSeparator from '../../components/UI/Separator/HorizontalSeparator';
+import Separator from '../../components/UI/Separator/Separator';
 import FlexColumn from '../../hoc/Layout/FlexColumn';
 
 class ProfileCreateOrUpdate extends Component {
@@ -590,7 +590,7 @@ class ProfileCreateOrUpdate extends Component {
                       {formInputs}
                     </InputContext.Provider>
                   </FlexColumn>
-                  <HorizontalSeparator style='Solid' />
+                  <Separator style='Solid' />
                   <FlexColumn padding="true">
                     <input
                       ref={this.submitInputRef}
