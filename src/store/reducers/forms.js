@@ -4,6 +4,7 @@ import { updateObject } from '../../shared/utility';
 
 const initialState = {
   formlist:{},
+  schemaListPath: 'schemas/collection',
   loading: false,
   error: null,
 };

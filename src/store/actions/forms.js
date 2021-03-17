@@ -12,7 +12,7 @@ export const getSchema = (schemapath) => {
       .get(schemapath+'.json')
       .then((response) => {
         console.log('RESPONSE', response);
-        dispatch(fetchSuccess(response.data, schemapath));
+        dispatch(fetchSuccess(schemapath, response.data));
       })
       .catch((err) => {
         console.log('ERROR: ', err);
@@ -29,5 +29,5 @@ export const addSchema = (schemapath, schemaname) =>{
 }
 
 export const fetchStart = () => {return { type: actionTypes.FETCH_START };};
-export const fetchSuccess = (data, schemapath) => {return { type: actionTypes.FETCH_SUCCESS, data: data, schemapath };};
+export const fetchSuccess = (schemapath, data) => {return { type: actionTypes.FETCH_SUCCESS, schemapath: schemapath, data: data };};
 export const fetchFail = (error) => {return { type: actionTypes.FETCH_FAIL, error: error };};
