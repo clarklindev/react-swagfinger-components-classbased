@@ -16,7 +16,7 @@ import Input from './Input';
 import Datepicker from './Datepicker';
 import Toggle from './Toggle';
 import GalleryManager from './GalleryManager';
-import Upload from '../Upload/Upload';
+//import Upload from '../Upload/Upload';
 import UploadDrop from '../Upload/UploadDrop';
 import Counter from './Counter';
 import RangeSlider from './RangeSlider';
@@ -99,9 +99,9 @@ class ComponentFactory extends Component {
       case 'gallerymanager':
         this.inputElement = <GalleryManager {...this.props.data} />;
         break;
-      case 'upload':
-        this.inputElement = <Upload {...this.props.data} />;
-        break;
+      // case 'upload':
+      //   this.inputElement = <Upload {...this.props.data} />;
+      //   break;
       case 'uploaddrop':
         this.inputElement = <UploadDrop {...this.props.data} />;
         break;

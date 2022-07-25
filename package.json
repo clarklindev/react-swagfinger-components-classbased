@@ -1,5 +1,5 @@
 {
-  "name": "react-crud",
+  "name": "react-portfolio-react-crud",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -7,17 +7,16 @@
     "@fortawesome/free-regular-svg-icons": "^5.11.2",
     "@fortawesome/free-solid-svg-icons": "^5.11.2",
     "@fortawesome/react-fontawesome": "^0.1.7",
-    "@google-cloud/storage": "^4.1.3",
+    "@google-cloud/storage": "^6.2.3",
     "axios": "^0.21.1",
-    "firebase": "^7.14.3",
-    "node-sass": "^4.14.1",
+    "firebase": "^9.9.1",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-redux": "^7.1.0",
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "^3.4.1",
+    "react-scripts": "^5.0.1",
     "react-sortablejs": "^2.0.11",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0"
@@ -42,5 +41,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "sass-loader": "^13.0.2",
+    "webpack": "^4.42.0"
   }
 }
