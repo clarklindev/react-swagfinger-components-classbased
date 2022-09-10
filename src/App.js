@@ -9,11 +9,10 @@ import Home from './containers/Home/Home';
 import Login from './containers/Auth/Login';
 import Logout from './containers/Auth/Logout';
 import Formbuilder from './containers/Formbuilder/Formbuilder';
-// import Phonebook from './containers/Phonebook/Phonebook';
-// import PhonebookAdmin from './containers/Phonebook/PhonebookAdmin';
-// import ProfileRead from './containers/Profile/ProfileRead';
-// import ProfileCreateOrUpdate from './containers/Profile/ProfileCreateOrUpdate';
-import Appointment from './containers/Appointment/Appointment.js';
+import Phonebook from './containers/Phonebook/Phonebook';
+import PhonebookAdmin from './containers/Phonebook/PhonebookAdmin';
+import ProfileRead from './containers/Profile/ProfileRead';
+import ProfileCreateOrUpdate from './containers/Profile/ProfileCreateOrUpdate';
 import Faq from './containers/Faq/Faq';
 
 //actions
@@ -30,21 +29,26 @@ class App extends Component {
   render() {
     const unauthenticatedRoutes = (
       <Switch>
-        <Route path='/formbuilder' component={Formbuilder} />
         <Route path='/login' component={Login} />
-        {/* <Route path='/profileread' component={ProfileRead} /> */}
         <Route path='/faq' component={Faq} />
-        <Route path='/' exact component={Home} />
+        <Route path='/phonebook' component={Phonebook} /> 
+        {/* should be authenticated routes */}
+        <Route path='/formbuilder' component={Formbuilder} />
+        <Route path='/phonebookadmin' component={PhonebookAdmin} />  
+        {/* profile */}
+        <Route path='/profileread' component={ProfileRead} />
+        <Route path='/profileupdate' component={ProfileCreateOrUpdate} />
+        <Route path='/profilecreate' component={ProfileCreateOrUpdate} />
+        <Route path='/' exact component={Home} /> {/*  default */}
+  
         <Redirect to='/' />
       </Switch>
     );
 
     const authenticatedRoutes = (
       <Switch>
-        <Route path='/formbuilder' component={Formbuilder} />
-        <Route path='/logout' component={Logout} />
-        <Route path='/faq' component={Faq} />
-        <Route path='/appointment' component={Appointment} />
+        {/* <Route path='/formbuilder' component={Formbuilder} />
+        <Route path='/logout' component={Logout} /> */}
 
         {/* <Route path='/phonebook' component={Phonebook} /> */}
         {/* <Route path='/phonebookadmin' component={PhonebookAdmin} /> */}
@@ -54,7 +58,7 @@ class App extends Component {
         {/* <Route path='/profilecreate' component={ProfileCreateOrUpdate} /> */}
 
         {/* <Route path='/' exact component={PhonebookAdmin} /> */}
-        <Redirect to='/' />
+        {/* <Redirect to='/' /> */}
       </Switch>
     );
 
@@ -78,7 +82,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onTryAutoSignin: () => dispatch(actions.authCheckState()),
+    onTryAutoSignin: () => dispatch(actions.authCheckState()), /** ./actions/auth.js */
 
     // loadDefaults: () => {
     //   dispatch(actions.loadDefaults()); //redux => props.phoneBook
@@ -88,5 +92,6 @@ const mapDispatchToProps = (dispatch) => {
     // },
   };
 };
+
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

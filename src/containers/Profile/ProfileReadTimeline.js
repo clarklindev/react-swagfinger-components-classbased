@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 import Accordion from '../../components/UI/InputComponents/Accordion';
 import List from '../../components/UI/InputComponents/List';
 import ListItem from '../../components/UI/InputComponents/ListItem';
-import * as align from '../../shared/alignFlex.module.scss';
+import * as align from '../../shared/alignFlex';
 import Button from '../../components/UI/Button/Button';
 import Icon from '../../components/UI/InputComponents/Icon';
 import { connect } from 'react-redux';
 
-import 'firebase/firestore';
-import 'firebase/auth';
-import 'firebase/storage';
+import {initializeApp} from 'firebase/app';
+import {getAuth} from 'firebase/auth';
+import {getStorage} from 'firebase/storage';
+
 //firebase imports
-import * as firebase from 'firebase/app';
 import * as FirebaseHelper from '../../shared/firebaseHelper';
 //styling
 import buttonStyle from '../../components/UI/Button/Button.module.scss';
@@ -33,7 +33,7 @@ class ProfileReadDocuments extends Component {
     };
     try {
       console.log('\t%cinitializing firebase', 'background:white; color:red');
-      firebase.initializeApp(this.firebaseConfig);
+      initializeApp(this.firebaseConfig);
     } catch {
       console.log('\t%calready exists...', 'background:white; color:red');
     }
@@ -47,7 +47,7 @@ class ProfileReadDocuments extends Component {
   async componentDidMount() {
     //get from storage folders
     // Get a reference to the storage service, which is used to create references in your storage bucket
-    this.storage = firebase.storage();
+    this.storage = getStorage();
     this.storageRef = this.storage.ref(); // Create a storage reference from our storage service
     let ref = this.storageRef;
     ref = this.storageRef.child(this.props.id);
@@ -89,7 +89,7 @@ class ProfileReadDocuments extends Component {
           <ListItem
             key={'file' + index}
             hovereffect={true}
-            align={align.JustifyContentSpaceBetween}
+            align={align.justifyContent('space-between')}
             onClick={async (event) => {
               event.preventDefault();
               event.stopPropagation();

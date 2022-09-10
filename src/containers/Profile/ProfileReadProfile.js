@@ -6,7 +6,7 @@ import Icon from '../../components/UI/InputComponents/Icon';
 //styling
 import buttonStyle from '../../components/UI/Button/Button.module.scss';
 import { connect } from 'react-redux';
-import * as align from '../../shared/alignFlex.module.scss';
+import * as align from '../../shared/alignFlex';
 import FlexRow from '../../hoc/Layout/FlexRow';
 
 class ProfileReadProfile extends Component {
@@ -31,7 +31,7 @@ class ProfileReadProfile extends Component {
             label: 'Name',
             component: 'raw',
             value: (
-              <ListItem align={align.JustifyContentSpaceBetween}>
+              <ListItem align={align.justifyContent('space-between')}>
                 <FlexRow justifycontent='space-between' flexgrow='true'>
                   {this.props.activeProfile['name']}
                   {this.getClipboardButton(this.props.activeProfile['name'])}
@@ -46,7 +46,7 @@ class ProfileReadProfile extends Component {
             label: 'Last name',
             component: 'raw',
             value: (
-              <ListItem align={align.JustifyContentSpaceBetween}>
+              <ListItem align={align.justifyContent('space-between')}>
                 <FlexRow justifycontent='space-between' flexgrow='true'>
                   {this.props.activeProfile['lastname']}
                   {this.getClipboardButton(
@@ -66,7 +66,7 @@ class ProfileReadProfile extends Component {
               data: this.props.activeProfile['contactnumbers'].map(
                 (each, index) => {
                   return (
-                    <ListItem align={align.JustifyContentSpaceBetween}>
+                    <ListItem align={align.justifyContent('space-between')}>
                       <FlexRow justifycontent='space-between' flexgrow='true'>
                         {each}
                         {this.getClipboardButton(each)}
@@ -86,7 +86,7 @@ class ProfileReadProfile extends Component {
             value: {
               data: this.props.activeProfile['emails'].map((each, index) => {
                 return (
-                  <ListItem align={align.JustifyContentSpaceBetween}>
+                  <ListItem align={align.justifyContent('space-between')}>
                     <FlexRow justifycontent='space-between' flexgrow='true'>
                       {each}
                       {this.getClipboardButton(each)}
@@ -103,7 +103,7 @@ class ProfileReadProfile extends Component {
             label: 'Contact Preference',
             component: 'raw',
             value: (
-              <ListItem align={align.JustifyContentSpaceBetween}>
+              <ListItem align={align.justifyContent('space-between')}>
                 <FlexRow justifycontent='space-between' flexgrow='true'>
                   {this.props.activeProfile['contactpreference']}
                   {this.getClipboardButton(

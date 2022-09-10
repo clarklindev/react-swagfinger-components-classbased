@@ -6,7 +6,7 @@ import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
 import { BrowserRouter } from 'react-router-dom';
 //reducer
-//import profileReducer from './store/reducers/profile';
+import profileReducer from './store/reducers/profile';
 import authReducer from './store/reducers/auth';
 import uiReducer from './store/reducers/ui';
 import formReducer from './store/reducers/forms';
@@ -29,7 +29,7 @@ const logger = (store) => {
 };
 
 const rootReducer = combineReducers({
-  //profile: profileReducer,
+  profile: profileReducer,
   auth: authReducer,
   ui: uiReducer,
   formbuilder: formReducer,
@@ -66,6 +66,7 @@ const store = createStore(
 //   }
 // );
 
+// pass in reducers as prop called store
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
@@ -80,5 +81,3 @@ ReactDOM.render(
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
 
-
-//helloworld

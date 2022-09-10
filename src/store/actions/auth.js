@@ -94,6 +94,7 @@ export const checkAuthTimeout = (expirationTime) => {
   };
 };
 
+
 export const authCheckState = () => {
   return (dispatch) => {
     const token = localStorage.getItem('token');
