@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classes from './DraggableItem.module.scss';
-import Icon from './Icon';
+import Icon from '../Icon/Icon';
 
 class DraggableItem extends Component {
   render() {

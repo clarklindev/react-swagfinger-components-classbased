@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classes from './Datepicker.module.scss';
-import Icon from './Icon';
+import Icon from '../Icon/Icon';
 import Button from '../Button/Button';
 import ErrorList from './ErrorList';
 import InputContext from '../../../context/InputContext';

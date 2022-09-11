@@ -4,7 +4,7 @@ import DefaultPageLayout from '../../../hoc/DefaultPageLayout/DefaultPageLayout'
 import classes from './Modal.module.scss';
 import Card from '../Card/Card';
 import Button from '../Button/Button';
-import Icon from '../InputComponents/Icon';
+import Icon from '../Icon/Icon';
 import ModalHeader from '../Headers/ModalHeader';
 class Modal extends PureComponent {
   render() {

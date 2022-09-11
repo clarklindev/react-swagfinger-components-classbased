@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
 import ListItem from '../../components/UI/InputComponents/ListItem';
 import Button from '../../components/UI/Button/Button';
-import Icon from '../../components/UI/InputComponents/Icon';
+import Icon from '../../components/UI/Icon/Icon';
 //styling
 import buttonStyle from '../../components/UI/Button/Button.module.scss';
 import { connect } from 'react-redux';

@@ -1,7 +1,7 @@
 import React from 'react';
 import classes from './HamburgerButton.module.scss';
 import Utils from '../../../Utils';
-import Icon from '../../UI/InputComponents/Icon';
+import Icon from '../../UI/Icon/Icon';
 const hamburgerButton = (props) => {
   let classList = Utils.getClassNameString([
     props.className,

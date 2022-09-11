@@ -14,7 +14,7 @@ import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
 //components
 import Card from '../../components/UI/Card/Card';
 import Modal from '../../components/UI/Modal/Modal';
-import Icon from '../../components/UI/InputComponents/Icon';
+import Icon from '../../components/UI/Icon/Icon';
 import MultiInputObjects from '../../components/UI/InputComponents/MultiInputObjects';
 import Label from '../../components/UI/Headers/Label';
 import Select from '../../components/UI/InputComponents/Select';

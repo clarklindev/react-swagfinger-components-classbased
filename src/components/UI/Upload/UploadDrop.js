@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classes from './UploadDrop.module.scss';
 import Utils from '../../../Utils';
-import Icon from '../InputComponents/Icon';
+import Icon from '../Icon/Icon';
 import List from '../../UI/InputComponents/List';
 import UploadListItem from './UploadListItem';
 import Button from '../Button/Button';

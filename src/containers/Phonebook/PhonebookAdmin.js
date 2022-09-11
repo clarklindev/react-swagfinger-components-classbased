@@ -11,7 +11,7 @@ import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
 import Card from '../../components/UI/Card/Card';
 import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
 import ListItem from '../../components/UI/InputComponents/ListItem';
-import Icon from '../../components/UI/InputComponents/Icon';
+import Icon from '../../components/UI/Icon/Icon';
 import Spinner from '../../components/UI/Loaders/Spinner';
 import Button from '../../components/UI/Button/Button';
 import FlexRow from '../../hoc/Layout/FlexRow';

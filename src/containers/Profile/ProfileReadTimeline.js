@@ -4,7 +4,7 @@ import List from '../../components/UI/InputComponents/List';
 import ListItem from '../../components/UI/InputComponents/ListItem';
 import * as align from '../../shared/alignFlex';
 import Button from '../../components/UI/Button/Button';
-import Icon from '../../components/UI/InputComponents/Icon';
+import Icon from '../../components/UI/Icon/Icon';
 import { connect } from 'react-redux';
 
 import {initializeApp} from 'firebase/app';

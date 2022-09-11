@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import classes from './InputWithIcon.module.scss';
 import InputContext from '../../../context/InputContext';
-import Icon from './Icon';
+import Icon from '../Icon/Icon';
 import Button from '../Button/Button';
 class InputWithIcon extends Component {
   static contextType = InputContext;

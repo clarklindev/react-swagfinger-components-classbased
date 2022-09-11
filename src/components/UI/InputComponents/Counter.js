@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import classes from './Counter.module.scss';
 import InputContext from '../../../context/InputContext';
-import Icon from '../InputComponents/Icon';
+import Icon from '../Icon/Icon';
 import Button from '../Button/Button';
 import ErrorList from './ErrorList';
 

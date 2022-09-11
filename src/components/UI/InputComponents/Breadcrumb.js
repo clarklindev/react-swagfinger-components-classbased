@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classes from './Breadcrumb.module.scss';
-import Icon from './Icon';
+import Icon from '../Icon/Icon';
 
 class Breadcrumb extends Component {
   render() {

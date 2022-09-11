@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classes from './CircularLoader.module.scss';
-import Icon from '../InputComponents/Icon';
+import Icon from '../Icon/Icon';
 class CircularLoader extends Component {
   render() {
     let progressClass = classes['Progress-' + this.props.progress];

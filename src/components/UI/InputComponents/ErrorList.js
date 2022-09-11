@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classes from './ErrorList.module.scss';
 import Utils from '../../../Utils';
-import Icon from './Icon';
+import Icon from '../Icon/Icon';
 
 class ErrorList extends Component {
   render() {

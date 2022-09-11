@@ -5,7 +5,7 @@ import InputContext from '../../../context/InputContext';
 import GalleryItem from './GalleryItem';
 
 import Button from '../Button/Button';
-import Icon from './Icon';
+import Icon from '../Icon/Icon';
 
 // Class allows us to move items of the gallery
 // Add and Remove items from gallery

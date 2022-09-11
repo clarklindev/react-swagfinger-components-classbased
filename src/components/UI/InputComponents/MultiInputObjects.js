@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import classes from './MultiInputObjects.module.scss';
 import InputContext from '../../../context/InputContext';
-import Icon from '../InputComponents/Icon';
+import Icon from '../Icon/Icon';
 import PropTypes from 'prop-types';
 import Button from '../../UI/Button/Button';
 

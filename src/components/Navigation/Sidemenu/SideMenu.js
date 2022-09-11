@@ -4,7 +4,7 @@ import classes from './SideMenu.module.scss';
 import Backdrop from '../../UI/Backdrop/Backdrop';
 import Utils from '../../../Utils';
 import Button from '../../UI/Button/Button';
-import Icon from '../../UI/InputComponents/Icon';
+import Icon from '../../UI/Icon/Icon';
 
 //context
 import MenuContext from '../../../context/MenuContext';

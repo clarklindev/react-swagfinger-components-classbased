@@ -7,7 +7,7 @@ import Input from '../InputComponents/Input';
 import List from '../InputComponents/List';
 import ListItem from '../InputComponents/ListItem';
 import Button from '../Button/Button';
-import Icon from '../InputComponents/Icon';
+import Icon from '../Icon/Icon';
 import Checkbox from '../InputComponents/Checkbox';
 import Breadcrumb from '../InputComponents/Breadcrumb';
 

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import classes from './Accordion.module.scss';
-import Icon from './Icon';
+import Icon from '../Icon/Icon';
 class Accordion extends PureComponent {
   state = {
     isActive: [],

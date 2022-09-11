@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import InputWithIcon from './InputWithIcon';
 import Button from '../Button/Button';
-import Icon from './Icon';
+import Icon from '../Icon/Icon';
 import InputContext from '../../../context/InputContext';
 
 class InputSearch extends Component {

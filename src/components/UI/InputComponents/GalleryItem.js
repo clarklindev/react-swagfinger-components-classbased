@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classes from './GalleryItem.module.scss';
 import Button from '../Button/Button';
-import Icon from './Icon';
+import Icon from '../Icon/Icon';
 import DraggableItem from './DraggableItem';
 import FlexRow from '../../../hoc/Layout/FlexRow';
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classes from './Expandable.module.scss';
 import Button from '../Button/Button';
-import Icon from './Icon';
+import Icon from '../Icon/Icon';
 
 // single element of an accordion
 class Expandable extends Component {

@@ -4,7 +4,7 @@ import Utils from '../../../Utils';
 import classes from './MultiSelect.module.scss';
 import InputContext from '../../../context/InputContext';
 import Button from '../../UI/Button/Button';
-import Icon from './Icon';
+import Icon from '../Icon/Icon';
 import ErrorList from './ErrorList';
 import DraggableItem from './DraggableItem';
 

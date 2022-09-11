@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classes from './UploadListItem.module.scss';
-import Icon from '../InputComponents/Icon';
+import Icon from '../Icon/Icon';
 import Button from '../Button/Button';
 import CircularLoader from '../Loaders/CircularLoader';
 class UploadListItem extends Component {
