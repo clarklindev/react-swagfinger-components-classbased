@@ -1,0 +1,453 @@
+{
+  "data": {
+    "profiles": {
+      "-M04kd8a-Z18lYB_XfGo": {
+        "contactnumbers": [
+          "+27893300022",
+          "00022323222"
+        ],
+        "contactpreference": "email",
+        "dateofbirth": "1948-1-10",
+        "emails": [
+          "adamapple@gmail.com"
+        ],
+        "gallerymanager": [
+          {
+            "description": "this pic is about anc",
+            "title": "anc",
+            "url": "www.google.com/anc"
+          },
+          {
+            "description": "this is a long december",
+            "title": "dec",
+            "url": "www.google.com/dec"
+          }
+        ],
+        "gender": "female",
+        "height": "2.10",
+        "lastname": "Apple",
+        "name": "Adam",
+        "notes": "poomoocc",
+        "privateprofile": true,
+        "salary": {
+          "max": 10000,
+          "min": 3000
+        },
+        "socialmedia": [
+          {
+            "key": "facebook",
+            "value": "lookilife"
+          }
+        ],
+        "weight": "30"
+      }
+    }
+  },
+  "schemas": {
+    "collection": {
+      "fruit": [
+        "apple",
+        "pear",
+        "grapes"
+      ],
+      "profiles": [
+        {
+          "component": "input",
+          "componentconfig": {
+            "placeholder": "your name",
+            "type": "string",
+            "validation": {
+              "isRequired": true
+            }
+          },
+          "label": "Names",
+          "name": "name",
+          "type": "single",
+          "value": ""
+        },
+        {
+          "component": "input",
+          "componentconfig": {
+            "placeholder": "your lastname",
+            "type": "string",
+            "validation": {
+              "isRequired": true
+            }
+          },
+          "label": "Last name",
+          "name": "lastname",
+          "type": "single",
+          "value": ""
+        },
+        {
+          "component": "multiinput",
+          "componentconfig": {
+            "component": "input",
+            "defaultinputs": 2,
+            "draggable": true,
+            "placeholder": "your email",
+            "type": "string",
+            "validation": {
+              "isEmail": true,
+              "isRequired": true
+            }
+          },
+          "label": "Emails",
+          "name": "emails",
+          "type": "array",
+          "value": ""
+        },
+        {
+          "component": "multiinput",
+          "componentconfig": {
+            "component": "input",
+            "defaultinputs": 1,
+            "draggable": true,
+            "placeholder": "your number",
+            "type": "string",
+            "validation": {
+              "isPhoneNumber": true,
+              "isRequired": true
+            }
+          },
+          "label": "Contact numbers",
+          "name": "contactnumbers",
+          "type": "array",
+          "value": ""
+        },
+        {
+          "component": "select",
+          "componentconfig": {
+            "options": [
+              {
+                "displaytext": "",
+                "value": ""
+              },
+              {
+                "displaytext": "Phone",
+                "value": "phone"
+              },
+              {
+                "displaytext": "Email",
+                "value": "email"
+              }
+            ],
+            "placeholder": "choose contact preference",
+            "type": "string",
+            "validation": {
+              "isRequired": true
+            }
+          },
+          "label": "Contact preference",
+          "name": "contactpreference",
+          "type": "single",
+          "value": ""
+        },
+        {
+          "component": "multiinputobjects",
+          "componentconfig": {
+            "allowmultiopen": true,
+            "defaultinputs": 3,
+            "metadata": [
+              {
+                "component": "input",
+                "label": "Url",
+                "name": "url",
+                "placeholder": "url",
+                "type": "string",
+                "validation": {
+                  "isRequired": true
+                }
+              },
+              {
+                "component": "input",
+                "label": "Title",
+                "name": "title",
+                "placeholder": "title",
+                "type": "string",
+                "validation": {
+                  "isRequired": true
+                }
+              },
+              {
+                "component": "textarea",
+                "label": "Description",
+                "name": "description",
+                "placeholder": "description",
+                "type": "string",
+                "validation": {
+                  "isRequired": true
+                }
+              }
+            ]
+          },
+          "label": "Gallery manager",
+          "name": "gallerymanager",
+          "type": "arrayofobjects",
+          "value": ""
+        },
+        {
+          "component": "datepicker",
+          "componentconfig": {
+            "format": "iso",
+            "iscollapsible": false,
+            "placeholder": "Enter date of birth",
+            "position": "relative",
+            "showcalendar": true,
+            "startofweek": "mon",
+            "type": "string",
+            "validation": {
+              "isRequired": true
+            }
+          },
+          "label": "Date of birth",
+          "name": "dateofbirth",
+          "type": "single",
+          "value": ""
+        },
+        {
+          "component": "radio",
+          "componentconfig": {
+            "options": [
+              {
+                "displaytext": "Male",
+                "value": "male"
+              },
+              {
+                "displaytext": "Female",
+                "value": "female"
+              }
+            ],
+            "validation": {
+              "isRequired": true
+            }
+          },
+          "label": "Gender",
+          "name": "gender",
+          "type": "single"
+        },
+        {
+          "component": "counter",
+          "componentconfig": {
+            "default": "1.5",
+            "increment": 0.1,
+            "max": 2.7,
+            "min": 1.1,
+            "units": "metric",
+            "validation": {
+              "isRequired": true
+            }
+          },
+          "label": "Height",
+          "name": "height",
+          "type": "single"
+        },
+        {
+          "component": "rangeslider",
+          "componentconfig": {
+            "increments": 10,
+            "max": 160,
+            "min": 30,
+            "units": "metric",
+            "validation": {
+              "isRequired": true
+            }
+          },
+          "label": "Weight",
+          "name": "weight",
+          "type": "single"
+        },
+        {
+          "component": "multiselectwithinput",
+          "componentconfig": {
+            "defaultinputs": 0,
+            "draggable": true,
+            "options": [
+              {
+                "displaytext": "",
+                "value": ""
+              },
+              {
+                "displaytext": "Youtube",
+                "value": "youtube"
+              },
+              {
+                "displaytext": "Snapchat",
+                "value": "snapchat"
+              },
+              {
+                "displaytext": "Tiktok",
+                "value": "tiktok"
+              },
+              {
+                "displaytext": "Twitter",
+                "value": "twitter"
+              },
+              {
+                "displaytext": "LinkedIn",
+                "value": "linkedin"
+              },
+              {
+                "displaytext": "Pinterest",
+                "value": "pinterest"
+              },
+              {
+                "displaytext": "Facebook",
+                "value": "facebook"
+              },
+              {
+                "displaytext": "Instagram",
+                "value": "instagram"
+              }
+            ],
+            "validation": {
+              "isRequired": true
+            }
+          },
+          "label": "Social media",
+          "name": "socialmedia",
+          "type": "array"
+        },
+        {
+          "component": "multirangeslider",
+          "componentconfig": {
+            "currency": "R",
+            "defaultinputs": "options",
+            "metadata": [
+              {
+                "component": "input",
+                "label": "min",
+                "name": "min",
+                "validation": {
+                  "isNumber": true,
+                  "isRequired": true
+                },
+                "value": 1500
+              },
+              {
+                "component": "input",
+                "label": "max",
+                "name": "max",
+                "validation": {
+                  "isNumber": true,
+                  "isRequired": true
+                },
+                "value": 10000
+              }
+            ],
+            "validation": {
+              "isRequired": true
+            }
+          },
+          "label": "Salary range",
+          "name": "salary",
+          "type": "object"
+        },
+        {
+          "component": "checkbox",
+          "componentconfig": {
+            "options": [
+              {
+                "displaytext": "Weekly",
+                "value": "weekly"
+              },
+              {
+                "displaytext": "Monthly",
+                "value": "monthly"
+              },
+              {
+                "displaytext": "Yearly",
+                "value": "yearly"
+              }
+            ],
+            "validation": {
+              "isRequired": false
+            }
+          },
+          "label": "Subscribe to newsletter",
+          "name": "newsletter",
+          "type": "array"
+        },
+        {
+          "component": "textarea",
+          "componentconfig": {
+            "placeholder": "your notes",
+            "type": "text",
+            "validation": {
+              "isRequired": true
+            }
+          },
+          "label": "Notes",
+          "name": "notes",
+          "type": "single"
+        },
+        {
+          "component": "toggle",
+          "componentconfig": {
+            "type": "string",
+            "validation": {
+              "isRequired": false
+            }
+          },
+          "label": "Hide profile",
+          "name": "hideprofile",
+          "type": "single"
+        },
+        {
+          "component": "upload",
+          "componentconfig": {
+            "validation": {
+              "isRequired": false
+            }
+          },
+          "label": "Upload",
+          "name": "upload",
+          "type": "none"
+        },
+        {
+          "component": "uploaddrop",
+          "componentconfig": {
+            "validation": {
+              "isRequired": false
+            }
+          },
+          "label": "Copy of ID",
+          "name": "idcopy",
+          "type": "none"
+        },
+        {
+          "component": "input",
+          "componentconfig": {
+            "placeholder": "id number",
+            "type": "string",
+            "validation": {
+              "isRequired": true
+            }
+          },
+          "label": "ID number",
+          "name": "idnumber",
+          "type": "single"
+        },
+        {
+          "component": "input",
+          "componentconfig": {
+            "placeholder": "your tax ref. no",
+            "type": "string",
+            "validation": {
+              "isRequired": true
+            }
+          },
+          "label": "Tax number",
+          "name": "taxnumber",
+          "type": "single"
+        }
+      ]
+    },
+    "validation": {
+      "isEmail": false,
+      "isNumber": false,
+      "isPhoneNumber": false,
+      "isRequired": false
+    }
+  }
+}
