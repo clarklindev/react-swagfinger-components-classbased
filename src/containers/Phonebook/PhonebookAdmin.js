@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
 import classes from './PhonebookAdmin.module.scss';
-import {justifyContent, alignItems, alignContent, alignSelf} from '../../shared/alignFlex';
+import * as align from '../../shared/alignFlex';
 
 import * as actions from '../../store/actions/index';
 import InputContext from '../../context/InputContext';
@@ -127,7 +127,7 @@ class PhonebookAdmin extends PureComponent {
                   id={id}
                   displayText={entry}
                   extraText={extra}
-                  align={justifyContent('flex-start')}>
+                  align={align.justifyContent('flex-start')}>
                   <div className={classes.ProfileButtons}>
                     <Button
                       type='WithBorder'

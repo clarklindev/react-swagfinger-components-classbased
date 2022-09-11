@@ -1,6 +1,8 @@
 // actions
 import * as actionTypes from './actionsTypes';
 import axiosInstance from '../../axios-firebase';
+import { CheckValidity as validationCheck } from '../../shared/validation';
+import * as arrayHelper from '../../shared/arrayHelper';
 
 //=======================================================
 

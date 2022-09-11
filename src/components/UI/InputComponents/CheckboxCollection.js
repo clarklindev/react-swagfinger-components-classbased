@@ -61,9 +61,7 @@ class CheckboxCollection extends PureComponent {
               name={this.props.name}
               value={this.props.componentconfig.options[index].value}
               checked={this.state.checked[index] === false ? false : true}
-              index={index}
-              usecontext={true}
-              onChange={this.onChangeHandler} //(index,checked,event)
+              onChange={this.onChangeHandler(index)} //(index,checked,event)
             />
           );
         })}

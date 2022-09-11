@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-const Text = (props) => {
-  return props.children;
+class Text extends Component{
+
+  render(){
+    return (this.props.children);
+  }
 };
 
 export default Text;

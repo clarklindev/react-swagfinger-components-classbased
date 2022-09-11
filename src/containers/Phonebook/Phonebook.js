@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ListItem from '../../components/UI/InputComponents/ListItem';
 import classes from './Phonebook.module.scss';
-import {justifyContent, alignItems, alignContent, alignSelf} from '../../shared/alignFlex';
+import * as align from '../../shared/alignFlex';
 import { connect } from 'react-redux';
 
 import PropTypes from 'prop-types';
@@ -116,7 +116,7 @@ class Phonebook extends Component {
                   hovereffect={true}
                   displayText={entry}
                   extraText={extra}
-                  align={alignSelf('flex-start')}
+                  align={align.alignSelf('flex-start')}
                   onClick={(event) =>
                     this.profileClickHandler(id, event)
                   }></ListItem>

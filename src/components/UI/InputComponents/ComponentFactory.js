@@ -8,6 +8,7 @@ import InputContext from '../../../context/InputContext';
 import MultiSelectWithInput from './MultiSelectWithInput';
 import MultiInput from './MultiInput';
 import MultiInputObjects from './MultiInputObjects';
+import Checkbox from './Checkbox';
 import CheckboxCollection from './CheckboxCollection';
 import RadioCollection from './RadioCollection';
 import Select from './Select';
@@ -82,7 +83,10 @@ class ComponentFactory extends Component {
         this.inputElement = <MultiInputObjects {...this.props.data} />;
         break;
       case 'checkbox':
-        this.inputElement = <CheckboxCollection {...this.props.data} />;
+        this.inputElement = <Checkbox {...this.props.data} />;
+        break;
+      case 'checkboxcollection':
+        this.inputElement = <CheckboxCollection {...this.props.data}/>;
         break;
       case 'counter':
         this.inputElement = <Counter {...this.props.data} />;
