@@ -1,11 +1,17 @@
-import { Component } from 'react';
+import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
+import Card from '../../components/UI/Card/Card';
 
-class Home extends Component {
-  async componentDidMount() {}
+const Home = () => {
+  return (
+    <div>
+      <DefaultPageLayout label='Components'>
+        <Card style={['Padding']}>
+          
+        </Card>
+      </DefaultPageLayout>
+    </div>
+  );
 
-  render() {
-    return 'hello';
-  }
-}
+};
 
 export default Home;
