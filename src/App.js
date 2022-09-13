@@ -24,6 +24,7 @@ import './sass-flexbox-grid.scss';
 class App extends Component {
   componentDidMount() {
     // this.props.onTryAutoSignin();
+    this.props.loadDefaults();
   }
 
   render() {
@@ -39,7 +40,7 @@ class App extends Component {
         <Route path='/profileread' component={ProfileRead} />
         {/* <Route path='/profileupdate' component={ProfileCreateOrUpdate} /> */}
         {/* <Route path='/profilecreate' component={ProfileCreateOrUpdate} /> */}
-        <Route path='/' exact component={Home} /> {/*  default */}
+        <Route path='/' exact component={Phonebook} /> {/*  default */}
   
         <Redirect to='/' />
       </Switch>
@@ -84,9 +85,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     //onTryAutoSignin: () => dispatch(actions.authCheckState()), /** ./actions/auth.js */
 
-    // loadDefaults: () => {
-    //   dispatch(actions.loadDefaults()); //redux => props.phoneBook
-    // },
+    loadDefaults: () => {
+      dispatch(actions.processFetchProfiles()); //redux => props.phoneBook
+    },
     // fetchProfilesCancelHandler: () => {
     //   dispatch(actions.processFetchProfilesCancel());
     // },

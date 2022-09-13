@@ -10,6 +10,7 @@ export const processResetId = () => {
     dispatch(resetId());
   };
 };
+
 export const processFetchProfiles = () => {
   console.log('processFetchProfiles');
   // async constant
@@ -205,6 +206,13 @@ export const profileUpdate = (profile, id) => {
     profileData: { ...profile, id },
   };
 };
+
+
+
+
+
+
+
 
 //fetch profile schema
 export const fetchProfileSchemaStart = () => {
