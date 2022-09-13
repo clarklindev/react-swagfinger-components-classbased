@@ -22,8 +22,8 @@ import './App.scss';
 import './sass-flexbox-grid.scss';
 
 class App extends Component {
-  componentDidMount() {
-    // this.props.onTryAutoSignin();
+  async componentDidMount() {
+    await this.props.onTryAutoSignin();
     this.props.loadDefaults();
   }
 
@@ -83,7 +83,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    //onTryAutoSignin: () => dispatch(actions.authCheckState()), /** ./actions/auth.js */
+    onTryAutoSignin: () => dispatch(actions.authCheckState()), /** ./actions/auth.js */
 
     loadDefaults: () => {
       dispatch(actions.processFetchProfiles()); //redux => props.phoneBook
