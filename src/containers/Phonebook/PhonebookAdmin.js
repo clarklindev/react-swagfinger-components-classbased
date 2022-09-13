@@ -127,7 +127,7 @@ class PhonebookAdmin extends PureComponent {
                   id={id}
                   displayText={entry}
                   extraText={extra}
-                  align={align.justifyContent('flex-start')}>
+                  align={align.justifyContent('space-between')}>
                   <div className={classes.ProfileButtons}>
                     <Button
                       type='WithBorder'
