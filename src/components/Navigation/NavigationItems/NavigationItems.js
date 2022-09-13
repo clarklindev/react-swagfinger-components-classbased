@@ -8,21 +8,23 @@ const navigationItems = (props) => {
     <ul className={classes.NavigationItems}>
       {/* <NavigationItem link="/auth">Auth</NavigationItem> */}
       
-      {props.isAuthenticated ? 'hello'
-      : null}
-
-      
-      {!props.isAuthenticated ? (
-        <React.Fragment>
-        <NavigationItem link='/login'>Login</NavigationItem>
-        <NavigationItem link='/phonebook'>Phonebook</NavigationItem>
-        <NavigationItem link='/phonebookadmin'>Phonebook Admin</NavigationItem>
-        <NavigationItem link='/formbuilder'>Formbuilder</NavigationItem>
-        <NavigationItem link='/faq'>FAQ</NavigationItem>
+      {
+      props.isAuthenticated ?
+        (<React.Fragment>
+          <NavigationItem link='/logout'>Logout</NavigationItem>
+          <NavigationItem link='/phonebook'>Phonebook</NavigationItem>
+          <NavigationItem link='/phonebookadmin'>Phonebook Admin</NavigationItem>
+          <NavigationItem link='/formbuilder'>Formbuilder</NavigationItem>
+          <NavigationItem link='/faq'>FAQ</NavigationItem>
         </React.Fragment>
-      ) : (
-        <NavigationItem link='/logout'>Logout</NavigationItem>
-      )}
+        )
+        :
+        (<React.Fragment>
+          <NavigationItem link='/login'>Login</NavigationItem>
+          <NavigationItem link='/phonebook'>Phonebook</NavigationItem>
+          <NavigationItem link='/faq'>FAQ</NavigationItem>
+        </React.Fragment>)
+      } 
     </ul>
   );
 };
