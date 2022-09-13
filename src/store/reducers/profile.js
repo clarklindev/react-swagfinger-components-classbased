@@ -2,6 +2,62 @@
 import * as actionTypes from '../actions/actionsTypes';
 import { updateObject } from '../../shared/utility';
 
+//reducer
+const reducer = (state = initialState, action) => {
+  switch (action.type) {
+    //add
+    case actionTypes.PROFILE_CREATE:
+      return addProfile(state, action);
+    //update
+    case actionTypes.PROFILE_UPDATE:
+      return updateProfile(state, action);
+    //remove
+    case actionTypes.PROFILE_DELETE:
+      return removeProfile(state, action);
+
+    //schema
+    case actionTypes.FETCH_PROFILE_SCHEMA_START:
+      return fetchProfileSchemaStart(state, action);
+
+    case actionTypes.FETCH_PROFILE_SCHEMA_SUCCESS:
+      return fetchProfileSchemaSuccess(state, action);
+
+    case actionTypes.FORMAT_SCHEMA_WITH_DATA:
+      return formatSchemaWithData(state, action);
+
+    case actionTypes.FORMATTED_FORM_CREATED:
+      return formattedFormCreated(state, action);
+
+    case actionTypes.RESET_ID:
+      return resetId(state, action);
+    //CONTACTS
+    case actionTypes.FETCH_PROFILES_START:
+      return fetchProfilesStart(state, action);
+
+    case actionTypes.FETCH_PROFILES_SUCCESS:
+      return fetchProfilesSuccess(state, action);
+
+    case actionTypes.FETCH_PROFILES_FAIL:
+      return fetchProfilesFail(state, action);
+
+    // case actionTypes.FETCH_PROFILES_CANCEL:
+    //   return fetchProfilesCancel(state, action);
+
+    //SINGLE CONTACT
+    case actionTypes.FETCH_PROFILE_START:
+      return fetchProfileStart(state, action);
+
+    case actionTypes.FETCH_PROFILE_SUCCESS:
+      return fetchProfileSuccess(state, action);
+
+    // case actionTypes.FETCH_PROFILE_FAIL:
+    //   return fetchProfileFail(state, action);
+
+    default:
+      return state;
+  }
+};
+
 const initialState = {
   phoneBook: [], //stores firebase data/profiles/id with an id prop
   loading: false,
@@ -119,62 +175,6 @@ const fetchProfileFail = (state, action) => {
     loading: false,
     activeProfile: null,
   });
-};
-
-//reducer
-const reducer = (state = initialState, action) => {
-  switch (action.type) {
-    //add
-    case actionTypes.PROFILE_CREATE:
-      return addProfile(state, action);
-    //update
-    case actionTypes.PROFILE_UPDATE:
-      return updateProfile(state, action);
-    //remove
-    case actionTypes.PROFILE_DELETE:
-      return removeProfile(state, action);
-
-    //schema
-    case actionTypes.FETCH_PROFILE_SCHEMA_START:
-      return fetchProfileSchemaStart(state, action);
-
-    case actionTypes.FETCH_PROFILE_SCHEMA_SUCCESS:
-      return fetchProfileSchemaSuccess(state, action);
-
-    case actionTypes.FORMAT_SCHEMA_WITH_DATA:
-      return formatSchemaWithData(state, action);
-
-    case actionTypes.FORMATTED_FORM_CREATED:
-      return formattedFormCreated(state, action);
-
-    case actionTypes.RESET_ID:
-      return resetId(state, action);
-    //CONTACTS
-    case actionTypes.FETCH_PROFILES_START:
-      return fetchProfilesStart(state, action);
-
-    case actionTypes.FETCH_PROFILES_SUCCESS:
-      return fetchProfilesSuccess(state, action);
-
-    case actionTypes.FETCH_PROFILES_FAIL:
-      return fetchProfilesFail(state, action);
-
-    // case actionTypes.FETCH_PROFILES_CANCEL:
-    //   return fetchProfilesCancel(state, action);
-
-    //SINGLE CONTACT
-    case actionTypes.FETCH_PROFILE_START:
-      return fetchProfileStart(state, action);
-
-    case actionTypes.FETCH_PROFILE_SUCCESS:
-      return fetchProfileSuccess(state, action);
-
-    // case actionTypes.FETCH_PROFILE_FAIL:
-    //   return fetchProfileFail(state, action);
-
-    default:
-      return state;
-  }
 };
 
 export default reducer;

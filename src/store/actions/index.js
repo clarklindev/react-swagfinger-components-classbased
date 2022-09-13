@@ -1,12 +1,16 @@
-//profile
+//profile / phonebook
 export {
   processFetchProfiles,
   processFetchProfilesCancel,
+
+  //profiles
   processFetchProfile,
+  processFetchProfileSchema,
+
   processProfileDelete,
   processProfileCreate,
   processProfileUpdate,
-  processFetchProfileSchema,
+
   formatDataComplete,
   processResetId,
   tryOfflineMode,

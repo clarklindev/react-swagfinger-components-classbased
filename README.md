@@ -9,6 +9,15 @@ My tech stack for this project:
 - SCSS
 - javascript / RegularExpressions
 
+## Assumptions
+
+- Login/logout is not required
+- c:\Users\clark\AppData\Roaming\npm\ is added to system path
+- npm install -g firebase-tools
+- user is logged-in to firebase for cloud functions (cmd: firebase login)
+- firebase init (has been called)
+- firebase deploy (functions have been deployed)
+
 ## Assignment Requirements
 
 Implement a web application where a user can manage an address book
@@ -26,15 +35,6 @@ Implement a web application where a user can manage an address book
 - Use any database/datastore
 - Use any backend technology/framework that is appropriate for the position you are applying for
 - Use any UI technology/framework that is appropriate for the position you are applying for
-
-## Assumptions
-
-- Login/logout is not required
-- c:\Users\clark\AppData\Roaming\npm\ is added to system path
-- npm install -g firebase-tools
-- user is logged-in to firebase for cloud functions (cmd: firebase login)
-- firebase init (has been called)
-- firebase deploy (functions have been deployed)
 
 ---
 
