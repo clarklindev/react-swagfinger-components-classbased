@@ -1,3 +1,5 @@
+@use "sass:math";
+
 $units: 'px';
 
 $gutter: 20px;
@@ -43,15 +45,15 @@ $align-content: (
 );
 
 .container {
-  padding: $gutter / 2;
+  padding: $gutter * 0.5;
 }
 
 // for nested containers with class container-fluid
 .row .container-fluid {
-  margin-top: -$gutter/2;
-  margin-bottom: -$gutter/2;
-  margin-left: -$gutter/2;
-  margin-right: -$gutter/2;
+  margin-top: -$gutter*0.5;
+  margin-bottom: -$gutter*0.5;
+  margin-left: -$gutter*0.5;
+  margin-right: -$gutter*0.5;
   .row {
     margin: 0;
   }
@@ -72,7 +74,7 @@ $align-content: (
   flex-direction: row;
   flex-wrap: wrap;
   //compensate for children's gutter
-  margin: -$gutter/2;
+  margin: -$gutter*0.5;
   align-self: stretch;
   align-content: stretch;
   align-items: stretch;
@@ -88,7 +90,7 @@ $align-content: (
   max-width: 100%;
   width: 100%;
   height: inherit;
-  padding: $gutter / 2;
+  padding: $gutter * 0.5;
 }
 
 //col height is height of content, default is same heights
@@ -111,9 +113,9 @@ $align-content: (
         box-sizing: border-box;
         flex-shrink: 0;
         flex-grow: 1;
-        flex-basis: 100% / $totalcolumns * $i;
-        max-width: 100% / $totalcolumns * $i;
-        padding: $gutter / 2;
+        flex-basis: math.div(100%, $totalcolumns) * $i;
+        max-width: math.div(100%, $totalcolumns) * $i;
+        padding: $gutter * 0.5;
       }
       //auto widths
       .col-#{$prop}-auto-width {
@@ -128,8 +130,8 @@ $align-content: (
           //cant divide by zero check
           margin-left: 0;
         } @else {
-          margin-left: 100% / $totalcolumns * $i;
-          padding: $gutter/2;
+          margin-left: math.div(100%, $totalcolumns) * $i;
+          padding: $gutter*0.5;
         }
       }
     }
