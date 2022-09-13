@@ -14,7 +14,7 @@ const navigationItems = (props) => {
       
       {!props.isAuthenticated ? (
         <React.Fragment>
-        {/* <NavigationItem link='/login'>Login</NavigationItem> */}
+        <NavigationItem link='/login'>Login</NavigationItem>
         <NavigationItem link='/phonebook'>Phonebook</NavigationItem>
         <NavigationItem link='/phonebookadmin'>Phonebook Admin</NavigationItem>
         <NavigationItem link='/formbuilder'>Formbuilder</NavigationItem>

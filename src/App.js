@@ -23,7 +23,7 @@ import './sass-flexbox-grid.scss';
 
 class App extends Component {
   componentDidMount() {
-    this.props.onTryAutoSignin();
+    // this.props.onTryAutoSignin();
   }
 
   render() {
@@ -34,11 +34,11 @@ class App extends Component {
         <Route path='/phonebook' component={Phonebook} /> 
         {/* should be authenticated routes */}
         <Route path='/formbuilder' component={Formbuilder} />
-        <Route path='/phonebookadmin' component={PhonebookAdmin} />  
+        {/* <Route path='/phonebookadmin' component={PhonebookAdmin} />   */}
         {/* profile */}
         <Route path='/profileread' component={ProfileRead} />
-        <Route path='/profileupdate' component={ProfileCreateOrUpdate} />
-        <Route path='/profilecreate' component={ProfileCreateOrUpdate} />
+        {/* <Route path='/profileupdate' component={ProfileCreateOrUpdate} /> */}
+        {/* <Route path='/profilecreate' component={ProfileCreateOrUpdate} /> */}
         <Route path='/' exact component={Home} /> {/*  default */}
   
         <Redirect to='/' />
@@ -47,18 +47,18 @@ class App extends Component {
 
     const authenticatedRoutes = (
       <Switch>
-        {/* <Route path='/formbuilder' component={Formbuilder} />
-        <Route path='/logout' component={Logout} /> */}
+        <Route path='/formbuilder' component={Formbuilder} />
+        <Route path='/logout' component={Logout} /> 
 
-        {/* <Route path='/phonebook' component={Phonebook} /> */}
-        {/* <Route path='/phonebookadmin' component={PhonebookAdmin} /> */}
+        <Route path='/phonebook' component={Phonebook} />
+        <Route path='/phonebookadmin' component={PhonebookAdmin} />
 
-        {/* <Route path='/profileread' component={ProfileRead} /> */}
-        {/* <Route path='/profileupdate' component={ProfileCreateOrUpdate} /> */}
-        {/* <Route path='/profilecreate' component={ProfileCreateOrUpdate} /> */}
+        <Route path='/profileread' component={ProfileRead} />
+        <Route path='/profileupdate' component={ProfileCreateOrUpdate} />
+        <Route path='/profilecreate' component={ProfileCreateOrUpdate} />
 
-        {/* <Route path='/' exact component={PhonebookAdmin} /> */}
-        {/* <Redirect to='/' /> */}
+        <Route path='/' exact component={Phonebook} />
+        <Redirect to='/' />
       </Switch>
     );
 
@@ -82,7 +82,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onTryAutoSignin: () => dispatch(actions.authCheckState()), /** ./actions/auth.js */
+    //onTryAutoSignin: () => dispatch(actions.authCheckState()), /** ./actions/auth.js */
 
     // loadDefaults: () => {
     //   dispatch(actions.loadDefaults()); //redux => props.phoneBook
