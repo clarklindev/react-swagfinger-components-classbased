@@ -33,12 +33,12 @@ export const auth = (login, password, isSignUp) => {
 
     //default url
     let url =
-      'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBcmwi6R0CaeY9l1jfEUo0u71MZsVxldKo';
+      'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDJ6sMYnxypEtTkLaXEmUHq-y9bVeJ0K3c';
 
     if (!isSignUp) {
       url =
         // note firebase v3 is diff from v1, v3: /identitytoolkit/v3/relyingparty/verifyPassword?key=[API_KEY]
-        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBcmwi6R0CaeY9l1jfEUo0u71MZsVxldKo';
+        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDJ6sMYnxypEtTkLaXEmUHq-y9bVeJ0K3c';
     }
     axiosInstance
       .post(url, authData)
