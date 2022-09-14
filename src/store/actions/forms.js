@@ -26,13 +26,13 @@ export const getSchema = (schemapath) => {
 
 export const addSchema = (schemapath, schemaname) =>{
   return {
-    type: actionTypes.ADD_SCHEMA, data: schemaname, schemapath
+    type: actionTypes.FORMS_ADD_SCHEMA, data: schemaname, schemapath
   }
 }
 
-export const fetchStart = () => {return { type: actionTypes.FETCH_START };};
-export const fetchSuccess = (schemapath, data) => {return { type: actionTypes.FETCH_SUCCESS, schemapath: schemapath, data: data };};
-export const fetchFail = (error) => {return { type: actionTypes.FETCH_FAIL, error: error };};
+export const fetchStart = () => {return { type: actionTypes.FORMS_FETCH_START };};
+export const fetchSuccess = (schemapath, data) => {return { type: actionTypes.FORMS_FETCH_SUCCESS, schemapath: schemapath, data: data };};
+export const fetchFail = (error) => {return { type: actionTypes.FORMS_FETCH_FAIL, error: error };};
 
 //addInputHandler is only called on a multiinput type...
   //assumption is working with array hence .concat({})

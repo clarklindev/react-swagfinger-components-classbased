@@ -42,7 +42,7 @@ export const processFetchProfilesCancel = () => {
   source.cancel('Operation cancelled by the user.');
   console.log('REQUEST CANCELLED!!!');
   return {
-    type: actionTypes.FETCH_PROFILES_CANCEL,
+    type: actionTypes.PROFILES_FETCH_CANCEL,
   };
 };
 
@@ -165,13 +165,13 @@ export const processFormatedFormCreated = (formatted) => {
 
 //receives form oject with value properties that is validated
 export const formatDataComplete = (form) => {
-  return { type: actionTypes.FORMAT_SCHEMA_WITH_DATA, data: form };
+  return { type: actionTypes.PROFILE_FORMAT_SCHEMA_WITH_DATA, data: form };
 };
 
 //=======================================================
 export const resetId = () => {
   return {
-    type: actionTypes.RESET_ID,
+    type: actionTypes.PROFILE_RESET_ID,
   };
 };
 export const profileCreate = (profile) => {
@@ -218,21 +218,21 @@ export const profileUpdate = (profile, id) => {
 export const fetchProfileSchemaStart = () => {
   console.log('fetchProfileSchemaStart');
   return {
-    type: actionTypes.FETCH_PROFILE_SCHEMA_START,
+    type: actionTypes.PROFILE_FETCH_SCHEMA_START,
   };
 };
 
 export const fetchProfileSchemaSuccess = (response) => {
   console.log('fetchProfileSchemaSuccess');
   return {
-    type: actionTypes.FETCH_PROFILE_SCHEMA_SUCCESS,
+    type: actionTypes.PROFILE_FETCH_SCHEMA_SUCCESS,
     response: response,
   };
 };
 
 export const formattedFormCreated = (formattedForm) => {
   return {
-    type: actionTypes.FORMATTED_FORM_CREATED,
+    type: actionTypes.PROFILE_FORMATTED_FORM_CREATED,
     formattedForm: formattedForm,
   };
 };
@@ -243,13 +243,13 @@ export const formattedFormCreated = (formattedForm) => {
 
 export const fetchProfilesStart = () => {
   return {
-    type: actionTypes.FETCH_PROFILES_START,
+    type: actionTypes.PROFILES_FETCH_START,
   };
 };
 
 export const fetchProfilesSuccess = (profiles, offlineMode = false) => {
   return {
-    type: actionTypes.FETCH_PROFILES_SUCCESS,
+    type: actionTypes.PROFILES_FETCH_SUCCESS,
     data: { profiles: profiles, offlineMode: offlineMode },
   };
 };
@@ -257,7 +257,7 @@ export const fetchProfilesSuccess = (profiles, offlineMode = false) => {
 export const fetchProfilesFail = (error) => {
   console.log('fetchProfilesFail');
   return {
-    type: actionTypes.FETCH_PROFILES_FAIL,
+    type: actionTypes.PROFILES_FETCH_FAIL,
     error: error,
   };
 };
@@ -267,21 +267,21 @@ export const fetchProfilesFail = (error) => {
 export const fetchProfileStart = () => {
   console.log('FUNCTION fetchSingleProfileStart');
   return {
-    type: actionTypes.FETCH_PROFILE_START,
+    type: actionTypes.PROFILE_FETCH_START,
   };
 };
 
 export const fetchProfileSuccess = (queryparam, profile) => {
   console.log('FUNCTION fetchSingleProfileSuccess');
   return {
-    type: actionTypes.FETCH_PROFILE_SUCCESS,
+    type: actionTypes.PROFILE_FETCH_SUCCESS,
     data: { profile: profile, queryparam: queryparam },
   };
 };
 
 export const fetchProfileFail = (error) => {
   return {
-    type: actionTypes.FETCH_PROFILE_FAIL,
+    type: actionTypes.PROFILE_FETCH_FAIL,
     error: error,
   };
 };

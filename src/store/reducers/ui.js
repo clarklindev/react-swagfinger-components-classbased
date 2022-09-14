@@ -12,7 +12,7 @@ const shouldHideToolbar = (state, action) => {
 //reducer
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.SHOW_TOOLBAR:
+    case actionTypes.UI_SHOW_TOOLBAR:
       return shouldHideToolbar(state, action);
     default:
       return state;

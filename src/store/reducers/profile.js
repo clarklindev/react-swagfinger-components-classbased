@@ -16,41 +16,41 @@ const reducer = (state = initialState, action) => {
       return removeProfile(state, action);
 
     //schema
-    case actionTypes.FETCH_PROFILE_SCHEMA_START:
+    case actionTypes.PROFILE_FETCH_SCHEMA_START:
       return fetchProfileSchemaStart(state, action);
 
-    case actionTypes.FETCH_PROFILE_SCHEMA_SUCCESS:
+    case actionTypes.PROFILE_FETCH_SCHEMA_SUCCESS:
       return fetchProfileSchemaSuccess(state, action);
 
-    case actionTypes.FORMAT_SCHEMA_WITH_DATA:
+    case actionTypes.PROFILE_FORMAT_SCHEMA_WITH_DATA:
       return formatSchemaWithData(state, action);
 
-    case actionTypes.FORMATTED_FORM_CREATED:
+    case actionTypes.PROFILE_FORMATTED_FORM_CREATED:
       return formattedFormCreated(state, action);
 
-    case actionTypes.RESET_ID:
+    case actionTypes.PROFILE_RESET_ID:
       return resetId(state, action);
     //CONTACTS
-    case actionTypes.FETCH_PROFILES_START:
+    case actionTypes.PROFILES_FETCH_START:
       return fetchProfilesStart(state, action);
 
-    case actionTypes.FETCH_PROFILES_SUCCESS:
+    case actionTypes.PROFILES_FETCH_SUCCESS:
       return fetchProfilesSuccess(state, action);
 
-    case actionTypes.FETCH_PROFILES_FAIL:
+    case actionTypes.PROFILES_FETCH_FAIL:
       return fetchProfilesFail(state, action);
 
-    // case actionTypes.FETCH_PROFILES_CANCEL:
+    // case actionTypes.PROFILES_FETCH_CANCEL:
     //   return fetchProfilesCancel(state, action);
 
     //SINGLE CONTACT
-    case actionTypes.FETCH_PROFILE_START:
+    case actionTypes.PROFILE_FETCH_START:
       return fetchProfileStart(state, action);
 
-    case actionTypes.FETCH_PROFILE_SUCCESS:
+    case actionTypes.PROFILE_FETCH_SUCCESS:
       return fetchProfileSuccess(state, action);
 
-    // case actionTypes.FETCH_PROFILE_FAIL:
+    // case actionTypes.PROFILE_FETCH_FAIL:
     //   return fetchProfileFail(state, action);
 
     default:

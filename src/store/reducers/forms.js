@@ -6,13 +6,13 @@ import { updateObject } from '../../shared/utility';
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     //add
-    case actionTypes.FETCH_START:
+    case actionTypes.FORMS_FETCH_START:
       return fetchStart(state, action);
-    case actionTypes.FETCH_SUCCESS:
+    case actionTypes.FORMS_FETCH_SUCCESS:
       return fetchSuccess(state, action);
-    case actionTypes.FETCH_FAIL:
+    case actionTypes.FORMS_FETCH_FAIL:
       return fetchFail(state, action);
-    case actionTypes.ADD_SCHEMA:
+    case actionTypes.FORMS_ADD_SCHEMA:
       return addSchema(state, action);
     default:
       return state;
@@ -32,6 +32,7 @@ const fetchStart = (state, action) => {
 };
 
 const fetchSuccess = (state, action) => {
+  console.log('formlist: ', {...state.formlist, [action.schemapath]:action.data });
   return updateObject(state, { loading: false, formlist: {...state.formlist, [action.schemapath]:action.data }});
 };
 
