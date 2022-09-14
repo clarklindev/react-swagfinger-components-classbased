@@ -45,36 +45,36 @@ class ProfileCreateOrUpdate extends Component {
 
   componentDidUpdate(prevProps) {
     //...schema updated from redux
-    // if (prevProps.schema !== this.props.schema) {
-    //   console.log('COMPONENTDIDUPDATE - props.schema ', this.props.schema);
-    //   //our schema is as per firebase at this moment, createPlaceholders changes this by giving each item in schema a value property
-    //   this.createPlaceholders(this.props.schema);
-    // }
+    if (prevProps.schema !== this.props.schema) {
+      console.log('COMPONENTDIDUPDATE - props.schema ', this.props.schema);
+      //our schema is as per firebase at this moment, createPlaceholders changes this by giving each item in schema a value property
+      this.createPlaceholders(this.props.schema);
+    }
 
-    // if (prevProps.formattedForm !== this.props.formattedForm) {
-    //   //gets a single profile depending on id
-    //   //sets up props.id accessed via redux state state.profile.urlQuerystringId
-    //   //sets up props.activeProfile accessed via redux state state.profile.activeProfile
-    //   console.log('this.props.formattedForm:', this.props.formattedForm);
-    //   this.setState({
-    //     localstateform: this.props.formattedForm,
-    //   });
-    //   this.getDataProfileByIdHandler();
-    // }
+    if (prevProps.formattedForm !== this.props.formattedForm) {
+      //gets a single profile depending on id
+      //sets up props.id accessed via redux state state.profile.urlQuerystringId
+      //sets up props.activeProfile accessed via redux state state.profile.activeProfile
+      console.log('this.props.formattedForm:', this.props.formattedForm);
+      this.setState({
+        localstateform: this.props.formattedForm,
+      });
+      this.getDataProfileByIdHandler();
+    }
 
-    // // //this step deals with metadata if there are multiple entry fields (object) under each value from firebase
-    // if (prevProps.activeProfile !== this.props.activeProfile) {
-    //   console.log('COMPONENTDIDUPDATE props.activeProfile');
-    //   console.log('props.activeProfile:', this.props.activeProfile);
-    //   this.assignValuesToPlaceholders(); //for a single profile...
-    // }
+    // //this step deals with metadata if there are multiple entry fields (object) under each value from firebase
+    if (prevProps.activeProfile !== this.props.activeProfile) {
+      console.log('COMPONENTDIDUPDATE props.activeProfile');
+      console.log('props.activeProfile:', this.props.activeProfile);
+      this.assignValuesToPlaceholders(); //for a single profile...
+    }
 
-    // if (prevProps.formattedFormWithData !== this.props.formattedFormWithData) {
-    //   console.log('formattedFormWithData: ', this.props.formattedFormWithData);
-    //   this.setState({
-    //     localstateform: this.props.formattedFormWithData,
-    //   });
-    // }
+    if (prevProps.formattedFormWithData !== this.props.formattedFormWithData) {
+      console.log('formattedFormWithData: ', this.props.formattedFormWithData);
+      this.setState({
+        localstateform: this.props.formattedFormWithData,
+      });
+    }
   }
 
   //-----------------------------------------------
