@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 //class is used for redirecting to Logout page and logging out
 class Logout extends Component {
   componentDidMount() {
-    this.props.onLogout();
+    this.props.authLogout();
   }
   render() {
     return <Redirect to='/' />;
@@ -15,7 +15,7 @@ class Logout extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onLogout: () => dispatch(actions.logout()),
+    authLogout: () => dispatch(actions.authLogout()),
   };
 };
 

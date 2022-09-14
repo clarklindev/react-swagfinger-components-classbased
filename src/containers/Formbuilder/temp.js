@@ -829,7 +829,7 @@ const mapDispatchToProps = (dispatch) => {
     onAddNewForm: (schemaListPath, newFormName)=>{
       console.log('schemaListPath: ', schemaListPath);
       console.log('newFormName: ', newFormName);
-      dispatch(actions.addSchema(schemaListPath, newFormName));
+      dispatch(actions.formAddSchema(schemaListPath, newFormName));
     }
     
     

@@ -153,7 +153,7 @@ class Login extends Component {
     event.preventDefault(); //prevents reloading of page
     //console.log('login: ', this.state.form.login.value.data);
     //console.log('password: ', this.state.form.password.value.data);
-    this.props.onAuth(
+    this.props.authLogin(
       this.state.form.login.value.data,
       this.state.form.password.value.data,
       this.state.isSignUp
@@ -258,8 +258,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onAuth: (login, password, isSignup) => {
-      return dispatch(actions.auth(login, password, isSignup));
+    authLogin: (login, password, isSignup) => {
+      return dispatch(actions.authLogin(login, password, isSignup));
     },
   };
 };

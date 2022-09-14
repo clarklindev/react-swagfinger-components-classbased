@@ -18,7 +18,7 @@ export {
 } from './profile';
 
 //auth
-export { auth, logout, setAuthRedirectPath, authCheckState } from './auth';
+export { authLogin, authLogout, setAuthRedirectPath, authCheckState } from './auth';
 
 //ui
 export { hasToolbar } from './ui';

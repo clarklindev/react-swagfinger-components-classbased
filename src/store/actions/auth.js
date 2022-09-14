@@ -22,7 +22,7 @@ export const authFail = (error) => {
 };
 
 //async
-export const auth = (login, password, isSignUp) => {
+export const authLogin = (login, password, isSignUp) => {
   return (dispatch) => {
     dispatch(authStart());
     const authData = {
@@ -51,7 +51,7 @@ export const auth = (login, password, isSignUp) => {
         const expiryTime = tempTime + response.data.expiresIn * 1000;
         //console.log('expiryTime: ', expiryTime);
 
-        const currentDate = new Date();
+       const currentDate = new Date();
         const expirationDate = new Date(expiryTime);
         //console.log('CURRENT DATE: ', currentDate);
         //console.log('SAVING EXPIRATION DATE: ', expirationDate);
@@ -64,7 +64,7 @@ export const auth = (login, password, isSignUp) => {
         //invalidate token if timedout
         //start timer for token
         //expiresIn - amount of seconds until expires...
-        dispatch(checkAuthTimeout(response.data.expiresIn));
+        dispatch(authCheckTimeout(response.data.expiresIn));
       })
       .catch((err) => {
         console.log('ERROR: ', err);
@@ -74,7 +74,7 @@ export const auth = (login, password, isSignUp) => {
       });
   };
 };
-export const logout = () => {
+export const authLogout = () => {
   //remove data in local storage
   localStorage.removeItem('token');
   localStorage.removeItem('expirationdate');
@@ -86,10 +86,10 @@ export const logout = () => {
 };
 
 //starts with authSuccess
-export const checkAuthTimeout = (expirationTime) => {
+export const authCheckTimeout = (expirationTime) => {
   return (dispatch) => {
     setTimeout(() => {
-      dispatch(logout()); //note: execute logout()
+      dispatch(authLogout()); //note: execute authLogout()
     }, expirationTime * 1000); //*1000 to convert from milliseconds (setTimeout units)
   };
 };
@@ -100,7 +100,7 @@ export const authCheckState = () => {
     const token = localStorage.getItem('token');
     //console.log('TOKEN:', token);
     if (!token) {
-      dispatch(logout());
+      dispatch(authLogout());
     } else {
       //console.log('LOCAL STORAGE: ', localStorage);
       const expirationDate = new Date(localStorage.getItem('expirationdate'));
@@ -108,12 +108,12 @@ export const authCheckState = () => {
       //login ONLY if expirationDate is further ahead of current date
       if (expirationDate.getTime() <= new Date().getTime()) {
         //console.log('LOGGGING OUT');
-        dispatch(logout());
+        dispatch(authLogout());
       } else {
         const userId = localStorage.getItem('userid');
         dispatch(authSuccess(token, userId));
         dispatch(
-          checkAuthTimeout(
+          authCheckTimeout(
             (expirationDate.getTime() - new Date().getTime()) / 1000
           )
         );

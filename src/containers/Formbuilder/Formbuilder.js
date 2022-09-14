@@ -331,7 +331,7 @@ const mapDispatchToProps = (dispatch) => {
     },
 
     onAddNewForm: (name)=>{
-      dispatch(actions.addSchema(name));
+      dispatch(actions.formAddSchema(name));
     }
   };
 };

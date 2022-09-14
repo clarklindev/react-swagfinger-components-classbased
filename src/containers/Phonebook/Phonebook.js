@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
-import ListItem from '../../components/UI/InputComponents/ListItem';
-import classes from './Phonebook.module.scss';
-import * as align from '../../shared/alignFlex';
 import { connect } from 'react-redux';
 
 import PropTypes from 'prop-types';
+
+import classes from './Phonebook.module.scss';
+import * as align from '../../shared/alignFlex';
+
 import InputContext from '../../context/InputContext';
+
 import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
-import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
-import Spinner from '../../components/UI/Loaders/Spinner';
 import Card from '../../components/UI/Card/Card';
+import ComponentFactory from '../../components/UI/InputComponents/ComponentFactory';
+import ListItem from '../../components/UI/InputComponents/ListItem';
+import Spinner from '../../components/UI/Loaders/Spinner';
 
 class Phonebook extends Component {
   state = {

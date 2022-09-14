@@ -7,13 +7,13 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     //add
     case actionTypes.FORMS_FETCH_START:
-      return fetchStart(state, action);
+      return formFetchStart(state, action);
     case actionTypes.FORMS_FETCH_SUCCESS:
-      return fetchSuccess(state, action);
+      return formFetchSuccess(state, action);
     case actionTypes.FORMS_FETCH_FAIL:
-      return fetchFail(state, action);
+      return formFetchFail(state, action);
     case actionTypes.FORMS_ADD_SCHEMA:
-      return addSchema(state, action);
+      return formAddSchema(state, action);
     default:
       return state;
   }
@@ -27,20 +27,20 @@ const initialState = {
 };
 
 //single contact
-const fetchStart = (state, action) => {
+const formFetchStart = (state, action) => {
   return updateObject(state, { loading: true });
 };
 
-const fetchSuccess = (state, action) => {
+const formFetchSuccess = (state, action) => {
   console.log('formlist: ', {...state.formlist, [action.schemapath]:action.data });
   return updateObject(state, { loading: false, formlist: {...state.formlist, [action.schemapath]:action.data }});
 };
 
-const fetchFail = (state, action) => {
+const formFetchFail = (state, action) => {
   return updateObject(state, { loading: false, error: action.error });
 };
 
-const addSchema = (state, action)=>{
+const formAddSchema = (state, action)=>{
   return updateObject(state, {formlist:{...state.formlist, [action.schemapath]:{...state.formlist[action.schemapath], [action.data]:[]} }})
 }
 

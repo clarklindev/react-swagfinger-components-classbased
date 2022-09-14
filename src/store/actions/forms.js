@@ -9,30 +9,30 @@ import * as arrayHelper from '../../shared/arrayHelper';
 export const getSchema = (schemapath) => {
   console.log('FUNCTION getSchema: ', schemapath);
   return (dispatch) => {
-    dispatch(fetchStart);
+    dispatch(formFetchStart);
     axiosInstance
       .get(schemapath+'.json')
       .then((response) => {
         console.log('RESPONSE', response);
-        dispatch(fetchSuccess(schemapath, response.data));
+        dispatch(formFetchSuccess(schemapath, response.data));
       })
       .catch((err) => {
         console.log('ERROR: ', err);
         console.log('ERROR MESSAGE: ', err.message);
-        dispatch(fetchFail(err));
+        dispatch(formFetchFail(err));
       });
   };
 };
 
-export const addSchema = (schemapath, schemaname) =>{
+export const formAddSchema = (schemapath, schemaname) =>{
   return {
     type: actionTypes.FORMS_ADD_SCHEMA, data: schemaname, schemapath
   }
 }
 
-export const fetchStart = () => {return { type: actionTypes.FORMS_FETCH_START };};
-export const fetchSuccess = (schemapath, data) => {return { type: actionTypes.FORMS_FETCH_SUCCESS, schemapath: schemapath, data: data };};
-export const fetchFail = (error) => {return { type: actionTypes.FORMS_FETCH_FAIL, error: error };};
+export const formFetchStart = () => {return { type: actionTypes.FORMS_FETCH_START };};
+export const formFetchSuccess = (schemapath, data) => {return { type: actionTypes.FORMS_FETCH_SUCCESS, schemapath: schemapath, data: data };};
+export const formFetchFail = (error) => {return { type: actionTypes.FORMS_FETCH_FAIL, error: error };};
 
 //addInputHandler is only called on a multiinput type...
   //assumption is working with array hence .concat({})
