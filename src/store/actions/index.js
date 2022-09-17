@@ -1,14 +1,17 @@
 //profile
 export {
-  processFetchProfile,
   processFetchProfileSchema,
+  processFormatedFormCreated,
+  
+  
+  processFetchProfile,
 
   processProfileDelete,
   processProfileCreate,
   processProfileUpdate,
   
   formatDataComplete,
-  processFormatedFormCreated,
+  
 } from './profile';
 
 //phonebook

@@ -45,9 +45,10 @@ class Input extends PureComponent {
 
   inputChangeHandler = (event) => {
     if (this.props.onChange) {
-      //console.log('CALL PARENT ONCHANGE...');
+      console.log('CALL PROP ONCHANGE...');
       this.props.onChange(event);
     } else {
+      console.log('CALL CONTEXT ONCHANGE...');
       this.context.changed(
         this.props.type,
         this.props.name,

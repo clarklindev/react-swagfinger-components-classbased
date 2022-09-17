@@ -28,7 +28,7 @@
         "lastname": "Apple",
         "name": "Adam",
         "notes": "poomoocc",
-        "privateprofile": true,
+        "hideprofile": true,
         "salary": {
           "max": 10000,
           "min": 3000

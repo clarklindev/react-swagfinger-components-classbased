@@ -2,24 +2,50 @@
 import * as actionTypes from '../actions/actionsTypes';
 import { updateObject } from '../../shared/utility';
 
+const initialState = {
+  loading:false,
+
+  //fetchProfileSchemaSuccess()
+  schema: [],
+
+  //formattedFormCreated()
+  formattedFormObject: null, //without data
+  
+  //fetchProfileSuccess()
+  urlQuerystringId: null,
+  activeProfile: null, //the actual object with all the props of the form
+
+
+
+
+
+
+
+
+  formattedFormWithData: null,
+  error: null,
+};
+
 //reducer
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    //schema
+    case actionTypes.PROFILE_FETCH_SCHEMA_START: return fetchProfileSchemaStart(state, action);
+    case actionTypes.PROFILE_FETCH_SCHEMA_SUCCESS: return fetchProfileSchemaSuccess(state, action);
+    case actionTypes.PROFILE_FORMATTED_FORM_CREATED: return formattedFormCreated(state, action);
+    //SINGLE CONTACT
+    case actionTypes.PROFILE_FETCH_START: return fetchProfileStart(state, action);
+    case actionTypes.PROFILE_FETCH_SUCCESS: return fetchProfileSuccess(state, action);
+    case actionTypes.PROFILE_FORMAT_SCHEMA_WITH_DATA: return formatSchemaWithData(state, action);
+
+
+
+
+
 
     case actionTypes.PROFILE_CREATE: return addProfile(state, action); //add
     case actionTypes.PROFILE_UPDATE: return updateProfile(state, action); //update
     case actionTypes.PROFILE_DELETE: return removeProfile(state, action); //remove
-
-    //schema
-    case actionTypes.PROFILE_FETCH_SCHEMA_START: return fetchProfileSchemaStart(state, action);
-    case actionTypes.PROFILE_FETCH_SCHEMA_SUCCESS: return fetchProfileSchemaSuccess(state, action);
-    case actionTypes.PROFILE_FORMAT_SCHEMA_WITH_DATA: return formatSchemaWithData(state, action);
-    case actionTypes.PROFILE_FORMATTED_FORM_CREATED: return formattedFormCreated(state, action);
-   
-
-    //SINGLE CONTACT
-    case actionTypes.PROFILE_FETCH_START: return fetchProfileStart(state, action);
-    case actionTypes.PROFILE_FETCH_SUCCESS: return fetchProfileSuccess(state, action);
     // case actionTypes.PROFILE_FETCH_FAIL: return fetchProfileFail(state, action);
 
     default:
@@ -27,16 +53,63 @@ const reducer = (state = initialState, action) => {
   }
 };
 
-const initialState = {
-  
-  schema: [],
-
-  urlQuerystringId: null,
-  activeProfile: null, //the actual object with all the props of the form
-  formattedForm: null, //without data
-  formattedFormWithData: null,
-  error: null,
+//schema
+const fetchProfileSchemaStart = (state, action) => {
+  console.log('reducers->profile->fetchProfileSchemaStart()');
+  console.log('REDUCER -> loading : true');
+  return updateObject(state, { loading: true });
 };
+const fetchProfileSchemaSuccess = (state, action) => {
+  console.log('reducers->profile->fetchProfileSchemaSuccess()');
+  console.log('REDUCER -> schema : action.response.data');
+  console.log('REDUCER -> loading : false');
+  return updateObject(state, { schema: action.response.data, loading: false });
+};
+
+const formattedFormCreated = (state, action) => {
+  console.log('reducers->profile->formattedFormCreated()');
+  console.log('REDUCER -> formattedFormObject : action.formattedFormObject');
+  return updateObject(state, {
+    formattedFormObject: action.formattedFormObject,
+  });
+};
+
+//single contact
+const fetchProfileStart = (state, action) => {
+  console.log('reducers->profile->fetchProfileStart()');
+  console.log('REDUCER -> loading:true');
+  console.log('REDUCER -> activeProfile:null');
+  return updateObject(state, { 
+    loading: true, 
+    activeProfile: null 
+  });
+};
+const fetchProfileSuccess = (state, action) => {
+  console.log('reducers->profile->fetchProfileSuccess()');
+  console.log(`REDUCER -> activeProfile: action.data.activeProfile =`, action.data.activeProfile);
+  console.log(`REDUCER -> urlQuerystringId: action.data.queryparam = ${action.data.queryparam}`);
+  return updateObject(state, {
+    loading: false,
+    activeProfile: action.data.activeProfile,
+    urlQuerystringId: action.data.queryparam,
+  });
+};
+
+const formatSchemaWithData = (state, action) => {
+  return updateObject(state, {
+    state,
+    loading: false,
+    formattedFormWithData: action.data,
+  });
+};
+
+
+
+
+
+
+
+
 
 
 const addProfile = (state, action) => {
@@ -71,50 +144,7 @@ const removeProfile = (state, action) => {
   return updateObject(state, { phoneBook: updatedArray });
 };
 
-//schema
-const fetchProfileSchemaStart = (state, action) => {
-  return updateObject(state, { loading: true });
-};
 
-const fetchProfileSchemaSuccess = (state, action) => {
-  return updateObject(state, { schema: action.response.data, loading: false });
-};
-
-const formatSchemaWithData = (state, action) => {
-  return updateObject(state, {
-    state,
-    loading: false,
-    formattedFormWithData: action.data,
-  });
-};
-
-const formattedFormCreated = (state, action) => {
-  console.log('redux formattedForm: ', action.formattedForm);
-  return updateObject(state, {
-    formattedForm: action.formattedForm,
-  });
-};
-
-
-
-
-
-
-
-//single contact
-const fetchProfileStart = (state, action) => {
-  return updateObject(state, { loading: true, activeProfile: null });
-};
-
-
-const fetchProfileSuccess = (state, action) => {
-  console.log('fetchProfileSuccess: ', action.data.queryparam);
-  return updateObject(state, {
-    loading: false,
-    activeProfile: action.data.profile,
-    urlQuerystringId: action.data.queryparam,
-  });
-};
 
 // const fetchProfileFail = (state, action) => {
 //   return updateObject(state, {
@@ -123,5 +153,10 @@ const fetchProfileSuccess = (state, action) => {
 //     activeProfile: null,
 //   });
 // };
+
+
+
+
+
 
 export default reducer;
