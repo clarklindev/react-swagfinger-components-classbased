@@ -14,7 +14,7 @@ const navigationItems = (props) => {
           <NavigationItem link='/logout'>Logout</NavigationItem>
           <NavigationItem link='/phonebook'>Phonebook</NavigationItem>
           <NavigationItem link='/phonebookadmin'>Phonebook Admin</NavigationItem>
-          <NavigationItem link='/formbuilder'>Formbuilder</NavigationItem>
+          {/* <NavigationItem link='/formbuilder'>Formbuilder</NavigationItem> */}
           <NavigationItem link='/faq'>FAQ</NavigationItem>
         </React.Fragment>
         )

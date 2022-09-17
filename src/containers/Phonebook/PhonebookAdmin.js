@@ -195,9 +195,9 @@ class PhonebookAdmin extends PureComponent {
 
 const mapStateToProps = (state) => {
   return {
-    //profile
-    storedPhonebook: state.profile.phoneBook,
-    isLoading: state.profile.loading,
+    //phonebook
+    storedPhonebook: state.phonebook.phoneBook,
+    isLoading: state.phonebook.loading,
     //auth
     token: state.auth.token,
   };

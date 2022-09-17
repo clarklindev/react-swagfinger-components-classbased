@@ -1,21 +1,23 @@
-//profile / phonebook
+//profile
 export {
-  processFetchProfiles,
-  processFetchProfilesCancel,
-
-  //profiles
   processFetchProfile,
   processFetchProfileSchema,
 
   processProfileDelete,
   processProfileCreate,
   processProfileUpdate,
-
+  
   formatDataComplete,
-  processResetId,
-  tryOfflineMode,
-  processFormatedFormCreated
+  processFormatedFormCreated,
 } from './profile';
+
+//phonebook
+export {
+  processResetId,
+  phonebookLoadProfiles,
+  // processFetchProfilesCancel,
+  // tryOfflineMode
+} from './phonebook';
 
 //auth
 export { authLogin, authLogout, setAuthRedirectPath, authCheckState } from './auth';
@@ -24,4 +26,4 @@ export { authLogin, authLogout, setAuthRedirectPath, authCheckState } from './au
 export { hasToolbar } from './ui';
 
 //forms
-export { getSchema } from './forms';
+// export { getSchema } from './forms';

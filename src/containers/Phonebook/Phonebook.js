@@ -164,8 +164,8 @@ class Phonebook extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    storedPhonebook: state.profile.phoneBook,
-    isLoading: state.profile.loading,
+    storedPhonebook: state.phonebook.phoneBook,
+    isLoading: state.phonebook.loading,
   };
 };
 

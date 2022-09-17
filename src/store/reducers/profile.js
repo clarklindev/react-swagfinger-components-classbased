@@ -5,53 +5,22 @@ import { updateObject } from '../../shared/utility';
 //reducer
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    //add
-    case actionTypes.PROFILE_CREATE:
-      return addProfile(state, action);
-    //update
-    case actionTypes.PROFILE_UPDATE:
-      return updateProfile(state, action);
-    //remove
-    case actionTypes.PROFILE_DELETE:
-      return removeProfile(state, action);
+
+    case actionTypes.PROFILE_CREATE: return addProfile(state, action); //add
+    case actionTypes.PROFILE_UPDATE: return updateProfile(state, action); //update
+    case actionTypes.PROFILE_DELETE: return removeProfile(state, action); //remove
 
     //schema
-    case actionTypes.PROFILE_FETCH_SCHEMA_START:
-      return fetchProfileSchemaStart(state, action);
-
-    case actionTypes.PROFILE_FETCH_SCHEMA_SUCCESS:
-      return fetchProfileSchemaSuccess(state, action);
-
-    case actionTypes.PROFILE_FORMAT_SCHEMA_WITH_DATA:
-      return formatSchemaWithData(state, action);
-
-    case actionTypes.PROFILE_FORMATTED_FORM_CREATED:
-      return formattedFormCreated(state, action);
-
-    case actionTypes.PROFILE_RESET_ID:
-      return resetId(state, action);
-    //CONTACTS
-    case actionTypes.PROFILES_FETCH_START:
-      return fetchProfilesStart(state, action);
-
-    case actionTypes.PROFILES_FETCH_SUCCESS:
-      return fetchProfilesSuccess(state, action);
-
-    case actionTypes.PROFILES_FETCH_FAIL:
-      return fetchProfilesFail(state, action);
-
-    // case actionTypes.PROFILES_FETCH_CANCEL:
-    //   return fetchProfilesCancel(state, action);
+    case actionTypes.PROFILE_FETCH_SCHEMA_START: return fetchProfileSchemaStart(state, action);
+    case actionTypes.PROFILE_FETCH_SCHEMA_SUCCESS: return fetchProfileSchemaSuccess(state, action);
+    case actionTypes.PROFILE_FORMAT_SCHEMA_WITH_DATA: return formatSchemaWithData(state, action);
+    case actionTypes.PROFILE_FORMATTED_FORM_CREATED: return formattedFormCreated(state, action);
+   
 
     //SINGLE CONTACT
-    case actionTypes.PROFILE_FETCH_START:
-      return fetchProfileStart(state, action);
-
-    case actionTypes.PROFILE_FETCH_SUCCESS:
-      return fetchProfileSuccess(state, action);
-
-    // case actionTypes.PROFILE_FETCH_FAIL:
-    //   return fetchProfileFail(state, action);
+    case actionTypes.PROFILE_FETCH_START: return fetchProfileStart(state, action);
+    case actionTypes.PROFILE_FETCH_SUCCESS: return fetchProfileSuccess(state, action);
+    // case actionTypes.PROFILE_FETCH_FAIL: return fetchProfileFail(state, action);
 
     default:
       return state;
@@ -59,8 +28,7 @@ const reducer = (state = initialState, action) => {
 };
 
 const initialState = {
-  phoneBook: [], //stores firebase data/profiles/id with an id prop
-  loading: false,
+  
   schema: [],
 
   urlQuerystringId: null,
@@ -70,14 +38,6 @@ const initialState = {
   error: null,
 };
 
-const resetId = (state, action) => {
-  return updateObject(state, {
-    urlQuerystringId: null,
-    activeProfile: null,
-    formattedForm: null,
-    formattedFormWithData: null,
-  });
-};
 
 const addProfile = (state, action) => {
   console.log('PROFILE ADDED');
@@ -135,30 +95,17 @@ const formattedFormCreated = (state, action) => {
   });
 };
 
-//contacts
-const fetchProfilesStart = (state, action) => {
-  return updateObject(state, { loading: true });
-};
 
-const fetchProfilesFail = (state, action) => {
-  return updateObject(state, { loading: false, error: action.error });
-};
 
-const fetchProfilesSuccess = (state, action) => {
-  return updateObject(state, {
-    phoneBook: action.data.profiles,
-    loading: false,
-  });
-};
 
-const fetchProfilesCancel = (state, action) => {
-  return state;
-};
+
+
 
 //single contact
 const fetchProfileStart = (state, action) => {
   return updateObject(state, { loading: true, activeProfile: null });
 };
+
 
 const fetchProfileSuccess = (state, action) => {
   console.log('fetchProfileSuccess: ', action.data.queryparam);
@@ -169,12 +116,12 @@ const fetchProfileSuccess = (state, action) => {
   });
 };
 
-const fetchProfileFail = (state, action) => {
-  return updateObject(state, {
-    state,
-    loading: false,
-    activeProfile: null,
-  });
-};
+// const fetchProfileFail = (state, action) => {
+//   return updateObject(state, {
+//     state,
+//     loading: false,
+//     activeProfile: null,
+//   });
+// };
 
 export default reducer;

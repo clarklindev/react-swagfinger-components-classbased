@@ -8,7 +8,7 @@ import Layout from './hoc/Layout/Layout';
 import Home from './containers/Home/Home';
 import Login from './containers/Auth/Login';
 import Logout from './containers/Auth/Logout';
-import Formbuilder from './containers/Formbuilder/Formbuilder';
+// import Formbuilder from './containers/Formbuilder/Formbuilder';
 import Phonebook from './containers/Phonebook/Phonebook';
 import PhonebookAdmin from './containers/Phonebook/PhonebookAdmin';
 import ProfileRead from './containers/Profile/ProfileRead';
@@ -34,7 +34,7 @@ class App extends Component {
         <Route path='/faq' component={Faq} />
         <Route path='/phonebook' component={Phonebook} /> 
         {/* should be authenticated routes */}
-        <Route path='/formbuilder' component={Formbuilder} />
+        {/* <Route path='/formbuilder' component={Formbuilder} /> */}
         {/* <Route path='/phonebookadmin' component={PhonebookAdmin} />   */}
         {/* profile */}
         <Route path='/profileread' component={ProfileRead} />
@@ -48,7 +48,7 @@ class App extends Component {
 
     const authenticatedRoutes = (
       <Switch>
-        <Route path='/formbuilder' component={Formbuilder} />
+        {/* <Route path='/formbuilder' component={Formbuilder} /> */}
         <Route path='/logout' component={Logout} /> 
 
         <Route path='/phonebook' component={Phonebook} />
@@ -86,11 +86,9 @@ const mapDispatchToProps = (dispatch) => {
     onTryAutoSignin: () => dispatch(actions.authCheckState()), /** ./actions/auth.js */
 
     loadDefaults: () => {
-      dispatch(actions.processFetchProfiles()); //redux => props.phoneBook
+      dispatch(actions.phonebookLoadProfiles()); //redux => props.phoneBook
     },
-    // fetchProfilesCancelHandler: () => {
-    //   dispatch(actions.processFetchProfilesCancel());
-    // },
+    
   };
 };
 
