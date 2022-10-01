@@ -19,7 +19,7 @@ class MultiInputObjects extends PureComponent {
   state = {
     isActive: [],
     clickIndex: null,
-    toIndex: null,
+    toIndex: null
   };
 
   componentDidMount() {
@@ -98,7 +98,7 @@ class MultiInputObjects extends PureComponent {
           isActiveClone[index] = !prevState.isActive[index];
         }
         return {
-          isActive: isActiveClone,
+          isActive: isActiveClone
         };
       },
 
@@ -164,7 +164,7 @@ class MultiInputObjects extends PureComponent {
     //if clicked was active, keep it active
     this.setState((prevState) => {
       return {
-        isActive: updatedArr,
+        isActive: updatedArr
       };
     });
   };
@@ -175,7 +175,7 @@ class MultiInputObjects extends PureComponent {
         let updatedIsActive = [...prevState.isActive];
         updatedIsActive[index] = undefined;
         return {
-          isActive: updatedIsActive,
+          isActive: updatedIsActive
         };
       },
       () => {
@@ -190,15 +190,16 @@ class MultiInputObjects extends PureComponent {
     const { addinput, removeinput, changed } = this.context;
     const addButton = (
       <Button
-        title='Add'
-        type='WithBorder'
+        title="Add"
+        type="WithBorder"
         onClick={(event) => {
           event.preventDefault();
           event.stopPropagation();
           console.log('this.state.isActive: ', this.state.isActive);
           addinput(this.props.type, this.props.name);
-        }}>
-        <Icon iconstyle='fas' code='plus' size='sm' />
+        }}
+      >
+        <Icon iconstyle="fas" code="plus" size="sm" />
         <p>Add</p>
       </Button>
     );
@@ -213,10 +214,11 @@ class MultiInputObjects extends PureComponent {
           await this.resetIsActiveAtIndex(index);
           removeinput(this.props.name, index);
         }}
-        title='Delete'
-        type='WithBorder'
-        className={classes.RemoveButton}>
-        <Icon iconstyle='far' code='trash-alt' size='sm' />
+        title="Delete"
+        type="WithBorder"
+        className={classes.RemoveButton}
+      >
+        <Icon iconstyle="far" code="trash-alt" size="sm" />
       </Button>
     );
 
@@ -224,10 +226,11 @@ class MultiInputObjects extends PureComponent {
       return this.props.componentconfig.metadata.map((each, i) => {
         return (
           <FlexRow
-            flexgrow='true'
-            spacing='bottom-notlast'
-            key={this.props.name + index + '_' + i}>
-            <FlexColumn flexgrow='true' spacing='bottom'>
+            flexgrow="true"
+            spacing="bottom-notlast"
+            key={this.props.name + index + '_' + i}
+          >
+            <FlexColumn flexgrow="true" spacing="bottom">
               <Label>{each.label}</Label>
               <Input
                 label={each.label}
@@ -235,14 +238,14 @@ class MultiInputObjects extends PureComponent {
                 componentconfig={{
                   type: each.type,
                   validation: each.validation,
-                  placeholder: each.placeholder,
+                  placeholder: each.placeholder
                 }}
                 value={{
                   data: val[each.name].data,
                   valid: val[each.name].valid,
                   touched: val[each.name].touched,
                   pristine: val[each.name].pristine,
-                  errors: val[each.name].errors,
+                  errors: val[each.name].errors
                 }}
                 onChange={(event) => {
                   changed(
@@ -268,7 +271,7 @@ class MultiInputObjects extends PureComponent {
               console.log('rowValidity:', this.state.rowValidity);
               return (
                 <FlexColumn
-                  spacing='bottom'
+                  spacing="bottom"
                   key={index}
                   onDragStart={(event) => this.dragStartHandler(event, index)}
                   onDragEnter={(event) => this.dragEnterHandler(event, index)} //event triggers once
@@ -296,7 +299,8 @@ class MultiInputObjects extends PureComponent {
                   onMouseUp={(event) => {
                     console.log('event.currentTarget: ', event.currentTarget);
                     event.currentTarget.setAttribute('draggable', 'false');
-                  }}>
+                  }}
+                >
                   <FlexRow>
                     <Expandable
                       title={
@@ -307,7 +311,7 @@ class MultiInputObjects extends PureComponent {
                                 'Embedded',
                                 this.state.isActive[index] === true
                                   ? 'Active'
-                                  : null,
+                                  : null
                               ]}
                             />
                           ) : null}
@@ -315,7 +319,8 @@ class MultiInputObjects extends PureComponent {
                             className={classes.Title}
                             onClick={(event) => {
                               this.onClickHandler(index, event);
-                            }}>
+                            }}
+                          >
                             {val.url.data ? val.url.data : null}
                           </div>
                         </React.Fragment>
@@ -328,7 +333,8 @@ class MultiInputObjects extends PureComponent {
                       onClick={(event) => {
                         console.log('clicked...', index);
                         this.onClickHandler(index, event);
-                      }}>
+                      }}
+                    >
                       {expandableContent(val, index)}
                     </Expandable>
 
@@ -351,7 +357,7 @@ MultiInputObjects.propTypes = {
   placeholder: PropTypes.string,
   componentconfig: PropTypes.object,
   name: PropTypes.string,
-  changed: PropTypes.func,
+  changed: PropTypes.func
 };
 
 MultiInputObjects.defaultProps = {
@@ -369,10 +375,10 @@ MultiInputObjects.defaultProps = {
         name: 'url',
         placeholder: 'url',
         type: 'string',
-        validation: { isRequired: true },
-      },
-    ],
-  },
+        validation: { isRequired: true }
+      }
+    ]
+  }
 };
 
 export default MultiInputObjects;

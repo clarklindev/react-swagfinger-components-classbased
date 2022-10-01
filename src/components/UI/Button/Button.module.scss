@@ -1,13 +1,18 @@
+@import '../../../Index.scss';
+@import "../../../App.scss";
+
 .Button {
   outline: none;
   cursor: pointer;
   font: inherit;
-  font-size: var(--fontsizedefault);
   padding: 10px 15px;
-  color: var(--colordefault);
-  background-color: transparent;
   height: var(--inputheight);
   border: none;
+
+  font-size: var(--fontsizedefault);
+  color: var(--colordefault);
+  background-color: transparent;
+  
   display: flex;
   flex-direction: row;
   align-items: center;

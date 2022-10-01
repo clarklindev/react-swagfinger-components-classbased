@@ -45,12 +45,13 @@ class InputWithIcon extends Component {
     //console.log('this.props.value: ', this.props.value);
     const buttonicon = (
       <Button
-        type='NoStyle'
+        type="NoStyle"
         onClick={(event) => {
           console.log('BUTTON PRESS>..');
           event.preventDefault();
           this.props.componentconfig.iconclick()();
-        }}>
+        }}
+      >
         <Icon
           iconstyle={this.props.componentconfig.iconstyle}
           code={this.props.componentconfig.iconcode}
@@ -68,6 +69,7 @@ class InputWithIcon extends Component {
             {this.props.componentconfig.hasdivider === true ? divider : null}
           </React.Fragment>
         ) : null}
+
         <input
           className={classes['icon-' + this.props.componentconfig.iconposition]}
           placeholder={this.props.componentconfig.placeholder}
@@ -77,6 +79,7 @@ class InputWithIcon extends Component {
           onChange={this.changeHandler}
         />
         {this.props.clearSearch ? this.props.clearSearch : null}
+
         {this.props.componentconfig.iconposition === 'right' ? (
           <React.Fragment>
             {this.props.componentconfig.hasdivider === true ? divider : null}

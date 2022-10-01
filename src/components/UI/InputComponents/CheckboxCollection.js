@@ -7,7 +7,7 @@ class CheckboxCollection extends PureComponent {
   static contextType = InputContext;
 
   state = {
-    checked: [],
+    checked: []
   };
 
   componentDidUpdate() {

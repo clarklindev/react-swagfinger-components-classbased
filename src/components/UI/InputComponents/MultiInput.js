@@ -22,12 +22,12 @@ class MultiInput extends Component {
       classes[props.type],
       'MultiInput',
       props.className,
-      props.classlist,
+      props.classlist
     ]);
   }
 
   state = {
-    draggedElement: null,
+    draggedElement: null
   };
 
   componentDidMount() {}
@@ -144,7 +144,8 @@ class MultiInput extends Component {
                 onMouseUp={(event) => {
                   console.log('event.currentTarget: ', event.currentTarget);
                   event.currentTarget.setAttribute('draggable', 'false');
-                }}>
+                }}
+              >
                 {this.props.componentconfig.draggable &&
                 this.props.value.length > 1 ? (
                   <DraggableItem isValid={val.valid}></DraggableItem>
@@ -156,7 +157,7 @@ class MultiInput extends Component {
                     (styleClasses || []).map((each) => {
                       return classes[each];
                     }),
-                    ...tempClasses,
+                    ...tempClasses
                   ].join(' ')}
                   type={this.props.componentconfig.type}
                   value={val.data}
@@ -167,19 +168,20 @@ class MultiInput extends Component {
                 />
                 {this.props.value.length > 1 ? (
                   <Button
-                    title='Delete'
-                    type='WithBorder'
+                    title="Delete"
+                    type="WithBorder"
                     className={classes.RemoveButton}
                     onClick={(event) => {
                       event.preventDefault();
                       removeinput(this.props.name, index);
-                    }}>
-                    <Icon iconstyle='far' code='trash-alt' size='sm' />
+                    }}
+                  >
+                    <Icon iconstyle="far" code="trash-alt" size="sm" />
                   </Button>
                 ) : null}
               </FlexRow>
               {val.errors.length ? (
-                <FlexRow spacing='bottom'>
+                <FlexRow spacing="bottom">
                   <ErrorList value={{ data: val.errors }} />
                 </FlexRow>
               ) : null}
@@ -187,14 +189,15 @@ class MultiInput extends Component {
           );
         })}
         <Button
-          title='Add'
-          type='WithBorder'
+          title="Add"
+          type="WithBorder"
           onClick={(event) => {
             event.preventDefault();
             event.stopPropagation();
             addinput(this.props.type, this.props.name);
-          }}>
-          <Icon iconstyle='fas' code='plus' size='sm' />
+          }}
+        >
+          <Icon iconstyle="fas" code="plus" size="sm" />
           <p>Add</p>
         </Button>
       </div>
@@ -209,7 +212,7 @@ MultiInput.propTypes = {
   placeholder: PropTypes.string,
   componentconfig: PropTypes.object,
   name: PropTypes.string,
-  changed: PropTypes.func,
+  changed: PropTypes.func
 };
 
 export default MultiInput;

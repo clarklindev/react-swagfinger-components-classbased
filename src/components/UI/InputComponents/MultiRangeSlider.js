@@ -22,14 +22,14 @@ class MultiRangeSlider extends Component {
     thumbwidth: 0,
     displayvalues: [],
     labelmin: '',
-    labelmax: '',
+    labelmax: ''
   };
 
   componentDidMount() {
     window.addEventListener('resize', this.updateDimensions);
     this.setState({
       railwidth: parseInt(this.railRef.current.offsetWidth),
-      thumbwidth: parseInt(this.sliderRef.current.offsetWidth),
+      thumbwidth: parseInt(this.sliderRef.current.offsetWidth)
     });
   }
 
@@ -40,7 +40,7 @@ class MultiRangeSlider extends Component {
   updateDimensions = () => {
     //console.log('update DIMENSIONS');
     this.setState({
-      railwidth: parseInt(this.railRef.current.offsetWidth),
+      railwidth: parseInt(this.railRef.current.offsetWidth)
     });
     let tempLabelMin = this.restrictActualBoundaries(this.state.labelmin, 0);
     let convertedMin = this.convertToDisplayValue(tempLabelMin, 0);
@@ -185,7 +185,7 @@ class MultiRangeSlider extends Component {
       let updatedDisplayValues = [...prevState.displayvalues];
       updatedDisplayValues[index] = newValue;
       return {
-        displayvalues: updatedDisplayValues,
+        displayvalues: updatedDisplayValues
       };
     });
   };
@@ -293,7 +293,7 @@ class MultiRangeSlider extends Component {
       console.log('x clicked:', Utils.getClickPosition(event));
       let closestChildIndex = getclosest.index;
       this.setState({
-        currentindex: closestChildIndex,
+        currentindex: closestChildIndex
       });
       console.log('closestChildIndex: ', closestChildIndex);
       //---------------------------------------------------------
@@ -394,7 +394,7 @@ class MultiRangeSlider extends Component {
       errorMin = (
         <ErrorList
           value={{
-            data: this.props.value['min'].errors,
+            data: this.props.value['min'].errors
           }}
         />
       );
@@ -412,7 +412,7 @@ class MultiRangeSlider extends Component {
       errorMax = (
         <ErrorList
           value={{
-            data: this.props.value['max'].errors,
+            data: this.props.value['max'].errors
           }}
         />
       );
@@ -434,7 +434,7 @@ class MultiRangeSlider extends Component {
             <div className={classes.SliderLabel} ref={this.minLabelRef}>
               <input
                 className={[...tempClassesMin].join(' ')}
-                type='text'
+                type="text"
                 value={this.state.labelmin}
                 onChange={(event) => this.labelUpdateHandler(0, event)}
                 onBlur={(event) => {
@@ -446,16 +446,15 @@ class MultiRangeSlider extends Component {
             <div
               className={[
                 classes.RailWrapper,
-                Utils.getClassNameString([
-                  ...tempClassesMin,
-                  ...tempClassesMax,
-                ]),
-              ].join(' ')}>
+                Utils.getClassNameString([...tempClassesMin, ...tempClassesMax])
+              ].join(' ')}
+            >
               {/* rail - item of which calculations are based on*/}
               <div
                 ref={this.railRef}
                 className={classes.Rail}
-                onClick={(event) => this.scrollClickHandler(event)}>
+                onClick={(event) => this.scrollClickHandler(event)}
+              >
                 {/* Sliders */}
                 {(this.props.componentconfig.metadata || []).map(
                   (each, index) => {
@@ -466,11 +465,12 @@ class MultiRangeSlider extends Component {
                         key={index}
                         style={{
                           position: 'relative',
-                          left: this.state.displayvalues[index] + 'px',
+                          left: this.state.displayvalues[index] + 'px'
                         }}
                         onMouseDown={(event) => {
                           this.onMouseDownHandler(index, event);
-                        }}></div>
+                        }}
+                      ></div>
                     );
                   }
                 )}
@@ -479,7 +479,7 @@ class MultiRangeSlider extends Component {
             {/* max label */}
             <div className={classes.SliderLabel} ref={this.maxLabelRef}>
               <input
-                type='text'
+                type="text"
                 className={[...tempClassesMax].join(' ')}
                 value={this.state.labelmax}
                 // onClick={(event) => this.onClickHandler(1, event)}

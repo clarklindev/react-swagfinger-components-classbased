@@ -1,7 +1,7 @@
 import React from 'react';
 import classes from './Checkbox.module.scss';
 
-const Checkbox = (props)=> {
+const Checkbox = (props) => {
   return (
     <div className={[classes.Checkbox, props.className].join(' ')}>
       <label className={classes.Container}>
@@ -9,7 +9,7 @@ const Checkbox = (props)=> {
           type="checkbox"
           defaultChecked={props.checked}
           name={props.name}
-          onChange={event => {
+          onChange={(event) => {
             props.onChange(event.target.checked);
           }}
           disabled={props.isDisabled}
@@ -25,7 +25,6 @@ const Checkbox = (props)=> {
       </label>
     </div>
   );
-
-}
+};
 
 export default Checkbox;

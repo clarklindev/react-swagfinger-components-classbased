@@ -20,11 +20,11 @@ class Input extends PureComponent {
       classes[props.type],
       'Input',
       props.className,
-      props.classlist,
+      props.classlist
     ]);
   }
   state = {
-    value: '',
+    value: ''
   };
 
   componentDidMount() {
@@ -92,9 +92,7 @@ class Input extends PureComponent {
       <div className={classes.Input}>
         <FlexRow>
           <input
-            className={[...tempClasses, ...styleClasses].join(
-              ' '
-            )}
+            className={[...tempClasses, ...styleClasses].join(' ')}
             placeholder={this.props.componentconfig.placeholder} //needed for multiinput ...props
             readOnly={this.props.readOnly}
             name={this.props.name}
@@ -117,16 +115,16 @@ Input.defaultProps = {
     placeholder: '',
     type: PropTypes.string,
     validation: {
-      isRequired: false,
-    },
+      isRequired: false
+    }
   }),
   value: {
     valid: false,
     touched: false,
     pristine: true,
     data: '',
-    errors: [],
-  },
+    errors: []
+  }
 };
 
 export default Input;

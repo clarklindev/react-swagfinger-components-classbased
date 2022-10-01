@@ -10,20 +10,21 @@ const button = (props) => {
     classes[props.type],
     classes[props.color],
     props.className,
-    classes[props.className],
+    classes[props.className]
   ]);
 
   return (
     <button
       tabIndex={props.tabIndex}
-      ref={props.reference}
+      // ref={props.reference}
       disabled={props.disabled}
       className={classList}
       onClick={props.onClick}
       onBlur={props.onBlur}
       title={props.title}
       onMouseOver={props.onMouseOver}
-      onMouseOut={props.onMouseOut}>
+      onMouseOut={props.onMouseOut}
+    >
       {props.children}
     </button>
   );
