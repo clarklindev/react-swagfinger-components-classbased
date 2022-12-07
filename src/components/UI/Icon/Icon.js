@@ -3,6 +3,7 @@ import classes from './Icon.module.scss';
 // font awesome
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { stringHelper } from '../../../shared';
 import {
   faPlus,
   faMinus,
@@ -27,7 +28,7 @@ import {
   faLink,
   faExternalLinkAlt,
   faGripVertical,
-  faEraser,
+  faEraser
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faEdit,
@@ -36,10 +37,9 @@ import {
   faFolder,
   faFile,
   faCopy, //copy
-  faClipboard, //clipboard
+  faClipboard //clipboard
 } from '@fortawesome/free-regular-svg-icons';
 
-import Utils from '../../../Utils';
 //add to fontawesome lib so we can reuse icons
 library.add(
   faChevronLeft,
@@ -77,11 +77,11 @@ library.add(
 
 class Icon extends Component {
   render() {
-    let classList = Utils.getClassNameString([
+    let classList = stringHelper.getUniqueClassNameString([
       classes.Icon,
       Icon.name,
       classes[this.props.type],
-      this.props.className,
+      this.props.className
     ]);
 
     return (
@@ -89,8 +89,9 @@ class Icon extends Component {
         className={[classList].join(' ')}
         style={{
           width: this.props.width ? this.props.width : 'auto',
-          height: this.props.height ? this.props.height : 'auto',
-        }}>
+          height: this.props.height ? this.props.height : 'auto'
+        }}
+      >
         <FontAwesomeIcon
           icon={[this.props.iconstyle, this.props.code]}
           size={this.props.size} //xs, sm, lg, 2x,3x,4x,5x,6x,7x,8x,9x,10x

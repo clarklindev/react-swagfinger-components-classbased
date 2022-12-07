@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react';
 
-import Utils from '../../../Utils';
 import classes from './MultiSelect.module.scss';
 import InputContext from '../../../context/InputContext';
 import Button from '../../UI/Button/Button';
 import Icon from '../Icon/Icon';
 import ErrorList from './ErrorList';
 import DraggableItem from './DraggableItem';
+import { stringHelper } from '../../../shared';
 
 class MultiSelect extends PureComponent {
   static contextType = InputContext;
@@ -14,16 +14,16 @@ class MultiSelect extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.className = Utils.getClassNameString([
+    this.className = stringHelper.getUniqueClassNameString([
       classes.MultiSelect,
-      MultiSelect.name,
+      MultiSelect.name
     ]);
 
     this.inputClasses = [classes.InputElement];
   }
 
   state = {
-    isOpenList: {}, //keeping track of arrow direction on select input,
+    isOpenList: {} //keeping track of arrow direction on select input,
     //we need this because we cannot set a class to render() else all instances arrows change at same time
   };
 
@@ -43,7 +43,7 @@ class MultiSelect extends PureComponent {
       // console.log('upated: ', updatedState);
       isOpenList[index] = updatedState;
       return {
-        isOpenList: isOpenList,
+        isOpenList: isOpenList
       };
     });
   };
@@ -56,7 +56,7 @@ class MultiSelect extends PureComponent {
       //console.log('upated: ', updatedState);
       isOpenList[index] = updatedState;
       return {
-        isOpenList: isOpenList,
+        isOpenList: isOpenList
       };
     });
   };
@@ -71,7 +71,7 @@ class MultiSelect extends PureComponent {
       this.props.name,
       {
         key: val,
-        value: '',
+        value: ''
       },
       index
     );
@@ -195,13 +195,15 @@ class MultiSelect extends PureComponent {
               onMouseUp={(event) => {
                 console.log('event.currentTarget: ', event.currentTarget);
                 event.currentTarget.setAttribute('draggable', 'false');
-              }}>
+              }}
+            >
               <div className={classes.FlexGroupColumn}>
                 <div
                   className={[
                     classes.SelectAndInputWrapper,
-                    ...errorClasses,
-                  ].join(' ')}>
+                    ...errorClasses
+                  ].join(' ')}
+                >
                   {this.props.componentconfig.draggable &&
                   this.props.value.length > 1 ? (
                     <DraggableItem style={['Embedded']}></DraggableItem>
@@ -214,7 +216,8 @@ class MultiSelect extends PureComponent {
                     onBlur={(event) => {
                       this.onBlurHandler(index, event);
                     }}
-                    onChange={(event) => this.onChangeHandler(index, event)}>
+                    onChange={(event) => this.onChangeHandler(index, event)}
+                  >
                     {this.props.componentconfig.options.map((option, index) => (
                       <option key={option.value} value={option.value}>
                         {option.displaytext}
@@ -226,8 +229,8 @@ class MultiSelect extends PureComponent {
                 {error}
               </div>
               <Button
-                title='Delete'
-                type='WithBorder'
+                title="Delete"
+                type="WithBorder"
                 className={classes.RemoveButton}
                 onClick={(event) => {
                   event.preventDefault();
@@ -241,29 +244,31 @@ class MultiSelect extends PureComponent {
                     );
 
                     return {
-                      isOpenList: open,
+                      isOpenList: open
                     };
                   });
-                }}>
-                <Icon iconstyle='far' code='trash-alt' size='sm' />
+                }}
+              >
+                <Icon iconstyle="far" code="trash-alt" size="sm" />
               </Button>
             </div>
           ); //return
         })}
 
         <Button
-          title='Add'
-          type='WithBorder'
+          title="Add"
+          type="WithBorder"
           className={classes.AddButton}
           onClick={(event) => {
             event.preventDefault();
             event.stopPropagation();
             this.context.addinput(this.props.type, this.props.name, {
               key: '',
-              value: '',
+              value: ''
             });
-          }}>
-          <Icon iconstyle='fas' code='plus' size='sm' />
+          }}
+        >
+          <Icon iconstyle="fas" code="plus" size="sm" />
           <p>Add</p>
         </Button>
       </div>

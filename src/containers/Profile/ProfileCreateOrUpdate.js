@@ -6,7 +6,7 @@ import classes from './ProfileCreateOrUpdate.module.scss';
 
 //Helper classes
 import axios from '../../axios-firebase';
-import { CheckValidity as validationCheck } from '../../shared/validation';
+import { validationHelper } from '../../shared';
 import * as arrayHelper from '../../shared/arrayHelper';
 
 //redux store
@@ -23,7 +23,6 @@ import ComponentFactory from '../../components/UI/InputComponents/ComponentFacto
 import Spinner from '../../components/UI/Loaders/Spinner';
 import Button from '../../components/UI/Button/Button';
 import Separator from '../../components/UI/Separator/Separator';
-import FlexColumn from '../../hoc/Layout/FlexColumn';
 
 class ProfileCreateOrUpdate extends Component {
   constructor(props) {
@@ -31,15 +30,13 @@ class ProfileCreateOrUpdate extends Component {
 
     //reference
     this.submitInputRef = React.createRef();
-
   }
 
   state = {
     saving: false,
     localstateform: null, //for a single profile
-    isFormValid: true,
+    isFormValid: true
   };
-
 
   //------------------------------------------------------
   //------------------------------------------------------
@@ -47,16 +44,16 @@ class ProfileCreateOrUpdate extends Component {
     console.log('COMPONENT DID MOUNT - ProfileCreateOrUpdate()');
     //generate form from firebase 'form'
     //schema is same for all instances
-    //sets up props.schema accessed via redux state 
+    //sets up props.schema accessed via redux state
     this.props.getSchemaHandler(); //state.profile.schema
   }
-  
+
   componentDidUpdate(prevProps) {
     //...schema updated from redux
     if (prevProps.schema !== this.props.schema) {
       console.log('COMPONENTDIDUPDATE - props.schema');
       //our schema is as per firebase at this moment, createPlaceholders changes this by giving each item in schema a value property
-      this.createPlaceholders(this.props.schema);// state.profile.formattedFormObject
+      this.createPlaceholders(this.props.schema); // state.profile.formattedFormObject
     }
 
     if (prevProps.formattedFormObject !== this.props.formattedFormObject) {
@@ -66,9 +63,9 @@ class ProfileCreateOrUpdate extends Component {
       console.log('COMPONENTDIDUPDATE - props.formattedFormObject');
       console.log('STATE-> localstateform: this.props.formattedFormObject');
       this.setState({
-        localstateform: this.props.formattedFormObject,
+        localstateform: this.props.formattedFormObject
       });
-      this.getDataProfileByIdHandler();//state.profile.activeProfile
+      this.getDataProfileByIdHandler(); //state.profile.activeProfile
     }
 
     // //this step deals with metadata if there are multiple entry fields (object) under each value from firebase
@@ -81,7 +78,7 @@ class ProfileCreateOrUpdate extends Component {
     if (prevProps.formattedFormWithData !== this.props.formattedFormWithData) {
       console.log('formattedFormWithData: ', this.props.formattedFormWithData);
       this.setState({
-        localstateform: this.props.formattedFormWithData,
+        localstateform: this.props.formattedFormWithData
       });
     }
   }
@@ -105,7 +102,7 @@ class ProfileCreateOrUpdate extends Component {
       valid: undefined,
       errors: [],
       touched: false,
-      pristine: true,
+      pristine: true
     };
 
     const schemacopy = [...schema];
@@ -120,10 +117,10 @@ class ProfileCreateOrUpdate extends Component {
       //console.log('tempObj: ', tempObj);
 
       //adding a property .value
-      switch(tempObj.type){
+      switch (tempObj.type) {
         case 'single':
           tempObj.value = dataObject;
-          console.log(`FORMATTED (single): ${dataObject}`)
+          console.log(`FORMATTED (single): ${dataObject}`);
           break;
         case 'array':
           let arrayValues = [];
@@ -185,7 +182,7 @@ class ProfileCreateOrUpdate extends Component {
 
       formattedFormObject[tempObj.name] = tempObj; //store in formattedFormObject{} object
     });
-    
+
     console.log('formattedFormObject:', formattedFormObject, '\n\n');
     //save to redux store as formattedFormObject
     this.props.onFormattedFormCreated(formattedFormObject); //formatted is an object of dataObject
@@ -218,7 +215,7 @@ class ProfileCreateOrUpdate extends Component {
     //go through all the activeProfile prop values...
 
     console.log(`this.props.activeProfile: `);
-    console.table(this.props.activeProfile);//actual data values from database
+    console.table(this.props.activeProfile); //actual data values from database
 
     console.log(`this.props.formattedFormObject: `);
     console.table(this.props.formattedFormObject);
@@ -234,9 +231,9 @@ class ProfileCreateOrUpdate extends Component {
           switch (this.props.formattedFormObject[formattribute].type) {
             case 'single':
               //do validation check on the stored value from database
-              //vs form schema componentconfig.validation 
-              const validated = validationCheck(
-                this.props.activeProfile[formattribute],  //value 
+              //vs form schema componentconfig.validation
+              const validated = validationHelper.checkValidity(
+                this.props.activeProfile[formattribute], //value
                 this.props.formattedFormObject[formattribute].componentconfig
                   .validation
               );
@@ -245,14 +242,14 @@ class ProfileCreateOrUpdate extends Component {
                 valid: validated.isValid,
                 errors: validated.errors, //array of errors
                 touched: false,
-                pristine: true,
+                pristine: true
               };
               break;
 
             case 'array':
               //each is the saved value in the database
               value = this.props.activeProfile[formattribute].map((each) => {
-                const validated = validationCheck(
+                const validated = validationHelper.checkValidity(
                   each,
                   this.props.formattedFormObject[formattribute].componentconfig
                     .validation
@@ -262,7 +259,7 @@ class ProfileCreateOrUpdate extends Component {
                   valid: validated.isValid,
                   errors: validated.errors, //array of errors
                   touched: false,
-                  pristine: true,
+                  pristine: true
                 };
               });
               break;
@@ -276,21 +273,24 @@ class ProfileCreateOrUpdate extends Component {
                   return meta.name === attr;
                 });
 
-                let valueInFirebase = this.props.formattedFormObject[formattribute]
-                  .value[attr].data;
+                let valueInFirebase =
+                  this.props.formattedFormObject[formattribute].value[attr]
+                    .data;
                 //console.log('valueInFirebase: ', valueInFirebase);
-                const validated = validationCheck(
-                  this.props.formattedFormObject[formattribute].value[attr].data,
+                const validated = validationHelper.checkValidity(
+                  this.props.formattedFormObject[formattribute].value[attr]
+                    .data,
                   metadata.validation
                 );
                 //console.log('validated: ', validated);
                 obj[attr] = {
-                  data: this.props.formattedFormObject[formattribute].value[attr]
-                    .data, //value at the key
+                  data: this.props.formattedFormObject[formattribute].value[
+                    attr
+                  ].data, //value at the key
                   valid: validated.isValid,
                   errors: validated.errors, //array of errors
                   touched: false,
-                  pristine: true,
+                  pristine: true
                 };
               });
               value = obj;
@@ -310,7 +310,7 @@ class ProfileCreateOrUpdate extends Component {
                   ].componentconfig.metadata.find((meta) => {
                     return meta.name === attr;
                   });
-                  const validated = validationCheck(
+                  const validated = validationHelper.checkValidity(
                     each[attr],
                     metadata.validation
                   );
@@ -319,7 +319,7 @@ class ProfileCreateOrUpdate extends Component {
                     valid: validated.isValid,
                     errors: validated.errors, //array of errors
                     touched: false,
-                    pristine: true,
+                    pristine: true
                   };
                 });
                 return obj;
@@ -336,7 +336,6 @@ class ProfileCreateOrUpdate extends Component {
       }
     );
 
-    
     console.log('newValues: ', newValues);
     //without 'undefined' values which dont exist in state.form
     let filteredNewValues = newValues.filter((item) => {
@@ -362,16 +361,16 @@ class ProfileCreateOrUpdate extends Component {
   //------------------------------------------------------
   //------------------------------------------------------
 
-
-  
-
   //update .pristine prop of inputs to false
   //used to test inputs validity when mouse is over submit button
   onSubmitTest = (event) => {
     console.log('onSubmitTest');
     //make all inputs pristine:false
     //each prop in profile
-    console.log('this.props.formattedFormObject: ', this.props.formattedFormObject);
+    console.log(
+      'this.props.formattedFormObject: ',
+      this.props.formattedFormObject
+    );
     console.log('this.props.activeProfile: ', this.props.activeProfile);
     console.log('this.state.localstateform: ', this.state.localstateform);
     let isFormValid = true;
@@ -380,7 +379,7 @@ class ProfileCreateOrUpdate extends Component {
       switch (this.state.localstateform[formattribute].type) {
         case 'single':
           console.log('single: ', formattribute);
-          const validated = validationCheck(
+          const validated = validationHelper.checkValidity(
             this.state.localstateform[formattribute].value.data,
             this.state.localstateform[formattribute].componentconfig.validation
           );
@@ -389,7 +388,7 @@ class ProfileCreateOrUpdate extends Component {
             valid: validated.isValid,
             errors: validated.errors, //array of errors
             touched: true,
-            pristine: false,
+            pristine: false
           };
           if (validated.isValid === false) {
             isFormValid = false;
@@ -398,7 +397,7 @@ class ProfileCreateOrUpdate extends Component {
         case 'array':
           console.log('array:', formattribute);
           obj = this.state.localstateform[formattribute].value.map((each) => {
-            let validated = validationCheck(
+            let validated = validationHelper.checkValidity(
               each.data,
               this.state.localstateform[formattribute].componentconfig
                 .validation
@@ -425,7 +424,7 @@ class ProfileCreateOrUpdate extends Component {
               ].componentconfig.metadata.find((meta) => {
                 return meta.name === attr;
               });
-              const validated = validationCheck(
+              const validated = validationHelper.checkValidity(
                 this.state.localstateform[formattribute].value[attr].data,
                 metadata.validation
               );
@@ -437,7 +436,7 @@ class ProfileCreateOrUpdate extends Component {
                 valid: validated.isValid,
                 errors: validated.errors, //array of errors
                 touched: true,
-                pristine: false,
+                pristine: false
               };
               console.log('submit test: ');
               console.log('validated:', validated);
@@ -462,7 +461,7 @@ class ProfileCreateOrUpdate extends Component {
               ].componentconfig.metadata.find((meta) => {
                 return meta.name === attr;
               });
-              const validated = validationCheck(
+              const validated = validationHelper.checkValidity(
                 each[attr].data,
                 metadata.validation
               );
@@ -474,7 +473,7 @@ class ProfileCreateOrUpdate extends Component {
                 valid: validated.isValid,
                 errors: validated.errors, //array of errors
                 touched: true,
-                pristine: false,
+                pristine: false
               };
             });
             return val;
@@ -490,11 +489,11 @@ class ProfileCreateOrUpdate extends Component {
           ...prevState.localstateform,
           [formattribute]: {
             ...prevState.localstateform[formattribute],
-            value: obj,
-          },
+            value: obj
+          }
         },
 
-        isFormValid: isFormValid,
+        isFormValid: isFormValid
       }));
 
       console.log('=============');
@@ -554,7 +553,9 @@ class ProfileCreateOrUpdate extends Component {
   // };
 
   render() {
-    console.log('\n\n================================================\nRE-RENDER');
+    console.log(
+      '\n\n================================================\nRE-RENDER'
+    );
 
     //make an object with 'data' is value associated with property
     //key is the prop name
@@ -578,7 +579,7 @@ class ProfileCreateOrUpdate extends Component {
 
     const submitbutton = (
       <Button
-        type='WithBorder'
+        type="WithBorder"
         onClick={(event) => {
           console.log('Submit...');
           event.preventDefault();
@@ -588,12 +589,13 @@ class ProfileCreateOrUpdate extends Component {
           const event = new MouseEvent('mouseover', {
             view: window,
             bubbles: true,
-            cancelable: true,
+            cancelable: true
           });
 
           //get the reference to the actual submit input and mimic a mouseover
           this.submitInputRef.current.dispatchEvent(event);
-        }}>
+        }}
+      >
         Submit
       </Button>
     );
@@ -611,34 +613,42 @@ class ProfileCreateOrUpdate extends Component {
         ) : (
           <div className={classes.ProfileCreateOrUpdate}>
             <DefaultPageLayout
-              label={this.props.id ? 'Update Profile' : 'Create Profile'}>
+              label={this.props.id ? 'Update Profile' : 'Create Profile'}
+            >
               <Card>
-                <form onSubmit={this.onSubmitHandler} autoComplete='off'>
+                <form onSubmit={this.onSubmitHandler} autoComplete="off">
                   {/* input context provides context state/functions to formInputs */}
-                  <FlexColumn padding="not-bottom">
+                  <div
+                    style={{ display: 'flex', flexDirection: 'column' }}
+                    padding="not-bottom"
+                  >
                     <InputContext.Provider
                       value={{
                         addinput: this.props.addInputHandler,
                         removeinput: this.props.removeInputHandler,
                         changed: this.props.updateInputHandler,
-                        moveiteminarray: this.props.moveItemHandler,
-                      }}>
+                        moveiteminarray: this.props.moveItemHandler
+                      }}
+                    >
                       {formInputs}
                     </InputContext.Provider>
-                  </FlexColumn>
-                  <Separator style='Solid' />
-                  <FlexColumn padding="true">
+                  </div>
+                  <Separator style="Solid" />
+                  <div
+                    style={{ display: 'flex', flexDirection: 'column' }}
+                    padding="true"
+                  >
                     <input
                       ref={this.submitInputRef}
-                      type='submit'
-                      value='Submit'
+                      type="submit"
+                      value="Submit"
                       onMouseOver={(event) => {
                         console.log('mouseover');
                         this.onSubmitTest(event);
                       }}
                     />
                     {submitbutton}
-                  </FlexColumn>
+                  </div>
                 </form>
               </Card>
             </DefaultPageLayout>
@@ -649,13 +659,7 @@ class ProfileCreateOrUpdate extends Component {
   }
 }
 
-
 //----------------------------------------------------------------------------
-
-
-
-
-
 
 const mapStateToProps = (state) => {
   return {
@@ -665,7 +669,7 @@ const mapStateToProps = (state) => {
     activeProfile: state.profile.activeProfile,
     formattedFormObject: state.profile.formattedFormObject,
     formattedFormWithData: state.profile.formattedFormWithData,
-    id: state.profile.urlQuerystringId,
+    id: state.profile.urlQuerystringId
   };
 };
 
@@ -693,11 +697,6 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actions.formatDataComplete(form)); //gives access to props.formattedFormWithData
     },
 
-
-
-
-    
-
     // onProfileCreated: (token, form, callback) => {
     //   dispatch(actions.processProfileCreate(token, form, callback));
     // },
@@ -705,10 +704,9 @@ const mapDispatchToProps = (dispatch) => {
     //   dispatch(actions.processProfileUpdate(token, form, id, callback));
     // },
 
-
     //addInputHandler is only called on a multiinput type...
     //assumption is working with array hence .concat({})
-    addInputHandler :(formname, type, key, data = '') => {
+    addInputHandler: (formname, type, key, data = '') => {
       console.log('ADDINPUTHANDLER\n\n\n');
       console.log('KEY:', key);
 
@@ -717,7 +715,7 @@ const mapDispatchToProps = (dispatch) => {
         valid: undefined,
         touched: false,
         pristine: true,
-        errors: [],
+        errors: []
       };
 
       switch (type) {
@@ -729,9 +727,9 @@ const mapDispatchToProps = (dispatch) => {
                   ...this.state.localstateform,
                   [key]: {
                     ...prevState.localstateform[key],
-                    value: prevState.localstateform[key].value.concat(dataObj),
-                  },
-                },
+                    value: prevState.localstateform[key].value.concat(dataObj)
+                  }
+                }
               };
             },
             () => {
@@ -754,9 +752,9 @@ const mapDispatchToProps = (dispatch) => {
                 ...this.state.localstateform,
                 [key]: {
                   ...prevState.localstateform[key],
-                  value: prevState.localstateform[key].value.concat(obj),
-                },
-              },
+                  value: prevState.localstateform[key].value.concat(obj)
+                }
+              }
             };
           });
 
@@ -767,9 +765,8 @@ const mapDispatchToProps = (dispatch) => {
       }
     },
 
-
     //remove checks the index of the input and removes it from the inputs array by index
-    removeInputHandler:(key, index) => {
+    removeInputHandler: (key, index) => {
       let updatedInputs = this.state.localstateform[key].value.filter(
         (item, i) => {
           if (index === i) {
@@ -785,7 +782,7 @@ const mapDispatchToProps = (dispatch) => {
 
       this.setState((prevState) => {
         console.log('...prevState.form[key]: ', {
-          ...prevState.localstateform[key],
+          ...prevState.localstateform[key]
         });
         console.log('...updatedInputs', [...updatedInputs]);
         return {
@@ -793,20 +790,18 @@ const mapDispatchToProps = (dispatch) => {
             ...prevState.localstateform,
             [key]: {
               ...prevState.localstateform[key],
-              value: [...updatedInputs],
-            },
-          },
+              value: [...updatedInputs]
+            }
+          }
         };
       });
     },
-
-
 
     // ------------------------------------
     //@type single, array, object, arrayofobjects. (required)
     //@newval the new value. (required)
     //@key 'field' in firebase. (required)
-    updateInputHandler:(type, key, newval, index = null, objectkey = null) => {
+    updateInputHandler: (type, key, newval, index = null, objectkey = null) => {
       console.log('updateInputHandler key: ', key, '|', newval);
       // console.log('this.state.localstateform: ', this.state.localstateform);
       // const updatedForm = [
@@ -830,7 +825,7 @@ const mapDispatchToProps = (dispatch) => {
       // switch (type) {
       //   case 'single':
       //     //single prop of form
-      //     validation = validationCheck(
+      //     validation = validationHelper.checkValidity(
       //       newval,
       //       updatedFormElement.componentconfig.validation
       //     );
@@ -846,7 +841,7 @@ const mapDispatchToProps = (dispatch) => {
       //   case 'array':
       //     console.log('array: ', type, key, newval, index);
       //     //single prop of form
-      //     validation = validationCheck(
+      //     validation = validationHelper.checkValidity(
       //       newval,
       //       updatedFormElement.componentconfig.validation
       //     );
@@ -865,7 +860,7 @@ const mapDispatchToProps = (dispatch) => {
 
       //   case 'object':
       //     console.log('object: ', type, key, newval, index, objectkey);
-      //     validation = validationCheck(
+      //     validation = validationHelper.checkValidity(
       //       newval,
       //       updatedFormElement.componentconfig.validation
       //     );
@@ -888,7 +883,7 @@ const mapDispatchToProps = (dispatch) => {
       //       }
       //     );
       //     console.log('meta:', metadata);
-      //     validation = validationCheck(newval, metadata.validation);
+      //     validation = validationHelper.checkValidity(newval, metadata.validation);
       //     console.log('why: ', validation);
       //     obj = {
       //       data: newval, //new value,
@@ -912,13 +907,11 @@ const mapDispatchToProps = (dispatch) => {
     },
 
     //only called by arrays
-    moveItemHandler:(key, fromIndex, toIndex) => {
-      const updatedForm = [
-        ...this.state.localstateform,
-      ];
+    moveItemHandler: (key, fromIndex, toIndex) => {
+      const updatedForm = [...this.state.localstateform];
 
       const updatedFormElement = {
-        ...updatedForm[key],
+        ...updatedForm[key]
       };
 
       //updatedFormElement.value stores an array

@@ -1,20 +1,24 @@
 // reducer
 import * as actionTypes from '../actions/actionsTypes';
-import { updateObject } from '../../shared/utility';
+import { updateObject } from '../../shared/objectHelper';
 
 const initialState = {
   phoneBook: [], //stores firebase data/profiles/id with an id prop
-  loading: false,
+  loading: false
 };
 
 //reducer
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.PROFILE_RESET_ID: return resetId(state, action);
+    case actionTypes.PROFILE_RESET_ID:
+      return resetId(state, action);
     //CONTACTS
-    case actionTypes.PROFILES_FETCH_START: return fetchProfilesStart(state, action);
-    case actionTypes.PROFILES_FETCH_SUCCESS: return fetchProfilesSuccess(state, action);
-    case actionTypes.PROFILES_FETCH_FAIL: return fetchProfilesFail(state, action);
+    case actionTypes.PROFILES_FETCH_START:
+      return fetchProfilesStart(state, action);
+    case actionTypes.PROFILES_FETCH_SUCCESS:
+      return fetchProfilesSuccess(state, action);
+    case actionTypes.PROFILES_FETCH_FAIL:
+      return fetchProfilesFail(state, action);
     // case actionTypes.PROFILES_FETCH_CANCEL: return fetchProfilesCancel(state, action);
 
     default:
@@ -27,7 +31,7 @@ const resetId = (state, action) => {
     urlQuerystringId: null,
     activeProfile: null,
     formattedForm: null,
-    formattedFormWithData: null,
+    formattedFormWithData: null
   });
 };
 
@@ -39,7 +43,7 @@ const fetchProfilesStart = (state, action) => {
 const fetchProfilesSuccess = (state, action) => {
   return updateObject(state, {
     phoneBook: action.data.profiles,
-    loading: false,
+    loading: false
   });
 };
 

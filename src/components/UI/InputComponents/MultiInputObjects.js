@@ -6,12 +6,10 @@ import PropTypes from 'prop-types';
 import Button from '../../UI/Button/Button';
 
 import DraggableItem from './DraggableItem';
-import FlexRow from '../../../hoc/Layout/FlexRow';
-import FlexColumn from '../../../hoc/Layout/FlexColumn';
 import Input from './Input';
 import Expandable from './Expandable';
 import Label from '../Headers/Label';
-import * as ArrayHelper from '../../../shared/arrayHelper';
+import { arrayHelper } from '../../../shared';
 
 class MultiInputObjects extends PureComponent {
   static contextType = InputContext;
@@ -155,7 +153,7 @@ class MultiInputObjects extends PureComponent {
       this.state.toIndex
     );
 
-    const updatedArr = ArrayHelper.moveItemInArray(
+    const updatedArr = arrayHelper.moveItemInArray(
       this.state.isActive,
       clickIndex,
       toIndex
@@ -225,12 +223,17 @@ class MultiInputObjects extends PureComponent {
     const expandableContent = (val, index) => {
       return this.props.componentconfig.metadata.map((each, i) => {
         return (
-          <FlexRow
+          <div
+            style={{ display: 'flex', flexDirection: 'row' }}
             flexgrow="true"
             spacing="bottom-notlast"
             key={this.props.name + index + '_' + i}
           >
-            <FlexColumn flexgrow="true" spacing="bottom">
+            <div
+              style={{ display: 'flex', flexDirection: 'column' }}
+              flexgrow="true"
+              spacing="bottom"
+            >
               <Label>{each.label}</Label>
               <Input
                 label={each.label}
@@ -257,8 +260,8 @@ class MultiInputObjects extends PureComponent {
                   );
                 }}
               />
-            </FlexColumn>
-          </FlexRow>
+            </div>
+          </div>
         );
       });
     };
@@ -270,7 +273,8 @@ class MultiInputObjects extends PureComponent {
               console.log('val: ', val);
               console.log('rowValidity:', this.state.rowValidity);
               return (
-                <FlexColumn
+                <div
+                  style={{ display: 'flex', flexDirection: 'column' }}
                   spacing="bottom"
                   key={index}
                   onDragStart={(event) => this.dragStartHandler(event, index)}
@@ -301,7 +305,7 @@ class MultiInputObjects extends PureComponent {
                     event.currentTarget.setAttribute('draggable', 'false');
                   }}
                 >
-                  <FlexRow>
+                  <div style={{ display: 'flex', flexDirection: 'row' }}>
                     <Expandable
                       title={
                         <React.Fragment>
@@ -339,8 +343,8 @@ class MultiInputObjects extends PureComponent {
                     </Expandable>
 
                     {removeButton(index)}
-                  </FlexRow>
-                </FlexColumn>
+                  </div>
+                </div>
               );
             })
           : null}

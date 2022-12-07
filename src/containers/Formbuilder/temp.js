@@ -6,7 +6,7 @@ import classes from './Formbuilder.module.scss';
 //Helper classes
 import axios from '../../axios-firebase';
 import * as arrayHelper from '../../shared/arrayHelper';
-import { CheckValidity as validationCheck } from '../../shared/validation';
+import { CheckValidity as validationCheck } from '../../shared/validationHelper';
 
 //redux store
 import * as actions from '../../store/actions/forms';

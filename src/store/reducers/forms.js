@@ -1,6 +1,6 @@
 // // reducer
 // import * as actionTypes from '../actions/actionsTypes';
-// import { updateObject } from '../../shared/utility';
+// import { updateObject } from '../../shared/objectHelper';
 
 // //reducer
 // const reducer = (state = initialState, action) => {
@@ -43,7 +43,5 @@
 // const formAddSchema = (state, action)=>{
 //   return updateObject(state, {formlist:{...state.formlist, [action.schemapath]:{...state.formlist[action.schemapath], [action.data]:[]} }})
 // }
-
-
 
 // export default reducer;

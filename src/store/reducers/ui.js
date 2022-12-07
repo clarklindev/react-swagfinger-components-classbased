@@ -1,8 +1,8 @@
 import * as actionTypes from '../actions/actionsTypes';
-import { updateObject } from '../../shared/utility';
+import { updateObject } from '../../shared/objectHelper';
 
 const initialState = {
-  hideToolbar: false,
+  hideToolbar: false
 };
 
 const shouldHideToolbar = (state, action) => {

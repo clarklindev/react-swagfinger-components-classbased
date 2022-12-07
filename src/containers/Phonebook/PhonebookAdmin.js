@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
 import classes from './PhonebookAdmin.module.scss';
-import * as align from '../../shared/alignFlex';
 
 import * as actions from '../../store/actions/index';
 import InputContext from '../../context/InputContext';
@@ -14,11 +13,10 @@ import ListItem from '../../components/UI/InputComponents/ListItem';
 import Icon from '../../components/UI/Icon/Icon';
 import Spinner from '../../components/UI/Loaders/Spinner';
 import Button from '../../components/UI/Button/Button';
-import FlexRow from '../../hoc/Layout/FlexRow';
 
 class PhonebookAdmin extends PureComponent {
   state = {
-    filterText: '',
+    filterText: ''
   };
 
   componentDidMount() {
@@ -127,20 +125,28 @@ class PhonebookAdmin extends PureComponent {
                   id={id}
                   displayText={entry}
                   extraText={extra}
-                  align={align.justifyContent('space-between')}>
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    flexGrow: 1
+                  }}
+                >
                   <div className={classes.ProfileButtons}>
                     <Button
-                      type='WithBorder'
-                      title='Edit'
-                      onClick={this.editProfileHandler.bind(this, id)}>
-                      <Icon iconstyle='far' code='edit' size='sm' />
+                      type="WithBorder"
+                      title="Edit"
+                      onClick={this.editProfileHandler.bind(this, id)}
+                    >
+                      <Icon iconstyle="far" code="edit" size="sm" />
                     </Button>
 
                     <Button
-                      type='WithBorder'
-                      title='Delete'
-                      onClick={this.deleteProfileHandler.bind(this, token, id)}>
-                      <Icon iconstyle='far' code='trash-alt' size='sm' />
+                      type="WithBorder"
+                      title="Delete"
+                      onClick={this.deleteProfileHandler.bind(this, token, id)}
+                    >
+                      <Icon iconstyle="far" code="trash-alt" size="sm" />
                     </Button>
                   </div>
                 </ListItem>
@@ -153,18 +159,19 @@ class PhonebookAdmin extends PureComponent {
         {isLoading ? (
           <Spinner />
         ) : (
-          <DefaultPageLayout label='Phonebook Admin'>
+          <DefaultPageLayout label="Phonebook Admin">
             <Card style={['Padding']}>
               <InputContext.Provider
                 value={{
                   changed: this.searchChangedHandler,
-                  clear: this.searchClearHandler,
-                }}>
+                  clear: this.searchClearHandler
+                }}
+              >
                 <ComponentFactory
                   data={{
                     label: 'Search',
                     component: 'inputsearch',
-                    value: this.state.filterText,
+                    value: this.state.filterText
                   }}
                 />
               </InputContext.Provider>
@@ -172,19 +179,20 @@ class PhonebookAdmin extends PureComponent {
                 data={{
                   component: 'list',
                   label: 'Contacts',
-                  value: { data: filtered },
+                  value: { data: filtered }
                 }}
               />
-              <FlexRow>
+              <div style={{ display: 'flex', flexDirection: 'row' }}>
                 <Button
-                  type='WithBorder'
-                  className='FlexGrow'
-                  title='Add'
-                  onClick={this.addProfileHandler}>
-                  <Icon iconstyle='fas' code='plus' size='sm' />
+                  type="WithBorder"
+                  className="FlexGrow"
+                  title="Add"
+                  onClick={this.addProfileHandler}
+                >
+                  <Icon iconstyle="fas" code="plus" size="sm" />
                   <p>Add Profile</p>
                 </Button>
-              </FlexRow>
+              </div>
             </Card>
           </DefaultPageLayout>
         )}
@@ -199,7 +207,7 @@ const mapStateToProps = (state) => {
     storedPhonebook: state.phonebook.phoneBook,
     isLoading: state.phonebook.loading,
     //auth
-    token: state.auth.token,
+    token: state.auth.token
   };
 };
 
@@ -219,13 +227,13 @@ const mapDispatchToProps = (dispatch) => {
       //redirect
       history.push({
         pathname: `/profileupdate`,
-        search: `?id=${id}`,
+        search: `?id=${id}`
       });
     },
 
     onProfileDelete: (token, id) => {
       dispatch(actions.processProfileDelete(token, id));
-    },
+    }
   };
 };
 

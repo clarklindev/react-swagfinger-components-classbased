@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import classes from './ErrorList.module.scss';
-import Utils from '../../../Utils';
+import { stringHelper } from '../../../shared';
 import Icon from '../Icon/Icon';
 
 class ErrorList extends Component {
   render() {
-    let classList = Utils.getClassNameString([
+    let classList = stringHelper.getUniqueClassNameString([
       classes.ErrorList,
       ErrorList.name,
       this.props.className
@@ -18,9 +18,9 @@ class ErrorList extends Component {
               <li key={'errorlist' + index}>
                 <Icon
                   className={classes.Icon}
-                  iconstyle='fas'
+                  iconstyle="fas"
                   code={'exclamation-circle'}
-                  size='sm'
+                  size="sm"
                 />
                 {item}
               </li>

@@ -2,8 +2,9 @@
 import React, { Component } from 'react';
 import classes from './MultiRangeSlider.module.scss';
 import InputContext from '../../../context/InputContext';
-import Utils from '../../../Utils';
+import { domHelper, mouseHelper } from '../../../shared';
 import ErrorList from './ErrorList';
+import { stringHelper } from '../../../shared';
 
 class MultiRangeSlider extends Component {
   static contextType = InputContext;
@@ -289,8 +290,11 @@ class MultiRangeSlider extends Component {
 
     if (results.length > 0) {
       console.log('RAIL CLICK');
-      let getclosest = Utils.getClosestChildElement(event, '[class*="Slider"]');
-      console.log('x clicked:', Utils.getClickPosition(event));
+      let getclosest = domHelper.getClosestChildElement(
+        event,
+        '[class*="Slider"]'
+      );
+      console.log('x clicked:', mouseHelper.getClickPosition(event));
       let closestChildIndex = getclosest.index;
       this.setState({
         currentindex: closestChildIndex
@@ -446,7 +450,10 @@ class MultiRangeSlider extends Component {
             <div
               className={[
                 classes.RailWrapper,
-                Utils.getClassNameString([...tempClassesMin, ...tempClassesMax])
+                stringHelper.getUniqueClassNameString([
+                  ...tempClassesMin,
+                  ...tempClassesMax
+                ])
               ].join(' ')}
             >
               {/* rail - item of which calculations are based on*/}

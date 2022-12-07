@@ -6,10 +6,9 @@ import * as actions from '../../store/actions/index';
 import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
 import Spinner from '../../components/UI/Loaders/Spinner';
 import Card from '../../components/UI/Card/Card';
-import FlexRow from '../../hoc/Layout/FlexRow';
 import Modal from '../../components/UI/Modal/Modal';
 import Tabs from '../../components/UI/Tabs/Tabs';
-import * as Clipboard from '../../shared/clipboard';
+import * as Clipboard from '../../shared/clipboardHelper';
 
 //tabs
 import ProfileReadTimeline from './ProfileReadTimeline';
@@ -24,7 +23,7 @@ class ProfileRead extends Component {
 
   state = {
     activeTab: 'profile',
-    showClipboardModal: false,
+    showClipboardModal: false
   };
 
   getProfile = () => {
@@ -73,13 +72,17 @@ class ProfileRead extends Component {
         ) : (
           <React.Fragment>
             <Modal show={this.state.showClipboardModal}>
-              <FlexRow justifycontent='center'>
+              <div
+                style={{ display: 'flex', flexDirection: 'row' }}
+                justifycontent="center"
+              >
                 <p>Copied to clipboard</p>
-              </FlexRow>
+              </div>
             </Modal>
             {this.props.activeProfile ? (
               <DefaultPageLayout
-                label={`${this.props.activeProfile['name']} ${this.props.activeProfile['lastname']}`}>
+                label={`${this.props.activeProfile['name']} ${this.props.activeProfile['lastname']}`}
+              >
                 <Tabs
                   tabheaders={['profile', 'timeline']}
                   onClick={this.tabClickHandler}
@@ -98,7 +101,7 @@ const mapStateToProps = (state) => {
   return {
     storedPhonebook: state.profile.phoneBook,
     isLoading: state.profile.loading,
-    activeProfile: state.profile.activeProfile,
+    activeProfile: state.profile.activeProfile
   };
 };
 
@@ -110,7 +113,7 @@ const mapDispatchToProps = (dispatch) => {
 
     hideToolbar: (bool) => {
       dispatch(actions.hasToolbar(bool));
-    },
+    }
   };
 };
 

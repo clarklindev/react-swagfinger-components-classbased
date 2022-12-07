@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import classes from './ListItem.module.scss';
-import '../../../shared/alignFlex.module.scss'; //align classes
-import Utils from '../../../Utils';
+import { stringHelper } from '../../../shared';
 class ListItem extends Component {
   constructor(props) {
     super(props);
 
-    this.className = Utils.getClassNameString([
+    this.className = stringHelper.getUniqueClassNameString([
       classes.ListItem,
       ListItem.name,
-      this.props.className,
+      this.props.className
     ]);
 
     this.displayTextRef = React.createRef();
@@ -51,8 +50,9 @@ class ListItem extends Component {
         className={[this.className, ...styleClasses].join(' ')}
         style={this.props.style}
         onClick={this.props.onClick}
-        title={this.props.title}>
-        <div className={[classes.ListItemWrapper, this.props.align].join(' ')}>
+        title={this.props.title}
+      >
+        <div className={[classes.ListItemWrapper]} style={this.props.style}>
           {displayText || hasExtraText ? (
             <div>
               {displayText}

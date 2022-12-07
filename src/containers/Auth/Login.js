@@ -12,7 +12,7 @@ import InputContext from '../../context/InputContext';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import Spinner from '../../components/UI/Loaders/Spinner';
 import DefaultPageLayout from '../../hoc/DefaultPageLayout/DefaultPageLayout';
-import { CheckValidity as validationCheck } from '../../shared/validation';
+import { validationHelper } from '../../shared';
 import Card from '../../components/UI/Card/Card';
 
 class Login extends Component {
@@ -33,8 +33,8 @@ class Login extends Component {
           placeholder: 'Login id',
           type: 'text',
           validation: {
-            isRequired: true,
-          },
+            isRequired: true
+          }
         },
         label: 'Login',
         name: 'login',
@@ -44,14 +44,14 @@ class Login extends Component {
           errors: [],
           pristine: true,
           touched: false,
-          valid: false,
-        },
+          valid: false
+        }
       },
       {
         component: 'inputpassword',
         componentconfig: {
           placeholder: 'Password',
-          type: 'password',
+          type: 'password'
         },
         label: 'Password',
         name: 'password',
@@ -61,10 +61,10 @@ class Login extends Component {
           errors: [],
           pristine: true,
           touched: false,
-          valid: false,
-        },
-      },
-    ],
+          valid: false
+        }
+      }
+    ]
   };
   //------------------------------------------------------
   //------------------------------------------------------
@@ -119,7 +119,7 @@ class Login extends Component {
     if (
       this.state.form[inputIdentifier].componentconfig.validation !== undefined
     ) {
-      validation = validationCheck(
+      validation = validationHelper.checkValidity(
         newval,
         this.state.form[inputIdentifier].componentconfig.validation
       );
@@ -141,10 +141,10 @@ class Login extends Component {
               errors: this.state.form[inputIdentifier].componentconfig
                 .validation
                 ? validation.errors
-                : [],
-            },
-          },
-        },
+                : []
+            }
+          }
+        }
       };
     });
   };
@@ -171,13 +171,13 @@ class Login extends Component {
           ...prevState.form,
           login: {
             ...prevState.form.login,
-            value: { ...prevState.form.login.value, data: '' },
+            value: { ...prevState.form.login.value, data: '' }
           },
           password: {
             ...prevState.form.password,
-            value: { ...prevState.form.password.value, data: '' },
-          },
-        },
+            value: { ...prevState.form.password.value, data: '' }
+          }
+        }
       };
     });
   };
@@ -194,26 +194,29 @@ class Login extends Component {
       <Spinner />
     ) : (
       <DefaultPageLayout
-        type='LayoutNarrow'
+        type="LayoutNarrow"
         label={
           this.props.loading ? '' : this.state.isSignUp ? 'Sign-up' : 'Login'
-        }>
-        <Card style={['Padding']} className='Card'>
-          <form onSubmit={this.onSubmitHandler} autoComplete='off'>
+        }
+      >
+        <Card style={['Padding']} className="Card">
+          <form onSubmit={this.onSubmitHandler} autoComplete="off">
             <InputContext.Provider
               value={{
-                changed: this.inputChangedHandler,
-              }}>
+                changed: this.inputChangedHandler
+              }}
+            >
               {inputs}
               <div className={classes.ButtonWrapper}>
-                <input ref={this.submitInputRef} type='submit' />
+                <input ref={this.submitInputRef} type="submit" />
 
                 <Button
                   reference={this.submitButtonRef}
-                  type='Action'
+                  type="Action"
                   onClick={() => {
                     this.submitInputRef.current.click();
-                  }}>
+                  }}
+                >
                   Submit
                 </Button>
               </div>
@@ -227,8 +230,9 @@ class Login extends Component {
               : `Don't have an account? `}
             <Button
               className={classes.SwitchButton}
-              type='WithPadding'
-              onClick={this.switchAuthModeHandler}>
+              type="WithPadding"
+              onClick={this.switchAuthModeHandler}
+            >
               <span className={classes.ButtonText}>
                 {this.state.isSignUp ? 'Login' : 'Sign-up'}
               </span>
@@ -252,7 +256,7 @@ const mapStateToProps = (state) => {
   return {
     loading: state.auth.loading,
     isAuthenticated: state.auth.token !== null,
-    authRedirectPath: state.auth.authRedirectPath,
+    authRedirectPath: state.auth.authRedirectPath
   };
 };
 
@@ -260,7 +264,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     authLogin: (login, password, isSignup) => {
       return dispatch(actions.authLogin(login, password, isSignup));
-    },
+    }
   };
 };
 export default connect(

@@ -12,9 +12,9 @@ import Checkbox from '../InputComponents/Checkbox';
 import Breadcrumb from '../InputComponents/Breadcrumb';
 
 //helpers
-import * as Blob from '../../../shared/blob';
+import * as Blob from '../../../shared/blobHelper';
 import * as FirebaseHelper from '../../../shared/firebaseHelper';
-import * as Clipboard from '../../../shared/clipboard';
+import * as Clipboard from '../../../shared/clipboardHelper';
 
 //firebase imports
 import * as firebase from 'firebase/app';
@@ -45,7 +45,7 @@ class Upload extends PureComponent {
       storageBucket: 'react-crud-1db4b.appspot.com',
       messagingSenderId: '44556258250',
       appId: '1:44556258250:web:f756e981ee135db270dd33',
-      measurementId: 'G-QJZQEZMV2J',
+      measurementId: 'G-QJZQEZMV2J'
     };
     try {
       console.log('\t%cinitializing firebase', 'background:white; color:red');
@@ -92,7 +92,7 @@ class Upload extends PureComponent {
     renameFileModal: false,
     renamedFilename: '',
     renamedFilenameExtension: '',
-    showClipboardModal: false,
+    showClipboardModal: false
   };
 
   async componentDidMount() {
@@ -158,7 +158,7 @@ class Upload extends PureComponent {
           mainIndeterminate: false,
           checkedFolders: [], //all checked folders in current folder
           checkedFiles: [], //all checked files in current folder
-          checkedPlaceholderFolders: [], //all checked temporary folders (not in firebase yet) in current folder
+          checkedPlaceholderFolders: [] //all checked temporary folders (not in firebase yet) in current folder
         };
       });
 
@@ -267,7 +267,7 @@ class Upload extends PureComponent {
     console.log(
       `\t%cSETSTATE: currentFolderDrilldownRefs: ${[
         this.state.currentFolderDrilldownRefs,
-        ref,
+        ref
       ]}`,
       'background:yellow; color:red'
     );
@@ -275,8 +275,8 @@ class Upload extends PureComponent {
       return {
         currentFolderDrilldownRefs: [
           ...prevState.currentFolderDrilldownRefs,
-          ref,
-        ],
+          ref
+        ]
       };
     });
     console.log(
@@ -300,7 +300,7 @@ class Upload extends PureComponent {
       return {
         ...prevState,
         firebaseFolders: [],
-        firebaseFiles: [],
+        firebaseFiles: []
       };
     });
     console.log(
@@ -348,7 +348,7 @@ class Upload extends PureComponent {
         return {
           ...prevState,
           firebaseFolders: folders,
-          firebaseFiles: files,
+          firebaseFiles: files
         };
       });
     });
@@ -368,7 +368,7 @@ class Upload extends PureComponent {
     let placeholderFolderAllExceptMatch = [
       ...this.state.placeholderFolders.filter((item) => {
         return item.pathRef !== this.state.currentFolderRef;
-      }),
+      })
     ];
 
     let placeholderFolderMatch = this.state.placeholderFolders.find((item) => {
@@ -420,7 +420,7 @@ class Upload extends PureComponent {
             );
             //if found, return false
             return isFound === undefined ? true : false;
-          }),
+          })
         ];
 
         console.log(
@@ -434,7 +434,7 @@ class Upload extends PureComponent {
         console.log(
           `\t%cSETSTATE: placeholderFolders: ${[
             ...placeholderFolderAllExceptMatch,
-            placeholderFolderMatch,
+            placeholderFolderMatch
           ]}`,
           'background:yellow; color:red'
         );
@@ -442,8 +442,8 @@ class Upload extends PureComponent {
           return {
             placeholderFolders: [
               ...placeholderFolderAllExceptMatch,
-              placeholderFolderMatch,
-            ],
+              placeholderFolderMatch
+            ]
           };
         });
       }
@@ -596,7 +596,7 @@ class Upload extends PureComponent {
         editBreadcrumbModal: true,
         currentFolderPath: prevState.currentFolderRef.location.path, //reset the value when modal is opened
         errorModalMessage: null,
-        tempFolderPath: prevState.currentFolderPath,
+        tempFolderPath: prevState.currentFolderPath
       };
     });
     console.log(
@@ -654,7 +654,7 @@ class Upload extends PureComponent {
         'background:yellow; color:red'
       );
       return {
-        selectedFiles: [...toUpload],
+        selectedFiles: [...toUpload]
       };
     });
     console.log(
@@ -888,7 +888,7 @@ class Upload extends PureComponent {
       );
       return {
         checkedFolders: resultFolders,
-        checkedPlaceholderFolders: resultPathFolders,
+        checkedPlaceholderFolders: resultPathFolders
       };
     });
     console.log(
@@ -945,7 +945,7 @@ class Upload extends PureComponent {
       );
       return {
         mainChecked: val ? val : !prevState.mainChecked,
-        mainIndeterminate: false,
+        mainIndeterminate: false
       };
     });
     console.log(
@@ -1000,8 +1000,8 @@ class Upload extends PureComponent {
         `\t%cpathfolders: ${pathfolders}`,
         'background:peru; color:yellow'
       );
-      pathfolders = this.state.placeholderFolders[placeholderFolderMatchIndex]
-        .pathfolders;
+      pathfolders =
+        this.state.placeholderFolders[placeholderFolderMatchIndex].pathfolders;
     }
     let checkedItems =
       this.getCheckFoldersLength() +
@@ -1084,7 +1084,7 @@ class Upload extends PureComponent {
       return {
         createFolderModal: true,
         errorModalMessage: false,
-        createFolderName: '',
+        createFolderName: ''
       };
     });
     console.log(
@@ -1155,7 +1155,7 @@ class Upload extends PureComponent {
       let placeholderFolderAllExceptMatch = [
         ...prevState.placeholderFolders.filter((item) => {
           return item.pathRef !== this.state.currentFolderRef;
-        }),
+        })
       ];
 
       //not found in placeholderFolders?...add to placeholderFolders!
@@ -1170,7 +1170,7 @@ class Upload extends PureComponent {
         );
         let obj = {
           pathRef: this.state.currentFolderRef,
-          pathfolders: [folderRef],
+          pathfolders: [folderRef]
         };
         console.log(`\t%cSETSTATE:`, 'background:yellow; color:red');
         console.log(
@@ -1185,7 +1185,7 @@ class Upload extends PureComponent {
           placeholderFolders: [...prevState.placeholderFolders, obj],
           createFolderName: '',
           createFolderModal: false,
-          selectedFiles: [],
+          selectedFiles: []
         };
       }
       //FOUND current folder in placeholderFolders
@@ -1220,7 +1220,7 @@ class Upload extends PureComponent {
           if (isFound === -1) {
             let updatedFolders = [
               ...placeholderFolderMatch.pathfolders,
-              folderRef,
+              folderRef
             ];
             placeholderFolderMatch.pathfolders = updatedFolders;
           }
@@ -1228,7 +1228,7 @@ class Upload extends PureComponent {
           console.log(
             `\t%cplaceholderFolders: ${[
               ...placeholderFolderAllExceptMatch,
-              placeholderFolderMatch,
+              placeholderFolderMatch
             ]}`,
             'background:yellow; color:red'
           );
@@ -1239,9 +1239,9 @@ class Upload extends PureComponent {
           return {
             placeholderFolders: [
               ...placeholderFolderAllExceptMatch,
-              placeholderFolderMatch,
+              placeholderFolderMatch
             ],
-            createFolderModal: false,
+            createFolderModal: false
           };
         }
       }
@@ -1307,7 +1307,7 @@ class Upload extends PureComponent {
           return {
             mainIndeterminate: false,
             mainChecked: false,
-            checkedFiles: [],
+            checkedFiles: []
           };
         });
       }
@@ -1333,7 +1333,7 @@ class Upload extends PureComponent {
           return {
             mainIndeterminate: false,
             mainChecked: false,
-            checkedFolders: [],
+            checkedFolders: []
           };
         });
       }
@@ -1428,7 +1428,7 @@ class Upload extends PureComponent {
           placeholderFolders: updatedPlaceholderFolders,
           mainChecked: false,
           mainIndeterminate: false,
-          checkedPlaceholderFolders: [],
+          checkedPlaceholderFolders: []
         };
       });
     }
@@ -1460,7 +1460,7 @@ class Upload extends PureComponent {
       renamedFilename: findfile.name.split('.').slice(0, -1).join('.'),
       renamedFilenameExtension: findfile.name.substr(
         findfile.name.lastIndexOf('.')
-      ),
+      )
     });
   };
 
@@ -1575,8 +1575,8 @@ class Upload extends PureComponent {
       );
 
       if (placeholderMatchIndex > -1) {
-        pathFolders = this.state.placeholderFolders[placeholderMatchIndex]
-          .pathfolders;
+        pathFolders =
+          this.state.placeholderFolders[placeholderMatchIndex].pathfolders;
       }
     }
 
@@ -1598,7 +1598,8 @@ class Upload extends PureComponent {
                 this.placeholderFolderCheckHandler(index, checked)
               }
               index={index}
-              checked={this.state.checkedPlaceholderFolders[index]}></Checkbox>
+              checked={this.state.checkedPlaceholderFolders[index]}
+            ></Checkbox>
             <ListItem
               align={align.JustifyContentFlexStart}
               hovereffect={true}
@@ -1607,8 +1608,9 @@ class Upload extends PureComponent {
                 console.log('CHANGING FOLDER :)');
                 this.changeFolderPath(item);
               }}
-              title={item.name}>
-              <Icon iconstyle='far' code='folder' size='lg' />
+              title={item.name}
+            >
+              <Icon iconstyle="far" code="folder" size="lg" />
               <p>{item.name}/</p>
             </ListItem>
           </React.Fragment>
@@ -1628,7 +1630,8 @@ class Upload extends PureComponent {
                 this.folderCheckHandler(index, checked)
               }
               index={index}
-              checked={this.state.checkedFolders[index]}></Checkbox>
+              checked={this.state.checkedFolders[index]}
+            ></Checkbox>
             <ListItem
               align={align.JustifyContentSpaceBetween}
               hovereffect={true}
@@ -1637,10 +1640,11 @@ class Upload extends PureComponent {
                 console.log('CHANGING FOLDER :)');
                 this.changeFolderPath(item);
               }}
-              title={item.name}>
+              title={item.name}
+            >
               {/* flex-direction:row */}
               <FlexRow>
-                <Icon iconstyle='far' code='folder' size='lg' />
+                <Icon iconstyle="far" code="folder" size="lg" />
                 <p>{item.name}/</p>
               </FlexRow>
               <FlexRow>
@@ -1658,14 +1662,15 @@ class Upload extends PureComponent {
                       this.setState({ showClipboardModal: false });
                     }, 1000);
                   }}
-                  title='copy to clipboard'>
-                  <Icon iconstyle='far' code='copy' size='sm' />
+                  title="copy to clipboard"
+                >
+                  <Icon iconstyle="far" code="copy" size="sm" />
                 </Button>
               </FlexRow>
             </ListItem>
           </React.Fragment>
         );
-      }),
+      })
     ].sort((a, b) => {
       var nameA = a.props.children[1].props.title.toLowerCase();
       var nameB = b.props.children[1].props.title.toLowerCase();
@@ -1700,7 +1705,8 @@ class Upload extends PureComponent {
                 this.fileCheckHandler(index, checked)
               }
               index={index}
-              checked={this.state.checkedFiles[index]}></Checkbox>
+              checked={this.state.checkedFiles[index]}
+            ></Checkbox>
             <ListItem
               align={align.JustifyContentSpaceBetween}
               hovereffect={true}
@@ -1712,12 +1718,13 @@ class Upload extends PureComponent {
                 console.log('URL: ', url);
                 window.open(url, '_blank');
               }}
-              title={item.name}>
+              title={item.name}
+            >
               <FlexRow>
-                <Icon iconstyle='far' code='file' size='lg' />
+                <Icon iconstyle="far" code="file" size="lg" />
                 <p>{item.name}</p>
               </FlexRow>
-              <FlexRow spacingChildren='left'>
+              <FlexRow spacingChildren="left">
                 <Button
                   className={buttonStyle.NoStyle}
                   onClick={async (event) => {
@@ -1728,8 +1735,9 @@ class Upload extends PureComponent {
                     console.log('URL: ', url);
                     window.open(url, '_blank');
                   }}
-                  title='open as external link'>
-                  <Icon iconstyle='fas' code='external-link-alt' size='sm' />
+                  title="open as external link"
+                >
+                  <Icon iconstyle="fas" code="external-link-alt" size="sm" />
                 </Button>
 
                 {/* downloads assets to drive */}
@@ -1747,14 +1755,15 @@ class Upload extends PureComponent {
                       }, 1000);
                     });
                   }}
-                  title='copy to clipboard'>
-                  <Icon iconstyle='far' code='copy' size='sm' />
+                  title="copy to clipboard"
+                >
+                  <Icon iconstyle="far" code="copy" size="sm" />
                 </Button>
               </FlexRow>
             </ListItem>
           </React.Fragment>
         );
-      }),
+      })
     ];
 
     //CHECK
@@ -1787,7 +1796,8 @@ class Upload extends PureComponent {
       <div className={classes.Upload}>
         <div className={[classes.Border].join(' ')}>
           <div
-            className={[classes.UploadHeader, isIndeterminateClass].join(' ')}>
+            className={[classes.UploadHeader, isIndeterminateClass].join(' ')}
+          >
             {/*DELETE/CANCEL SELECT WHEN ITEMS ARE SELECTED */}
             {this.state.mainIndeterminate === true ||
             (this.getCheckFoldersLength() +
@@ -1803,15 +1813,16 @@ class Upload extends PureComponent {
               <React.Fragment>
                 <div className={classes.UploadIndeterminate}>
                   <Button
-                    type='CheckboxSize'
-                    color='White'
+                    type="CheckboxSize"
+                    color="White"
                     onClick={async (event) => {
                       event.preventDefault();
                       await this.toggleMainChecked(false);
                       await this.toggleCheckAllFolders(false);
                       await this.toggleCheckAllFiles(false);
-                    }}>
-                    <Icon iconstyle='fas' code='times' size='lg' />
+                    }}
+                  >
+                    <Icon iconstyle="fas" code="times" size="lg" />
                   </Button>
                   <span>
                     {this.getCheckFoldersLength() +
@@ -1823,21 +1834,23 @@ class Upload extends PureComponent {
                 <div className={classes.ButtonGroup}>
                   {this.getCheckedFilesLength() === 1 ? (
                     <Button
-                      type='Action'
+                      type="Action"
                       onClick={(event) => {
                         this.renameFileHandler(event);
-                      }}>
+                      }}
+                    >
                       Rename
                     </Button>
                   ) : null}
 
                   <Button
-                    type='Action'
+                    type="Action"
                     onClick={async (event) => {
                       await this.deleteSelected(event);
                       //update folders
                       this.getAllFolders();
-                    }}>
+                    }}
+                  >
                     Delete
                   </Button>
                 </div>
@@ -1854,17 +1867,20 @@ class Upload extends PureComponent {
                   onMouseLeave={(event) => {
                     event.stopPropagation();
                     this.uploadUrlOutHandler(event);
-                  }}>
+                  }}
+                >
                   <Breadcrumb
                     path={this.state.currentFolderDrilldownRefs}
                     onClick={(ref) => this.changeFolderPath(ref)}
-                    onEdit={() => this.editBreadcrumbModal()}></Breadcrumb>
+                    onEdit={() => this.editBreadcrumbModal()}
+                  ></Breadcrumb>
 
                   <div
                     className={[classes.UploadEdit, isHoverUploadUrl].join(' ')}
-                    title='edit'
-                    onClick={() => this.editBreadcrumbModal()}>
-                    <Icon iconstyle='fas' code='edit' size='sm' />
+                    title="edit"
+                    onClick={() => this.editBreadcrumbModal()}
+                  >
+                    <Icon iconstyle="fas" code="edit" size="sm" />
                   </div>
                 </div>
 
@@ -1872,8 +1888,8 @@ class Upload extends PureComponent {
                 <div className={[classes.UploadHeaderActionButtons].join(' ')}>
                   <input
                     ref={this.uploadRef}
-                    type='file'
-                    accept='image/*, video/*, audio/*, application/pdf'
+                    type="file"
+                    accept="image/*, video/*, audio/*, application/pdf"
                     multiple
                     onChange={(event) => {
                       console.clear();
@@ -1884,23 +1900,25 @@ class Upload extends PureComponent {
                   {/* UPLOAD FILE */}
                   <Button
                     className={classes.UploadHeaderUploadFile}
-                    type='Action'
+                    type="Action"
                     onClick={(event) => {
                       event.preventDefault();
                       this.uploadRef.current.click();
                     }}
-                    title='upload'>
-                    <Icon iconstyle='fas' code='arrow-circle-up' size='lg' />
+                    title="upload"
+                  >
+                    <Icon iconstyle="fas" code="arrow-circle-up" size="lg" />
                     Upload file
                   </Button>
 
                   {/* NEW FOLDER */}
                   <Button
                     className={classes.UploadHeaderNewFolder}
-                    type='LastItemRight'
+                    type="LastItemRight"
                     onClick={this.addFolderHandler}
-                    title='new folder'>
-                    <Icon iconstyle='fas' code='folder-plus' size='lg' />
+                    title="new folder"
+                  >
+                    <Icon iconstyle="fas" code="folder-plus" size="lg" />
                   </Button>
                 </div>
               </React.Fragment>
@@ -1923,7 +1941,8 @@ class Upload extends PureComponent {
                     //when NOT async/await, these following calls should use !this.state.mainChecked
                     await this.toggleCheckAllFolders(this.state.mainChecked);
                     await this.toggleCheckAllFiles(this.state.mainChecked);
-                  }}></Checkbox>
+                  }}
+                ></Checkbox>
                 <span className={classes.LabelName}>Name</span>
               </div>
             </div>
@@ -1936,32 +1955,35 @@ class Upload extends PureComponent {
                   <div
                     className={[
                       classes.FlexGroupRow,
-                      classes.NavigateUpOneFolder,
-                    ].join(' ')}>
+                      classes.NavigateUpOneFolder
+                    ].join(' ')}
+                  >
                     <ListItem
                       align={align.JustifyContentFlexStart}
                       hovereffect={true}
                       onClick={() => {
                         //get current index on drilldown,
-                        let index = this.state.currentFolderDrilldownRefs.findIndex(
-                          (item) => {
-                            return (
-                              item.location.path ===
-                              this.state.currentFolderRef.location.path
-                            );
-                          }
-                        );
+                        let index =
+                          this.state.currentFolderDrilldownRefs.findIndex(
+                            (item) => {
+                              return (
+                                item.location.path ===
+                                this.state.currentFolderRef.location.path
+                              );
+                            }
+                          );
                         //navigate to index -1
                         console.clear();
                         this.changeFolderPath(
                           this.state.currentFolderDrilldownRefs[index - 1]
                         );
-                      }}>
+                      }}
+                    >
                       <Icon
-                        iconstyle='fas'
-                        code='level-up-alt'
-                        size='sm'
-                        flip='horizontal'
+                        iconstyle="fas"
+                        code="level-up-alt"
+                        size="sm"
+                        flip="horizontal"
                       />
                       ../
                     </ListItem>
@@ -1972,8 +1994,9 @@ class Upload extends PureComponent {
               {currentFolderData.length ? (
                 <List
                   value={{
-                    data: currentFolderData,
-                  }}></List>
+                    data: currentFolderData
+                  }}
+                ></List>
               ) : (
                 'There are no files here yet'
               )}
@@ -1986,7 +2009,7 @@ class Upload extends PureComponent {
           // --------------------------------------------------------------------
         }
         <Modal
-          label='Create folder'
+          label="Create folder"
           show={this.state.createFolderModal}
           isInteractive={true}
           modalClosed={async () => {
@@ -2011,10 +2034,11 @@ class Upload extends PureComponent {
             } else {
               this.setState({ errorModalMessage: 'Enter a foldername' });
             }
-          }}>
+          }}
+        >
           <Input
             value={{ data: this.state.createFolderName }}
-            placeholder='Folder name'
+            placeholder="Folder name"
             onChange={async (event) => {
               event.preventDefault();
               console.log(
@@ -2035,7 +2059,7 @@ class Upload extends PureComponent {
                 );
                 return {
                   errorModalMessage: null,
-                  createFolderName: targetVal,
+                  createFolderName: targetVal
                 };
               });
             }}
@@ -2048,7 +2072,7 @@ class Upload extends PureComponent {
           // --------------------------------------------------------------------
         }
         <Modal
-          label='Rename file'
+          label="Rename file"
           show={this.state.renameFileModal}
           isInteractive={true}
           modalClosed={async () => {
@@ -2061,7 +2085,7 @@ class Upload extends PureComponent {
                 renameFileModal: false,
                 checkedFile: null,
                 renamedFilename: '',
-                renamedFilenameExtension: '',
+                renamedFilenameExtension: ''
               };
             });
           }}
@@ -2098,16 +2122,17 @@ class Upload extends PureComponent {
                   checkedFile: null,
                   checkedFiles: [],
                   renamedFilename: '',
-                  renamedFilenameExtension: '',
+                  renamedFilenameExtension: ''
                 };
               }); //refresh list of all firebase folders
             } else {
               this.setState({ errorModalMessage: 'Enter new file name' });
             }
-          }}>
+          }}
+        >
           <Input
             value={{ data: this.state.renamedFilename }}
-            placeholder='New file name'
+            placeholder="New file name"
             onChange={async (event) => {
               event.preventDefault();
               console.log(
@@ -2128,7 +2153,7 @@ class Upload extends PureComponent {
                 );
                 return {
                   errorModalMessage: null,
-                  renamedFilename: targetVal,
+                  renamedFilename: targetVal
                 };
               });
             }}
@@ -2141,7 +2166,7 @@ class Upload extends PureComponent {
           // --------------------------------------------------------------------
         }
         <Modal
-          label='Edit folder path'
+          label="Edit folder path"
           show={this.state.editBreadcrumbModal}
           isInteractive={true}
           modalClosed={async () => {
@@ -2163,7 +2188,7 @@ class Upload extends PureComponent {
               return {
                 editBreadcrumbModal: false,
                 errorModalMessage: null,
-                tempFolderPath: null,
+                tempFolderPath: null
               };
             });
           }}
@@ -2210,20 +2235,19 @@ class Upload extends PureComponent {
                 );
                 return {
                   editBreadcrumbModal: false,
-                  errorModalMessage: null,
+                  errorModalMessage: null
                 };
               });
             }
 
             //try find in placeholder paths
-            let isFoundPlaceholderIndex = this.state.placeholderFolders.findIndex(
-              (placeholder) => {
+            let isFoundPlaceholderIndex =
+              this.state.placeholderFolders.findIndex((placeholder) => {
                 return placeholder.pathRef.location.path ===
                   this.state.tempFolderPath
                   ? true
                   : false;
-              }
-            );
+              });
             console.log('isFoundPlaceholderIndex: ', isFoundPlaceholderIndex);
             if (isFoundPlaceholderIndex > -1) {
               await this.changeFolderPath(
@@ -2242,7 +2266,7 @@ class Upload extends PureComponent {
                 );
                 return {
                   editBreadcrumbModal: false,
-                  errorModalMessage: null,
+                  errorModalMessage: null
                 };
               });
             }
@@ -2258,9 +2282,8 @@ class Upload extends PureComponent {
               });
 
               if (foundIndex > -1) {
-                isFoundPath = this.state.placeholderFolders[index].pathfolders[
-                  foundIndex
-                ];
+                isFoundPath =
+                  this.state.placeholderFolders[index].pathfolders[foundIndex];
               }
             });
             console.log('isFoundPath: ', isFoundPath);
@@ -2278,7 +2301,7 @@ class Upload extends PureComponent {
                 );
                 return {
                   editBreadcrumbModal: false,
-                  errorModalMessage: null,
+                  errorModalMessage: null
                 };
               });
             }
@@ -2298,7 +2321,7 @@ class Upload extends PureComponent {
                   'background:yellow; color:red'
                 );
                 return {
-                  errorModalMessage: 'Remove trailing "/" character from path',
+                  errorModalMessage: 'Remove trailing "/" character from path'
                 };
               });
             }
@@ -2315,16 +2338,17 @@ class Upload extends PureComponent {
                   'background:yellow; color:red'
                 );
                 return {
-                  errorModalMessage: 'Path does not exist',
+                  errorModalMessage: 'Path does not exist'
                 };
               });
             }
-          }}>
+          }}
+        >
           <Input
             value={{
-              data: this.state.tempFolderPath,
+              data: this.state.tempFolderPath
             }}
-            placeholder='Folder'
+            placeholder="Folder"
             onChange={(event) => {
               event.persist();
               event.preventDefault();
@@ -2346,7 +2370,7 @@ class Upload extends PureComponent {
 
         {/* copied to clipboard modal */}
         <Modal show={this.state.showClipboardModal}>
-          <FlexRow justifycontent='center'>
+          <FlexRow justifycontent="center">
             <p>Copied to clipboard</p>
           </FlexRow>
         </Modal>

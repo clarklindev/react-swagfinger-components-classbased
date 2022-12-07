@@ -1,11 +1,9 @@
 import React, { PureComponent } from 'react';
 
 import classes from './Input.module.scss';
-import Utils from '../../../Utils';
+import { stringHelper } from '../../../shared';
 import InputContext from '../../../context/InputContext';
 import ErrorList from './ErrorList';
-// import FlexColumn from '../../../hoc/Layout/FlexColumn';
-import FlexRow from '../../../hoc/Layout/FlexRow';
 import PropTypes from 'prop-types';
 
 class Input extends PureComponent {
@@ -14,7 +12,7 @@ class Input extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.className = Utils.getClassNameString([
+    this.className = stringHelper.getUniqueClassNameString([
       classes.Input,
       Input.name,
       classes[props.type],
@@ -90,7 +88,7 @@ class Input extends PureComponent {
     }
     return (
       <div className={classes.Input}>
-        <FlexRow>
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
           <input
             className={[...tempClasses, ...styleClasses].join(' ')}
             placeholder={this.props.componentconfig.placeholder} //needed for multiinput ...props
@@ -101,7 +99,7 @@ class Input extends PureComponent {
             onChange={this.inputChangeHandler}
             title={this.props.value.data}
           />
-        </FlexRow>
+        </div>
         {error}
       </div>
     );

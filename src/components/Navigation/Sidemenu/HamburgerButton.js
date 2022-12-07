@@ -1,9 +1,9 @@
 import React from 'react';
 import classes from './HamburgerButton.module.scss';
-import Utils from '../../../Utils';
+import { stringHelper } from '../../../shared';
 import Icon from '../../UI/Icon/Icon';
 const hamburgerButton = (props) => {
-  let classList = Utils.getClassNameString([
+  let classList = stringHelper.getUniqueClassNameString([
     props.className,
     'HamburgerButton',
     classes.HamburgerButton
@@ -11,7 +11,7 @@ const hamburgerButton = (props) => {
 
   return (
     <div className={classList} onClick={props.onClick}>
-      <Icon iconstyle='fas' code='bars' size='sm'></Icon>
+      <Icon iconstyle="fas" code="bars" size="sm"></Icon>
     </div>
   );
 };

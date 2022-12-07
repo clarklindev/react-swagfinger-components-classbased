@@ -3,7 +3,6 @@ import classes from './GalleryItem.module.scss';
 import Button from '../Button/Button';
 import Icon from '../Icon/Icon';
 import DraggableItem from './DraggableItem';
-import FlexRow from '../../../hoc/Layout/FlexRow';
 
 class GalleryItem extends Component {
   componentDidMount() {
@@ -64,20 +63,21 @@ class GalleryItem extends Component {
   render() {
     const removeButton = (
       <Button
-        title='Delete'
-        type='WithBorder'
+        title="Delete"
+        type="WithBorder"
         className={classes.RemoveButton}
-        onClick={(event) => this.props.onRemove(event)}>
-        <Icon iconstyle='far' code='trash-alt' size='sm' />
+        onClick={(event) => this.props.onRemove(event)}
+      >
+        <Icon iconstyle="far" code="trash-alt" size="sm" />
       </Button>
     );
     return (
       <React.Fragment>
         <div className={classes.GalleryItem}>
           <DraggableItem>
-            <FlexRow justifycontent='space-between' flexgrow='true'>
+            <div style={{ justifyContent: 'space-between', flexGrow: 'true' }}>
               <div className={classes.DragContent}>{this.props.children}</div>
-            </FlexRow>
+            </div>
           </DraggableItem>
 
           {removeButton}

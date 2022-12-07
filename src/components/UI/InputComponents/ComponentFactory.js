@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 
 import classes from './ComponentFactory.module.scss';
-import Utils from '../../../Utils';
 import InputContext from '../../../context/InputContext';
-
+import { stringHelper } from '../../../shared';
 //components
 import MultiSelectWithInput from './MultiSelectWithInput';
 import MultiInput from './MultiInput';
@@ -37,9 +36,9 @@ class ComponentFactory extends Component {
     this.inputClasses = [classes.InputElement];
     this.inputElement = null;
     this.label = null;
-    this.className = Utils.getClassNameString([
+    this.className = stringHelper.getUniqueClassNameString([
       classes.ComponentFactory,
-      'ComponentFactory',
+      'ComponentFactory'
     ]);
   }
 
@@ -86,7 +85,7 @@ class ComponentFactory extends Component {
         this.inputElement = <Checkbox {...this.props.data} />;
         break;
       case 'checkboxcollection':
-        this.inputElement = <CheckboxCollection {...this.props.data}/>;
+        this.inputElement = <CheckboxCollection {...this.props.data} />;
         break;
       case 'counter':
         this.inputElement = <Counter {...this.props.data} />;

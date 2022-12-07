@@ -1,10 +1,10 @@
 import React from 'react';
 
 import classes from './Button.module.scss';
-import Utils from '../../../Utils';
+import { stringHelper } from '../../../shared';
 
 const button = (props) => {
-  let classList = Utils.getClassNameString([
+  let classList = stringHelper.getUniqueClassNameString([
     classes.Button,
     'Button',
     classes[props.type],

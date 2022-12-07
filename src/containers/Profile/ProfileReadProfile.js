@@ -6,17 +6,16 @@ import Icon from '../../components/UI/Icon/Icon';
 //styling
 import buttonStyle from '../../components/UI/Button/Button.module.scss';
 import { connect } from 'react-redux';
-import * as align from '../../shared/alignFlex';
-import FlexRow from '../../hoc/Layout/FlexRow';
 
 class ProfileReadProfile extends Component {
   getClipboardButton = (whatToCopy) => {
     return (
       <Button
         className={buttonStyle.NoStyle}
-        title='copy to clipboard'
-        onClick={(event) => this.props.onClick(event, whatToCopy)}>
-        <Icon iconstyle='far' code='copy' size='sm' />
+        title="copy to clipboard"
+        onClick={(event) => this.props.onClick(event, whatToCopy)}
+      >
+        <Icon iconstyle="far" code="copy" size="sm" />
       </Button>
     );
   };
@@ -31,13 +30,26 @@ class ProfileReadProfile extends Component {
             label: 'Name',
             component: 'raw',
             value: (
-              <ListItem align={align.justifyContent('space-between')}>
-                <FlexRow justifycontent='space-between' flexgrow='true'>
+              <ListItem
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between'
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    flexGrow: 1
+                  }}
+                >
                   {this.props.activeProfile['name']}
                   {this.getClipboardButton(this.props.activeProfile['name'])}
-                </FlexRow>
+                </div>
               </ListItem>
-            ),
+            )
           }}
         />
 
@@ -46,15 +58,28 @@ class ProfileReadProfile extends Component {
             label: 'Last name',
             component: 'raw',
             value: (
-              <ListItem align={align.justifyContent('space-between')}>
-                <FlexRow justifycontent='space-between' flexgrow='true'>
+              <ListItem
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between'
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    flexGrow: 1
+                  }}
+                >
                   {this.props.activeProfile['lastname']}
                   {this.getClipboardButton(
                     this.props.activeProfile['lastname']
                   )}
-                </FlexRow>
+                </div>
               </ListItem>
-            ),
+            )
           }}
         />
 
@@ -66,16 +91,29 @@ class ProfileReadProfile extends Component {
               data: this.props.activeProfile['contactnumbers'].map(
                 (each, index) => {
                   return (
-                    <ListItem align={align.justifyContent('space-between')}>
-                      <FlexRow justifycontent='space-between' flexgrow='true'>
+                    <ListItem
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          flexGrow: 1,
+                          justifyContent: 'space-between'
+                        }}
+                      >
                         {each}
                         {this.getClipboardButton(each)}
-                      </FlexRow>
+                      </div>
                     </ListItem>
                   );
                 }
-              ),
-            },
+              )
+            }
           }}
         />
 
@@ -86,15 +124,28 @@ class ProfileReadProfile extends Component {
             value: {
               data: this.props.activeProfile['emails'].map((each, index) => {
                 return (
-                  <ListItem align={align.justifyContent('space-between')}>
-                    <FlexRow justifycontent='space-between' flexgrow='true'>
+                  <ListItem
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between'
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        flexGrow: 1
+                      }}
+                    >
                       {each}
                       {this.getClipboardButton(each)}
-                    </FlexRow>
+                    </div>
                   </ListItem>
                 );
-              }),
-            },
+              })
+            }
           }}
         />
 
@@ -103,15 +154,27 @@ class ProfileReadProfile extends Component {
             label: 'Contact Preference',
             component: 'raw',
             value: (
-              <ListItem align={align.justifyContent('space-between')}>
-                <FlexRow justifycontent='space-between' flexgrow='true'>
+              <ListItem
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row'
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    flexGrow: 1
+                  }}
+                >
                   {this.props.activeProfile['contactpreference']}
                   {this.getClipboardButton(
                     this.props.activeProfile['contactpreference']
                   )}
-                </FlexRow>
+                </div>
               </ListItem>
-            ),
+            )
           }}
         />
       </React.Fragment>
@@ -121,7 +184,7 @@ class ProfileReadProfile extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    activeProfile: state.profile.activeProfile,
+    activeProfile: state.profile.activeProfile
   };
 };
 

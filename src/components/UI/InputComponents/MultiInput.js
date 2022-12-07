@@ -6,8 +6,7 @@ import PropTypes from 'prop-types';
 import Button from '../../UI/Button/Button';
 import DraggableItem from './DraggableItem';
 import ErrorList from './ErrorList';
-import FlexRow from '../../../hoc/Layout/FlexRow';
-import Utils from '../../../Utils';
+import { stringHelper } from '../../../shared';
 
 class MultiInput extends Component {
   static contextType = InputContext;
@@ -16,7 +15,7 @@ class MultiInput extends Component {
     super(props);
 
     this.inputClasses = [classes.InputElement];
-    this.className = Utils.getClassNameString([
+    this.className = stringHelper.getUniqueClassNameString([
       classes.MultiInput,
       MultiInput.name,
       classes[props.type],
@@ -106,7 +105,8 @@ class MultiInput extends Component {
           }
           return (
             <React.Fragment key={this.props.name + index}>
-              <FlexRow
+              <div
+                style={{ display: 'flex', flexDirection: 'row' }}
                 spacing={val.errors.length > 0 ? undefined : 'bottom'}
                 onDragStart={(event) => {
                   console.log('target:', event.currentTarget);
@@ -179,11 +179,14 @@ class MultiInput extends Component {
                     <Icon iconstyle="far" code="trash-alt" size="sm" />
                   </Button>
                 ) : null}
-              </FlexRow>
+              </div>
               {val.errors.length ? (
-                <FlexRow spacing="bottom">
+                <div
+                  spacing="bottom"
+                  style={{ display: 'flex', flexDirection: 'row' }}
+                >
                   <ErrorList value={{ data: val.errors }} />
-                </FlexRow>
+                </div>
               ) : null}
             </React.Fragment>
           );

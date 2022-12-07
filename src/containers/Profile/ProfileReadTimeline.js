@@ -2,21 +2,19 @@ import React, { Component } from 'react';
 import Accordion from '../../components/UI/InputComponents/Accordion';
 import List from '../../components/UI/InputComponents/List';
 import ListItem from '../../components/UI/InputComponents/ListItem';
-import * as align from '../../shared/alignFlex';
 import Button from '../../components/UI/Button/Button';
 import Icon from '../../components/UI/Icon/Icon';
 import { connect } from 'react-redux';
 
-import {initializeApp} from 'firebase/app';
-import {getAuth} from 'firebase/auth';
-import {getStorage} from 'firebase/storage';
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getStorage } from 'firebase/storage';
 
 //firebase imports
 import * as FirebaseHelper from '../../shared/firebaseHelper';
 //styling
 import buttonStyle from '../../components/UI/Button/Button.module.scss';
-import FlexRow from '../../hoc/Layout/FlexRow';
-import * as Blob from '../../shared/blob';
+import * as Blob from '../../shared/blobHelper';
 
 class ProfileReadDocuments extends Component {
   constructor(props) {
@@ -29,7 +27,7 @@ class ProfileReadDocuments extends Component {
       storageBucket: 'react-crud-1db4b.appspot.com',
       messagingSenderId: '44556258250',
       appId: '1:44556258250:web:f756e981ee135db270dd33',
-      measurementId: 'G-QJZQEZMV2J',
+      measurementId: 'G-QJZQEZMV2J'
     };
     try {
       console.log('\t%cinitializing firebase', 'background:white; color:red');
@@ -41,7 +39,7 @@ class ProfileReadDocuments extends Component {
   }
 
   state = {
-    firebaseFolders: null,
+    firebaseFolders: null
   };
 
   async componentDidMount() {
@@ -71,7 +69,7 @@ class ProfileReadDocuments extends Component {
     await this.setState((prevState) => {
       return {
         firebaseRootRef: ref,
-        firebaseFolders: firebaseFolders,
+        firebaseFolders: firebaseFolders
       };
     });
   }
@@ -89,7 +87,11 @@ class ProfileReadDocuments extends Component {
           <ListItem
             key={'file' + index}
             hovereffect={true}
-            align={align.justifyContent('space-between')}
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between'
+            }}
             onClick={async (event) => {
               event.preventDefault();
               event.stopPropagation();
@@ -98,12 +100,16 @@ class ProfileReadDocuments extends Component {
               console.log('URL: ', url);
               window.open(url, '_blank');
             }}
-            title={file.name}>
-            <FlexRow>
-              <Icon iconstyle='far' code='file' size='lg' />
+            title={file.name}
+          >
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+              <Icon iconstyle="far" code="file" size="lg" />
               <p>{file.name}</p>
-            </FlexRow>
-            <FlexRow spacingChildren='left'>
+            </div>
+            <div
+              style={{ display: 'flex', flexDirection: 'row' }}
+              spacingChildren="left"
+            >
               <Button
                 className={buttonStyle.NoStyle}
                 onClick={async (event) => {
@@ -113,8 +119,9 @@ class ProfileReadDocuments extends Component {
                   const url = await FirebaseHelper.urlFromRef(file);
                   window.open(url, '_blank');
                 }}
-                title='open as external link'>
-                <Icon iconstyle='fas' code='external-link-alt' size='sm' />
+                title="open as external link"
+              >
+                <Icon iconstyle="fas" code="external-link-alt" size="sm" />
               </Button>
               {/* downloads assets to drive */}
               <Button
@@ -136,17 +143,18 @@ class ProfileReadDocuments extends Component {
                   window.URL.revokeObjectURL(a.href);
                   document.body.removeChild(a);
                 }}
-                title='download file'>
-                <Icon iconstyle='fas' code='download' size='sm' />
+                title="download file"
+              >
+                <Icon iconstyle="fas" code="download" size="sm" />
               </Button>
-            </FlexRow>
+            </div>
           </ListItem>
         );
       });
       console.log('OLD FOLDERS: ', oldFolders);
 
       return {
-        firebaseFolders: oldFolders,
+        firebaseFolders: oldFolders
       };
     });
   };
@@ -167,11 +175,13 @@ class ProfileReadDocuments extends Component {
                 onClick={
                   //console.log('CLICKED: ', folderRef);
                   this.getFiles.bind(this, item.folder, index)
-                }>
+                }
+              >
                 <List
                   value={{
-                    data: item.files,
-                  }}></List>
+                    data: item.files
+                  }}
+                ></List>
               </div>
             );
           })}
@@ -183,7 +193,7 @@ class ProfileReadDocuments extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    id: state.profile.urlQuerystringId,
+    id: state.profile.urlQuerystringId
   };
 };
 

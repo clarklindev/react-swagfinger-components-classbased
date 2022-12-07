@@ -1,7 +1,0 @@
-.FlexResponsive {
-  display: flex;
-  flex-direction: column;
-  @media screen and (min-width: 320px) {
-    flex-direction: row;
-  }
-}

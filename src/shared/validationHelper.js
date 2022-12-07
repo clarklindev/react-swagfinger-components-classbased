@@ -1,5 +1,4 @@
-export const CheckValidity = (value, rules) => {
-  //console.log('CheckValidity: ');
+export const checkValidity = (value, rules) => {
   let isValid = true;
   let errors = [];
 
@@ -55,7 +54,8 @@ export const CheckValidity = (value, rules) => {
   }
 
   if (rules.isEmail) {
-    const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+    const pattern =
+      /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
     isValid = pattern.test(value) && isValid;
     if (isValid === false) {
       errors.push('Invalid email');
@@ -71,7 +71,8 @@ export const CheckValidity = (value, rules) => {
   }
 
   if (rules.isPhoneNumber) {
-    const pattern = /(^\d{3}?[ |-|.]*?[0-9]{3}[ |-|.]*?[0-9]{4}$)|^\(\d{3}\)[ |-|.]*?(\d{3})[ |-|.]*?\d{4}|(^\(?\+?\d{2}\)?)[ |.|-]*?(\d{2})[ |.|-]*?(\d{3})[ |.|-]*?(\d{4})$/;
+    const pattern =
+      /(^\d{3}?[ |-|.]*?[0-9]{3}[ |-|.]*?[0-9]{4}$)|^\(\d{3}\)[ |-|.]*?(\d{3})[ |-|.]*?\d{4}|(^\(?\+?\d{2}\)?)[ |.|-]*?(\d{2})[ |.|-]*?(\d{3})[ |.|-]*?(\d{4})$/;
     isValid = pattern.test(value) && isValid;
     if (isValid === false) {
       errors.push('Value must be a valid contact number');
@@ -81,4 +82,4 @@ export const CheckValidity = (value, rules) => {
   return { isValid: isValid, errors: errors };
 };
 
-export default CheckValidity;
+export default checkValidity;

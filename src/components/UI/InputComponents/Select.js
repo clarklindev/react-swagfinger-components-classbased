@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classes from './Select.module.scss';
-import Utils from '../../../Utils';
+import { stringHelper } from '../../../shared';
 import InputContext from '../../../context/InputContext';
 import ErrorList from './ErrorList';
 import PropTypes from 'prop-types';
@@ -11,11 +11,14 @@ class Select extends Component {
   constructor(props) {
     super(props);
 
-    this.className = Utils.getClassNameString([classes.Select, Select.name]);
+    this.className = stringHelper.getUniqueClassNameString([
+      classes.Select,
+      Select.name
+    ]);
   }
 
   state = {
-    isOpen: false,
+    isOpen: false
   };
 
   onBlurHandler = () => {
@@ -23,7 +26,7 @@ class Select extends Component {
       this.setState((prevState) => {
         // console.log('isOpen: ', false);
         return {
-          isOpen: false,
+          isOpen: false
         };
       });
     }
@@ -33,7 +36,7 @@ class Select extends Component {
     this.setState((prevState) => {
       // console.log('isOpen: ', !this.state.isOpen);
       return {
-        isOpen: !prevState.isOpen,
+        isOpen: !prevState.isOpen
       };
     });
   };
@@ -76,9 +79,10 @@ class Select extends Component {
             this.props.onChange ? this.props.onChange : this.onChangeHandler
           }
           onClick={this.onClickHandler}
-          onBlur={this.onBlurHandler}>
+          onBlur={this.onBlurHandler}
+        >
           {/* the placeholder will never be present on an update if this is a required input */}
-          <option key='placeholder' value='' disabled>
+          <option key="placeholder" value="" disabled>
             {this.props.componentconfig.placeholder}
           </option>
 
@@ -103,13 +107,13 @@ Select.propTypes = {
     touched: PropTypes.bool,
     pristine: PropTypes.bool,
     data: PropTypes.string,
-    errors: PropTypes.array,
+    errors: PropTypes.array
   }),
   readOnly: PropTypes.bool,
   componentconfig: PropTypes.shape({
     options: PropTypes.array,
-    placeholder: PropTypes.string,
-  }),
+    placeholder: PropTypes.string
+  })
 };
 
 Select.defaultProps = {
@@ -121,17 +125,17 @@ Select.defaultProps = {
     touched: false,
     pristine: true,
     data: '',
-    errors: [],
+    errors: []
   },
   readOnly: false,
   componentconfig: {
     options: [
       { value: '1', displaytext: '1' },
       { value: '2', displaytext: '2' },
-      { value: '3', displaytext: '3' },
-    ],
+      { value: '3', displaytext: '3' }
+    ]
   },
-  placeholder: 'placeholder text',
+  placeholder: 'placeholder text'
 };
 
 export default Select;

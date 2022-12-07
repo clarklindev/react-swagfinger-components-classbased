@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classes from './UploadDrop.module.scss';
-import Utils from '../../../Utils';
+import { stringHelper } from '../../../shared';
 import Icon from '../Icon/Icon';
 import List from '../../UI/InputComponents/List';
 import UploadListItem from './UploadListItem';
@@ -13,9 +13,9 @@ class UploadDrop extends Component {
 
   constructor(props) {
     super(props);
-    this.className = Utils.getClassNameString([
+    this.className = stringHelper.getUniqueClassNameString([
       classes.UploadDrop,
-      UploadDrop.name,
+      UploadDrop.name
     ]);
 
     this.dropRef = React.createRef();
@@ -25,7 +25,7 @@ class UploadDrop extends Component {
   state = {
     selectedFiles: [],
     dragging: false,
-    uploadProgress: [],
+    uploadProgress: []
   };
 
   componentDidMount() {
@@ -93,7 +93,7 @@ class UploadDrop extends Component {
       this.setState(
         (prevState) => {
           return {
-            selectedFiles: [...prevState.selectedFiles, ...existingFiles],
+            selectedFiles: [...prevState.selectedFiles, ...existingFiles]
           };
         },
         () => {
@@ -141,7 +141,7 @@ class UploadDrop extends Component {
       (prevState) => {
         console.log('waypoint1!!!!');
         return {
-          selectedFiles: [...prevState.selectedFiles, ...existingFiles],
+          selectedFiles: [...prevState.selectedFiles, ...existingFiles]
         };
       },
       () => {
@@ -156,7 +156,7 @@ class UploadDrop extends Component {
     let updatedFiles = [
       ...this.state.selectedFiles.filter((item, i) => {
         return index !== i ? item : null;
-      }),
+      })
     ];
     this.setState({ selectedFiles: updatedFiles });
     this.context.removeinput(this.props.name, index);
@@ -249,7 +249,7 @@ class UploadDrop extends Component {
                       this.removeFromList(index);
                     }}
                   >
-                    <Icon iconstyle='far' code='trash-alt' size='sm' />
+                    <Icon iconstyle="far" code="trash-alt" size="sm" />
                   </Button>
                 </div>
               </React.Fragment>
@@ -267,22 +267,22 @@ class UploadDrop extends Component {
         >
           <input
             ref={this.uploadDropRef}
-            type='file'
-            accept='image/*'
+            type="file"
+            accept="image/*"
             multiple
             onChange={this.fileChangedHandler}
           />
           <div className={classes.UploadLabel}>
             <Icon
               className={classes.Icon}
-              iconstyle='fas'
-              code='arrow-circle-up'
-              size='lg'
+              iconstyle="fas"
+              code="arrow-circle-up"
+              size="lg"
             />
             <p>Drag and drop files here</p>
           </div>
           <Button
-            type='WithBorder'
+            type="WithBorder"
             onClick={(event) => {
               event.preventDefault();
               this.uploadDropRef.current.click();

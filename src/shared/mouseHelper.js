@@ -29,3 +29,12 @@ export const isOnTop = function (item, x, y) {
     isy = y > box.top && y < box.top + box.height;
   return isx && isy;
 };
+
+//relative to container
+export const getClickPosition = (event) => {
+  let clickX = event.pageX - event.target.offsetLeft;
+  let clickY = event.pageY - event.target.offsetTop;
+  let mouseClick = { x: clickX, y: clickY };
+  console.log('scrollClick: ', clickX, clickY);
+  return mouseClick;
+};

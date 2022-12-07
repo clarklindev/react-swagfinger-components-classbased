@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classes from './Textarea.module.scss';
-import Utils from '../../../Utils';
+import { stringHelper } from '../../../shared';
 import InputContext from '../../../context/InputContext';
 import ErrorList from './ErrorList';
 
@@ -10,9 +10,9 @@ class Textarea extends Component {
   constructor(props) {
     super(props);
 
-    this.className = Utils.getClassNameString([
+    this.className = stringHelper.getUniqueClassNameString([
       classes.Textarea,
-      Textarea.name,
+      Textarea.name
     ]);
   }
   render() {

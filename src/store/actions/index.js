@@ -2,28 +2,28 @@
 export {
   processFetchProfileSchema,
   processFormatedFormCreated,
-  
-  
   processFetchProfile,
-
   processProfileDelete,
   processProfileCreate,
   processProfileUpdate,
-  
-  formatDataComplete,
-  
+  formatDataComplete
 } from './profile';
 
 //phonebook
 export {
   processResetId,
-  phonebookLoadProfiles,
-  // processFetchProfilesCancel,
-  // tryOfflineMode
-} from './phonebook';
+  phonebookLoadProfiles
+} from // processFetchProfilesCancel,
+// tryOfflineMode,
+'./phonebook';
 
 //auth
-export { authLogin, authLogout, setAuthRedirectPath, authCheckState } from './auth';
+export {
+  authLogin,
+  authLogout,
+  setAuthRedirectPath,
+  authCheckState
+} from './auth';
 
 //ui
 export { hasToolbar } from './ui';

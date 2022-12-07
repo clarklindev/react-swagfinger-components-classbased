@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import classes from './Phonebook.module.scss';
-import * as align from '../../shared/alignFlex';
 
 import InputContext from '../../context/InputContext';
 
@@ -16,7 +15,7 @@ import Spinner from '../../components/UI/Loaders/Spinner';
 
 class Phonebook extends Component {
   state = {
-    filterText: '',
+    filterText: ''
   };
 
   searchClearHandler = () => {
@@ -119,10 +118,9 @@ class Phonebook extends Component {
                   hovereffect={true}
                   displayText={entry}
                   extraText={extra}
-                  align={align.alignSelf('flex-start')}
-                  onClick={(event) =>
-                    this.profileClickHandler(id, event)
-                  }></ListItem>
+                  style={{ display: 'flex', alignSelf: 'flex-start' }}
+                  onClick={(event) => this.profileClickHandler(id, event)}
+                ></ListItem>
               );
             })
         : null;
@@ -132,18 +130,19 @@ class Phonebook extends Component {
         {this.props.isLoading ? (
           <Spinner />
         ) : (
-          <DefaultPageLayout label='Phonebook'>
+          <DefaultPageLayout label="Phonebook">
             <Card style={['Padding']}>
               <InputContext.Provider
                 value={{
                   changed: this.searchChangedHandler, //newval, name, index
-                  clear: this.searchClearHandler,
-                }}>
+                  clear: this.searchClearHandler
+                }}
+              >
                 <ComponentFactory
                   data={{
                     label: 'Search',
                     component: 'inputsearch',
-                    value: this.state.filterText,
+                    value: this.state.filterText
                   }}
                 />
               </InputContext.Provider>
@@ -151,7 +150,7 @@ class Phonebook extends Component {
                 data={{
                   label: 'Contacts',
                   component: 'list',
-                  value: { data: filtered },
+                  value: { data: filtered }
                 }}
               />
             </Card>
@@ -165,12 +164,12 @@ class Phonebook extends Component {
 const mapStateToProps = (state) => {
   return {
     storedPhonebook: state.phonebook.phoneBook,
-    isLoading: state.phonebook.loading,
+    isLoading: state.phonebook.loading
   };
 };
 
 Phonebook.propTypes = {
-  storedPhonebook: PropTypes.array,
+  storedPhonebook: PropTypes.array
 };
 
 export default connect(mapStateToProps)(Phonebook);
