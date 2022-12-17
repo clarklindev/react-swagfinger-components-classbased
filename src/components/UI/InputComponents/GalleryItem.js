@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import classes from './GalleryItem.module.scss';
 import Button from '../Button/Button';
 import Icon from '../Icon/Icon';
-import DraggableItem from './DraggableItem';
+import DraggableItem from '../Draggable/DraggableItem';
 
 class GalleryItem extends Component {
   componentDidMount() {

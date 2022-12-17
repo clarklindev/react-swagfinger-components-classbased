@@ -5,7 +5,7 @@ import InputContext from '../../../context/InputContext';
 import Button from '../../UI/Button/Button';
 import Icon from '../Icon/Icon';
 import ErrorList from './ErrorList';
-import DraggableItem from './DraggableItem';
+import DraggableItem from '../Draggable/DraggableItem';
 import { stringHelper } from '../../../shared';
 
 class MultiSelect extends PureComponent {

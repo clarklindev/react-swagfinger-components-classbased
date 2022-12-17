@@ -4,7 +4,7 @@ import InputContext from '../../../context/InputContext';
 import Icon from '../Icon/Icon';
 import PropTypes from 'prop-types';
 import Button from '../../UI/Button/Button';
-import DraggableItem from './DraggableItem';
+import DraggableItem from '../Draggable/DraggableItem';
 import ErrorList from './ErrorList';
 import { stringHelper } from '../../../shared';
 

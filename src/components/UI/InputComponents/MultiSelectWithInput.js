@@ -6,7 +6,7 @@ import InputContext from '../../../context/InputContext';
 import Button from '../../UI/Button/Button';
 import Icon from '../Icon/Icon';
 import ErrorList from './ErrorList';
-import DraggableItem from './DraggableItem';
+import DraggableItem from '../Draggable/DraggableItem';
 
 class MultiSelectWithInput extends PureComponent {
   static contextType = InputContext;

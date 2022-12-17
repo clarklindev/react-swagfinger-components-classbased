@@ -5,7 +5,7 @@ import Icon from '../Icon/Icon';
 import PropTypes from 'prop-types';
 import Button from '../../UI/Button/Button';
 
-import DraggableItem from './DraggableItem';
+import DraggableItem from '../Draggable/DraggableItem';
 import Input from './Input';
 import Expandable from './Expandable';
 import Label from '../Headers/Label';

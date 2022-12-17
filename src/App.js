@@ -16,7 +16,7 @@ import ProfileCreateOrUpdate from './containers/Profile/ProfileCreateOrUpdate';
 import Faq from './containers/Faq/Faq';
 
 //actions
-import * as actions from './store/actions/index';
+import * as actions from './store/actions';
 //scss
 import './App.scss';
 import './sass-flexbox-grid.scss';

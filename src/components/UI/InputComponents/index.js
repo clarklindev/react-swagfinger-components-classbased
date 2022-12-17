@@ -1,10 +1,8 @@
 import Accordion from './Accordion';
-import Breadcrumb from './Breadcrumb';
 import Checkbox from './Checkbox';
 import CheckboxCollection from './CheckboxCollection';
 import Counter from './Counter';
 import Datepicker from './Datepicker';
-import DraggableItem from './DraggableItem';
 import ErrorList from './ErrorList';
 import Expandable from './Expandable';
 import GalleryItem from './GalleryItem';
@@ -30,4 +28,4 @@ import Text from './Text';
 import Textarea from './Textarea';
 import Toggle from './Toggle';
 
-export {Accordion, Breadcrumb, Checkbox, CheckboxCollection, Counter, Datepicker, DraggableItem, ErrorList, Expandable, GalleryItem, GalleryManager, Input, InputPassword, InputSearch, InputWithIcon, InputWithInput, List, ListItem, MultiInput, MultiInputObjects, MultiRangeSlider, MultiSelect, MultiSelectWithInput, RadioButton, RadioCollection, RangeSlider, Select, SelectToAccordion, Text, Textarea, Toggle};
+export {Accordion, Checkbox, CheckboxCollection, Counter, Datepicker, ErrorList, Expandable, GalleryItem, GalleryManager, Input, InputPassword, InputSearch, InputWithIcon, InputWithInput, List, ListItem, MultiInput, MultiInputObjects, MultiRangeSlider, MultiSelect, MultiSelectWithInput, RadioButton, RadioCollection, RangeSlider, Select, SelectToAccordion, Text, Textarea, Toggle};
