@@ -23,9 +23,37 @@ import RadioButton from './RadioButton';
 import RadioCollection from './RadioCollection';
 import RangeSlider from './RangeSlider';
 import Select from './Select';
-import SelectToAccordion from './SelectToAccordion';
 import Text from './Text';
 import Textarea from './Textarea';
 import Toggle from './Toggle';
 
-export {Accordion, Checkbox, CheckboxCollection, Counter, Datepicker, ErrorList, Expandable, GalleryItem, GalleryManager, Input, InputPassword, InputSearch, InputWithIcon, InputWithInput, List, ListItem, MultiInput, MultiInputObjects, MultiRangeSlider, MultiSelect, MultiSelectWithInput, RadioButton, RadioCollection, RangeSlider, Select, SelectToAccordion, Text, Textarea, Toggle};
+export {
+  Accordion,
+  Checkbox,
+  CheckboxCollection,
+  Counter,
+  Datepicker,
+  ErrorList,
+  Expandable,
+  GalleryItem,
+  GalleryManager,
+  Input,
+  InputPassword,
+  InputSearch,
+  InputWithIcon,
+  InputWithInput,
+  List,
+  ListItem,
+  MultiInput,
+  MultiInputObjects,
+  MultiRangeSlider,
+  MultiSelect,
+  MultiSelectWithInput,
+  RadioButton,
+  RadioCollection,
+  RangeSlider,
+  Select,
+  Text,
+  Textarea,
+  Toggle,
+};
