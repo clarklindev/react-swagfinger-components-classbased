@@ -27,14 +27,13 @@ class Upload extends PureComponent {
   constructor(props) {
     super(props);
     this.firebaseConfig = {
-      apiKey: 'AIzaSyDJ6sMYnxypEtTkLaXEmUHq-y9bVeJ0K3c',
-      authDomain: 'react-crud-1db4b.firebaseapp.com',
-      databaseURL: 'https://react-crud-1db4b.firebaseio.com',
-      projectId: 'react-crud-1db4b',
-      storageBucket: 'react-crud-1db4b.appspot.com',
-      messagingSenderId: '44556258250',
-      appId: '1:44556258250:web:f756e981ee135db270dd33',
-      measurementId: 'G-QJZQEZMV2J',
+      apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+      authDomain: 'react-crud-d662d.firebaseapp.com',
+      databaseURL: 'https://react-crud-d662d-default-rtdb.firebaseio.com',
+      projectId: 'react-crud-d662d',
+      storageBucket: 'react-crud-d662d.appspot.com',
+      messagingSenderId: '958354187007',
+      appId: '1:958354187007:web:6941279b6f7301ce9a22ca',
     };
 
     const app = initializeApp(this.firebaseConfig);

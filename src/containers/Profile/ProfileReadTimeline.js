@@ -20,14 +20,13 @@ class ProfileReadDocuments extends Component {
   constructor(props) {
     super(props);
     this.firebaseConfig = {
-      apiKey: 'AIzaSyBcmwi6R0CaeY9l1jfEUo0u71MZsVxldKo',
-      authDomain: 'react-crud-1db4b.firebaseapp.com',
-      databaseURL: 'https://react-crud-1db4b.firebaseio.com',
-      projectId: 'react-crud-1db4b',
-      storageBucket: 'react-crud-1db4b.appspot.com',
-      messagingSenderId: '44556258250',
-      appId: '1:44556258250:web:f756e981ee135db270dd33',
-      measurementId: 'G-QJZQEZMV2J'
+      apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+      authDomain: 'react-crud-d662d.firebaseapp.com',
+      databaseURL: 'https://react-crud-d662d-default-rtdb.firebaseio.com',
+      projectId: 'react-crud-d662d',
+      storageBucket: 'react-crud-d662d.appspot.com',
+      messagingSenderId: '958354187007',
+      appId: '1:958354187007:web:6941279b6f7301ce9a22ca',
     };
     try {
       console.log('\t%cinitializing firebase', 'background:white; color:red');
@@ -39,7 +38,7 @@ class ProfileReadDocuments extends Component {
   }
 
   state = {
-    firebaseFolders: null
+    firebaseFolders: null,
   };
 
   async componentDidMount() {
@@ -69,7 +68,7 @@ class ProfileReadDocuments extends Component {
     await this.setState((prevState) => {
       return {
         firebaseRootRef: ref,
-        firebaseFolders: firebaseFolders
+        firebaseFolders: firebaseFolders,
       };
     });
   }
@@ -90,7 +89,7 @@ class ProfileReadDocuments extends Component {
             style={{
               display: 'flex',
               flexDirection: 'row',
-              justifyContent: 'space-between'
+              justifyContent: 'space-between',
             }}
             onClick={async (event) => {
               event.preventDefault();
@@ -103,12 +102,12 @@ class ProfileReadDocuments extends Component {
             title={file.name}
           >
             <div style={{ display: 'flex', flexDirection: 'row' }}>
-              <Icon iconstyle="far" code="file" size="lg" />
+              <Icon iconstyle='far' code='file' size='lg' />
               <p>{file.name}</p>
             </div>
             <div
               style={{ display: 'flex', flexDirection: 'row' }}
-              spacingChildren="left"
+              spacingChildren='left'
             >
               <Button
                 className={buttonStyle.NoStyle}
@@ -119,9 +118,9 @@ class ProfileReadDocuments extends Component {
                   const url = await FirebaseHelper.urlFromRef(file);
                   window.open(url, '_blank');
                 }}
-                title="open as external link"
+                title='open as external link'
               >
-                <Icon iconstyle="fas" code="external-link-alt" size="sm" />
+                <Icon iconstyle='fas' code='external-link-alt' size='sm' />
               </Button>
               {/* downloads assets to drive */}
               <Button
@@ -143,9 +142,9 @@ class ProfileReadDocuments extends Component {
                   window.URL.revokeObjectURL(a.href);
                   document.body.removeChild(a);
                 }}
-                title="download file"
+                title='download file'
               >
-                <Icon iconstyle="fas" code="download" size="sm" />
+                <Icon iconstyle='fas' code='download' size='sm' />
               </Button>
             </div>
           </ListItem>
@@ -154,7 +153,7 @@ class ProfileReadDocuments extends Component {
       console.log('OLD FOLDERS: ', oldFolders);
 
       return {
-        firebaseFolders: oldFolders
+        firebaseFolders: oldFolders,
       };
     });
   };
@@ -179,7 +178,7 @@ class ProfileReadDocuments extends Component {
               >
                 <List
                   value={{
-                    data: item.files
+                    data: item.files,
                   }}
                 ></List>
               </div>
@@ -193,7 +192,7 @@ class ProfileReadDocuments extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    id: state.profile.urlQuerystringId
+    id: state.profile.urlQuerystringId,
   };
 };
 
