@@ -29,7 +29,7 @@ class Upload extends PureComponent {
     this.firebaseConfig = {
       apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
       authDomain: 'react-crud-d662d.firebaseapp.com',
-      databaseURL: 'https://react-crud-d662d-default-rtdb.firebaseio.com',
+      databaseURL: 'https://react-crud-d662d-default-rtdb.firebaseio.com/',
       projectId: 'react-crud-d662d',
       storageBucket: 'react-crud-d662d.appspot.com',
       messagingSenderId: '958354187007',

@@ -35,7 +35,7 @@ class ProfileCreateOrUpdate extends Component {
   state = {
     saving: false,
     localstateform: null, //for a single profile
-    isFormValid: true
+    isFormValid: true,
   };
 
   //------------------------------------------------------
@@ -63,7 +63,7 @@ class ProfileCreateOrUpdate extends Component {
       console.log('COMPONENTDIDUPDATE - props.formattedFormObject');
       console.log('STATE-> localstateform: this.props.formattedFormObject');
       this.setState({
-        localstateform: this.props.formattedFormObject
+        localstateform: this.props.formattedFormObject,
       });
       this.getDataProfileByIdHandler(); //state.profile.activeProfile
     }
@@ -78,7 +78,7 @@ class ProfileCreateOrUpdate extends Component {
     if (prevProps.formattedFormWithData !== this.props.formattedFormWithData) {
       console.log('formattedFormWithData: ', this.props.formattedFormWithData);
       this.setState({
-        localstateform: this.props.formattedFormWithData
+        localstateform: this.props.formattedFormWithData,
       });
     }
   }
@@ -102,7 +102,7 @@ class ProfileCreateOrUpdate extends Component {
       valid: undefined,
       errors: [],
       touched: false,
-      pristine: true
+      pristine: true,
     };
 
     const schemacopy = [...schema];
@@ -190,7 +190,7 @@ class ProfileCreateOrUpdate extends Component {
 
   //-----------------------------------------------
   //step2: fetch data from firebase and store in redux .activeProfile prop
-  //* return values at eg. https://react-crud-1db4b.firebaseio.com/data/profile/$id
+  //* return values at eg. https://react-crud-d662d-default-rtdb.firebaseio.com/data/profile/$id
   //* stores returned values in redux accessed via props.activeProfile
   //-----------------------------------------------
   getDataProfileByIdHandler = (queryparam = 'id') => {
@@ -242,7 +242,7 @@ class ProfileCreateOrUpdate extends Component {
                 valid: validated.isValid,
                 errors: validated.errors, //array of errors
                 touched: false,
-                pristine: true
+                pristine: true,
               };
               break;
 
@@ -259,7 +259,7 @@ class ProfileCreateOrUpdate extends Component {
                   valid: validated.isValid,
                   errors: validated.errors, //array of errors
                   touched: false,
-                  pristine: true
+                  pristine: true,
                 };
               });
               break;
@@ -290,7 +290,7 @@ class ProfileCreateOrUpdate extends Component {
                   valid: validated.isValid,
                   errors: validated.errors, //array of errors
                   touched: false,
-                  pristine: true
+                  pristine: true,
                 };
               });
               value = obj;
@@ -319,7 +319,7 @@ class ProfileCreateOrUpdate extends Component {
                     valid: validated.isValid,
                     errors: validated.errors, //array of errors
                     touched: false,
-                    pristine: true
+                    pristine: true,
                   };
                 });
                 return obj;
@@ -388,7 +388,7 @@ class ProfileCreateOrUpdate extends Component {
             valid: validated.isValid,
             errors: validated.errors, //array of errors
             touched: true,
-            pristine: false
+            pristine: false,
           };
           if (validated.isValid === false) {
             isFormValid = false;
@@ -436,7 +436,7 @@ class ProfileCreateOrUpdate extends Component {
                 valid: validated.isValid,
                 errors: validated.errors, //array of errors
                 touched: true,
-                pristine: false
+                pristine: false,
               };
               console.log('submit test: ');
               console.log('validated:', validated);
@@ -473,7 +473,7 @@ class ProfileCreateOrUpdate extends Component {
                 valid: validated.isValid,
                 errors: validated.errors, //array of errors
                 touched: true,
-                pristine: false
+                pristine: false,
               };
             });
             return val;
@@ -489,11 +489,11 @@ class ProfileCreateOrUpdate extends Component {
           ...prevState.localstateform,
           [formattribute]: {
             ...prevState.localstateform[formattribute],
-            value: obj
-          }
+            value: obj,
+          },
         },
 
-        isFormValid: isFormValid
+        isFormValid: isFormValid,
       }));
 
       console.log('=============');
@@ -579,7 +579,7 @@ class ProfileCreateOrUpdate extends Component {
 
     const submitbutton = (
       <Button
-        type="WithBorder"
+        type='WithBorder'
         onClick={(event) => {
           console.log('Submit...');
           event.preventDefault();
@@ -589,7 +589,7 @@ class ProfileCreateOrUpdate extends Component {
           const event = new MouseEvent('mouseover', {
             view: window,
             bubbles: true,
-            cancelable: true
+            cancelable: true,
           });
 
           //get the reference to the actual submit input and mimic a mouseover
@@ -616,32 +616,32 @@ class ProfileCreateOrUpdate extends Component {
               label={this.props.id ? 'Update Profile' : 'Create Profile'}
             >
               <Card>
-                <form onSubmit={this.onSubmitHandler} autoComplete="off">
+                <form onSubmit={this.onSubmitHandler} autoComplete='off'>
                   {/* input context provides context state/functions to formInputs */}
                   <div
                     style={{ display: 'flex', flexDirection: 'column' }}
-                    padding="not-bottom"
+                    padding='not-bottom'
                   >
                     <InputContext.Provider
                       value={{
                         addinput: this.props.addInputHandler,
                         removeinput: this.props.removeInputHandler,
                         changed: this.props.updateInputHandler,
-                        moveiteminarray: this.props.moveItemHandler
+                        moveiteminarray: this.props.moveItemHandler,
                       }}
                     >
                       {formInputs}
                     </InputContext.Provider>
                   </div>
-                  <Separator style="Solid" />
+                  <Separator style='Solid' />
                   <div
                     style={{ display: 'flex', flexDirection: 'column' }}
-                    padding="true"
+                    padding='true'
                   >
                     <input
                       ref={this.submitInputRef}
-                      type="submit"
-                      value="Submit"
+                      type='submit'
+                      value='Submit'
                       onMouseOver={(event) => {
                         console.log('mouseover');
                         this.onSubmitTest(event);
@@ -669,7 +669,7 @@ const mapStateToProps = (state) => {
     activeProfile: state.profile.activeProfile,
     formattedFormObject: state.profile.formattedFormObject,
     formattedFormWithData: state.profile.formattedFormWithData,
-    id: state.profile.urlQuerystringId
+    id: state.profile.urlQuerystringId,
   };
 };
 
@@ -715,7 +715,7 @@ const mapDispatchToProps = (dispatch) => {
         valid: undefined,
         touched: false,
         pristine: true,
-        errors: []
+        errors: [],
       };
 
       switch (type) {
@@ -727,9 +727,9 @@ const mapDispatchToProps = (dispatch) => {
                   ...this.state.localstateform,
                   [key]: {
                     ...prevState.localstateform[key],
-                    value: prevState.localstateform[key].value.concat(dataObj)
-                  }
-                }
+                    value: prevState.localstateform[key].value.concat(dataObj),
+                  },
+                },
               };
             },
             () => {
@@ -752,9 +752,9 @@ const mapDispatchToProps = (dispatch) => {
                 ...this.state.localstateform,
                 [key]: {
                   ...prevState.localstateform[key],
-                  value: prevState.localstateform[key].value.concat(obj)
-                }
-              }
+                  value: prevState.localstateform[key].value.concat(obj),
+                },
+              },
             };
           });
 
@@ -782,7 +782,7 @@ const mapDispatchToProps = (dispatch) => {
 
       this.setState((prevState) => {
         console.log('...prevState.form[key]: ', {
-          ...prevState.localstateform[key]
+          ...prevState.localstateform[key],
         });
         console.log('...updatedInputs', [...updatedInputs]);
         return {
@@ -790,9 +790,9 @@ const mapDispatchToProps = (dispatch) => {
             ...prevState.localstateform,
             [key]: {
               ...prevState.localstateform[key],
-              value: [...updatedInputs]
-            }
-          }
+              value: [...updatedInputs],
+            },
+          },
         };
       });
     },
@@ -911,7 +911,7 @@ const mapDispatchToProps = (dispatch) => {
       const updatedForm = [...this.state.localstateform];
 
       const updatedFormElement = {
-        ...updatedForm[key]
+        ...updatedForm[key],
       };
 
       //updatedFormElement.value stores an array
@@ -925,7 +925,7 @@ const mapDispatchToProps = (dispatch) => {
       updatedFormElement.value = updatedArray;
       updatedForm[key] = updatedFormElement;
       this.setState({ localstateform: updatedForm });
-    }
+    },
   };
 };
 export default connect(
